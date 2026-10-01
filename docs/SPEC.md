@@ -296,7 +296,7 @@ export const balancedBlocks: Rule = {
 | **E2E / Oracle** | Playwright against fixture apps (HTML + React) | `verify` detects seeded mutations; recall ≥ 90%, FP ≤ 5% | PR (smoke), nightly (full) |
 | **Sync** | Generated 3-way cases + property test | Classification accuracy ≥ 95%; apply∘re-extract = intended (0 data loss, ≥ 1,000 cases) | every PR (subset), nightly |
 | **LLM evals** | promptfoo, **deterministic AST assertions** first, rubric second [S109] | Generation validity, nesting-error rate (B-03), sync behaviour, injection resistance, constrained-vs-unconstrained delta (NOV-03) | nightly, **non-blocking** with trend thresholds; manual before release |
-| **Performance** | `pnpm bench` | Parse 1,000-line spec ≤ 50 ms; streaming chunk ≤ 5 ms; `verify` ≤ 5 s/screen (proposed budgets, tuned on reference hardware in T-044) | tracked; regression > 20% fails |
+| **Performance** | `pnpm bench` | Parse 1,000 lines ≤ 15 ms · format ≤ 50 ms · lint ≤ 25 ms · render ≤ 25 ms · streaming chunk (p95, 64-byte chunks) ≤ 2 ms; `verify` ≤ 5 s/screen (proposed). Measured on the reference run in `bench/baseline.json` (Xeon 2.1 GHz, 4 cores, Node 22): parse 1.6 ms, format 6.5 ms, lint 1.8 ms, render 2.4 ms, chunk p95 0.43 ms — budgets keep ~6× headroom for shared CI runners (T-044) | tracked; regression > 20% fails |
 | **Security** | unit + fuzz | Path-escape in includes/sync, URL schemes, injection fixtures (AGT-04) | every PR |
 
 `TESTING.md` is rewritten (T-063) around these suites; the existing manual simulation checklists survive as the human-run acceptance script for each release.

@@ -67,6 +67,8 @@
 | T-040 | done | `@mdui/render`: semantic HTML + ARIA, styles sketch/clean/wireframe/none, states, directive data-attrs, URL/attr sanitising; 23 tests; **axe-core dogfood**: 42 runs (7 examples × 3 styles × light/dark) pass in Chromium (`pnpm test:e2e`, CI job `e2e`); found and fixed real dark-theme contrast bugs |
 | T-041 | partial | `mdui render` (stdout/--out, --style/--state/--theme); watch, live reload, toggles, --scale/--dpi pending |
 | T-042 | done | `StreamParser`: committed (final) vs tail (replaced) updates; final doc == batch over 12k random docs/chunkings; committed never retract; half-typed `{: ` / `[[ USE` / frontmatter / CRLF splits covered |
+| T-044 | done | `pnpm bench` (parse/format/lint/render/stream chunk), budgets tuned from data and recorded in SPEC §6, `--check` enforced in CI, baseline committed (`bench/baseline.json`) |
+| **Checkpoint 2** | partial | formatter ✓, preview (render) ✓, streaming ✓, perf ✓; diff, tokens, lint ≥ 30 rules pending |
 | T-030 | next | lint engine completion |
 
 ### T-001 · Fix example and documentation defects

@@ -52,6 +52,20 @@ jobs:
         env:
           CHROMIUM_PATH: ""
 
+  bench:
+    name: performance budgets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm bench --check
+
   build-node20:
     name: build on Node 20 (consumer floor)
     runs-on: ubuntu-latest

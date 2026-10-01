@@ -17,6 +17,7 @@
     "format:check": "prettier --check .",
     "changeset": "changeset",
     "mdui": "node packages/cli/dist/bin.js",
+    "bench": "node bench/run.mjs",
     "schema:check": "node scripts/gen-ast-schema.mjs --check",
     "check": "pnpm schema:check && pnpm build && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test"
   },
