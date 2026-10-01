@@ -184,7 +184,11 @@ describe("security: output is escaped and URLs are sanitised", () => {
   it("attribute values cannot break out", () => {
     const h = frag(v2('[ Go ]{: label="x\\" onclick=\\"alert(1)" }\n'));
     expect(h).not.toMatch(/\sonclick=/);
-    expect(h).toContain("data-attr-onclick");
+    expect(h).not.toContain('alert(1)"');
+    // an event-handler name is never emitted as an attribute: it is neutralised to data-attr-*
+    const k = frag(v2("[ Go ]{: onclick=alert(1) }\n"));
+    expect(k).not.toMatch(/\sonclick=/);
+    expect(k).toContain("data-attr-onclick");
   });
   it("hints cannot close their comment", () => {
     const h = frag("> a --> <script>alert(1)</script>\n");

@@ -90,7 +90,7 @@ describe("inline v2 properties", () => {
 
 describe('attribute values and quotes (regression: fast-check counterexample `[v] [{:key=val"}`)', () => {
   it("a double quote inside a value is rejected, so print/parse stays stable", () => {
-    const issues: { code: string }[] = [];
+    const issues: InlineIssue[] = [];
     const nodes = parseInline('[v] [{:key=val"}', { v2: true, issues });
     expect(issues.map((i) => i.code)).toContain("E1301");
     const again = parseInline(printInline(nodes), { v2: true });
