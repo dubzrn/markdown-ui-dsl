@@ -17,6 +17,7 @@ A lightweight, text-based wireframing standard designed specifically for AI codi
 - [Design Theming](#design-theming)
 - [Responsive Design](#responsive-design)
 - [Events & Interactivity](#events--interactivity)
+- [Roadmap & Research](#roadmap--research)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -186,6 +187,12 @@ The DSL captures the *intent* of an action using standard markdown link syntax o
 
 When you pass the `.ui.md` file to the AI Agent, you should provide the behavior alongside it in your prompt or a separate requirements document, like so:
 *"Generate the component from `login-form.ui.md`. When `#login` is clicked, mock an API call setting `isLoading` to true, and route to `/dashboard` on success."*
+
+## Roadmap & Research
+The v2 program is documented in [`docs/`](docs/):
+- [`COMPETITIVE_RESEARCH.md`](docs/COMPETITIVE_RESEARCH.md) — survey of comparable systems (with sources) and the gaps found in this project.
+- [`FEATURE_ADDITIONS.md`](docs/FEATURE_ADDITIONS.md) — the locked-in feature list, including four novel features.
+- [`SPEC.md`](docs/SPEC.md) · [`PLAN.md`](docs/PLAN.md) · [`TASKS.md`](docs/TASKS.md) — development specification, implementation plan and task breakdown.
 
 ## Contributing
 Contributions and community feedback are highly encouraged! Since this DSL is an evolving standard, your input naturally makes it better.
