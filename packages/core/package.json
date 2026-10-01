@@ -1,0 +1,12 @@
+{
+  "name": "@mdui/core",
+  "version": "0.0.0",
+  "description": "Markdown UI DSL parser, AST and diagnostics. Zero runtime dependencies; no Node APIs.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
+  "files": ["dist"],
+  "dependencies": { "@mdui/spec": "workspace:*" },
+  "scripts": { "build": "tsup src/index.ts --format esm --dts --clean", "typecheck": "tsc -p tsconfig.json" }
+}
