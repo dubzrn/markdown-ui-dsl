@@ -817,6 +817,66 @@
     "notes": "B-01: example as shipped in v1.0.3; line numbers are the original outer opener and the stray opener fixed in T-001"
   },
   {
+    "id": "fm-unknown-key",
+    "input": "---\ncolour: red\n---\nx\n",
+    "expect": {
+      "outline": "frontmatter,line",
+      "diagnostics": [
+        {
+          "code": "W1204",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "T-017"
+  },
+  {
+    "id": "fm-duplicate-key",
+    "input": "---\nlang: en\nlang: fr\n---\n",
+    "expect": {
+      "outline": "frontmatter",
+      "diagnostics": [
+        {
+          "code": "E1103",
+          "line": 3
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "T-017"
+  },
+  {
+    "id": "fm-unsupported-anchor",
+    "input": "---\ntitle: &a x\n---\n",
+    "expect": {
+      "outline": "frontmatter",
+      "diagnostics": [
+        {
+          "code": "E1102",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "T-017"
+  },
+  {
+    "id": "fm-bad-dsl",
+    "input": "---\ndsl: 3.0\n---\n",
+    "expect": {
+      "outline": "frontmatter",
+      "diagnostics": [
+        {
+          "code": "E1104",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "T-017"
+  },
+  {
     "id": "heading-after-unclosed",
     "input": "::: CARD :::\n# T\n",
     "expect": {

@@ -9,3 +9,10 @@ export type { Diagnostic, DiagnosticCode, Pos, Severity, Span, TextEdit } from "
 export type * from "./ast.js";
 
 export const supportedVersions: readonly string[] = SUPPORTED_DSL_VERSIONS;
+export { parseFrontmatter, dslVersion, KNOWN_KEYS } from "./frontmatter.js";
+export type {
+  FrontmatterData,
+  FrontmatterIssue,
+  FrontmatterResult,
+  YamlValue,
+} from "./frontmatter.js";

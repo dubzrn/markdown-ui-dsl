@@ -1,4 +1,5 @@
 import type { Diagnostic, Span } from "./diagnostics.js";
+import type { FrontmatterData } from "./frontmatter.js";
 import type { InlineNode } from "./inline.js";
 
 export type ContainerKind =
@@ -88,6 +89,10 @@ export type BlockNode =
 
 export interface Document {
   frontmatter: FrontmatterNode | undefined;
+  /** Parsed frontmatter keys (empty when there is none). */
+  meta: FrontmatterData;
+  /** DSL major: absent `dsl:` ⇒ "1" (RFC-0001 §6). */
+  dsl: "1" | "2.0";
   body: BlockNode[];
   diagnostics: Diagnostic[];
 }

@@ -49,10 +49,13 @@ export const CODES = {
     severity: "error",
     summary: "Unsupported YAML syntax in frontmatter (outside the strict subset).",
   },
+  E1103: { severity: "error", summary: "Duplicate key in frontmatter." },
+  E1104: { severity: "error", summary: "Unsupported or malformed `dsl:` version in frontmatter." },
   W1201: {
     severity: "warn",
     summary: "Unknown breakpoint in a responsive directive; treated as a plain hint.",
   },
+  W1204: { severity: "warn", summary: "Unknown frontmatter key." },
   W1202: {
     severity: "warn",
     summary: "Table row has a different number of cells than the header.",

@@ -12,3 +12,9 @@ Full YAML (`yaml` package) is permitted only in `@mdui/tools` and `@mdui/tokens`
 
 Zero-dependency core (ADR-003); removes YAML's code-execution-adjacent features (tags, anchors/billion-laughs) from the
 untrusted-input path (agents emit this text); deterministic diagnostics with line/column.
+
+## Addendum (T-017)
+
+Only **integers** are numbers; decimals stay strings. A JS number loses the trailing zero of `2.0`, and `dsl: 2.0` is a version
+string (found by the first fixture run). Duplicate keys are `E1103`, a malformed or unknown `dsl:` is `E1104`, unknown keys
+are `W1204`, anything outside the subset is `E1102`. Mappings inside list items and nested flow collections are outside the subset.

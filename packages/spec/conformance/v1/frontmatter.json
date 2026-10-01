@@ -1,0 +1,763 @@
+[
+  {
+    "id": "scalar-string",
+    "input": "framework: Next.js + TailwindCSS + Shadcn UI",
+    "expect": {
+      "data": {
+        "framework": "Next.js + TailwindCSS + Shadcn UI"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "scalar-path",
+    "input": "theme: ./design-systems/web-tailwind.md",
+    "expect": {
+      "data": {
+        "theme": "./design-systems/web-tailwind.md"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "scalar-brackets-inside",
+    "input": "component: src/app/actions/[id]/page.tsx",
+    "expect": {
+      "data": {
+        "component": "src/app/actions/[id]/page.tsx"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "scalar-bool-true",
+    "input": "constraints: true",
+    "expect": {
+      "data": {
+        "constraints": true
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "scalar-bool-false",
+    "input": "constraints: false",
+    "expect": {
+      "data": {
+        "constraints": false
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "scalar-null-tilde",
+    "input": "title: ~",
+    "expect": {
+      "data": {
+        "title": null
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "scalar-null-word",
+    "input": "title: null",
+    "expect": {
+      "data": {
+        "title": null
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "scalar-null-empty",
+    "input": "title:",
+    "expect": {
+      "data": {
+        "title": null
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "scalar-int",
+    "input": "start: 3",
+    "expect": {
+      "data": {
+        "start": 3
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "scalar-decimal-stays-string",
+    "input": "caption: 1.5",
+    "expect": {
+      "data": {
+        "caption": "1.5"
+      },
+      "issues": []
+    },
+    "since": "1.0",
+    "notes": "only integers are numbers; versions like 2.0 must not lose their trailing zero"
+  },
+  {
+    "id": "scalar-neg",
+    "input": "caption: -2",
+    "expect": {
+      "data": {
+        "caption": -2
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "scalar-version-2.0-is-string",
+    "input": "dsl: 2.0",
+    "expect": {
+      "data": {
+        "dsl": "2.0"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "scalar-version-quoted",
+    "input": "dsl: \"2.0\"",
+    "expect": {
+      "data": {
+        "dsl": "2.0"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "scalar-version-1.0",
+    "input": "dsl: 1.0",
+    "expect": {
+      "data": {
+        "dsl": "1.0"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "quoted-double",
+    "input": "title: \"Sign in: step 1\"",
+    "expect": {
+      "data": {
+        "title": "Sign in: step 1"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "quoted-double-escape",
+    "input": "title: \"a\\\"b\"",
+    "expect": {
+      "data": {
+        "title": "a\"b"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "quoted-single",
+    "input": "title: 'it''s'",
+    "expect": {
+      "data": {
+        "title": "it's"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "quoted-hash-kept",
+    "input": "title: \"a # b\"",
+    "expect": {
+      "data": {
+        "title": "a # b"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "comment-trailing",
+    "input": "framework: Flutter # target",
+    "expect": {
+      "data": {
+        "framework": "Flutter"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "comment-full-line",
+    "input": "# note\nframework: Flutter",
+    "expect": {
+      "data": {
+        "framework": "Flutter"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "hash-no-space-is-text",
+    "input": "title: a#b",
+    "expect": {
+      "data": {
+        "title": "a#b"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "blank-lines-ignored",
+    "input": "\nframework: Flutter\n\n",
+    "expect": {
+      "data": {
+        "framework": "Flutter"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "multiple-keys",
+    "input": "framework: React\ntheme: ./d.md\ncomponent: src/A.tsx",
+    "expect": {
+      "data": {
+        "framework": "React",
+        "theme": "./d.md",
+        "component": "src/A.tsx"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "crlf",
+    "input": "framework: React\r\ntheme: ./d.md\r\n",
+    "expect": {
+      "data": {
+        "framework": "React",
+        "theme": "./d.md"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "list-block",
+    "input": "requirements:\n  - REQ-12\n  - REQ-13",
+    "expect": {
+      "data": {
+        "requirements": ["REQ-12", "REQ-13"]
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "list-block-same-indent",
+    "input": "requirements:\n- REQ-1\n- REQ-2",
+    "expect": {
+      "data": {
+        "requirements": ["REQ-1", "REQ-2"]
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "list-flow",
+    "input": "requirements: [REQ-12, REQ-13]",
+    "expect": {
+      "data": {
+        "requirements": ["REQ-12", "REQ-13"]
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "list-flow-empty",
+    "input": "requirements: []",
+    "expect": {
+      "data": {
+        "requirements": []
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "list-flow-quoted-comma",
+    "input": "requirements: [\"a, b\", c]",
+    "expect": {
+      "data": {
+        "requirements": ["a, b", "c"]
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "map-block",
+    "input": "constraints:\n  max-primary-actions: 1\n  no-dead-ends: true",
+    "expect": {
+      "data": {
+        "constraints": {
+          "max-primary-actions": 1,
+          "no-dead-ends": true
+        }
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "map-flow",
+    "input": "actions: { login: { intent: x } }",
+    "expect": {
+      "data": {
+        "actions": "{ login: { intent: x } }"
+      },
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "nested flow collections are outside the subset"
+  },
+  {
+    "id": "map-flow-flat",
+    "input": "constraints: { a: 1, b: true }",
+    "expect": {
+      "data": {
+        "constraints": {
+          "a": 1,
+          "b": true
+        }
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "map-nested-two-levels",
+    "input": "actions:\n  login:\n    intent: Authenticate\n    destructive: false",
+    "expect": {
+      "data": {
+        "actions": {
+          "login": {
+            "intent": "Authenticate",
+            "destructive": false
+          }
+        }
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "map-then-sibling",
+    "input": "actions:\n  login:\n    intent: x\nlang: en",
+    "expect": {
+      "data": {
+        "actions": {
+          "login": {
+            "intent": "x"
+          }
+        },
+        "lang": "en"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "lang-dir",
+    "input": "lang: en\ndir: ltr",
+    "expect": {
+      "data": {
+        "lang": "en",
+        "dir": "ltr"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "type-flow",
+    "input": "type: flow\nstart: login",
+    "expect": {
+      "data": {
+        "type": "flow",
+        "start": "login"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unknown-key-warns",
+    "input": "colour: red",
+    "expect": {
+      "data": {
+        "colour": "red"
+      },
+      "issues": [
+        {
+          "code": "W1204",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unknown-key-second-line",
+    "input": "framework: x\nfoo: 1",
+    "expect": {
+      "data": {
+        "framework": "x",
+        "foo": 1
+      },
+      "issues": [
+        {
+          "code": "W1204",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "anchor",
+    "input": "title: &a x",
+    "expect": {
+      "data": {
+        "title": "&a x"
+      },
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "alias",
+    "input": "title: *a",
+    "expect": {
+      "data": {
+        "title": "*a"
+      },
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "tag",
+    "input": "title: !!str 1",
+    "expect": {
+      "data": {
+        "title": "!!str 1"
+      },
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "block-scalar-literal",
+    "input": "title: |\n  line1\n  line2\nlang: en",
+    "expect": {
+      "data": {
+        "title": null,
+        "lang": "en"
+      },
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "block-scalar-folded",
+    "input": "title: >\n  a\n  b",
+    "expect": {
+      "data": {
+        "title": null
+      },
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "merge-key",
+    "input": "<<: x\nlang: en",
+    "expect": {
+      "data": {
+        "<<": "x",
+        "lang": "en"
+      },
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 1
+        },
+        {
+          "code": "W1204",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "multi-document",
+    "input": "lang: en\n---\ntitle: x",
+    "expect": {
+      "data": {
+        "lang": "en",
+        "title": "x"
+      },
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "tab-indent",
+    "input": "actions:\n\tlogin: x",
+    "expect": {
+      "data": {
+        "actions": null
+      },
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unterminated-double",
+    "input": "title: \"abc",
+    "expect": {
+      "data": {
+        "title": "\"abc"
+      },
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unterminated-single",
+    "input": "title: 'abc",
+    "expect": {
+      "data": {
+        "title": "'abc"
+      },
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unterminated-flow",
+    "input": "requirements: [a, b",
+    "expect": {
+      "data": {
+        "requirements": "[a, b"
+      },
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "nested-flow-list",
+    "input": "requirements: [[a], b]",
+    "expect": {
+      "data": {
+        "requirements": "[[a], b]"
+      },
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "not-key-value",
+    "input": "just text",
+    "expect": {
+      "data": {},
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "list-item-mapping",
+    "input": "requirements:\n  - id: 1",
+    "expect": {
+      "data": {
+        "requirements": []
+      },
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "bad-indent",
+    "input": "lang: en\n   dir: ltr",
+    "expect": {
+      "data": {
+        "lang": "en"
+      },
+      "issues": [
+        {
+          "code": "E1102",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "duplicate-key",
+    "input": "lang: en\nlang: fr",
+    "expect": {
+      "data": {
+        "lang": "fr"
+      },
+      "issues": [
+        {
+          "code": "E1103",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "dsl-unknown-version",
+    "input": "dsl: 3.0",
+    "expect": {
+      "data": {
+        "dsl": "3.0"
+      },
+      "issues": [
+        {
+          "code": "E1104",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "dsl-list",
+    "input": "dsl: [2.0]",
+    "expect": {
+      "data": {
+        "dsl": ["2.0"]
+      },
+      "issues": [
+        {
+          "code": "E1104",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "dsl-1.2-ok",
+    "input": "dsl: 1.2",
+    "expect": {
+      "data": {
+        "dsl": "1.2"
+      },
+      "issues": []
+    },
+    "since": "1.0"
+  }
+]

@@ -7,6 +7,7 @@ import type {
   ListItemNode,
   ListNode,
 } from "./ast.js";
+import { dslVersion, parseFrontmatter, type FrontmatterData } from "./frontmatter.js";
 import { parseInline } from "./inline.js";
 import { makeDiagnostic, type Diagnostic, type Pos, type Span } from "./diagnostics.js";
 
@@ -98,6 +99,7 @@ export function parse(source: string): Document {
   const root: BlockNode[] = [];
   const stack: Frame[] = [];
   let frontmatter: FrontmatterNode | undefined;
+  let meta: FrontmatterData = {};
   let i = 0;
 
   const sink = (): BlockNode[] => {
@@ -149,6 +151,13 @@ export function parse(source: string): Document {
         span: { start: pos(first, 1), end: pos(last, last.text.length + 1) },
       };
       i = close + 1;
+      const fm = parseFrontmatter(frontmatter.raw);
+      meta = fm.data;
+      for (const issue of fm.issues) {
+        // raw line 1 is the line after the opening fence (source line 2)
+        const src = lines[issue.line] as Line | undefined;
+        diagnostics.push(makeDiagnostic(issue.code, lineSpan(src ?? first), issue.message));
+      }
     }
   }
 
@@ -364,5 +373,5 @@ export function parse(source: string): Document {
       diagnostics.push(makeDiagnostic("E1001", { start: f.node.span.start, end: f.node.span.end }));
   }
   diagnostics.sort((a, b) => a.span.start.offset - b.span.start.offset);
-  return { frontmatter, body: root, diagnostics };
+  return { frontmatter, meta, dsl: dslVersion(meta), body: root, diagnostics };
 }

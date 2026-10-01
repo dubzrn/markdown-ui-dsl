@@ -49,7 +49,9 @@
 | T-015 | done | block parser; 148/148 conformance; 150k-input fuzz |
 | T-016 | done | `inline.ts`; 68 inline fixtures; 100k no-throw + 50k print-stability property; all example text resolves to typed nodes |
 | SP-4 | partial | baseline vs A2UI (-85.8% tokens, o200k); re-run after 2.0 syntax; json-render & OpenUI Lang pending (`docs/spikes/SP-4-token-cost.md`) |
-| T-012 | next | RFC-0001 DSL 2.0 syntax |
+| T-012 | done | `docs/rfcs/0001-dsl-2.0-syntax.md`, `v2.ebnf`; maintainer read of §7 pending |
+| T-017 | done | `frontmatter.ts`; 57 fixtures; decimals-stay-strings decision (ADR-004 addendum) |
+| T-018 | next | directive parser (env directives, dsl:2.0-gated) |
 
 ### T-001 · Fix example and documentation defects
 `S` · Deps: — · Implements: **QLT-04** · REQ: REQ-QLT-04
