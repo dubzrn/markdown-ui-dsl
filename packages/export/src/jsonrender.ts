@@ -6,6 +6,7 @@
  */
 import type { BlockNode, Document, InlineNode } from "@mdui/core";
 import { toPointer } from "./a2ui.js";
+import { classifyTarget } from "./targets.js";
 import type { ExportWarning, WarningKind } from "./warnings.js";
 
 export interface JsonRenderOptions {
@@ -189,12 +190,20 @@ class Builder {
     switch (n.kind) {
       case "button": {
         const a = n.action ?? "";
+        const kind = a === "" ? "fragment" : classifyTarget(a);
+        if (kind === "unsafe")
+          this.warn(
+            "dropped",
+            line,
+            "[ button ](unsafe)",
+            `target "${a.slice(0, 40)}" has a scheme that is never exported; the button keeps its label as event name and carries no target`,
+          );
         const on =
-          a === ""
+          a === "" || kind === "unsafe"
             ? { press: { action: "submit", params: { name: n.label } } }
             : a.startsWith("#")
               ? { press: { action: "submit", params: { name: a.slice(1) } } }
-              : /^https?:/i.test(a)
+              : kind === "url"
                 ? { press: { action: "openUrl", params: { url: a } } }
                 : { press: { action: "navigate", params: { target: a } } };
         return [
@@ -212,8 +221,18 @@ class Builder {
           ),
         ];
       }
-      case "link":
+      case "link": {
+        if (classifyTarget(n.target) === "unsafe") {
+          this.warn(
+            "dropped",
+            line,
+            "[link](unsafe)",
+            `target "${n.target.slice(0, 40)}" has a scheme that is never exported; exported as plain text`,
+          );
+          return [this.add("Text", { text: n.label })];
+        }
         return [this.add("Link", { label: n.label, href: n.target })];
+      }
       case "input": {
         const t = n.attrs?.props["type"];
         return [

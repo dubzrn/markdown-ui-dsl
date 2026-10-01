@@ -16,7 +16,8 @@
     "schemas"
   ],
   "dependencies": {
-    "@mdui/core": "workspace:*"
+    "@mdui/core": "workspace:*",
+    "@mdui/lint": "workspace:*"
   },
   "devDependencies": {
     "@json-render/core": "^0.21.0",

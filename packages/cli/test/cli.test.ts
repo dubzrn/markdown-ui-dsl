@@ -1,5 +1,12 @@
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, mkdtempSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  symlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -653,4 +660,54 @@ describe("svg and embed (T-094)", () => {
     expect(f[svg as string]).toMatch(/^<svg /);
     expect(main(["embed", "docs/missing.md"], memIo({}).io)).toBe(EXIT.usage);
   });
+});
+
+describe("symlinks cannot lead outside the project (T-093 security review)", () => {
+  const bin = new URL("../dist/bin.js", import.meta.url).pathname;
+  const H = "---\ndsl: 2.0\nlang: en\n---\n";
+  function project(): { proj: string; outside: string } {
+    const outside = mkdtempSync(join(tmpdir(), "mdui-out-"));
+    const proj = mkdtempSync(join(tmpdir(), "mdui-proj-"));
+    writeFileSync(join(outside, "secret.ui.md"), `${H}SECRET-TEXT\n`);
+    return { proj, outside };
+  }
+  it.skipIf(!existsSync(bin))(
+    "render and export do not follow an include symlink out of the root",
+    () => {
+      const { proj, outside } = project();
+      mkdirSync(join(proj, "inc"));
+      symlinkSync(join(outside, "secret.ui.md"), join(proj, "inc", "link.ui.md"));
+      writeFileSync(join(proj, "a.ui.md"), `${H}# T\n[[ USE: ./inc/link.ui.md ]]\n`);
+      for (const cmd of [
+        ["render"],
+        ["export", "--to", "a2ui"],
+        ["export", "--to", "json-render"],
+        ["svg"],
+      ]) {
+        const [c, ...rest] = cmd as [string, ...string[]];
+        const r = spawnSync("node", [bin, c, "a.ui.md", ...rest], { cwd: proj });
+        expect(r.stdout.toString(), cmd.join(" ")).not.toContain("SECRET-TEXT");
+      }
+    },
+  );
+  it.skipIf(!existsSync(bin))(
+    "sync refuses code files and write targets behind a symlinked directory",
+    () => {
+      const { proj, outside } = project();
+      writeFileSync(join(outside, "Login.tsx"), "export const X = 1;\n");
+      symlinkSync(outside, join(proj, "src"));
+      writeFileSync(join(proj, "a.ui.md"), `${H}# T\n[ Go ](#go)\n`);
+      const before = readFileSync(join(outside, "Login.tsx"), "utf8");
+      for (const sub of ["plan", "apply"]) {
+        const r = spawnSync(
+          "node",
+          [bin, "sync", sub, "a.ui.md", "--code", "src/Login.tsx", "--confirm"],
+          { cwd: proj },
+        );
+        expect(r.status, `${sub}: ${r.stderr.toString()}`).toBe(2);
+        expect(r.stderr.toString()).toMatch(/outside the project root/);
+      }
+      expect(readFileSync(join(outside, "Login.tsx"), "utf8")).toBe(before);
+    },
+  );
 });

@@ -39,6 +39,7 @@ import { buildGrammar, toGbnf, toJsonSchema, toLark } from "@mdui/grammar";
 import { render } from "@mdui/render";
 import { exportA2ui, exportJsonRender } from "@mdui/export";
 import { embedMarkdown, renderSvg } from "@mdui/embed";
+import { readConfined } from "./confine.js";
 import { parseArgs, UsageError, type Args } from "./args.js";
 import { ConfigError, loadConfig, type Config, type FailOn } from "./config.js";
 import { expand } from "./glob.js";
@@ -407,7 +408,7 @@ function run(io: Io, args: Args, cfg: Config): number {
   if (args.positional.length === 0) throw new UsageError(`${cmd}: no input files`);
   if (missing.length > 0) throw new UsageError(`no such file or no matches: ${missing.join(", ")}`);
 
-  const readFile = (p: string): string | undefined => io.readFile(posix.resolve(root, p));
+  const readFile = (p: string): string | undefined => readConfined(io, root, p);
   const rel = (f: string): string => posix.relative(root, posix.resolve(io.cwd, f));
 
   if (cmd === "ast") {

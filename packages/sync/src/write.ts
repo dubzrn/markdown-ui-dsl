@@ -7,6 +7,12 @@ import { posix } from "node:path";
 import type { FileWrite } from "./apply.js";
 
 export interface Fs {
+  /**
+   * Canonical path with symlinks resolved, or undefined if the path does not exist. When provided, writes are refused if
+   * the target (or its nearest existing parent) resolves outside the root: a symlinked directory inside the project must
+   * not let `apply` write elsewhere.
+   */
+  realpath?(path: string): string | undefined;
   read(path: string): string | undefined;
   write(path: string, text: string): void;
   remove(path: string): void;
@@ -19,6 +25,23 @@ export function confine(root: string, p: string): string | undefined {
   const abs = posix.resolve(root, p);
   const rel = posix.relative(root, abs);
   return rel === "" || rel.startsWith("..") || posix.isAbsolute(rel) ? undefined : abs;
+}
+
+/** True when `abs` (or, if it does not exist yet, its nearest existing parent) really lies inside the real root. */
+export function realInside(fs: Fs, root: string, abs: string): boolean {
+  if (fs.realpath === undefined) return true;
+  const rr = fs.realpath(root);
+  if (rr === undefined) return false;
+  for (let cur = abs; ;) {
+    const r = fs.realpath(cur);
+    if (r !== undefined) {
+      const rel = posix.relative(rr, r);
+      return rel === "" || (!rel.startsWith("..") && !posix.isAbsolute(rel));
+    }
+    const up = posix.dirname(cur);
+    if (up === cur) return false;
+    cur = up;
+  }
 }
 
 interface Journal {
@@ -71,6 +94,12 @@ export function writeAtomically(fs: Fs, root: string, files: FileWrite[]): Write
         ok: false,
         written: [],
         error: `refusing to write outside the project root: ${f.path}`,
+      };
+    if (!realInside(fs, root, abs))
+      return {
+        ok: false,
+        written: [],
+        error: `refusing to write through a symlink that leaves the project root: ${f.path}`,
       };
     targets.push({ abs, rel: posix.relative(root, abs), content: f.content });
   }

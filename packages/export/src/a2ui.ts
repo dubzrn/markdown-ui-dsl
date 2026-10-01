@@ -5,6 +5,7 @@
  * as warnings (docs/EXPORT.md lists each one); comments and hints are author notes, not UI, and are not exported.
  */
 import type { BlockNode, Document, InlineNode } from "@mdui/core";
+import { classifyTarget } from "./targets.js";
 import type { ExportWarning, WarningKind } from "./warnings.js";
 
 export interface A2uiOptions {
@@ -185,16 +186,25 @@ class Builder {
     switch (n.kind) {
       case "button": {
         const a = n.action ?? "";
+        const kind = a === "" ? "fragment" : classifyTarget(a);
         const name = a.startsWith("#") ? a.slice(1) : a;
-        const action =
-          name === "" || /^[a-z][a-z0-9+.-]*:/i.test(a) === false
-            ? {
-                event: {
-                  name: name === "" ? n.label : name,
-                  ...(a !== "" && !a.startsWith("#") ? { context: { target: a } } : {}),
-                },
-              }
-            : { functionCall: { call: "openUrl", args: { url: a } } };
+        let action: Record<string, unknown>;
+        if (kind === "url") action = { functionCall: { call: "openUrl", args: { url: a } } };
+        else if (kind === "unsafe") {
+          this.warn(
+            "dropped",
+            line,
+            "[ button ](unsafe)",
+            `target "${a.slice(0, 40)}" has a scheme that is never exported; the button keeps its label as event name and carries no target`,
+          );
+          action = { event: { name: n.label } };
+        } else
+          action = {
+            event: {
+              name: name === "" ? n.label : name,
+              ...(kind === "route" ? { context: { target: a } } : {}),
+            },
+          };
         const t = this.text(n.label);
         const primary = n.attrs?.props["primary"] === true;
         return [
@@ -202,12 +212,22 @@ class Builder {
         ];
       }
       case "link": {
+        const kind = classifyTarget(n.target);
+        if (kind === "unsafe") {
+          this.warn(
+            "dropped",
+            line,
+            "[link](unsafe)",
+            `target "${n.target.slice(0, 40)}" has a scheme that is never exported; exported as plain text`,
+          );
+          return [this.text(n.label)];
+        }
         const t = this.text(n.label);
-        const abs = /^(https?:|mailto:|tel:)/i.test(n.target);
-        const action = abs
-          ? { functionCall: { call: "openUrl", args: { url: n.target } } }
-          : { event: { name: "navigate", context: { target: n.target } } };
-        if (!abs)
+        const action =
+          kind === "url"
+            ? { functionCall: { call: "openUrl", args: { url: n.target } } }
+            : { event: { name: "navigate", context: { target: n.target } } };
+        if (kind !== "url")
           this.warn(
             "degraded",
             line,

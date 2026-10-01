@@ -1,14 +1,24 @@
 // T-041: the preview server. Needs Chromium: `pnpm test:e2e`.
-import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  symlinkSync,
+  writeFileSync,
+} from "node:fs";
+import { request } from "node:http";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { createRequire } from "node:module";
 import { chromium, type Browser } from "playwright-core";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { startPreview, type Preview } from "../src/preview.js";
+import { inside, startPreview, type Preview } from "../src/preview.js";
 
 const exe = ["/opt/pw-browsers/chromium", process.env["CHROMIUM_PATH"] ?? ""].find(
   (p) => p !== "" && existsSync(p),
 );
+const axe = readFileSync(createRequire(import.meta.url).resolve("axe-core/axe.min.js"), "utf8");
 const H = "---\ndsl: 2.0\nlang: en\n---\n";
 const dir = mkdtempSync(join(tmpdir(), "mdui-preview-"));
 const spec = join(dir, "a.ui.md");
@@ -80,4 +90,68 @@ describe("mdui preview (T-041)", () => {
     await runPreview(io, parseArgs(["preview", spec, "--png", out1]));
     expect(w2).toBe(readFileSync(out1).readUInt32BE(16) * 2);
   });
+
+  it("refuses a foreign Host header (DNS rebinding)", async () => {
+    const status = await new Promise<number>((ok, fail) => {
+      const r = request(
+        { host: "127.0.0.1", port: p.port, path: "/frame", headers: { host: "evil.example" } },
+        (res) => {
+          res.resume();
+          ok(res.statusCode ?? 0);
+        },
+      );
+      r.on("error", fail);
+      r.end();
+    });
+    expect(status).toBe(403);
+    expect((await fetch(`${p.url}frame`)).status).toBe(200);
+  });
+
+  it("does not read includes outside the project, by path or by symlink", async () => {
+    expect(inside("/tmp/proj", "/tmp/proj/a/b")).toBe(true);
+    expect(inside("/tmp/proj", "/tmp/proj-evil/x")).toBe(false);
+    expect(inside("/tmp/proj", "/tmp/other")).toBe(false);
+    const outside = mkdtempSync(join(tmpdir(), "mdui-outside-"));
+    writeFileSync(join(outside, "secret.ui.md"), `${H}SECRET-TEXT\n`);
+    const proj = mkdtempSync(join(tmpdir(), "mdui-proj-"));
+    mkdirSync(join(proj, "inc"));
+    symlinkSync(join(outside, "secret.ui.md"), join(proj, "inc", "link.ui.md"));
+    writeFileSync(
+      join(proj, "a.ui.md"),
+      `${H}# T\n[[ USE: ./inc/link.ui.md ]]\n[[ USE: ../${outside.split("/").pop()}/secret.ui.md ]]\n`,
+    );
+    const q = await startPreview({ spec: join(proj, "a.ui.md") });
+    try {
+      const html = await (await fetch(`${q.url}frame`)).text();
+      expect(html).not.toContain("SECRET-TEXT");
+    } finally {
+      await q.close();
+    }
+  });
+
+  for (const scheme of ["light", "dark"] as const)
+    it(`the preview chrome and the framed page pass axe-core (${scheme})`, async () => {
+      for (const path of ["", "frame"]) {
+        const page = await browser.newPage({ colorScheme: scheme });
+        await page.goto(`${p.url}${path}`);
+        await page.evaluate(axe);
+        const v = await page.evaluate(async () => {
+          const r = await (
+            window as unknown as {
+              axe: {
+                run(
+                  c: unknown,
+                  o: unknown,
+                ): Promise<{ violations: { id: string; nodes: { target: unknown }[] }[] }>;
+              };
+            }
+          ).axe.run(document, { runOnly: ["wcag2a", "wcag2aa", "wcag22aa", "best-practice"] });
+          return r.violations.map(
+            (x) => `${x.id}: ${JSON.stringify(x.nodes.slice(0, 2).map((n) => n.target))}`,
+          );
+        });
+        expect(v, `/${path} (${scheme})`).toEqual([]);
+        await page.close();
+      }
+    });
 });

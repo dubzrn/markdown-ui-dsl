@@ -3,8 +3,16 @@
  * events; a toolbar toggles style, theme, state and viewport width. Binds to 127.0.0.1 only and serves one spec.
  */
 import { createServer, type Server } from "node:http";
-import { existsSync, mkdirSync, readFileSync, watch, writeFileSync, type FSWatcher } from "node:fs";
-import { dirname, resolve } from "node:path";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  realpathSync,
+  watch,
+  writeFileSync,
+  type FSWatcher,
+} from "node:fs";
+import { dirname, isAbsolute, relative, resolve } from "node:path";
 import { analyze, parse } from "@mdui/core";
 import { render } from "@mdui/render";
 import { UsageError, type Args } from "./args.js";
@@ -31,6 +39,12 @@ const WIDTHS = [
   ["", "Full"],
 ] as const;
 
+/** True when `child` is `parent` or below it (a prefix test would accept `/proj-evil` for `/proj`). */
+export function inside(parent: string, child: string): boolean {
+  const r = relative(parent, child);
+  return r === "" || (!r.startsWith("..") && !isAbsolute(r));
+}
+
 const esc = (s: string): string => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 const pick = <T extends string>(v: string | null, ok: readonly T[], d: T): T =>
   (ok as readonly string[]).includes(v ?? "") ? (v as T) : d;
@@ -49,7 +63,9 @@ function renderFrame(
       file: spec.split("/").pop() ?? spec,
       readFile: (p) => {
         const abs = resolve(root, p);
-        if (!abs.startsWith(root) || !existsSync(abs)) return undefined;
+        if (!inside(root, abs) || !existsSync(abs)) return undefined;
+        // a symlink inside the project must not lead outside it either
+        if (!inside(realpathSync(root), realpathSync(abs))) return undefined;
         deps.push(abs);
         return readFileSync(abs, "utf8");
       },
@@ -93,14 +109,13 @@ function shell(q: URLSearchParams, title: string): string {
     list.map((v) => `<option value="${v}"${v === cur ? " selected" : ""}>${v}</option>`).join("");
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${esc(title)} · mdui preview</title>
 <style>body{margin:0;font:14px system-ui;background:#eef0f3;color:#14141a}header{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;padding:.5rem .75rem;background:#fff;border-bottom:1px solid #d0d4da}
-label{display:flex;gap:.3rem;align-items:center}select,input{font:inherit}main{padding:1rem;display:flex;justify-content:center}iframe{border:1px solid #c7ccd3;background:#fff;height:calc(100vh - 90px);max-width:100%;width:${width === "" ? "100%" : `${Number(width) || 0}px`}}</style></head>
-<body><header role="toolbar" aria-label="Preview controls">
-<strong>${esc(title)}</strong>
+label{display:flex;gap:.3rem;align-items:center}select,input{font:inherit;min-height:28px;min-width:28px;padding:2px 6px}h1{font-size:1em;margin:0}main{padding:1rem;display:flex;justify-content:center}iframe{border:1px solid #c7ccd3;background:#fff;height:calc(100vh - 90px);max-width:100%;width:${width === "" ? "100%" : `${Number(width) || 0}px`}}</style></head>
+<body><header><h1>${esc(title)}</h1><div role="toolbar" aria-label="Preview controls">
 <label>Style <select id="style">${opt(STYLES, style)}</select></label>
 <label>Theme <select id="theme">${opt(THEMES, theme)}</select></label>
 <label>State <input id="state" value="${esc(state)}" placeholder="default" size="10"></label>
 <label>Viewport <select id="width">${WIDTHS.map(([v, l]) => `<option value="${v}"${v === width ? " selected" : ""}>${l}</option>`).join("")}</select></label>
-</header><main><iframe id="frame" title="Rendered wireframe" src="/frame?${esc(frameQs)}"></iframe></main>
+</div></header><main><iframe id="frame" title="Rendered wireframe" src="/frame?${esc(frameQs)}"></iframe></main>
 <script>
 const f=document.getElementById("frame");
 function apply(){const p=new URLSearchParams();for(const k of ["style","theme","state","width"]){const v=document.getElementById(k).value;if(v)p.set(k,v)}
@@ -142,6 +157,13 @@ export function startPreview(o: PreviewOptions): Promise<Preview> {
   rewatch(renderFrame(spec, new URLSearchParams()).deps);
 
   const server: Server = createServer((req, res) => {
+    // DNS-rebinding guard: a page on another origin that resolves its own name to 127.0.0.1 must not be able to read the preview
+    const port = (server.address() as { port: number } | null)?.port;
+    if (req.headers.host !== `127.0.0.1:${port}` && req.headers.host !== `localhost:${port}`) {
+      res.writeHead(403, { "content-type": "text/plain" });
+      res.end("forbidden host");
+      return;
+    }
     const u = new URL(req.url ?? "/", "http://127.0.0.1");
     const headers = {
       "cache-control": "no-store",

@@ -1,5 +1,13 @@
 #!/usr/bin/env node
-import { mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  realpathSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
 import { dirname } from "node:path";
 import { main, EXIT } from "./main.js";
 import { parseArgs, UsageError } from "./args.js";
@@ -41,6 +49,13 @@ const io: Io = {
     writeFileSync(p, text);
   },
   removeFile: (p) => rmSync(p, { force: true }),
+  realpath: (p) => {
+    try {
+      return realpathSync(p).replace(/\\/g, "/");
+    } catch {
+      return undefined;
+    }
+  },
 };
 
 // `verify` drives a browser, so it is async and handled here; everything else is synchronous.

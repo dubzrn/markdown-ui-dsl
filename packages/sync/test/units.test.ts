@@ -13,6 +13,7 @@ import {
   specWaivers,
   auditWaivers,
   computeApply,
+  writeAtomically,
 } from "../src/index.js";
 
 const H = "---\ndsl: 2.0\nlang: en\n---\n";
@@ -242,5 +243,29 @@ describe("waivers in the lock (T-072)", () => {
     expect(auditWaivers(lock, []).unrecorded).toHaveLength(1);
     const edited = specWaivers(spec(W.replace("two fields needed", "legal")));
     expect(auditWaivers(edited, lock).changed[0]?.now.reason).toBe("legal");
+  });
+});
+
+describe("writeAtomically refuses symlink escapes (T-093 security review)", () => {
+  it("rejects a target whose real path leaves the root, and writes nothing", () => {
+    const files = new Map<string, string>();
+    const links: Record<string, string> = { "/proj": "/proj", "/proj/src": "/outside" };
+    const real = (p: string): string | undefined => {
+      for (const [from, to] of Object.entries(links).sort((a, b) => b[0].length - a[0].length))
+        if (p === from || p.startsWith(`${from}/`)) return to + p.slice(from.length);
+      return files.has(p) || p === "/outside" || p === "/proj" ? p : undefined;
+    };
+    const fs = {
+      read: (p: string) => files.get(p),
+      write: (p: string, t: string) => void files.set(p, t),
+      remove: (p: string) => void files.delete(p),
+      realpath: real,
+    };
+    const r = writeAtomically(fs, "/proj", [{ path: "src/Login.tsx", content: "x" }]);
+    expect(r.ok).toBe(false);
+    expect(r.error).toMatch(/symlink that leaves the project root/);
+    expect(files.size).toBe(0);
+    const ok = writeAtomically(fs, "/proj", [{ path: "lib/a.ts", content: "y" }]);
+    expect(ok.ok).toBe(true);
   });
 });

@@ -16,6 +16,7 @@ import {
 import { UsageError, type Args } from "./args.js";
 import { EXIT } from "./main.js";
 import { expand } from "./glob.js";
+import { realWithin } from "./confine.js";
 import type { Io } from "./io.js";
 
 const ROLE_OF_PRIMITIVE: Record<string, Role> = {
@@ -34,6 +35,7 @@ function fsOf(io: Io): Fs {
     read: (p) => io.readFile(p),
     write: (p, t) => io.writeFile(p, t),
     remove: (p) => io.removeFile(p),
+    ...(io.realpath !== undefined ? { realpath: io.realpath } : {}),
   };
 }
 
@@ -82,6 +84,9 @@ export function runSync(io: Io, args: Args, root: string): number {
   if (codeArgs.length === 0) throw new UsageError("--code <files> is required (comma separated)");
   const { files: codeFiles, missing } = expand(io, codeArgs);
   if (missing.length > 0) throw new UsageError(`no such file: ${missing.join(", ")}`);
+  for (const path of codeFiles)
+    if (!realWithin(io, root, abs(path)))
+      throw new UsageError(`${path} is outside the project root (or a symlink that leaves it)`);
   const code = codeFiles.map((path) => ({ path, source: io.readFile(abs(path)) ?? "" }));
   let components: Record<string, Role> | undefined;
   if (args.flags.map !== undefined) {

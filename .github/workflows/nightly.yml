@@ -74,6 +74,9 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
-      - run: node scripts/eval-llm.mjs --provider openai --model "${{ vars.LLM_MODEL }}" --base-url "${{ vars.LLM_BASE_URL }}" --arms none,skill,prompt --seeds 1,2,3 --min-valid 0.5 --out evals/results/nightly.json
+      # values reach the shell through env, never by interpolation into the script text
+      - run: node scripts/eval-llm.mjs --provider openai --model "$LLM_MODEL" --base-url "$LLM_BASE_URL" --arms none,skill,prompt --seeds 1,2,3 --min-valid 0.5 --out evals/results/nightly.json
         env:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_MODEL: ${{ vars.LLM_MODEL }}
+          LLM_BASE_URL: ${{ vars.LLM_BASE_URL }}

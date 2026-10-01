@@ -168,6 +168,9 @@ importers:
       '@mdui/core':
         specifier: workspace:*
         version: link:../core
+      '@mdui/lint':
+        specifier: workspace:*
+        version: link:../lint
     devDependencies:
       '@json-render/core':
         specifier: ^0.21.0
