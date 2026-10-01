@@ -37,8 +37,8 @@ Our `o200k_base` totals for the upstream files against the totals in OpenUI's RE
 | dashboard | 768 | 1226 | 2129 | 2247 | 2182 | 1658 | 1183 | -37.4% |
 | pricing-page | 766 | 1195 | 2231 | 2487 | 2285 | 3531 | 2400 | -35.9% |
 | settings-panel | 246 | 540 | 1078 | 1244 | 1195 | 870 | 878 | -54.4% |
-| e-commerce-product | 491 | 1166 | 2146 | 2449 | 2344 | 1762 | 1466 | -57.9% |
-| **TOTAL** | **2692** | **4800** | **9129** | **10180** | **9650** | **9148** | **7022** | **-43.9%** |
+| e-commerce-product | 491 | 1166 | 2146 | 2449 | 2344 | 1762 | 1474 | -57.9% |
+| **TOTAL** | **2692** | **4800** | **9129** | **10180** | **9650** | **9148** | **7030** | **-43.9%** |
 
 Scenarios where mdui is **larger** than OpenUI Lang, under any of the three tokenizers: none.
 
@@ -51,8 +51,8 @@ Scenarios where mdui is **larger** than OpenUI Lang, under any of the three toke
 | dashboard | 776 | 1232 | 2131 | 2192 | 2186 | 1661 | 1175 | -37.0% |
 | pricing-page | 780 | 1217 | 2247 | 2437 | 2298 | 3549 | 2373 | -35.9% |
 | settings-panel | 249 | 534 | 1076 | 1209 | 1191 | 862 | 866 | -53.4% |
-| e-commerce-product | 509 | 1172 | 2158 | 2399 | 2356 | 1776 | 1467 | -56.6% |
-| **TOTAL** | **2736** | **4823** | **9147** | **9934** | **9670** | **9170** | **6955** | **-43.3%** |
+| e-commerce-product | 509 | 1172 | 2158 | 2399 | 2356 | 1776 | 1475 | -56.6% |
+| **TOTAL** | **2736** | **4823** | **9147** | **9934** | **9670** | **9170** | **6963** | **-43.3%** |
 
 ## claude-legacy: OpenUI scenarios
 | Scenario | mdui | openui-lang | yaml | vercel-jsonl | thesys-c1 | a2ui-json | json-render | mdui vs OpenUI Lang |
@@ -63,8 +63,8 @@ Scenarios where mdui is **larger** than OpenUI Lang, under any of the three toke
 | dashboard | 782 | 1209 | 1828 | 2369 | 2126 | 1706 | 1188 | -35.3% |
 | pricing-page | 881 | 1312 | 2053 | 2680 | 2346 | 3646 | 2440 | -32.9% |
 | settings-panel | 296 | 588 | 985 | 1326 | 1211 | 890 | 881 | -49.7% |
-| e-commerce-product | 575 | 1262 | 2002 | 2622 | 2396 | 1828 | 1493 | -54.4% |
-| **TOTAL** | **2992** | **5059** | **8223** | **10847** | **9715** | **9445** | **7095** | **-40.9%** |
+| e-commerce-product | 575 | 1262 | 2002 | 2622 | 2396 | 1831 | 1502 | -54.4% |
+| **TOTAL** | **2992** | **5059** | **8223** | **10847** | **9715** | **9448** | **7104** | **-40.9%** |
 
 ## o200k_base: project examples (no OpenUI equivalent exists)
 | Scenario | mdui | a2ui-json | json-render |

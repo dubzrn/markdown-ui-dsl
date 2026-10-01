@@ -623,3 +623,34 @@ describe("stats (T-095)", () => {
     expect(r.files[0]?.inline).toMatchObject({ button: 1 });
   });
 });
+
+describe("svg and embed (T-094)", () => {
+  const spec = "# Hi\n[ Go ](#go)\n";
+  it("svg writes a self-contained SVG, validating options", () => {
+    const m = memIo({ "/proj/a.ui.md": spec });
+    expect(main(["svg", "a.ui.md", "--style", "sketch", "--width", "480"], m.io)).toBe(EXIT.ok);
+    expect(m.out()).toMatch(/^<svg [^>]*width="480"/);
+    const f: Record<string, string> = { "/proj/a.ui.md": spec };
+    expect(main(["svg", "a.ui.md", "--out", "o/a.svg"], memIo(f).io)).toBe(EXIT.ok);
+    expect(f["/proj/o/a.svg"]).toContain("<title");
+    for (const bad of [
+      ["--style", "neon"],
+      ["--theme", "blue"],
+      ["--width", "10"],
+    ])
+      expect(main(["svg", "a.ui.md", ...bad], memIo({ "/proj/a.ui.md": spec }).io)).toBe(
+        EXIT.usage,
+      );
+  });
+  it("embed replaces mdui fences with image embeds and writes the SVGs next to the output", () => {
+    const f: Record<string, string> = {
+      "/proj/docs/R.md": "# R\n\n```mdui\n# Hi\n[ Go ](#go)\n```\n",
+    };
+    const m = memIo(f);
+    expect(main(["embed", "docs/R.md", "--write", "--out-dir", "img"], m.io)).toBe(EXIT.ok);
+    expect(f["/proj/docs/R.md"]).toMatch(/!\[Hi\]\(img\/[0-9a-f]{8}\.svg\)/);
+    const svg = Object.keys(f).find((k) => k.startsWith("/proj/docs/img/"));
+    expect(f[svg as string]).toMatch(/^<svg /);
+    expect(main(["embed", "docs/missing.md"], memIo({}).io)).toBe(EXIT.usage);
+  });
+});

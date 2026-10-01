@@ -25,10 +25,10 @@ Men's / Women's • Road & casual
 
 **$129.00** (( In stock ))
 
----
+***
 [v] Size {US 7, US 7.5, US 8, US 8.5, US 9, US 9.5, US 10, US 10.5, US 11, US 12}{: required }
 
----
+***
 ### Color
 (x) Black / White
 Classic contrast with white midsole
@@ -37,7 +37,7 @@ Neutral upper with gum outsole
 ( ) Slate / Neon
 Cool tones with neon accents
 
----
+***
 === ROW ===
 [ Add to Cart ](#add-to-cart){: primary }
 [ Save ](#save)

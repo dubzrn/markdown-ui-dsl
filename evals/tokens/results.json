@@ -287,12 +287,12 @@
         "a2ui-json": {
           "o200k_base": 1762,
           "cl100k_base": 1776,
-          "claude-legacy": 1828
+          "claude-legacy": 1831
         },
         "json-render": {
-          "o200k_base": 1466,
-          "cl100k_base": 1467,
-          "claude-legacy": 1493
+          "o200k_base": 1474,
+          "cl100k_base": 1475,
+          "claude-legacy": 1502
         },
         "openui-lang": {
           "o200k_base": 1166,

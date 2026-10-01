@@ -46,6 +46,9 @@ export interface Args {
     dpi: string | undefined;
     png: string | undefined;
     watch: boolean;
+    width: string | undefined;
+    outDir: string | undefined;
+    keepSource: boolean;
   };
 }
 
@@ -82,6 +85,8 @@ const VALUE_FLAGS = [
   "--scale",
   "--dpi",
   "--png",
+  "--width",
+  "--out-dir",
 ];
 
 export function parseArgs(argv: string[]): Args {
@@ -133,6 +138,9 @@ export function parseArgs(argv: string[]): Args {
       dpi: undefined,
       png: undefined,
       watch: false,
+      width: undefined,
+      outDir: undefined,
+      keepSource: false,
     },
   };
   const rest: string[] = [];
@@ -155,6 +163,7 @@ export function parseArgs(argv: string[]): Args {
     else if (a === "--confirm") out.flags.confirm = true;
     else if (a === "--strict") out.flags.strict = true;
     else if (a === "--watch") out.flags.watch = true;
+    else if (a === "--keep-source") out.flags.keepSource = true;
     else if (a === "--write-baseline") out.flags.writeBaseline = true;
     else if (VALUE_FLAGS.includes(a) || VALUE_FLAGS.some((f) => a.startsWith(`${f}=`))) {
       const eq = a.indexOf("=");
@@ -191,6 +200,8 @@ export function parseArgs(argv: string[]): Args {
       else if (name === "--scale") out.flags.scale = value;
       else if (name === "--dpi") out.flags.dpi = value;
       else if (name === "--png") out.flags.png = value;
+      else if (name === "--width") out.flags.width = value;
+      else if (name === "--out-dir") out.flags.outDir = value;
       else out.flags.out = value;
     } else if (a.startsWith("-") && a !== "-") throw new UsageError(`unknown option ${a}`);
     else rest.push(a);

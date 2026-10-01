@@ -27,7 +27,8 @@
     "@mdui/sync": "workspace:*",
     "@mdui/tokens": "workspace:*",
     "@mdui/tools": "workspace:*",
-    "@mdui/export": "workspace:*"
+    "@mdui/export": "workspace:*",
+    "@mdui/embed": "workspace:*"
   },
   "scripts": {
     "build": "tsup src/index.ts src/bin.ts --format esm --dts --clean",

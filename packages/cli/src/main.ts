@@ -38,6 +38,7 @@ import { auditWaivers, parseLock, specWaivers } from "@mdui/sync";
 import { buildGrammar, toGbnf, toJsonSchema, toLark } from "@mdui/grammar";
 import { render } from "@mdui/render";
 import { exportA2ui, exportJsonRender } from "@mdui/export";
+import { embedMarkdown, renderSvg } from "@mdui/embed";
 import { parseArgs, UsageError, type Args } from "./args.js";
 import { ConfigError, loadConfig, type Config, type FailOn } from "./config.js";
 import { expand } from "./glob.js";
@@ -62,6 +63,8 @@ Commands:
   coverage   Which requirements do the specs cover? --requirements <file> (Spec Kit, OpenSpec or Kiro style); exit 1 if any is uncovered or unknown
   grammar    Emit a generation grammar: --format lark|gbnf|json-schema [--dsl 1|2.0] [--catalog c.yaml] [--max-depth N] [--tokens a,b] [--data x.y,z]
   sync       Anchored three-way sync: plan|apply|relink|recover <spec> --code <files> [--lock p] [--confirm] [--resolve a=code,b=spec] [--map m.yaml]
+  svg        <spec> [--style s] [--theme t] [--state s] [--width px] [--out f.svg]: self-contained SVG
+  embed      <file.md> [--out-dir mdui] [--keep-source] [--write|--out f]: replace mdui code fences with generated SVG image embeds
   stats      <spec>...: size and structure (bytes, lines, blocks, controls, estimated tokens); --json
   export     <spec> --to a2ui|json-render [--state s] [--out f] [--strict]: agent-UI formats; warnings (stderr) list every construct that degrades
   preview    live preview server: <spec> [--port N]; or <spec> --png out.png [--scale 2|1280x800] [--dpi N] [--style s] [--theme t] [--state s]
@@ -598,6 +601,66 @@ function run(io: Io, args: Args, cfg: Config): number {
     return EXIT.ok;
   }
 
+  if (cmd === "svg") {
+    if (files.length !== 1) throw new UsageError("svg takes exactly one file");
+    const style = args.flags.style ?? "clean";
+    if (!["sketch", "clean", "wireframe"].includes(style))
+      throw new UsageError("--style must be sketch|clean|wireframe");
+    const theme = args.flags.theme ?? "auto";
+    if (!["auto", "light", "dark"].includes(theme))
+      throw new UsageError("--theme must be auto|light|dark");
+    const width = args.flags.width === undefined ? undefined : Number(args.flags.width);
+    if (width !== undefined && !(Number.isInteger(width) && width >= 240 && width <= 1600))
+      throw new UsageError("--width must be an integer from 240 to 1600");
+    const file = files[0] as string;
+    const doc = parse(readSource(io, root, file) as string);
+    const a = analyze(doc, { file: rel(file), readFile });
+    const includes = new Map(
+      a.includes.flatMap((i) =>
+        i.path !== undefined && i.doc !== undefined ? [[i.path, i.doc] as const] : [],
+      ),
+    );
+    const svg = renderSvg(doc, {
+      style: style as "sketch" | "clean" | "wireframe",
+      theme: theme as "auto" | "light" | "dark",
+      includes,
+      ...(args.flags.state !== undefined ? { state: args.flags.state } : {}),
+      ...(width !== undefined ? { width } : {}),
+    });
+    if (args.flags.out !== undefined) io.writeFile(posix.resolve(io.cwd, args.flags.out), svg);
+    else io.stdout(svg);
+    const diags = [...doc.diagnostics, ...a.diagnostics];
+    for (const d of diags)
+      io.stderr(
+        `${file}:${d.span.start.line}:${d.span.start.col} ${d.severity} ${d.code} ${d.message}\n`,
+      );
+    return diags.some((d) => failsOn(d, failOn)) ? EXIT.diagnostics : EXIT.ok;
+  }
+
+  if (cmd === "embed") {
+    if (files.length !== 1) throw new UsageError("embed takes exactly one Markdown file");
+    const file = files[0] as string;
+    const abs = posix.resolve(io.cwd, file);
+    const md = io.readFile(abs);
+    if (md === undefined) throw new UsageError(`cannot read ${file}`);
+    const r = embedMarkdown(md, {
+      ...(args.flags.outDir !== undefined ? { dir: args.flags.outDir } : {}),
+      keepSource: args.flags.keepSource,
+    });
+    const outPath = args.flags.write
+      ? abs
+      : args.flags.out !== undefined
+        ? posix.resolve(io.cwd, args.flags.out)
+        : undefined;
+    for (const [name, svg] of Object.entries(r.files))
+      io.writeFile(posix.resolve(posix.dirname(outPath ?? abs), name), svg);
+    if (outPath !== undefined) io.writeFile(outPath, r.markdown);
+    else io.stdout(r.markdown);
+    for (const w of r.warnings) io.stderr(`${file}: ${w}\n`);
+    io.stderr(`${file}: ${Object.keys(r.files).length} fence(s) embedded\n`);
+    return args.flags.strict && r.warnings.length > 0 ? EXIT.diagnostics : EXIT.ok;
+  }
+
   if (cmd === "fmt") {
     const changed: string[] = [];
     for (const file of files) {
@@ -705,6 +768,8 @@ const COMMANDS = [
   "preview",
   "export",
   "stats",
+  "svg",
+  "embed",
 ];
 
 /** CLI entry. Never throws; returns the process exit code. */
