@@ -91,6 +91,14 @@ export function parseAttrs(src: string): { attrs: Attrs; issues: AttrIssue[] } {
         }
         value = raw.slice(1, -1);
       } else value = raw;
+      // There is no escape for `"` inside a value, so such a value could not be printed back faithfully.
+      if (typeof value === "string" && value.includes('"')) {
+        issues.push({
+          code: "E1301",
+          message: `Attribute value for "${key}" cannot contain a double quote.`,
+        });
+        continue;
+      }
     }
     if (RESERVED_FLAGS.includes(key)) {
       if (value === "false") value = "false";
