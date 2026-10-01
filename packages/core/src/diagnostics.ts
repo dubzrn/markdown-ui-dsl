@@ -51,6 +51,31 @@ export const CODES = {
   },
   E1103: { severity: "error", summary: "Duplicate key in frontmatter." },
   E1104: { severity: "error", summary: "Unsupported or malformed `dsl:` version in frontmatter." },
+  E1301: { severity: "error", summary: "Invalid attribute or primitive argument." },
+  E1302: { severity: "error", summary: "Unknown primitive or container kind (DSL 2.0)." },
+  W1301: { severity: "warn", summary: "Unknown attribute key." },
+  E1303: {
+    severity: "error",
+    summary:
+      "Construct used in the wrong place or with invalid arguments (e.g. STATE outside REGION).",
+  },
+  E2001: { severity: "error", summary: "Duplicate #id in the document." },
+  E2101: { severity: "error", summary: "Binding path is not present in the declared data." },
+  E2102: {
+    severity: "error",
+    summary: "Bindings take a data path only (no calls, operators or arithmetic).",
+  },
+  E2301: { severity: "error", summary: "Include path escapes the project root." },
+  E2302: { severity: "error", summary: "Include cycle." },
+  E2303: { severity: "error", summary: "Include nesting is deeper than 8." },
+  E2304: { severity: "error", summary: "Include target is missing or is not `type: partial`." },
+  E2401: {
+    severity: "error",
+    summary: "Flow transition names an action the source screen does not define.",
+  },
+  E2402: { severity: "error", summary: "Flow references an unknown screen id." },
+  E2501: { severity: "error", summary: "Button target is not in the declared action registry." },
+  W3201: { severity: "warn", summary: "REGION with states has no `default` state." },
   W1201: {
     severity: "warn",
     summary: "Unknown breakpoint in a responsive directive; treated as a plain hint.",

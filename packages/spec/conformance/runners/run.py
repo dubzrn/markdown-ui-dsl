@@ -12,7 +12,7 @@ cmd = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else None
 if not cmd:
     sys.exit(__doc__)
 failed = total = 0
-for name in ("v1/valid.json", "v1/invalid.json", "v2/valid.json", "v2/invalid.json"):
+for name in ("v1/valid.json", "v1/invalid.json", "v2/valid.json", "v2/invalid.json", "v2/block-valid.json", "v2/block-invalid.json"):
     for fx in json.load(open(os.path.join(here, "..", name), encoding="utf-8")):
         total += 1
         out = json.loads(subprocess.run(cmd, input=fx["input"], capture_output=True, text=True, check=True).stdout)

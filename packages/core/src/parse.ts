@@ -3,13 +3,15 @@ import type {
   DirectiveNode,
   ContainerKind,
   ContainerNode,
+  NamedBlockNode,
   Document,
   FrontmatterNode,
   ListItemNode,
   ListNode,
 } from "./ast.js";
 import { dslVersion, parseFrontmatter, type FrontmatterData } from "./frontmatter.js";
-import { parseInline } from "./inline.js";
+import { parseAttrs, splitAttrs, type Attrs } from "./attrs.js";
+import { parseInline, type InlineIssue, type InlineNode } from "./inline.js";
 import { makeDiagnostic, type Diagnostic, type Pos, type Span } from "./diagnostics.js";
 
 const OPENERS: Record<string, ContainerKind> = {
@@ -25,6 +27,26 @@ const OPENERS: Record<string, ContainerKind> = {
 const BREAKPOINTS = ["sm", "md", "lg", "xl"] as const;
 
 const END_RE = /^\s*--- END ---\s*$/;
+const TYPED_END_RE = /^\s*--- END ([A-Z][A-Z0-9]*) ---\s*$/;
+const LABELLED_DIVIDER_RE = /^\s*\*\*\* (.+?) \*\*\*\s*$/;
+const NAMED_OPENER_RE = /^::: ([A-Z][A-Z0-9]*)(?: (.+?))? :::$/;
+/** DSL 2.0 container kinds that take `::: KIND args :::` (RFC-0001 §3b/3c). */
+export const BLOCK_KINDS = [
+  "GRID",
+  "ACCORDION",
+  "PANEL",
+  "DRAWER",
+  "TOAST",
+  "TOOLTIP",
+  "CALLOUT",
+  "EMPTY",
+  "TREE",
+  "GROUP",
+  "REGION",
+  "STATE",
+  "EACH",
+  "IF",
+] as const;
 const DIVIDER_RE = /^\s*\*\*\*\s*$/;
 const HEADING_RE = /^\s{0,3}(#{1,6})\s+(.*)$/;
 const ITEM_RE = /^(\s*)([-*]|\d+\.)\s+(.*)$/;
@@ -100,7 +122,57 @@ function tabs(row: string): { label: string; active: boolean }[] {
     );
 }
 
-type Frame = { node: ContainerNode } | { list: ListNode; indent: number };
+interface OpenerMatch {
+  node: ContainerNode | NamedBlockNode;
+  issues: InlineIssue[];
+}
+
+/** Recognise a container opener on `text` (already trimmed of list marker). DSL 2.0 adds attributes and named kinds. */
+function matchOpener(text: string, v2: boolean, span: Span): OpenerMatch | undefined {
+  let body = text.trim();
+  let attrs: Attrs | undefined;
+  const issues: InlineIssue[] = [];
+  if (v2) {
+    const [before, src] = splitAttrs(body);
+    if (src !== undefined) {
+      const r = parseAttrs(src);
+      issues.push(...r.issues);
+      attrs = r.attrs;
+      body = before.trim();
+    }
+  }
+  const kind = OPENERS[body];
+  if (kind !== undefined) {
+    const node: ContainerNode = { kind, children: [], closed: false, span };
+    if (attrs !== undefined) node.attrs = attrs;
+    return { node, issues };
+  }
+  if (!v2) return undefined;
+  const m = NAMED_OPENER_RE.exec(body);
+  if (m === null) return undefined;
+  const word = m[1] as string;
+  if (!(BLOCK_KINDS as readonly string[]).includes(word)) {
+    issues.push({ code: "E1302", message: `Unknown container ${word}.` });
+  }
+  const node: NamedBlockNode = {
+    kind: "block",
+    name: word.toLowerCase(),
+    args: m[2] ?? "",
+    children: [],
+    closed: false,
+    span,
+  };
+  if (attrs !== undefined) node.attrs = attrs;
+  return { node, issues };
+}
+
+/** Word used by typed closers: `--- END CARD ---`; both bubble kinds close with BUBBLE. */
+function closerWord(n: ContainerNode | NamedBlockNode): string {
+  if (n.kind === "block") return n.name.toUpperCase();
+  return n.kind.startsWith("bubble") ? "BUBBLE" : n.kind.toUpperCase();
+}
+
+type Frame = { node: ContainerNode | NamedBlockNode } | { list: ListNode; indent: number };
 
 /** Parse a document. Never throws; always returns a tree plus diagnostics (D10). */
 export function parse(source: string): Document {
@@ -127,15 +199,25 @@ export function parse(source: string): Document {
   const finish = (n: { span: Span }, l: Line): void => {
     n.span.end = pos(l, l.text.length + 1);
   };
-  const openContainer = (kind: ContainerKind, l: Line, col: number, into: BlockNode[]): void => {
-    const node: ContainerNode = {
-      kind,
-      children: [],
-      closed: false,
-      span: { start: pos(l, col), end: pos(l, l.text.length + 1) },
-    };
-    into.push(node);
-    stack.push({ node });
+  const v2 = (): boolean => dslMajor === "2.0";
+  const report = (issues: InlineIssue[], l: Line): void => {
+    for (const is of issues) diagnostics.push(makeDiagnostic(is.code, lineSpan(l), is.message));
+  };
+  /** Inline-parse `text` from line `l`, turning issues into diagnostics. */
+  const inl = (text: string, l: Line): InlineNode[] => {
+    const issues: InlineIssue[] = [];
+    const nodes = parseInline(text, { v2: v2(), issues });
+    report(issues, l);
+    return nodes;
+  };
+  const openerAt = (text: string, l: Line, col: number): OpenerMatch | undefined => {
+    const m = matchOpener(text, v2(), { start: pos(l, col), end: pos(l, l.text.length + 1) });
+    if (m !== undefined) report(m.issues, l);
+    return m;
+  };
+  const push = (m: OpenerMatch, into: BlockNode[]): void => {
+    into.push(m.node);
+    stack.push({ node: m.node });
   };
 
   // Frontmatter: only when the very first line is `---` (D3).
@@ -183,14 +265,24 @@ export function parse(source: string): Document {
       continue;
     }
 
-    // closer
-    if (END_RE.test(t)) {
+    // closer: generic `--- END ---`, and (DSL 2.0 only) typed `--- END KIND ---`
+    const typed = v2() ? TYPED_END_RE.exec(t) : null;
+    if (END_RE.test(t) || typed !== null) {
       closeLists();
       const top = stack.pop();
       if (top === undefined) diagnostics.push(makeDiagnostic("E1002", lineSpan(l)));
       else if ("node" in top) {
         top.node.closed = true;
         finish(top.node, l);
+        if (typed !== null && typed[1] !== closerWord(top.node)) {
+          diagnostics.push(
+            makeDiagnostic(
+              "E1004",
+              lineSpan(l),
+              `Closer END ${typed[1]} does not match the open ${closerWord(top.node)} block.`,
+            ),
+          );
+        }
       }
       continue;
     }
@@ -223,17 +315,16 @@ export function parse(source: string): Document {
         kind: "item",
         ordered,
         text: rest,
-        inline: parseInline(rest),
+        inline: [],
         children: [],
         span: { start: pos(l, indent + 1), end: pos(l, t.length + 1) },
       };
       list.children.push(node);
-      const kind = OPENERS[rest.trim()];
-      if (kind !== undefined) {
+      const opened = openerAt(rest, l, col);
+      if (opened !== undefined) {
         node.text = "";
-        node.inline = [];
-        openContainer(kind, l, col, node.children);
-      }
+        push(opened, node.children);
+      } else node.inline = inl(rest, l);
       continue;
     }
 
@@ -288,14 +379,19 @@ export function parse(source: string): Document {
     }
 
     // container opener
-    const opener = OPENERS[trimmed];
+    const opener = openerAt(trimmed, l, t.indexOf(trimmed) + 1);
     if (opener !== undefined) {
-      openContainer(opener, l, t.indexOf(trimmed) + 1, sink());
+      push(opener, sink());
       continue;
     }
 
     if (DIVIDER_RE.test(t)) {
       sink().push({ kind: "divider", span: lineSpan(l) });
+      continue;
+    }
+    const labelled = v2() ? LABELLED_DIVIDER_RE.exec(t) : null;
+    if (labelled !== null && !(labelled[1] as string).includes("***")) {
+      sink().push({ kind: "divider", label: labelled[1] as string, span: lineSpan(l) });
       continue;
     }
 
@@ -346,7 +442,7 @@ export function parse(source: string): Document {
         kind: "heading",
         level: (h[1] as string).length,
         text: (h[2] as string).trim(),
-        inline: parseInline(h[2] as string),
+        inline: inl(h[2] as string, l),
         span: lineSpan(l),
       });
       continue;
@@ -363,6 +459,7 @@ export function parse(source: string): Document {
     if (TABLE_ROW_RE.test(t) && next !== undefined && TABLE_SEP_RE.test(next.text)) {
       const header = cells(t);
       const rows: string[][] = [];
+      const rowLines: Line[] = [];
       i++;
       let endLine = next;
       while (i < lines.length) {
@@ -371,6 +468,7 @@ export function parse(source: string): Document {
         const row = cells(c.text);
         if (row.length !== header.length) diagnostics.push(makeDiagnostic("W1202", lineSpan(c)));
         rows.push(row);
+        rowLines.push(c);
         endLine = c;
         i++;
       }
@@ -378,14 +476,14 @@ export function parse(source: string): Document {
         kind: "table",
         header,
         rows,
-        headerInline: header.map((c) => parseInline(c)),
-        rowsInline: rows.map((r) => r.map((c) => parseInline(c))),
+        headerInline: header.map((c) => inl(c, l)),
+        rowsInline: rows.map((r, k) => r.map((c) => inl(c, rowLines[k] ?? l))),
         span: { start: pos(l, 1), end: pos(endLine, endLine.text.length + 1) },
       });
       continue;
     }
 
-    sink().push({ kind: "line", text: trimmed, inline: parseInline(trimmed), span: lineSpan(l) });
+    sink().push({ kind: "line", text: trimmed, inline: inl(trimmed, l), span: lineSpan(l) });
   }
 
   closeLists();

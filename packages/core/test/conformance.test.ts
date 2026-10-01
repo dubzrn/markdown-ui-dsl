@@ -14,8 +14,8 @@ const load = (f: string): Fixture[] =>
 const schema = JSON.parse(readFileSync(new URL("fixture.schema.json", dir), "utf8")) as object;
 const valid = load("v1/valid.json");
 const invalid = load("v1/invalid.json");
-const valid2 = load("v2/valid.json");
-const invalid2 = load("v2/invalid.json");
+const valid2 = [...load("v2/valid.json"), ...load("v2/block-valid.json")];
+const invalid2 = [...load("v2/invalid.json"), ...load("v2/block-invalid.json")];
 
 describe("corpus shape", () => {
   const validate = new Ajv2020().compile(schema);

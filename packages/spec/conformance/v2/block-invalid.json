@@ -1,0 +1,217 @@
+[
+  {
+    "id": "typed-closer-mismatch",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::\nx\n--- END COLUMN ---\n",
+    "expect": {
+      "outline": "frontmatter,card(line)",
+      "diagnostics": [
+        {
+          "code": "E1004",
+          "line": 6
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "typed-closer-mismatch-inner",
+    "input": "---\ndsl: 2.0\n---\n||| COLUMN |||\n::: CARD :::\n--- END COLUMN ---\n--- END CARD ---\n",
+    "expect": {
+      "outline": "frontmatter,column(card())",
+      "diagnostics": [
+        {
+          "code": "E1004",
+          "line": 6
+        },
+        {
+          "code": "E1004",
+          "line": 7
+        }
+      ]
+    },
+    "since": "2.0",
+    "notes": "each closer closes the innermost block and is checked against it"
+  },
+  {
+    "id": "typed-closer-unknown-word",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::\n--- END FOO ---\n",
+    "expect": {
+      "outline": "frontmatter,card()",
+      "diagnostics": [
+        {
+          "code": "E1004",
+          "line": 5
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "typed-closer-orphan",
+    "input": "---\ndsl: 2.0\n---\n--- END CARD ---\n",
+    "expect": {
+      "outline": "frontmatter",
+      "diagnostics": [
+        {
+          "code": "E1002",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bubble-closer-wrong",
+    "input": "---\ndsl: 2.0\n---\n::: BUBBLE USER :::\n--- END USER ---\n",
+    "expect": {
+      "outline": "frontmatter,bubble-user()",
+      "diagnostics": [
+        {
+          "code": "E1004",
+          "line": 5
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "unknown-container",
+    "input": "---\ndsl: 2.0\n---\n::: FOO :::\n--- END FOO ---\n",
+    "expect": {
+      "outline": "frontmatter,foo()",
+      "diagnostics": [
+        {
+          "code": "E1302",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "unknown-container-generic-close",
+    "input": "---\ndsl: 2.0\n---\n::: WIDGET x :::\n--- END ---\n",
+    "expect": {
+      "outline": "frontmatter,widget()",
+      "diagnostics": [
+        {
+          "code": "E1302",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bubble-without-side",
+    "input": "---\ndsl: 2.0\n---\n::: BUBBLE :::\n--- END ---\n",
+    "expect": {
+      "outline": "frontmatter,bubble()",
+      "diagnostics": [
+        {
+          "code": "E1302",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attrs-bad-number",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::{: #a min=abc }\n--- END ---\n",
+    "expect": {
+      "outline": "frontmatter,card()",
+      "diagnostics": [
+        {
+          "code": "E1301",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attrs-bad-enum",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::{: scroll=z }\n--- END ---\n",
+    "expect": {
+      "outline": "frontmatter,card()",
+      "diagnostics": [
+        {
+          "code": "E1301",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attrs-unknown-key",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::{: colour=red }\n--- END ---\n",
+    "expect": {
+      "outline": "frontmatter,card()",
+      "diagnostics": [
+        {
+          "code": "W1301",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attrs-flag-with-value",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::{: required=maybe }\n--- END ---\n",
+    "expect": {
+      "outline": "frontmatter,card()",
+      "diagnostics": [
+        {
+          "code": "E1301",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attrs-unterminated-quote",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::{: label=\"x }\n--- END ---\n",
+    "expect": {
+      "outline": "frontmatter,card()",
+      "diagnostics": [
+        {
+          "code": "E1301",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attrs-malformed-token",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::{: #1bad }\n--- END ---\n",
+    "expect": {
+      "outline": "frontmatter,card()",
+      "diagnostics": [
+        {
+          "code": "E1301",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "unclosed-named",
+    "input": "---\ndsl: 2.0\n---\n::: GRID cols=3 :::\nx\n",
+    "expect": {
+      "outline": "frontmatter,grid(line)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  }
+]

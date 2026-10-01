@@ -22,6 +22,8 @@ function node(n: BlockNode | ListItemNode): string {
     case "bubble-user":
     case "bubble-agent":
       return `${n.kind}(${n.children.map(node).join(",")})`;
+    case "block":
+      return `${n.name}(${n.children.map(node).join(",")})`;
     case "list":
       return `list(${n.children.map(node).join(",")})`;
     case "item":

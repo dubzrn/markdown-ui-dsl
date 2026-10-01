@@ -1,4 +1,5 @@
 import type { Diagnostic, Span } from "./diagnostics.js";
+import type { Attrs } from "./attrs.js";
 import type { FrontmatterData } from "./frontmatter.js";
 import type { InlineNode } from "./inline.js";
 
@@ -10,8 +11,20 @@ interface Base {
 }
 export interface ContainerNode extends Base {
   kind: ContainerKind;
+  attrs?: Attrs;
   children: BlockNode[];
   /** False when the block was auto-closed at end of file (E1001). */
+  closed: boolean;
+}
+/** DSL 2.0 container with a name and arguments: GRID, REGION, STATE, EACH, IF, … (RFC-0001 §3b/3c). */
+export interface NamedBlockNode extends Base {
+  kind: "block";
+  /** Lower-case kind name, e.g. "grid", "region". */
+  name: string;
+  /** Raw argument text between the name and the closing `:::`. */
+  args: string;
+  attrs?: Attrs;
+  children: BlockNode[];
   closed: boolean;
 }
 export interface FrontmatterNode extends Base {
@@ -46,6 +59,8 @@ export interface CommentNode extends Base {
 }
 export interface DividerNode extends Base {
   kind: "divider";
+  /** `*** Title ***` (DSL 2.0). */
+  label?: string;
 }
 export interface CodeNode extends Base {
   kind: "code";
@@ -78,6 +93,7 @@ export interface ListNode extends Base {
 
 export type BlockNode =
   | ContainerNode
+  | NamedBlockNode
   | LineNode
   | HeadingNode
   | HintNode
