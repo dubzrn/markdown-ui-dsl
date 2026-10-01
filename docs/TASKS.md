@@ -86,6 +86,7 @@
 | T-053 | partial | skill restructured (`SKILL.md` 53 lines + 4 one-level references + `scripts/check_balance.py`); `agentskills validate` passes; limits enforced by `tests/skill.test.ts`; ADR-006 (S111 read from the supplied PDF, main text pp. 1-9); no-tooling eval awaits T-063 |
 | T-055 | partial | rules `url-scheme` (E7002, obfuscated schemes) and `instruction-like-text` (W7001); 38 injection fixtures; confirm-bypass clause removed from the skill; trust model in `references/safety.md`; LLM evals await T-063 |
 | T-056 | done | `requirements:` frontmatter + `requirements-format` rule (W2801); `mdui coverage --requirements` (Spec Kit ids, OpenSpec names, Kiro numbers; uncovered + unknown; exit 1); sample projects in `examples/sdd/` lint clean and are fully covered; `docs/SDD_INTEROP.md` (docs review by a maintainer pending) |
+| T-057 | done | six DESIGN.md-format examples (React+shadcn, SwiftUI, Jetpack Compose, Vue/Nuxt, Angular Material, Lit) with breakpoints, dark/touch mappings; token-lint clean, DTCG/Tailwind/CSS export warning-free; CI step added. Token values are placeholders; framework mappings are not machine-verified against each framework |
 
 ### T-001 · Fix example and documentation defects
 `S` · Deps: — · Implements: **QLT-04** · REQ: REQ-QLT-04

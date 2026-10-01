@@ -73,8 +73,8 @@ describe("DESIGN.md loader (T-037)", () => {
   });
   it("loads the three shipped (legacy, prose-only) design systems", () => {
     const dir = new URL("../../../examples/design-systems/", import.meta.url);
-    const files = readdirSync(dir).filter((f) => f.endsWith(".md"));
-    expect(files.length).toBe(3);
+    const files = ["blazor-bootstrap.md", "flutter-material.md", "web-tailwind.md"];
+    expect(files.every((f) => readdirSync(dir).includes(f))).toBe(true);
     for (const f of files) {
       const ds = loadDesignSystem(readFileSync(new URL(f, dir), "utf8"));
       expect(ds.kind, f).toBe("legacy");
