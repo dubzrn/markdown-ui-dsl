@@ -10,6 +10,8 @@ export interface Args {
     compact: boolean;
     check: boolean;
     fix: boolean;
+    write: boolean;
+    force: boolean;
     style: string | undefined;
     state: string | undefined;
     theme: string | undefined;
@@ -34,6 +36,8 @@ export function parseArgs(argv: string[]): Args {
       compact: false,
       check: false,
       fix: false,
+      write: false,
+      force: false,
       style: undefined,
       state: undefined,
       theme: undefined,
@@ -53,6 +57,8 @@ export function parseArgs(argv: string[]): Args {
     else if (a === "--compact") out.flags.compact = true;
     else if (a === "--check") out.flags.check = true;
     else if (a === "--fix") out.flags.fix = true;
+    else if (a === "--write") out.flags.write = true;
+    else if (a === "--force") out.flags.force = true;
     else if (VALUE_FLAGS.includes(a) || VALUE_FLAGS.some((f) => a.startsWith(`${f}=`))) {
       const eq = a.indexOf("=");
       const name = eq === -1 ? a : a.slice(0, eq);

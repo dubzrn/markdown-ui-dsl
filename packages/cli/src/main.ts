@@ -1,6 +1,7 @@
 import { posix } from "node:path";
 import { analyze, format, parse, type Diagnostic, type Severity } from "@mdui/core";
 import { ALL_RULES, fixSource, lint } from "@mdui/lint";
+import { diffDocuments, formatDiff, migrate } from "@mdui/tools";
 import { render } from "@mdui/render";
 import { parseArgs, UsageError, type Args } from "./args.js";
 import { ConfigError, loadConfig, type Config, type FailOn } from "./config.js";
@@ -19,6 +20,8 @@ Usage: mdui <command> [options] <files|dirs|globs...>
 Commands:
   validate   Parse and analyse; report syntax and semantic diagnostics
   lint       Validate plus the rule catalogue (see mdui.config.json "rules"); --fix applies safe fixes
+  diff       Semantic diff of two files (exit 1 on regressions)
+  migrate    v1 → 2.0 (dry run by default; --write applies, --force overrides manual-review items)
   rules      List the lint rules (--json for machine output)
   ast        Print the JSON AST of one file
   render     Render one file to HTML (--style sketch|clean|wireframe|none, --state, --theme, --out)
@@ -29,6 +32,8 @@ Options:
   --fail-on <level>  error (default) | warn | info | none
   --config <path>    Config file (default: ./mdui.config.json)
   --compact          ast: single-line JSON
+  --write            migrate: write the migrated files
+  --force            migrate: write even when manual-review items remain
   --fix              lint: apply fixes in place (overlapping fixes are skipped)
   --check            fmt: do not write; exit 1 if any file would change
   -h, --help         Show this help
@@ -139,6 +144,72 @@ function run(io: Io, args: Args, cfg: Config): number {
     return out.diagnostics.some((d) => failsOn(d, failOn)) ? EXIT.diagnostics : EXIT.ok;
   }
 
+  if (cmd === "diff") {
+    if (files.length !== 2) throw new UsageError("diff takes exactly two files");
+    const [fa, fb] = files as [string, string];
+    const sa = readSource(io, root, fa) as string;
+    const sb = readSource(io, root, fb) as string;
+    const result = diffDocuments(parse(sa), parse(sb), { beforeSource: sa, afterSource: sb });
+    if (args.flags.json)
+      io.stdout(
+        JSON.stringify({
+          tool: "mdui",
+          version: 1,
+          command: "diff",
+          before: fa,
+          after: fb,
+          ...result,
+        }) + "\n",
+      );
+    else io.stdout(formatDiff(result));
+    return result.regressions.length > 0 ? EXIT.diagnostics : EXIT.ok;
+  }
+
+  if (cmd === "migrate") {
+    let blocked = 0;
+    const out: {
+      file: string;
+      alreadyV2: boolean;
+      changes: unknown[];
+      manual: unknown[];
+      written: boolean;
+    }[] = [];
+    for (const file of files) {
+      const abs = posix.resolve(io.cwd, file);
+      const src = io.readFile(abs) as string;
+      const r = migrate(src);
+      const canWrite =
+        args.flags.write && !r.alreadyV2 && (r.manual.length === 0 || args.flags.force);
+      if (canWrite) io.writeFile(abs, r.text);
+      if (r.manual.length > 0 && !args.flags.force) blocked++;
+      out.push({
+        file,
+        alreadyV2: r.alreadyV2,
+        changes: r.changes,
+        manual: r.manual,
+        written: canWrite,
+      });
+      if (!args.flags.json) {
+        if (r.alreadyV2) io.stdout(`${file}: already 2.0\n`);
+        else {
+          for (const c of r.changes)
+            io.stdout(
+              `${file}:${c.line} ${c.kind}: ${c.before === "" ? "(add)" : c.before} → ${c.after.replace(/\n/g, "⏎")}\n`,
+            );
+          for (const m of r.manual) io.stdout(`${file}:${m.line} MANUAL: ${m.message}\n`);
+          io.stdout(
+            `${file}: ${canWrite ? "migrated" : r.manual.length > 0 && !args.flags.force ? "NOT migrated (manual review needed)" : args.flags.write ? "nothing to write" : "dry run"}\n`,
+          );
+        }
+      }
+    }
+    if (args.flags.json)
+      io.stdout(
+        JSON.stringify({ tool: "mdui", version: 1, command: "migrate", files: out }) + "\n",
+      );
+    return blocked > 0 ? EXIT.diagnostics : EXIT.ok;
+  }
+
   if (cmd === "render") {
     if (files.length !== 1) throw new UsageError("render takes exactly one file");
     const style = args.flags.style ?? "clean";
@@ -246,7 +317,7 @@ function run(io: Io, args: Args, cfg: Config): number {
     : EXIT.ok;
 }
 
-const COMMANDS = ["validate", "lint", "ast", "fmt", "render", "rules"];
+const COMMANDS = ["validate", "lint", "ast", "fmt", "render", "rules", "diff", "migrate"];
 
 /** CLI entry. Never throws; returns the process exit code. */
 export function main(argv: string[], io: Io): number {

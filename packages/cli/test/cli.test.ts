@@ -220,6 +220,49 @@ describe("lint --fix and rules", () => {
   });
 });
 
+describe("diff and migrate", () => {
+  it("diff prints changes and exits 1 on a regression", () => {
+    const files = {
+      "/proj/a.ui.md": "[Pricing](/p)\n",
+      "/proj/b.ui.md": "[Pricing](/p)\n[click here](/x)\n",
+      "/proj/c.ui.md": "[Pricing](/p)\n[ Go ](#go)\n",
+    };
+    const bad = memIo(files);
+    expect(main(["diff", "a.ui.md", "b.ui.md"], bad.io)).toBe(EXIT.diagnostics);
+    expect(bad.out()).toContain("REGRESSION: accessibility rule newly failing: link-text");
+    const ok = memIo(files);
+    expect(main(["diff", "a.ui.md", "c.ui.md"], ok.io)).toBe(EXIT.ok);
+    expect(ok.out()).toContain('+ button "Go" (line 2)');
+    const j = memIo(files);
+    main(["diff", "--json", "a.ui.md", "c.ui.md"], j.io);
+    expect(JSON.parse(j.out())).toMatchObject({
+      command: "diff",
+      summary: { added: 1, removed: 0, changed: 0, moved: 0 },
+      regressions: [],
+    });
+    expect(main(["diff", "a.ui.md"], memIo(files).io)).toBe(EXIT.usage);
+  });
+  it("migrate is a dry run until --write; manual items block it unless --force", () => {
+    const files: Record<string, string> = {
+      "/proj/a.ui.md": "[ text: 2026-03-15 ]\n",
+      "/proj/m.ui.md": "price {{ x }}\n",
+    };
+    const dry = memIo(files);
+    expect(main(["migrate", "a.ui.md"], dry.io)).toBe(EXIT.ok);
+    expect(dry.out()).toContain("dry run");
+    expect(files["/proj/a.ui.md"]).toBe("[ text: 2026-03-15 ]\n");
+    expect(main(["migrate", "--write", "a.ui.md"], memIo(files).io)).toBe(EXIT.ok);
+    expect(files["/proj/a.ui.md"]).toContain("dsl: 2.0");
+    expect(files["/proj/a.ui.md"]).toContain("[ DATE: 2026-03-15 ]");
+    const blocked = memIo(files);
+    expect(main(["migrate", "--write", "m.ui.md"], blocked.io)).toBe(EXIT.diagnostics);
+    expect(blocked.out()).toContain("MANUAL");
+    expect(files["/proj/m.ui.md"]).toBe("price {{ x }}\n");
+    expect(main(["migrate", "--write", "--force", "m.ui.md"], memIo(files).io)).toBe(EXIT.ok);
+    expect(files["/proj/m.ui.md"]).toContain("dsl: 2.0");
+  });
+});
+
 describe("render", () => {
   it("writes HTML to stdout or --out, honours --style/--state, exits 1 on errors", () => {
     const src =

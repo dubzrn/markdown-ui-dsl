@@ -73,7 +73,9 @@
 | T-031 | done | 15 semantic/flow rules (unresolved-binding, invalid-attribute, missing-default-state, unknown-action, flow-references, include-cycle, invalid-construct, frontmatter-valid, unterminated-block, table-shape, data-file, nesting-depth, destructive-without-confirm, flow-unreachable-screen, flow-dead-end), each with pass/fail fixtures |
 | T-032 | done | 14 a11y rules incl. the 9 named in the task; WCAG mapping limited to criteria confirmed by axe-core rule tags (canonical W3C text unreachable: 403) — `docs/LINT_RULES.md` generated, review against W3C before release |
 | **lint rule count** | 35 (≥ 30 asserted by test); token rules (T-039) will add 5 | |
-| T-035 | next | semantic diff |
+| T-035 | done* | `diffDocuments`/`mdui diff`: added/removed/changed/moved (within and across containers), `#id` identity, regressions (removed required element, newly failing a11y rule), JSON schema documented; *token deltas arrive with T-039 |
+| T-036 | done | `migrate`/`mdui migrate`: bump + 2 unambiguous idiom conversions, meaning-change items listed and blocking, shipped examples migrate with AST preserved |
+| T-037 | next | design-system loader |
 
 ### T-001 · Fix example and documentation defects
 `S` · Deps: — · Implements: **QLT-04** · REQ: REQ-QLT-04

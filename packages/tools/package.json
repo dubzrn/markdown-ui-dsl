@@ -1,12 +1,10 @@
 {
-  "name": "@mdui/cli",
+  "name": "@mdui/tools",
   "version": "0.0.0",
-  "description": "mdui command line: validate, lint, ast (and more) for Markdown UI DSL files.",
+  "description": "Semantic diff and migration tools for Markdown UI DSL documents.",
   "license": "MIT",
   "type": "module",
-  "bin": {
-    "mdui": "./dist/bin.js"
-  },
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -18,12 +16,10 @@
   ],
   "dependencies": {
     "@mdui/core": "workspace:*",
-    "@mdui/lint": "workspace:*",
-    "@mdui/render": "workspace:*",
-    "@mdui/tools": "workspace:*"
+    "@mdui/lint": "workspace:*"
   },
   "scripts": {
-    "build": "tsup src/index.ts src/bin.ts --format esm --dts --clean",
+    "build": "tsup src/index.ts --format esm --dts --clean",
     "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json"
   }
 }
