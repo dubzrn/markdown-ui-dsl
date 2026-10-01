@@ -32,6 +32,23 @@
 ## Phase 0 — Foundations & hygiene
 *Goal: a safe place to build, and the repo's own defects fixed first. Slice delivered: green CI + clean examples.*
 
+## Progress
+
+| Task | Status | Evidence |
+|---|---|---|
+| T-001 | done | examples balanced (`scripts/check-examples.py`) |
+| T-002 | done | `pnpm check` green; lint rejects `node:` imports in core (ADR-003) |
+| T-003 | done* | `.github/workflows/ci.yml` written; *first CI run and red-on-unbalanced demo pending |
+| T-004 | done | CONTRIBUTING, RFC template, CHANGELOG |
+| T-005 | done | `node scripts/check-traceability.ts` (48/55/84), unit tests |
+| T-006 | done | `scripts/check-repo-hygiene.py`, seeded violations demonstrated |
+| T-010 | done | `packages/spec/grammar/v1.ebnf` + `v1.md` |
+| T-011 | done | ADR-005, fixtures `D1…D12` |
+| T-013 | done | 87 valid + 61 invalid fixtures, schema, protocol, Python runner (`conformance/`) |
+| T-014 | done | `packages/core/src/diagnostics.ts` |
+| T-015 | done | block parser; 148/148 conformance; 150k-input fuzz |
+| T-016 | next | inline parser |
+
 ### T-001 · Fix example and documentation defects
 `S` · Deps: — · Implements: **QLT-04** · REQ: REQ-QLT-04
 - **Do:** Rebalance `action-tracker-detail`, `action-tracker-master`, `chat-interface`, `mobile-app-layout` (research B-01: stray trailing `||| COLUMN |||` where the outer `--- END ---` belongs; outer block unclosed). Fix dead refs (`examples/design-system.md` → `examples/design-systems/`; `TESTING.md` skill filename) (B-02). Replace the prose-abuse `[ text: 75% complete (progress bar) ]` with plain v1-valid text until `PROGRESS` exists (B-06). Fix duplicate README install numbering.

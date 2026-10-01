@@ -1,0 +1,939 @@
+[
+  {
+    "id": "unclosed-column",
+    "input": "||| COLUMN |||\nx\n",
+    "expect": {
+      "outline": "column(line)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unclosed-row",
+    "input": "=== ROW ===\nx\n",
+    "expect": {
+      "outline": "row(line)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unclosed-card",
+    "input": "::: CARD :::\nx\n",
+    "expect": {
+      "outline": "card(line)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unclosed-modal",
+    "input": "::: MODAL :::\nx\n",
+    "expect": {
+      "outline": "modal(line)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unclosed-header",
+    "input": "::: HEADER :::\nx\n",
+    "expect": {
+      "outline": "header(line)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unclosed-footer",
+    "input": "::: FOOTER :::\nx\n",
+    "expect": {
+      "outline": "footer(line)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unclosed-bubble-user",
+    "input": "::: BUBBLE USER :::\nx\n",
+    "expect": {
+      "outline": "bubble-user(line)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unclosed-bubble-agent",
+    "input": "::: BUBBLE AGENT :::\nx\n",
+    "expect": {
+      "outline": "bubble-agent(line)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unclosed-nested-inner",
+    "input": "||| COLUMN |||\n::: CARD :::\nx\n--- END ---\n",
+    "expect": {
+      "outline": "column(card(line))",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unclosed-both",
+    "input": "||| COLUMN |||\n::: CARD :::\nx\n",
+    "expect": {
+      "outline": "column(card(line))",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        },
+        {
+          "code": "E1001",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unclosed-first-of-siblings",
+    "input": "||| COLUMN |||\n::: CARD :::\n--- END ---\n=== ROW ===\n--- END ---\n",
+    "expect": {
+      "outline": "column(card(),row())",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "second closer closes the row; column stays open"
+  },
+  {
+    "id": "orphan-end-alone",
+    "input": "--- END ---\n",
+    "expect": {
+      "outline": "",
+      "diagnostics": [
+        {
+          "code": "E1002",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "orphan-end-extra",
+    "input": "::: CARD :::\n--- END ---\n--- END ---\n",
+    "expect": {
+      "outline": "card()",
+      "diagnostics": [
+        {
+          "code": "E1002",
+          "line": 3
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "orphan-end-after-two",
+    "input": "||| COLUMN |||\n=== ROW ===\n--- END ---\n--- END ---\n--- END ---\n",
+    "expect": {
+      "outline": "column(row())",
+      "diagnostics": [
+        {
+          "code": "E1002",
+          "line": 5
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "orphan-end-before-open",
+    "input": "--- END ---\n::: CARD :::\n--- END ---\n",
+    "expect": {
+      "outline": "card()",
+      "diagnostics": [
+        {
+          "code": "E1002",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "orphan-end-mid-text",
+    "input": "a\n--- END ---\nb\n",
+    "expect": {
+      "outline": "line,line",
+      "diagnostics": [
+        {
+          "code": "E1002",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "d10-stray-column-reopen-bug",
+    "input": "::: CARD :::\nx\n||| COLUMN |||\n",
+    "expect": {
+      "outline": "card(line,column())",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        },
+        {
+          "code": "E1001",
+          "line": 3
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "the B-01 defect: a stray opener where a closer was intended"
+  },
+  {
+    "id": "comment-unterminated",
+    "input": "<!-- never closed\nx\n",
+    "expect": {
+      "outline": "comment",
+      "diagnostics": [
+        {
+          "code": "E1003",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D9"
+  },
+  {
+    "id": "comment-unterminated-in-card",
+    "input": "::: CARD :::\n<!-- x\n--- END ---\n",
+    "expect": {
+      "outline": "card(comment)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        },
+        {
+          "code": "E1003",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D9: closer swallowed by the comment"
+  },
+  {
+    "id": "fence-unterminated",
+    "input": "```\nx\n",
+    "expect": {
+      "outline": "code",
+      "diagnostics": [
+        {
+          "code": "E1005",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D8"
+  },
+  {
+    "id": "fence-unterminated-swallows-closer",
+    "input": "::: CARD :::\n```\n--- END ---\n",
+    "expect": {
+      "outline": "card(code)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        },
+        {
+          "code": "E1005",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D8"
+  },
+  {
+    "id": "fence-unterminated-info",
+    "input": "```yaml\na: b\n",
+    "expect": {
+      "outline": "code",
+      "diagnostics": [
+        {
+          "code": "E1005",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "frontmatter-unterminated",
+    "input": "---\nframework: x\n# T\n",
+    "expect": {
+      "outline": "line,heading",
+      "diagnostics": [
+        {
+          "code": "E1006",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "recovery: body is parsed from line 2"
+  },
+  {
+    "id": "frontmatter-unterminated-only-fence",
+    "input": "---\n",
+    "expect": {
+      "outline": "",
+      "diagnostics": [
+        {
+          "code": "E1006",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "frontmatter-unterminated-then-card",
+    "input": "---\n::: CARD :::\n--- END ---\n",
+    "expect": {
+      "outline": "card()",
+      "diagnostics": [
+        {
+          "code": "E1006",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "table-row-too-short",
+    "input": "| A | B |\n| - | - |\n| 1 |\n",
+    "expect": {
+      "outline": "table",
+      "diagnostics": [
+        {
+          "code": "W1202",
+          "line": 3
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "table-row-too-long",
+    "input": "| A | B |\n| - | - |\n| 1 | 2 | 3 |\n",
+    "expect": {
+      "outline": "table",
+      "diagnostics": [
+        {
+          "code": "W1202",
+          "line": 3
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "table-two-bad-rows",
+    "input": "| A | B |\n| - | - |\n| 1 |\n| 1 | 2 | 3 |\n",
+    "expect": {
+      "outline": "table",
+      "diagnostics": [
+        {
+          "code": "W1202",
+          "line": 3
+        },
+        {
+          "code": "W1202",
+          "line": 4
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "table-bad-row-after-ok",
+    "input": "| A | B |\n| - | - |\n| 1 | 2 |\n| 3 |\n",
+    "expect": {
+      "outline": "table",
+      "diagnostics": [
+        {
+          "code": "W1202",
+          "line": 4
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "directive-unknown-bp-xs",
+    "input": "> @xs padding: tight\n",
+    "expect": {
+      "outline": "hint",
+      "diagnostics": [
+        {
+          "code": "W1201",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D11"
+  },
+  {
+    "id": "directive-unknown-bp-2xl",
+    "input": "> @2xl gap: 1\n",
+    "expect": {
+      "outline": "hint",
+      "diagnostics": [
+        {
+          "code": "W1201",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D11"
+  },
+  {
+    "id": "directive-unknown-bp-dark-v1",
+    "input": "> @dark surface: inverted\n",
+    "expect": {
+      "outline": "hint",
+      "diagnostics": [
+        {
+          "code": "W1201",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D11: env directives arrive in 2.0 (T-018)"
+  },
+  {
+    "id": "directive-missing-value",
+    "input": "> @sm padding:\n",
+    "expect": {
+      "outline": "hint",
+      "diagnostics": [
+        {
+          "code": "W1203",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D11"
+  },
+  {
+    "id": "directive-missing-colon",
+    "input": "> @sm padding tight\n",
+    "expect": {
+      "outline": "hint",
+      "diagnostics": [
+        {
+          "code": "W1203",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D11"
+  },
+  {
+    "id": "directive-empty",
+    "input": "> @sm\n",
+    "expect": {
+      "outline": "hint",
+      "diagnostics": [
+        {
+          "code": "W1203",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D11"
+  },
+  {
+    "id": "directive-trailing-comma",
+    "input": "> @md a: b,\n",
+    "expect": {
+      "outline": "hint",
+      "diagnostics": [
+        {
+          "code": "W1203",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D11"
+  },
+  {
+    "id": "directive-one-bad-pair",
+    "input": "> @lg a: b, broken\n",
+    "expect": {
+      "outline": "hint",
+      "diagnostics": [
+        {
+          "code": "W1203",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D11"
+  },
+  {
+    "id": "directive-in-card-bad",
+    "input": "::: CARD :::\n> @xs a: b\n--- END ---\n",
+    "expect": {
+      "outline": "card(hint)",
+      "diagnostics": [
+        {
+          "code": "W1201",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unclosed-and-orphan",
+    "input": "::: CARD :::\n--- END ---\n--- END ---\n||| COLUMN |||\n",
+    "expect": {
+      "outline": "card(),column()",
+      "diagnostics": [
+        {
+          "code": "E1002",
+          "line": 3
+        },
+        {
+          "code": "E1001",
+          "line": 4
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "fm-unterminated-and-unclosed",
+    "input": "---\n||| COLUMN |||\n",
+    "expect": {
+      "outline": "column()",
+      "diagnostics": [
+        {
+          "code": "E1006",
+          "line": 1
+        },
+        {
+          "code": "E1001",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unclosed-list-card",
+    "input": "- ::: CARD :::\n  x\n",
+    "expect": {
+      "outline": "list(item(card(line)))",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unclosed-list-card-second",
+    "input": "- ::: CARD :::\n  x\n  --- END ---\n- ::: CARD :::\n  y\n",
+    "expect": {
+      "outline": "list(item(card(line)),item(card(line)))",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 4
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "unclosed-modal-in-column",
+    "input": "||| COLUMN |||\n::: MODAL :::\nx\n--- END ---\n",
+    "expect": {
+      "outline": "column(modal(line))",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "comment-unterminated-eof-after-text",
+    "input": "x\n<!--\ny\n",
+    "expect": {
+      "outline": "line,comment",
+      "diagnostics": [
+        {
+          "code": "E1003",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "fence-unterminated-after-text",
+    "input": "x\n```\ny\n",
+    "expect": {
+      "outline": "line,code",
+      "diagnostics": [
+        {
+          "code": "E1005",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "orphan-then-fence-unterminated",
+    "input": "--- END ---\n```\n",
+    "expect": {
+      "outline": "code",
+      "diagnostics": [
+        {
+          "code": "E1002",
+          "line": 1
+        },
+        {
+          "code": "E1005",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "table-short-in-card-unclosed",
+    "input": "::: CARD :::\n| A | B |\n| - | - |\n| 1 |\n",
+    "expect": {
+      "outline": "card(table)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        },
+        {
+          "code": "W1202",
+          "line": 4
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "d10-three-orphans",
+    "input": "--- END ---\n--- END ---\n--- END ---\n",
+    "expect": {
+      "outline": "",
+      "diagnostics": [
+        {
+          "code": "E1002",
+          "line": 1
+        },
+        {
+          "code": "E1002",
+          "line": 2
+        },
+        {
+          "code": "E1002",
+          "line": 3
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "d10-open-five-close-two",
+    "input": "::: CARD :::\n::: CARD :::\n::: CARD :::\n--- END ---\n--- END ---\n",
+    "expect": {
+      "outline": "card(card(card()))",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "regression-original-action-tracker-detail",
+    "input": "---\nframework: Next.js + TailwindCSS + Shadcn UI\ntheme: ./design-systems/web-tailwind.md\ncomponent: src/app/actions/[id]/page.tsx\n---\n\n||| COLUMN |||\n\n[ <-- Back to List ](/actions)\n\n## Action Details: ACT-101\n\n::: CARD :::\n\n||| COLUMN |||\n\n**Action Title**\n[ text: Update customer data pipeline ]\n\n=== ROW ===\n||| COLUMN |||\n**Assignee**\n[v] Sarah Jenkins {Sarah Jenkins, Michael Chang, Mark Hart, Emily Blunt}\n--- END ---\n\n||| COLUMN |||\n**Status**\n[v] In Progress {Open, In Progress, Done, Blocked}\n--- END ---\n\n||| COLUMN |||\n**Due Date**\n[ text: 2026-03-15 ]\n--- END ---\n--- END ---\n\n**Description / Context**\n[ text: The current data pipeline to the CRM is showing 5% latency drops during peak hours. Needs optimization on the worker nodes before next sprint. ]\n\n***\n\n**Notifications**\n[on] Email assignee on status change\n[off] Create calendar event\n\n=== ROW ===\n[ Save Changes ](#save)\n[ Cancel ](/actions)\n--- END ---\n\n--- END ---\n--- END ---\n\n||| COLUMN |||",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 7
+        },
+        {
+          "code": "E1001",
+          "line": 54
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "B-01: example as shipped in v1.0.3; line numbers are the original outer opener and the stray opener fixed in T-001"
+  },
+  {
+    "id": "regression-original-action-tracker-master",
+    "input": "---\nframework: Next.js + TailwindCSS + Shadcn UI\ntheme: ./design-systems/web-tailwind.md\ncomponent: src/app/actions/page.tsx\n---\n\n||| COLUMN |||\n\n=== ROW ===\n# Action Tracker\n[ + New Action ](/actions/new)\n--- END ---\n\n=== ROW ===\n[ text: Search actions... ]\n[v] Filter by Status {All, Open, In Progress, Done}\n--- END ---\n\n::: CARD :::\n\n| ID  | Description                       | Assignee       | Status            | Due Date   | Actions                  |\n| --- | --------------------------------- | -------------- | ----------------- | ---------- | ------------------------ |\n| 101 | Update customer data pipeline     | Sarah Jenkins  | (( In Progress )) | 2026-03-15 | [ View ](/actions/101)   |\n| 102 | Review Q1 compliance audit        | Michael Chang  | (( Open ))        | 2026-03-18 | [ View ](/actions/102)   |\n| 103 | Deploy new agent UI improvements  | Mark Hart      | (( Done ))        | 2026-03-11 | [ View ](/actions/103)   |\n| 104 | Finalize API architectural assets | Emily Blunt    | (( Open ))        | 2026-03-22 | [ View ](/actions/104)   |\n\n--- END ---\n\n||| COLUMN |||\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 7
+        },
+        {
+          "code": "E1001",
+          "line": 30
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "B-01: example as shipped in v1.0.3; line numbers are the original outer opener and the stray opener fixed in T-001"
+  },
+  {
+    "id": "regression-original-chat-interface",
+    "input": "---\nframework: Next.js + TailwindCSS + React Markdown\ntheme: ./design-systems/web-tailwind.md\ncomponent: src/components/ChatInterface.tsx\n---\n\n||| COLUMN |||\n\n## AI Assistant\nLet's build something amazing together.\n\n***\n\n::: BUBBLE USER :::\nHi! Can you help me write a python script to reverse a string?\n--- END ---\n\n::: BUBBLE AGENT :::\nOf course! Here is a simple Python script to reverse a string using slicing:\n\n```python\ndef reverse_string(text):\n    return text[::-1]\n\nprint(reverse_string(\"Hello, World!\"))\n```\n\nLet me know if you need help with anything else!\n\n=== ROW ===\n[ Copy Code ](#copy)\n[ Run Code ](#run)\n--- END ---\n--- END ---\n\n::: BUBBLE USER :::\nAwesome, that works. What about using a loop instead?\n--- END ---\n\n::: BUBBLE AGENT :::\nSure, if you prefer an iterative approach, you can do it like this:\n\n```python\ndef reverse_string_loop(text):\n    reversed_text = \"\"\n    for char in text:\n        reversed_text = char + reversed_text\n    return reversed_text\n```\n--- END ---\n\n***\n\n=== ROW ===\n[ text: Message the AI assistant... ]\n[ Send ](#send)\n--- END ---\n\n||| COLUMN |||\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 7
+        },
+        {
+          "code": "E1001",
+          "line": 59
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "B-01: example as shipped in v1.0.3; line numbers are the original outer opener and the stray opener fixed in T-001"
+  },
+  {
+    "id": "regression-original-mobile-app-layout",
+    "input": "---\nframework: Flutter\ntheme: ./design-systems/flutter-material.md\ncomponent: lib/screens/home_screen.dart\n---\n\n::: HEADER :::\n=== ROW ===\n> space between items\n[ IMG: App Logo (small, inverted) ]\n### My Dashboard\n[ IMG: Notification Bell (icon) ]\n--- END ---\n--- END ---\n\n||| COLUMN |||\n\n**Welcome back, Mark!**\nHere is a summary of your activity today.\n\n::: CARD :::\n### Daily Goal\n[ text: 75% complete (progress bar) ]\n***\n[ View Full Stats ](/stats)\n--- END ---\n\n::: CARD :::\n### Recent Transactions\n- Coffee Shop ($4.50)\n- SaaS Subscription ($29.00)\n- Grocery Store ($64.20)\n--- END ---\n\n||| COLUMN |||\n\n::: FOOTER :::\n=== ROW ===\n|[ Home ]|\n[ Search ](/search)\n[ Plus Action ](#new)\n[ Alerts ](/alerts)\n[ Profile ](/profile)\n--- END ---\n--- END ---",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 16
+        },
+        {
+          "code": "E1001",
+          "line": 35
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "B-01: example as shipped in v1.0.3; line numbers are the original outer opener and the stray opener fixed in T-001"
+  },
+  {
+    "id": "heading-after-unclosed",
+    "input": "::: CARD :::\n# T\n",
+    "expect": {
+      "outline": "card(heading)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "tabs-in-unclosed",
+    "input": "::: CARD :::\n|[ A ]| B |\n",
+    "expect": {
+      "outline": "card(tabs)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "divider-in-unclosed",
+    "input": "||| COLUMN |||\n***\n",
+    "expect": {
+      "outline": "column(divider)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "hint-in-unclosed",
+    "input": "=== ROW ===\n> x\n",
+    "expect": {
+      "outline": "row(hint)",
+      "diagnostics": [
+        {
+          "code": "E1001",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "directive-bad-then-orphan",
+    "input": "> @xs a: b\n--- END ---\n",
+    "expect": {
+      "outline": "hint",
+      "diagnostics": [
+        {
+          "code": "W1201",
+          "line": 1
+        },
+        {
+          "code": "E1002",
+          "line": 2
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "table-short-then-orphan",
+    "input": "| A | B |\n| - | - |\n| 1 |\n--- END ---\n",
+    "expect": {
+      "outline": "table",
+      "diagnostics": [
+        {
+          "code": "W1202",
+          "line": 3
+        },
+        {
+          "code": "E1002",
+          "line": 4
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "fm-unterminated-table",
+    "input": "---\n| A |\n| - |\n",
+    "expect": {
+      "outline": "table",
+      "diagnostics": [
+        {
+          "code": "E1006",
+          "line": 1
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "comment-unterminated-after-card",
+    "input": "::: CARD :::\n--- END ---\n<!--\n",
+    "expect": {
+      "outline": "card(),comment",
+      "diagnostics": [
+        {
+          "code": "E1003",
+          "line": 3
+        }
+      ]
+    },
+    "since": "1.0"
+  }
+]

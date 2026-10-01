@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dubzrn/markdown-ui-dsl/conformance/fixture.schema.json",
+  "title": "Markdown UI DSL conformance fixture list",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "input", "expect", "since"],
+    "additionalProperties": false,
+    "properties": {
+      "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+      "input": { "type": "string" },
+      "since": { "type": "string", "pattern": "^\\d+\\.\\d+$" },
+      "notes": { "type": "string" },
+      "expect": {
+        "type": "object",
+        "required": ["diagnostics"],
+        "additionalProperties": false,
+        "properties": {
+          "outline": { "type": "string" },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["code", "line"],
+              "additionalProperties": false,
+              "properties": {
+                "code": { "type": "string", "pattern": "^[EWI][1-7]\\d{3}$" },
+                "line": { "type": "integer", "minimum": 1 }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

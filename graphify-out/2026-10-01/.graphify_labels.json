@@ -27,5 +27,19 @@
   "25": "feature_request.md",
   "26": "Phase 6 — 2.1 ecosystem",
   "27": "graph.sh",
-  "28": "CLAUDE.md"
+  "28": "CLAUDE.md",
+  "29": "package.json",
+  "30": "compilerOptions",
+  "31": "traceability.ts",
+  "32": "scripts",
+  "33": "AGENTS.md — markdown-ui-dsl",
+  "34": "config.json",
+  "35": "SKILL.md",
+  "36": "ADR-001 — Parser strategy",
+  "37": "ADR-002 — Stack and pinned versions",
+  "38": "ADR-003 — Package boundaries and the dependency rule",
+  "39": "ADR-004 — Frontmatter: bundled strict YAML subset",
+  "40": ".prettierrc.json",
+  "41": "Changelog",
+  "42": ".changeset/README.md"
 }

@@ -1,17 +1,17 @@
 # Graph Report - markdown-ui-dsl  (2026-10-01)
 
 ## Corpus Check
-- 28 files · ~47,171 words
+- 47 files · ~49,813 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 5 file(s) not represented in the graph (top: (none) 5)
+- Unclassified: 6 file(s) not represented in the graph (top: (none) 6)
 
 ## Summary
-- 371 nodes · 388 edges · 29 communities (21 shown, 8 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.87)
+- 500 nodes · 517 edges · 43 communities (33 shown, 10 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.87)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `50206be3`
+- Built from commit: `c6c37f88`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -43,18 +43,32 @@
 - Phase 6 — 2.1 ecosystem
 - graph.sh
 - CLAUDE.md
+- package.json
+- compilerOptions
+- traceability.ts
+- scripts
+- AGENTS.md — markdown-ui-dsl
+- config.json
+- SKILL.md
+- ADR-001 — Parser strategy
+- ADR-002 — Stack and pinned versions
+- ADR-003 — Package boundaries and the dependency rule
+- ADR-004 — Frontmatter: bundled strict YAML subset
+- .prettierrc.json
+- Changelog
+- .changeset/README.md
 
 ## God Nodes (most connected - your core abstractions)
 1. `Phase 1 — Language core` - 21 edges
-2. `Implementation Plan — Markdown-UI DSL v2 Program` - 16 edges
-3. `Phase 3 — Agent integration, evals and the grammar pack` - 15 edges
-4. `Phase 4 — Sync, verification and constraints (the novel features)` - 15 edges
-5. `Markdown UI DSL for AI Agents` - 14 edges
-6. `Phase 2 — Tooling and design system` - 14 edges
-7. `Development Specification — Markdown-UI DSL v2 Program` - 12 edges
-8. `Phase 6 — 2.1 ecosystem` - 12 edges
-9. `Locked-In Feature Additions — Markdown-UI DSL v2` - 11 edges
-10. `Competitive Research Catalogue — Markdown-UI DSL` - 10 edges
+2. `compilerOptions` - 19 edges
+3. `Implementation Plan — Markdown-UI DSL v2 Program` - 16 edges
+4. `Phase 3 — Agent integration, evals and the grammar pack` - 15 edges
+5. `Phase 4 — Sync, verification and constraints (the novel features)` - 15 edges
+6. `Markdown UI DSL for AI Agents` - 14 edges
+7. `Phase 2 — Tooling and design system` - 14 edges
+8. `Development Specification — Markdown-UI DSL v2 Program` - 12 edges
+9. `Phase 6 — 2.1 ecosystem` - 12 edges
+10. `Locked-In Feature Additions — Markdown-UI DSL v2` - 11 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `4.1 Markdown- and text-native UI/wireframe languages — *direct competitors*` --references--> `main()`  [INFERRED]
@@ -63,10 +77,10 @@
 ## Import Cycles
 - None detected.
 
-## Communities (29 total, 8 thin omitted)
+## Communities (43 total, 10 thin omitted)
 
 ### Community 0 - "skills.py"
-Cohesion: 0.12
+Cohesion: 0.10
 Nodes (15): declared(), first_path(), git(), licence(), main(), size_mb(), cmd_install(), cmd_sync() (+7 more)
 
 ### Community 1 - "Phase 4 — Sync, verification and constraints (the novel features)"
@@ -95,7 +109,7 @@ Nodes (22): 10. Change log (rev. 2), 1. Design principles (non-negotiable constr
 
 ### Community 7 - "Markdown UI DSL for AI Agents"
 Cohesion: 0.09
-Nodes (22): 1. OpenClaw Hub (Recommended), 2. Cursor / Roo Code / Cline, 2. GitHub Copilot (Agent Mode), 3. Claude Code, 4. Gemini CLI, 5. GPT Codex (and other CLI agents), Components, Contributing (+14 more)
+Nodes (22): 1. OpenClaw Hub (Recommended), 2. GitHub Copilot (Agent Mode), 3. Cursor / Roo Code / Cline, 4. Claude Code, 5. Gemini CLI, 6. GPT Codex (and other CLI agents), Components, Contributing (+14 more)
 
 ### Community 8 - "Phase 1 — Language core"
 Cohesion: 0.10
@@ -106,8 +120,8 @@ Cohesion: 0.12
 Nodes (16): Advanced UI Elements, Breakpoints, Chat Interfaces (Gemini / Minimal AI Style), Colors, 🧩 Component Mappings, 🎨 Design Tokens, 📐 General Rule of Thumb, Generation Rule (+8 more)
 
 ### Community 10 - "README.md"
-Cohesion: 0.12
-Nodes (13): AGENTS.md — markdown-ui-dsl, Checks before you finish, Code map (graphify), Read first, Skills, Working agreements, Components, Frontmatter & Theming (Optional) (+5 more)
+Cohesion: 0.11
+Nodes (16): Agent contributors, Changing the language: RFCs, Contributing, How work flows, Quick start, Reference library and lifting code, Versioning, Alternatives considered (+8 more)
 
 ### Community 11 - "Phase 3 — Agent integration, evals and the grammar pack"
 Cohesion: 0.13
@@ -149,22 +163,70 @@ Nodes (3): Daily Goal, My Dashboard, Recent Transactions
 Cohesion: 0.17
 Nodes (12): Phase 6 — 2.1 ecosystem, T-100 · VS Code extension and language server, T-101 · GitHub Action and PR wireframe diff, T-102 · Figma importer, T-103 · HTML importer, T-104 · Adaptive Cards / Block Kit / Open-JSON-UI / A2UI-Express exporters, T-105 · Runtime generative-UI renderer (React), T-106 · Flutter oracle adapter (+4 more)
 
+### Community 29 - "package.json"
+Cohesion: 0.07
+Nodes (27): ADR-0003, NODE_BUILTINS, devDependencies, @changesets/cli, eslint, @eslint/js, fast-check, prettier (+19 more)
+
+### Community 30 - "compilerOptions"
+Cohesion: 0.10
+Nodes (19): compilerOptions, declaration, exactOptionalPropertyTypes, ignoreDeprecations, isolatedModules, lib, module, moduleResolution (+11 more)
+
+### Community 31 - "traceability.ts"
+Cohesion: 0.19
+Nodes (5): vitest, r, checkTraceability(), Report, taskBlocks()
+
+### Community 32 - "scripts"
+Cohesion: 0.22
+Nodes (9): scripts, build, changeset, check, format, format:check, lint, test (+1 more)
+
+### Community 33 - "AGENTS.md — markdown-ui-dsl"
+Cohesion: 0.25
+Nodes (7): AGENTS.md — markdown-ui-dsl, Checks before you finish, Code map (graphify), Commands, Read first, Skills, Working agreements
+
+### Community 34 - "config.json"
+Cohesion: 0.25
+Nodes (7): access, baseBranch, changelog, commit, ignore, $schema, updateInternalDependencies
+
+### Community 35 - "SKILL.md"
+Cohesion: 0.29
+Nodes (6): Components, Frontmatter & Theming (Optional), Instructions, Layouts, Markdown-UI DSL Schema, Role
+
+### Community 36 - "ADR-001 — Parser strategy"
+Cohesion: 0.40
+Nodes (4): ADR-001 — Parser strategy, Decision, Rejected, Why
+
+### Community 37 - "ADR-002 — Stack and pinned versions"
+Cohesion: 0.50
+Nodes (3): ADR-002 — Stack and pinned versions, Consequences, Decision
+
+### Community 38 - "ADR-003 — Package boundaries and the dependency rule"
+Cohesion: 0.50
+Nodes (3): ADR-003 — Package boundaries and the dependency rule, Consequences, Decision
+
+### Community 39 - "ADR-004 — Frontmatter: bundled strict YAML subset"
+Cohesion: 0.50
+Nodes (3): ADR-004 — Frontmatter: bundled strict YAML subset, Decision, Why
+
+### Community 40 - ".prettierrc.json"
+Cohesion: 0.50
+Nodes (3): printWidth, singleQuote, trailingComma
+
 ## Knowledge Gaps
-- **257 isolated node(s):** `Read first`, `Working agreements`, `Code map (graphify)`, `Checks before you finish`, `Skills` (+252 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 276 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **8 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **343 isolated node(s):** `$schema`, `changelog`, `commit`, `access`, `baseBranch` (+338 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 378 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Task Breakdown — Markdown-UI DSL v2 Program` connect `Phase 4 — Sync, verification and constraints (the novel features)` to `Phase 1 — Language core`, `README.md`, `Phase 3 — Agent integration, evals and the grammar pack`, `Phase 2 — Tooling and design system`, `Phase 6 — 2.1 ecosystem`?**
-  _High betweenness centrality (0.319) - this node is a cross-community bridge._
+  _High betweenness centrality (0.193) - this node is a cross-community bridge._
 - **Why does `Competitive Research Catalogue — Markdown-UI DSL` connect `Competitive Research Catalogue — Markdown-UI DSL` to `README.md`?**
-  _High betweenness centrality (0.187) - this node is a cross-community bridge._
-- **What connects `Read first`, `Working agreements`, `Code map (graphify)` to the rest of the system?**
-  _257 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _High betweenness centrality (0.121) - this node is a cross-community bridge._
+- **What connects `$schema`, `changelog`, `commit` to the rest of the system?**
+  _343 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `skills.py` be split into smaller, more focused modules?**
-  _Cohesion score 0.11576354679802955 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.09982174688057041 - nodes in this community are weakly interconnected._
 - **Should `Phase 4 — Sync, verification and constraints (the novel features)` be split into smaller, more focused modules?**
   _Cohesion score 0.0625 - nodes in this community are weakly interconnected._
 - **Should `Development Specification — Markdown-UI DSL v2 Program` be split into smaller, more focused modules?**

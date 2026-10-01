@@ -1,0 +1,821 @@
+[
+  {
+    "id": "container-column-empty",
+    "input": "||| COLUMN |||\n--- END ---\n",
+    "expect": {
+      "outline": "column()",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "container-column-text",
+    "input": "||| COLUMN |||\nHello\n--- END ---\n",
+    "expect": {
+      "outline": "column(line)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "container-row-empty",
+    "input": "=== ROW ===\n--- END ---\n",
+    "expect": {
+      "outline": "row()",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "container-row-text",
+    "input": "=== ROW ===\nHello\n--- END ---\n",
+    "expect": {
+      "outline": "row(line)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "container-card-empty",
+    "input": "::: CARD :::\n--- END ---\n",
+    "expect": {
+      "outline": "card()",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "container-card-text",
+    "input": "::: CARD :::\nHello\n--- END ---\n",
+    "expect": {
+      "outline": "card(line)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "container-modal-empty",
+    "input": "::: MODAL :::\n--- END ---\n",
+    "expect": {
+      "outline": "modal()",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "container-modal-text",
+    "input": "::: MODAL :::\nHello\n--- END ---\n",
+    "expect": {
+      "outline": "modal(line)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "container-header-empty",
+    "input": "::: HEADER :::\n--- END ---\n",
+    "expect": {
+      "outline": "header()",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "container-header-text",
+    "input": "::: HEADER :::\nHello\n--- END ---\n",
+    "expect": {
+      "outline": "header(line)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "container-footer-empty",
+    "input": "::: FOOTER :::\n--- END ---\n",
+    "expect": {
+      "outline": "footer()",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "container-footer-text",
+    "input": "::: FOOTER :::\nHello\n--- END ---\n",
+    "expect": {
+      "outline": "footer(line)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "container-bubble-user-empty",
+    "input": "::: BUBBLE USER :::\n--- END ---\n",
+    "expect": {
+      "outline": "bubble-user()",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "container-bubble-user-text",
+    "input": "::: BUBBLE USER :::\nHello\n--- END ---\n",
+    "expect": {
+      "outline": "bubble-user(line)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "container-bubble-agent-empty",
+    "input": "::: BUBBLE AGENT :::\n--- END ---\n",
+    "expect": {
+      "outline": "bubble-agent()",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "container-bubble-agent-text",
+    "input": "::: BUBBLE AGENT :::\nHello\n--- END ---\n",
+    "expect": {
+      "outline": "bubble-agent(line)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "nest-col-row-card",
+    "input": "||| COLUMN |||\n=== ROW ===\n::: CARD :::\nx\n--- END ---\n--- END ---\n--- END ---\n",
+    "expect": {
+      "outline": "column(row(card(line)))",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "nest-siblings",
+    "input": "||| COLUMN |||\n::: CARD :::\na\n--- END ---\n::: CARD :::\nb\n--- END ---\n--- END ---\n",
+    "expect": {
+      "outline": "column(card(line),card(line))",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "closer-indented",
+    "input": "::: CARD :::\n  x\n  --- END ---\n",
+    "expect": {
+      "outline": "card(line)",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "indentation insignificant"
+  },
+  {
+    "id": "closer-trailing-space",
+    "input": "::: CARD :::\nx\n--- END ---   \n",
+    "expect": {
+      "outline": "card(line)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "crlf-lines",
+    "input": "::: CARD :::\r\nx\r\n--- END ---\r\n",
+    "expect": {
+      "outline": "card(line)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "no-trailing-newline",
+    "input": "::: CARD :::\nx\n--- END ---",
+    "expect": {
+      "outline": "card(line)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "two-top-level",
+    "input": "||| COLUMN |||\n--- END ---\n=== ROW ===\n--- END ---\n",
+    "expect": {
+      "outline": "column(),row()",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "fm-basic",
+    "input": "---\nframework: Next.js\n---\n# T\n",
+    "expect": {
+      "outline": "frontmatter,heading",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D3"
+  },
+  {
+    "id": "fm-empty",
+    "input": "---\n---\nx\n",
+    "expect": {
+      "outline": "frontmatter,line",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D3"
+  },
+  {
+    "id": "fm-then-container",
+    "input": "---\ntheme: ./d.md\n---\n||| COLUMN |||\n--- END ---\n",
+    "expect": {
+      "outline": "frontmatter,column()",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "d3-dashes-not-divider",
+    "input": "x\n---\ny\n",
+    "expect": {
+      "outline": "line,line,line",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D3: --- outside line 1 is plain text, never a divider"
+  },
+  {
+    "id": "d3-dashes-mid-file-no-fm",
+    "input": "# T\n---\nframework: x\n---\n",
+    "expect": {
+      "outline": "heading,line,line,line",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D3: only line 1 opens frontmatter"
+  },
+  {
+    "id": "d3-end-needs-exact",
+    "input": "::: CARD :::\n--- END ---\n",
+    "expect": {
+      "outline": "card()",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D3"
+  },
+  {
+    "id": "hint-basic",
+    "input": "> align right\n",
+    "expect": {
+      "outline": "hint",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "hint-in-card",
+    "input": "::: CARD :::\n> space between\nx\n--- END ---\n",
+    "expect": {
+      "outline": "card(hint,line)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "directive-single",
+    "input": "> @sm padding: tight\n",
+    "expect": {
+      "outline": "directive",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D11"
+  },
+  {
+    "id": "directive-multi",
+    "input": "> @md columns: 2, gap: large\n",
+    "expect": {
+      "outline": "directive",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D11"
+  },
+  {
+    "id": "directive-stacked",
+    "input": "> @sm padding: tight\n> @lg padding: wide\n",
+    "expect": {
+      "outline": "directive,directive",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D11"
+  },
+  {
+    "id": "directive-in-row",
+    "input": "=== ROW ===\n> @xl gap: 24\n--- END ---\n",
+    "expect": {
+      "outline": "row(directive)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "d11-unknown-bp-is-hint-pos",
+    "input": "> hint with @sm inside\n",
+    "expect": {
+      "outline": "hint",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D11: @ not at start ⇒ plain hint"
+  },
+  {
+    "id": "d11-plain-hint-keeps-at",
+    "input": "> @ not a breakpoint\n",
+    "expect": {
+      "outline": "hint",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D11"
+  },
+  {
+    "id": "comment-single",
+    "input": "<!-- note -->\n",
+    "expect": {
+      "outline": "comment",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D9"
+  },
+  {
+    "id": "comment-multi",
+    "input": "<!--\nTODO\n-->\n",
+    "expect": {
+      "outline": "comment",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D9"
+  },
+  {
+    "id": "comment-in-card",
+    "input": "::: CARD :::\n<!-- hi -->\nx\n--- END ---\n",
+    "expect": {
+      "outline": "card(comment,line)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "d9-end-inside-comment-ignored",
+    "input": "<!--\n--- END ---\n-->\n",
+    "expect": {
+      "outline": "comment",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D9: closer inside comment is literal"
+  },
+  {
+    "id": "fence-basic",
+    "input": "```\nx\n```\n",
+    "expect": {
+      "outline": "code",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D8"
+  },
+  {
+    "id": "fence-info",
+    "input": "```yaml\na: b\n```\n",
+    "expect": {
+      "outline": "code",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "d8-fence-hides-closer",
+    "input": "::: CARD :::\n```\n--- END ---\n```\n--- END ---\n",
+    "expect": {
+      "outline": "card(code)",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D8"
+  },
+  {
+    "id": "d8-fence-hides-opener",
+    "input": "```\n||| COLUMN |||\n```\n",
+    "expect": {
+      "outline": "code",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D8"
+  },
+  {
+    "id": "fence-in-column",
+    "input": "||| COLUMN |||\n```\nx\n```\n--- END ---\n",
+    "expect": {
+      "outline": "column(code)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "heading-levels",
+    "input": "# a\n## b\n### c\n###### f\n",
+    "expect": {
+      "outline": "heading,heading,heading,heading",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "heading-needs-space",
+    "input": "#nospace\n",
+    "expect": {
+      "outline": "line",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "not a heading"
+  },
+  {
+    "id": "seven-hashes",
+    "input": "####### x\n",
+    "expect": {
+      "outline": "line",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "max level 6"
+  },
+  {
+    "id": "divider",
+    "input": "***\n",
+    "expect": {
+      "outline": "divider",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D6"
+  },
+  {
+    "id": "divider-indented",
+    "input": "  ***\n",
+    "expect": {
+      "outline": "divider",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D6"
+  },
+  {
+    "id": "d6-bold-line-not-divider",
+    "input": "**bold**\n",
+    "expect": {
+      "outline": "line",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D6"
+  },
+  {
+    "id": "d6-two-stars-not-divider",
+    "input": "**\n",
+    "expect": {
+      "outline": "line",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D6"
+  },
+  {
+    "id": "lines-widgets",
+    "input": "[ text: Email ]\n[ Submit ](#go)\n(( Admin ))\n",
+    "expect": {
+      "outline": "line,line,line",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D12: one node per line"
+  },
+  {
+    "id": "blank-lines-no-nodes",
+    "input": "\n\n  \n",
+    "expect": {
+      "outline": "",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "list-bullets",
+    "input": "- a\n- b\n",
+    "expect": {
+      "outline": "list(item,item)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "list-star",
+    "input": "* a\n* b\n",
+    "expect": {
+      "outline": "list(item,item)",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D6"
+  },
+  {
+    "id": "list-ordered",
+    "input": "1. a\n2. b\n",
+    "expect": {
+      "outline": "list(item,item)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "list-nested",
+    "input": "- a\n  - b\n  - c\n- d\n",
+    "expect": {
+      "outline": "list(item(list(item,item)),item)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "list-card-items",
+    "input": "- ::: CARD :::\n  **x**\n  --- END ---\n- ::: CARD :::\n  **y**\n  --- END ---\n",
+    "expect": {
+      "outline": "list(item(card(line)),item(card(line)))",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "SKILL.md list-of-cards form"
+  },
+  {
+    "id": "list-in-card",
+    "input": "::: CARD :::\n- a\n--- END ---\n",
+    "expect": {
+      "outline": "card(list(item))",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "list-then-text",
+    "input": "- a\n\ntext\n",
+    "expect": {
+      "outline": "list(item),line",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "list-star-space-needed",
+    "input": "*a*\n",
+    "expect": {
+      "outline": "line",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D6: emphasis, not bullet"
+  },
+  {
+    "id": "table-basic",
+    "input": "| A | B |\n| - | - |\n| 1 | 2 |\n",
+    "expect": {
+      "outline": "table",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "table-no-rows",
+    "input": "| A | B |\n| --- | --- |\n",
+    "expect": {
+      "outline": "table",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "table-align-colons",
+    "input": "| A | B |\n| :-- | --:|\n| 1 | 2 |\n",
+    "expect": {
+      "outline": "table",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "table-no-edge-pipes-row",
+    "input": "| A | B |\n| --- | --- |\n| 1 | 2\n",
+    "expect": {
+      "outline": "table",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "table-escaped-pipe",
+    "input": "| A | B |\n| --- | --- |\n| a \\| b | c |\n",
+    "expect": {
+      "outline": "table",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "table-in-card",
+    "input": "::: CARD :::\n| A |\n| - |\n| 1 |\n--- END ---\n",
+    "expect": {
+      "outline": "card(table)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "table-widgets",
+    "input": "| ID | Status |\n| --- | --- |\n| 1 | (( Open )) |\n| 2 | [ View ](/a/2) |\n",
+    "expect": {
+      "outline": "table",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "tabs-basic",
+    "input": "|[ Home ]| Pricing | About |\n",
+    "expect": {
+      "outline": "tabs",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D4"
+  },
+  {
+    "id": "tabs-single",
+    "input": "|[ Home ]|\n",
+    "expect": {
+      "outline": "tabs",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D4"
+  },
+  {
+    "id": "d4-pipe-space-bracket-is-table-row-not-tabs",
+    "input": "| [ Home ] | x |\n| --- | --- |\n",
+    "expect": {
+      "outline": "table",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D4: not adjacent ⇒ not tabs"
+  },
+  {
+    "id": "tabs-in-column",
+    "input": "||| COLUMN |||\n|[ A ]| B |\n--- END ---\n",
+    "expect": {
+      "outline": "column(tabs)",
+      "diagnostics": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "d1-button-line",
+    "input": "[ Save ](#save)\n",
+    "expect": {
+      "outline": "line",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D1"
+  },
+  {
+    "id": "d1-link-line",
+    "input": "[Docs](https://x.y)\n",
+    "expect": {
+      "outline": "line",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D1"
+  },
+  {
+    "id": "d2-bare-button-line",
+    "input": "[ Cancel ]\n",
+    "expect": {
+      "outline": "line",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D2"
+  },
+  {
+    "id": "d5-checkbox-line",
+    "input": "[x] Remember me\n",
+    "expect": {
+      "outline": "line",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D5"
+  },
+  {
+    "id": "d5-padded-is-button-line",
+    "input": "[ x ] Remember me\n",
+    "expect": {
+      "outline": "line",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D5"
+  },
+  {
+    "id": "d7-escaped-bracket-line",
+    "input": "\\[ not a button \\]\n",
+    "expect": {
+      "outline": "line",
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "D7"
+  },
+  {
+    "id": "example-action-tracker-detail",
+    "input": "---\nframework: Next.js + TailwindCSS + Shadcn UI\ntheme: ./design-systems/web-tailwind.md\ncomponent: src/app/actions/[id]/page.tsx\n---\n\n||| COLUMN |||\n\n[ <-- Back to List ](/actions)\n\n## Action Details: ACT-101\n\n::: CARD :::\n\n||| COLUMN |||\n\n**Action Title**\n[ text: Update customer data pipeline ]\n\n=== ROW ===\n||| COLUMN |||\n**Assignee**\n[v] Sarah Jenkins {Sarah Jenkins, Michael Chang, Mark Hart, Emily Blunt}\n--- END ---\n\n||| COLUMN |||\n**Status**\n[v] In Progress {Open, In Progress, Done, Blocked}\n--- END ---\n\n||| COLUMN |||\n**Due Date**\n[ text: 2026-03-15 ]\n--- END ---\n--- END ---\n\n**Description / Context**\n[ text: The current data pipeline to the CRM is showing 5% latency drops during peak hours. Needs optimization on the worker nodes before next sprint. ]\n\n***\n\n**Notifications**\n[on] Email assignee on status change\n[off] Create calendar event\n\n=== ROW ===\n[ Save Changes ](#save)\n[ Cancel ](/actions)\n--- END ---\n\n--- END ---\n--- END ---\n\n--- END ---",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "fixed example from examples/; asserts zero diagnostics"
+  },
+  {
+    "id": "example-action-tracker-master",
+    "input": "---\nframework: Next.js + TailwindCSS + Shadcn UI\ntheme: ./design-systems/web-tailwind.md\ncomponent: src/app/actions/page.tsx\n---\n\n||| COLUMN |||\n\n=== ROW ===\n# Action Tracker\n[ + New Action ](/actions/new)\n--- END ---\n\n=== ROW ===\n[ text: Search actions... ]\n[v] Filter by Status {All, Open, In Progress, Done}\n--- END ---\n\n::: CARD :::\n\n| ID  | Description                       | Assignee       | Status            | Due Date   | Actions                  |\n| --- | --------------------------------- | -------------- | ----------------- | ---------- | ------------------------ |\n| 101 | Update customer data pipeline     | Sarah Jenkins  | (( In Progress )) | 2026-03-15 | [ View ](/actions/101)   |\n| 102 | Review Q1 compliance audit        | Michael Chang  | (( Open ))        | 2026-03-18 | [ View ](/actions/102)   |\n| 103 | Deploy new agent UI improvements  | Mark Hart      | (( Done ))        | 2026-03-11 | [ View ](/actions/103)   |\n| 104 | Finalize API architectural assets | Emily Blunt    | (( Open ))        | 2026-03-22 | [ View ](/actions/104)   |\n\n--- END ---\n\n--- END ---\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "fixed example from examples/; asserts zero diagnostics"
+  },
+  {
+    "id": "example-chat-interface",
+    "input": "---\nframework: Next.js + TailwindCSS + React Markdown\ntheme: ./design-systems/web-tailwind.md\ncomponent: src/components/ChatInterface.tsx\n---\n\n||| COLUMN |||\n\n## AI Assistant\nLet's build something amazing together.\n\n***\n\n::: BUBBLE USER :::\nHi! Can you help me write a python script to reverse a string?\n--- END ---\n\n::: BUBBLE AGENT :::\nOf course! Here is a simple Python script to reverse a string using slicing:\n\n```python\ndef reverse_string(text):\n    return text[::-1]\n\nprint(reverse_string(\"Hello, World!\"))\n```\n\nLet me know if you need help with anything else!\n\n=== ROW ===\n[ Copy Code ](#copy)\n[ Run Code ](#run)\n--- END ---\n--- END ---\n\n::: BUBBLE USER :::\nAwesome, that works. What about using a loop instead?\n--- END ---\n\n::: BUBBLE AGENT :::\nSure, if you prefer an iterative approach, you can do it like this:\n\n```python\ndef reverse_string_loop(text):\n    reversed_text = \"\"\n    for char in text:\n        reversed_text = char + reversed_text\n    return reversed_text\n```\n--- END ---\n\n***\n\n=== ROW ===\n[ text: Message the AI assistant... ]\n[ Send ](#send)\n--- END ---\n\n--- END ---\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "fixed example from examples/; asserts zero diagnostics"
+  },
+  {
+    "id": "example-login-form",
+    "input": "---\nframework: React + Tailwind CSS\ntheme: ./design-systems/web-tailwind.md\ncomponent: src/components/LoginForm.tsx\n---\n\n||| COLUMN |||\n::: CARD :::\n# Welcome Back\nPlease log in to continue.\n\n[ text: Email Address ]\n[ text: Password ]\n\n=== ROW ===\n[x] Remember me\n[ Forgot Password? ](#forgot-password)\n--- END ---\n\n[ Login ](#login)\n--- END ---\n\n=== ROW ===\nDon't have an account? \n[ Sign Up ](#signup)\n--- END ---\n--- END ---",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "fixed example from examples/; asserts zero diagnostics"
+  },
+  {
+    "id": "example-mobile-app-layout",
+    "input": "---\nframework: Flutter\ntheme: ./design-systems/flutter-material.md\ncomponent: lib/screens/home_screen.dart\n---\n\n::: HEADER :::\n=== ROW ===\n> space between items\n[ IMG: App Logo (small, inverted) ]\n### My Dashboard\n[ IMG: Notification Bell (icon) ]\n--- END ---\n--- END ---\n\n||| COLUMN |||\n\n**Welcome back, Mark!**\nHere is a summary of your activity today.\n\n::: CARD :::\n### Daily Goal\n**75% complete**\n***\n[ View Full Stats ](/stats)\n--- END ---\n\n::: CARD :::\n### Recent Transactions\n- Coffee Shop ($4.50)\n- SaaS Subscription ($29.00)\n- Grocery Store ($64.20)\n--- END ---\n\n--- END ---\n\n::: FOOTER :::\n=== ROW ===\n|[ Home ]|\n[ Search ](/search)\n[ Plus Action ](#new)\n[ Alerts ](/alerts)\n[ Profile ](/profile)\n--- END ---\n--- END ---",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "fixed example from examples/; asserts zero diagnostics"
+  },
+  {
+    "id": "example-responsive-layout",
+    "input": "---\nframework: Next.js + TailwindCSS\ntheme: ./design-systems/web-tailwind.md\ncomponent: src/components/ProductPage.tsx\n---\n\n# Responsive Layout Example\n\nThis spec demonstrates `@breakpoint` responsive directives (Option C).\nEach directive scopes design tokens to a viewport size using the blockquote\nhint syntax already supported by the DSL. Directives are mobile-first and\nadditive — `@sm` sets the base, larger breakpoints layer on top.\n\n***\n\n## Page Header\n\n::: HEADER :::\n> @sm layout: stacked, gap: compact\n> @md layout: row\n\n[ IMG: Brand Logo ]\n\n|[ Products ]| Pricing | About |\n\n[ Login ](#login)\n--- END ---\n\n***\n\n## Hero Section\n\n||| COLUMN |||\n> @sm padding: compact, text: base\n> @lg padding: spacious, text: large\n\n# Build something great.\nResponsive design, defined in plain text.\n\n=== ROW ===\n> @sm layout: stacked, gap: compact\n> @md layout: row, gap: default\n\n[ Get Started ](#cta)\n[ View Docs ](/docs)\n--- END ---\n\n--- END ---\n\n***\n\n## Product Cards\n\n> @sm layout: stacked, gap: compact\n> @md layout: grid-2, gap: default\n> @lg layout: grid-3, gap: spacious\n\n- ::: CARD :::\n  > @sm padding: compact\n  > @lg padding: default\n\n  [ IMG: Feature Icon A ]\n\n  ### Fast\n  Optimised for performance at every breakpoint.\n  --- END ---\n\n- ::: CARD :::\n  > @sm padding: compact\n  > @lg padding: default\n\n  [ IMG: Feature Icon B ]\n\n  ### Flexible\n  Token-driven layout adapts to any screen size.\n  --- END ---\n\n- ::: CARD :::\n  > @sm padding: compact\n  > @lg padding: default\n\n  [ IMG: Feature Icon C ]\n\n  ### Simple\n  Write once in plain Markdown, generate anywhere.\n  --- END ---\n\n***\n\n## Side-by-Side Content Block\n\n::: CARD :::\n> @sm layout: stacked, padding: compact\n> @lg layout: row, padding: default\n\n[ IMG: Product Screenshot (rounded) ]\n\n||| COLUMN |||\n## Why Responsive DSL?\nDesign-system tokens map cleanly to Tailwind responsive prefixes,\nFlutter LayoutBuilder constraints, or Bootstrap infix classes —\ndepending on your target framework.\n\n[ Learn More ](/docs/responsive)\n--- END ---\n\n--- END ---\n\n***\n\n::: FOOTER :::\n> @sm layout: stacked, gap: compact, text: small\n> @md layout: row, gap: default\n\n© 2026 Markdown-UI DSL\n\n[ GitHub ](https://github.com/MegaByteMark/markdown-ui-dsl)\n[ License ](/license)\n--- END ---\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "fixed example from examples/; asserts zero diagnostics"
+  },
+  {
+    "id": "example-user-profile",
+    "input": "---\nframework: Next.js + TailwindCSS + Shadcn UI\ntheme: ./design-systems/web-tailwind.md\ncomponent: src/components/UserProfile.tsx\n---\n\n||| COLUMN |||\n=== ROW ===\n[ IMG: User Avatar (Rounded, Large) ]\n\n||| COLUMN |||\n## Jane Doe\n(( Pro Member ))\nSenior Product Designer at Acme Corp.\n--- END ---\n\n[ Edit Profile ](#edit)\n--- END ---\n\n***\n\n|[ Personal Info ]| Security | Notifications |\n\n||| COLUMN |||\n::: CARD :::\n### Account Details\n[ text: Full Name ]\n[ text: Email Address ]\n[v] Role {Admin, Editor, Viewer}\n\n### Preferences\n[on] Two-Factor Authentication\n[v] App Theme {Light, Dark, System}\n\n[ Save Changes ](#save)\n--- END ---\n\n### Recent Activity\n- ::: CARD :::\n  **Logged in from New Device**\n  [ View Details ](#details)\n  --- END ---\n- ::: CARD :::\n  **Updated Subscription Plan**\n  [ View Receipt ](#receipt)\n  --- END ---\n--- END ---\n--- END ---",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "1.0",
+    "notes": "fixed example from examples/; asserts zero diagnostics"
+  }
+]
