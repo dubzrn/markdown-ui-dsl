@@ -15,7 +15,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "changeset": "changeset",
-    "check": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm build && pnpm test"
+    "check": "pnpm build && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test"
   },
   "devDependencies": {
     "@changesets/cli": "3.0.3",

@@ -30,8 +30,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm format:check
+      - run: pnpm build # core's typecheck needs @mdui/spec's built types
       - run: pnpm typecheck
-      - run: pnpm build
       - run: pnpm test
 
   build-node20:

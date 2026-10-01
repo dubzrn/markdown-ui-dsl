@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Regenerate reference/README.md from reference/manifest.json and the checked-out submodules.
 
-Computes pinned commit, commit date, licence and on-disk size for every reference repo, checks that every
+Computes pinned commit, commit date, licence for every reference repo, checks that every
 path named in a "lift" entry exists, and writes the manifest table into reference/README.md between
 the markers <!-- MANIFEST:BEGIN --> and <!-- MANIFEST:END -->.
 
@@ -54,19 +54,6 @@ def declared(repo):
     return ""
 
 
-def size_mb(repo):
-    total = 0
-    for dp, dn, fn in os.walk(repo):
-        if ".git" in dn:
-            dn.remove(".git")
-        for f in fn:
-            try:
-                total += os.path.getsize(os.path.join(dp, f))
-            except OSError:
-                pass
-    return total / 1_000_000
-
-
 def first_path(item):
     """Extract the leading path token(s) of a lift entry ('src/a + src/b (note)' -> ['src/a','src/b'])."""
     head = re.split(r"\s[—(–]\s|\s\(", item)[0]
@@ -82,7 +69,7 @@ def main():
         d = os.path.join(REF, r["path"])
         if not os.path.exists(os.path.join(d, ".git")):
             problems.append(f"{r['path']}: submodule not initialised (run scripts/reference.sh init)")
-            rows.append(f"| `reference/{r['path']}` | {r['repo']} | _not initialised_ | | | | | |")
+            rows.append(f"| `reference/{r['path']}` | {r['repo']} | _not initialised_ | | | | |")
             continue
         for item in r["lift"]:
             for t in first_path(item):
@@ -97,9 +84,9 @@ def main():
         lift = "<br>".join(r["lift"]).replace("|", "\\|")
         tasks = ", ".join(r["tasks"])
         sparse = " _(sparse)_" if r.get("sparse") else ""
-        rows.append(f"| `reference/{r['path']}`{sparse} | [{r['repo']}](https://github.com/{r['repo']}) | `{sha}` · {date} | {licence(d)} | {size_mb(d):.0f} MB | {r['role']} | {lift} | {tasks} |")
-    table = ["| Path | Upstream | Pin · date | Licence | Size | What it is | Lift / study first | Used by tasks |",
-             "|---|---|---|---|---|---|---|---|"] + rows
+        rows.append(f"| `reference/{r['path']}`{sparse} | [{r['repo']}](https://github.com/{r['repo']}) | `{sha}` · {date} | {licence(d)} | {r['role']} | {lift} | {tasks} |")
+    table = ["| Path | Upstream | Pin · date | Licence | What it is | Lift / study first | Used by tasks |",
+             "|---|---|---|---|---|---|---|"] + rows
     excl = ["", "**Deliberately not vendored** (and why):", ""] + [f"- **{e['name']}** — {e['why']}" for e in man["excluded"]]
     block = "\n".join([BEGIN] + table + excl + [END])
     text = open(README).read()
