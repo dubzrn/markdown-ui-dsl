@@ -199,6 +199,7 @@ const defs = {
     kind: kind("table"),
     header: arr(str),
     rows: arr(arr(str)),
+    align: arr({ enum: ["left", "center", "right", "none"] }),
     headerInline: arr(arr(ref("Inline"))),
     rowsInline: arr(arr(arr(ref("Inline")))),
     ...span,

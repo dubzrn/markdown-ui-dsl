@@ -75,6 +75,8 @@ export interface TableNode extends Base {
   kind: "table";
   header: string[];
   rows: string[][];
+  /** Column alignment from the separator row (`:--`, `:-:`, `--:`). */
+  align: ("left" | "center" | "right" | "none")[];
   headerInline: InlineNode[][];
   rowsInline: InlineNode[][][];
 }

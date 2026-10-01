@@ -109,6 +109,14 @@ function cells(row: string): string[] {
   return out;
 }
 
+function alignOf(sep: string): ("left" | "center" | "right" | "none")[] {
+  return cells(sep).map((c) => {
+    const l = c.startsWith(":");
+    const r = c.endsWith(":");
+    return l && r ? "center" : l ? "left" : r ? "right" : "none";
+  });
+}
+
 function tabs(row: string): { label: string; active: boolean }[] {
   const inner = row.trim().slice(1, -1);
   return inner
@@ -476,6 +484,7 @@ export function parse(source: string): Document {
         kind: "table",
         header,
         rows,
+        align: next === undefined ? [] : alignOf(next.text),
         headerInline: header.map((c) => inl(c, l)),
         rowsInline: rows.map((r, k) => r.map((c) => inl(c, rowLines[k] ?? l))),
         span: { start: pos(l, 1), end: pos(endLine, endLine.text.length + 1) },

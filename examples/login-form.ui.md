@@ -21,7 +21,7 @@ Please log in to continue.
 --- END ---
 
 === ROW ===
-Don't have an account? 
+Don't have an account?
 [ Sign Up ](#signup)
 --- END ---
 --- END ---

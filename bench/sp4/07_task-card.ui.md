@@ -1,6 +1,6 @@
 ::: CARD :::
 === ROW ===
-[ ] 
+[ ]
 ||| COLUMN |||
 **Review pull request**
 Review and approve the authentication module changes.

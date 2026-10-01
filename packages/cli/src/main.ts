@@ -1,5 +1,5 @@
 import { posix } from "node:path";
-import { analyze, parse, type Diagnostic, type Severity } from "@mdui/core";
+import { analyze, format, parse, type Diagnostic, type Severity } from "@mdui/core";
 import { lint } from "@mdui/lint";
 import { parseArgs, UsageError, type Args } from "./args.js";
 import { ConfigError, loadConfig, type Config, type FailOn } from "./config.js";
@@ -19,12 +19,14 @@ Commands:
   validate   Parse and analyse; report syntax and semantic diagnostics
   lint       Validate plus the rule catalogue (see mdui.config.json "rules")
   ast        Print the JSON AST of one file
+  fmt        Canonical formatting (rewrites files; --check only reports)
 
 Options:
   --json             Machine-readable output (see packages/cli/README.md)
   --fail-on <level>  error (default) | warn | info | none
   --config <path>    Config file (default: ./mdui.config.json)
   --compact          ast: single-line JSON
+  --check            fmt: do not write; exit 1 if any file would change
   -h, --help         Show this help
   -v, --version      Show the version
 
@@ -110,6 +112,38 @@ function run(io: Io, args: Args, cfg: Config): number {
     return out.diagnostics.some((d) => failsOn(d, failOn)) ? EXIT.diagnostics : EXIT.ok;
   }
 
+  if (cmd === "fmt") {
+    const changed: string[] = [];
+    for (const file of files) {
+      const abs = posix.resolve(io.cwd, file);
+      const src = io.readFile(abs) as string;
+      const r = format(src);
+      if (r.changed) {
+        changed.push(file);
+        if (!args.flags.check) io.writeFile(abs, r.text);
+      }
+    }
+    if (args.flags.json)
+      io.stdout(
+        JSON.stringify({
+          tool: "mdui",
+          version: 1,
+          command: "fmt",
+          checked: args.flags.check,
+          files: files.length,
+          changed,
+        }) + "\n",
+      );
+    else {
+      for (const f of changed)
+        io.stdout(`${args.flags.check ? "would reformat" : "reformatted"} ${f}\n`);
+      io.stdout(
+        `${files.length} file(s), ${changed.length} ${args.flags.check ? "need formatting" : "reformatted"}\n`,
+      );
+    }
+    return args.flags.check && changed.length > 0 ? EXIT.diagnostics : EXIT.ok;
+  }
+
   const reports: FileReport[] = files.map((file) => {
     const src = readSource(io, root, file) as string;
     if (cmd === "lint")
@@ -133,7 +167,7 @@ function run(io: Io, args: Args, cfg: Config): number {
     : EXIT.ok;
 }
 
-const COMMANDS = ["validate", "lint", "ast"];
+const COMMANDS = ["validate", "lint", "ast", "fmt"];
 
 /** CLI entry. Never throws; returns the process exit code. */
 export function main(argv: string[], io: Io): number {

@@ -63,6 +63,7 @@
 | T-027 | done | `@mdui/cli`: validate, lint, ast; exit codes 0/1/2/3; --json; config; globs; 15 tests + built-binary test |
 | T-028 | done | `@mdui/lint`: 6 structural rules, config severities; the four original defective examples fail balanced-blocks with correct spans |
 | **Checkpoint 1** | reached (pending maintainer review of RFC-0001 §7) | grammar, conformance, v1 compat gate, CLI, clean examples |
+| T-034 | done | `format()` + `mdui fmt [--check]`; idempotent and AST-preserving over the corpus and 20k generated docs; self-checking (falls back to source on any non-equivalent line); examples formatted, CI enforces `fmt --check` |
 | T-030 | next | lint engine completion |
 
 ### T-001 · Fix example and documentation defects

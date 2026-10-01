@@ -8,6 +8,7 @@ export interface Args {
     failOn: string | undefined;
     config: string | undefined;
     compact: boolean;
+    check: boolean;
   };
 }
 
@@ -26,6 +27,7 @@ export function parseArgs(argv: string[]): Args {
       failOn: undefined,
       config: undefined,
       compact: false,
+      check: false,
     },
   };
   const rest: string[] = [];
@@ -39,6 +41,7 @@ export function parseArgs(argv: string[]): Args {
     else if (a === "--help" || a === "-h") out.flags.help = true;
     else if (a === "--version" || a === "-v") out.flags.version = true;
     else if (a === "--compact") out.flags.compact = true;
+    else if (a === "--check") out.flags.check = true;
     else if (VALUE_FLAGS.includes(a) || VALUE_FLAGS.some((f) => a.startsWith(`${f}=`))) {
       const eq = a.indexOf("=");
       const name = eq === -1 ? a : a.slice(0, eq);

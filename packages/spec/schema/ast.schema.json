@@ -952,6 +952,17 @@
             }
           }
         },
+        "align": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "left",
+              "center",
+              "right",
+              "none"
+            ]
+          }
+        },
         "headerInline": {
           "type": "array",
           "items": {
@@ -981,6 +992,7 @@
         "kind",
         "header",
         "rows",
+        "align",
         "headerInline",
         "rowsInline",
         "span"

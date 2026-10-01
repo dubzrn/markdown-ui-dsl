@@ -61,6 +61,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: node packages/cli/dist/bin.js lint examples bench/sp4 --fail-on warn
+      - run: node packages/cli/dist/bin.js fmt --check examples bench/sp4
       - run: python3 scripts/check-examples.py # independent balance check (kept as a cross-check of the parser)
 
   traceability:

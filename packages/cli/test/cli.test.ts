@@ -175,6 +175,20 @@ describe("exit codes and output (T-027)", () => {
   });
 });
 
+describe("fmt", () => {
+  const MESSY = "# Hi  \n\n\n[ Go ]( #go )\n";
+  it("--check exits 1 and does not write; plain fmt rewrites and is then clean", () => {
+    const files: Record<string, string> = { "/proj/a.ui.md": MESSY };
+    const m = memIo(files);
+    expect(main(["fmt", "--check", "a.ui.md"], m.io)).toBe(EXIT.diagnostics);
+    expect(m.out()).toContain("would reformat a.ui.md");
+    expect(files["/proj/a.ui.md"]).toBe(MESSY);
+    expect(main(["fmt", "a.ui.md"], memIo(files).io)).toBe(EXIT.ok);
+    expect(files["/proj/a.ui.md"]).toBe("# Hi\n\n[ Go ](#go)\n");
+    expect(main(["fmt", "--check", "a.ui.md"], memIo(files).io)).toBe(EXIT.ok);
+  });
+});
+
 describe("glob and file expansion", () => {
   const files = {
     "/proj/a.ui.md": GOOD,

@@ -320,43 +320,85 @@ function inl(s: string, depth: number, inEmph: boolean, ctx: Ctx): InlineNode[] 
   return out;
 }
 
+/** Targets (link/button/include) only need `\\` and `)` escaped. */
+const escTarget = (t: string): string => t.replace(/[\\)]/g, (c) => `\\${c}`);
+
 const esc = (t: string): string =>
   [...t].map((ch) => (ESCAPABLE.includes(ch) ? `\\${ch}` : ch)).join("");
 
 /** Canonical printer; `parseInline(printInline(x))` equals `x` after normalisation. */
-export function printInline(nodes: InlineNode[]): string {
+/** Minimal escaping for prose inside a text node ("pretty" style); the strict printer escapes every special character. */
+function escPretty(t: string, atLineStart: boolean): string {
+  let out = "";
+  for (let i = 0; i < t.length; i++) {
+    const c = t[i] as string;
+    const prev = t[i - 1];
+    const next = t[i + 1];
+    let needs = false;
+    if (c === "\\") needs = next === undefined || ESCAPABLE.includes(next);
+    else if (c === "[" || c === "]" || c === "`" || c === "*") needs = true;
+    else if (c === "_") needs = !(isAlnum(prev) && isAlnum(next));
+    else if (c === "(") needs = next === "(" || prev === "(" || prev === "]" || i === 0;
+    else if (c === "{") needs = next === "{" || next === ":";
+    else if ((c === "#" || c === ">") && atLineStart && i === 0) needs = true;
+    out += needs ? `\\${c}` : c;
+  }
+  return out;
+}
+
+export interface PrintOptions {
+  /** `pretty` escapes only what is needed to re-parse identically; `strict` (default) escapes every special character. */
+  style?: "strict" | "pretty";
+}
+
+/** Pretty label escaping: only the delimiter that would end the construct (and a backslash before an escapable char). */
+function escLabel(t: string, closers: string): string {
+  let out = "";
+  for (let i = 0; i < t.length; i++) {
+    const c = t[i] as string;
+    const next = t[i + 1];
+    const needs = c === "\\" ? next === undefined || ESCAPABLE.includes(next) : closers.includes(c);
+    out += needs ? `\\${c}` : c;
+  }
+  return out;
+}
+
+export function printInline(nodes: InlineNode[], opts: PrintOptions = {}): string {
+  const pretty = opts.style === "pretty";
+  // label escaping: strict style escapes every special character, pretty only what would end the construct
+  const L = (t: string, closers: string): string => (pretty ? escLabel(t, closers) : esc(t));
   const at = (n: WithAttrs): string => (n.attrs === undefined ? "" : printAttrs(n.attrs));
   return nodes
     .map((n): string => {
       switch (n.kind) {
         case "text":
-          return esc(n.value);
+          return pretty ? escPretty(n.value, nodes[0] === n) : esc(n.value);
         case "strong":
-          return `**${printInline(n.children)}**`;
+          return `**${printInline(n.children, opts)}**`;
         case "em":
-          return `*${printInline(n.children)}*`;
+          return `*${printInline(n.children, opts)}*`;
         case "code":
           return `\`${n.value}\``;
         case "button":
           return (
             (n.action === undefined
-              ? `[ ${esc(n.label)} ]`
-              : `[ ${esc(n.label)} ](${esc(n.action)})`) + at(n)
+              ? `[ ${L(n.label, "]")} ]`
+              : `[ ${L(n.label, "]")} ](${escTarget(n.action)})`) + at(n)
           );
         case "link":
-          return `[${esc(n.label)}](${esc(n.target)})${at(n)}`;
+          return `[${L(n.label, "]")}](${escTarget(n.target)})${at(n)}`;
         case "input":
-          return `[ text: ${esc(n.placeholder)} ]${at(n)}`;
+          return `[ text: ${L(n.placeholder, "]")} ]${at(n)}`;
         case "image":
-          return `[ IMG: ${esc(n.description)} ]${at(n)}`;
+          return `[ IMG: ${L(n.description, "]")} ]${at(n)}`;
         case "badge":
-          return `(( ${esc(n.label)} ))${at(n)}`;
+          return `(( ${L(n.label, ")")} ))${at(n)}`;
         case "checkbox":
-          return `[${n.checked ? "x" : " "}] ${esc(n.label)}${at(n)}`;
+          return `[${n.checked ? "x" : " "}] ${L(n.label, "{")}${at(n)}`;
         case "radio":
-          return `(${n.checked ? "x" : " "}) ${esc(n.label)}${at(n)}`;
+          return `(${n.checked ? "x" : " "}) ${L(n.label, "{")}${at(n)}`;
         case "toggle":
-          return `[${n.on ? "on" : "off"}] ${esc(n.label)}${at(n)}`;
+          return `[${n.on ? "on" : "off"}] ${L(n.label, "{")}${at(n)}`;
         case "dropdown": {
           const tail =
             n.dynamic !== undefined
@@ -364,7 +406,7 @@ export function printInline(nodes: InlineNode[]): string {
               : n.options !== undefined
                 ? ` {${n.options.map(esc).join(", ")}}`
                 : "";
-          return `[v] ${esc(n.label)}${tail}${at(n)}`;
+          return `[v] ${L(n.label, "{")}${tail}${at(n)}`;
         }
         case "widget":
           return `[ ${n.widget.toUpperCase()}: ${n.raw} ]${at(n)}`;
