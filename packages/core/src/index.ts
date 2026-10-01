@@ -20,3 +20,15 @@ export type {
   FrontmatterResult,
   YamlValue,
 } from "./frontmatter.js";
+export { analyze, collectActions } from "./analyze.js";
+export type {
+  AnalyzeOptions,
+  AnalyzeResult,
+  ActionDef,
+  ActionRegistry,
+  ResolvedInclude,
+} from "./analyze.js";
+export { extractFlow, analyzeFlow } from "./flow.js";
+export type { Flow, FlowScreen, FlowTransition, FlowAnalysis } from "./flow.js";
+export { resolveInRoot, dirname } from "./paths.js";
+export { walkBlocks, walkInline, inlinesOf, childrenOf } from "./walk.js";

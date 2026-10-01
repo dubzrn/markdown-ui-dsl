@@ -67,9 +67,14 @@ component: src/components/LoginForm.tsx
 catalog: ./mdui.catalog.yaml   # DSY-04
 map: ./mdui.map.yaml           # DSY-06
 data: ./fixtures/login.json    # LNG-06: path | inline shape | JSON Schema
-actions: { login: { intent: "Authenticate", destructive: false } }   # LNG-11
+actions:                       # LNG-11 (block style: nested flow maps are outside the frontmatter subset, ADR-004)
+  login:
+    intent: Authenticate
+    destructive: false
 requirements: [REQ-12, REQ-13] # AGT-03 (EARS IDs)
-constraints: { max-primary-actions: 1, no-dead-ends: true }          # NOV-04
+constraints:                   # NOV-04
+  max-primary-actions: 1
+  no-dead-ends: true
 lang: en
 dir: ltr                       # LNG-12
 title: Sign in                 # rev. 2 (Salt parity [S12]) — screen title

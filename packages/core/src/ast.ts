@@ -113,4 +113,6 @@ export interface Document {
   dsl: "1" | "2.0";
   body: BlockNode[];
   diagnostics: Diagnostic[];
+  /** 0-based source offset of the start of each line (index = line − 1). */
+  lineStarts: number[];
 }

@@ -493,5 +493,12 @@ export function parse(source: string): Document {
       diagnostics.push(makeDiagnostic("E1001", { start: f.node.span.start, end: f.node.span.end }));
   }
   diagnostics.sort((a, b) => a.span.start.offset - b.span.start.offset);
-  return { frontmatter, meta, dsl: dslVersion(meta), body: root, diagnostics };
+  return {
+    frontmatter,
+    meta,
+    dsl: dslVersion(meta),
+    body: root,
+    diagnostics,
+    lineStarts: lines.map((x) => x.offset),
+  };
 }

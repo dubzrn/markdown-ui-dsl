@@ -69,6 +69,12 @@ export const CODES = {
   E2302: { severity: "error", summary: "Include cycle." },
   E2303: { severity: "error", summary: "Include nesting is deeper than 8." },
   E2304: { severity: "error", summary: "Include target is missing or is not `type: partial`." },
+  E2305: { severity: "error", summary: "Declared data file is missing or is not valid JSON." },
+  E2403: {
+    severity: "error",
+    summary: "Malformed flow document (Screens table or Transitions list).",
+  },
+  E2502: { severity: "error", summary: "Invalid action registry entry." },
   E2401: {
     severity: "error",
     summary: "Flow transition names an action the source screen does not define.",

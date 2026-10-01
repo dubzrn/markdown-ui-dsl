@@ -54,7 +54,12 @@
 | T-018 | done | env directives gated on `dsl: 2.0`; 25 v2 fixtures; responsive-layout directive snapshot |
 | T-020 | done | typed closers (E1004), attribute lists, field attrs; 45 block fixtures + inline attrs |
 | T-021 | done | 13 widget primitives + 10 container kinds + labelled divider; validated args (E1301/E1302) |
-| T-019 | next (after T-022..T-026, AST still moving) | AST types + JSON Schema |
+| T-022 | done | REGION/STATE rules, EACH/IF scopes, `{{path}}` resolved vs inline/file/JSON-Schema data (E2101/E2102/E1303/W3201); `analyze.ts` |
+| T-023 | done | include resolver via injected `readFile`: root sandbox (E2301, never read), depth 8 (E2303), cycles (E2302), partial type (E2304) |
+| T-024 | done | v1 compatibility gate: every v1 fixture/example parses equal under `dsl: 2.0` unless RFC §6 changes its meaning |
+| T-025 | done | flow extraction + graph analysis (depth, unreachable, dead-ends, cycles); E2401/E2402/E2403 |
+| T-026 | done | action registry (E2502), button resolution (E2501) |
+| T-019 | next | AST types + JSON Schema |
 
 ### T-001 · Fix example and documentation defects
 `S` · Deps: — · Implements: **QLT-04** · REQ: REQ-QLT-04
