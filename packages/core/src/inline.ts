@@ -202,7 +202,9 @@ export function printInline(nodes: InlineNode[], inEmphasis = false): string {
         case "em": {
           // `*` directly next to another emphasis run is ambiguous (`***`), so use `_` there.
           const mark =
-            isEmphasis(n.children[0]) || isEmphasis(n.children[n.children.length - 1]) ? "_" : "*";
+            inEmphasis || isEmphasis(n.children[0]) || isEmphasis(n.children[n.children.length - 1])
+              ? "_"
+              : "*";
           return `${mark}${printInline(n.children, true)}${mark}`;
         }
         case "code":
