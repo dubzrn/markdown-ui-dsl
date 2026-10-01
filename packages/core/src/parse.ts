@@ -73,13 +73,13 @@ interface Line {
   offset: number;
 }
 
-function splitLines(src: string): Line[] {
+function splitLines(src: string, baseLine = 1, baseOffset = 0): Line[] {
   const out: Line[] = [];
-  let offset = 0;
+  let offset = baseOffset;
   const parts = src.split("\n");
   parts.forEach((raw, i) => {
     const text = raw.endsWith("\r") ? raw.slice(0, -1) : raw;
-    out.push({ text, no: i + 1, offset });
+    out.push({ text, no: i + baseLine, offset });
     offset += raw.length + 1;
   });
   // A trailing newline yields one empty final element; it is a blank line, which produces no node.
@@ -183,14 +183,27 @@ function closerWord(n: ContainerNode | NamedBlockNode): string {
 type Frame = { node: ContainerNode | NamedBlockNode } | { list: ListNode; indent: number };
 
 /** Parse a document. Never throws; always returns a tree plus diagnostics (D10). */
+/** Where a (streaming) parse resumes: after earlier top-level blocks have been committed. @internal */
+export interface ParseInit {
+  baseLine: number;
+  baseOffset: number;
+  dsl: "1" | "2.0";
+  meta: FrontmatterData;
+}
+
 export function parse(source: string): Document {
-  const lines = splitLines(source);
+  return parseWith(source);
+}
+
+/** Parse `source`, optionally resuming mid-document (used by the streaming parser). @internal */
+export function parseWith(source: string, init?: ParseInit): Document {
+  const lines = splitLines(source, init?.baseLine ?? 1, init?.baseOffset ?? 0);
   const diagnostics: Diagnostic[] = [];
   const root: BlockNode[] = [];
   const stack: Frame[] = [];
   let frontmatter: FrontmatterNode | undefined;
-  let meta: FrontmatterData = {};
-  let dslMajor: "1" | "2.0" = "1";
+  let meta: FrontmatterData = init?.meta ?? {};
+  let dslMajor: "1" | "2.0" = init?.dsl ?? "1";
   let i = 0;
 
   const sink = (): BlockNode[] => {
@@ -230,7 +243,7 @@ export function parse(source: string): Document {
 
   // Frontmatter: only when the very first line is `---` (D3).
   const first = lines[0];
-  if (first !== undefined && /^---\s*$/.test(first.text)) {
+  if (init === undefined && first !== undefined && /^---\s*$/.test(first.text)) {
     let close = -1;
     for (let k = 1; k < lines.length; k++) {
       if (/^---\s*$/.test((lines[k] as Line).text)) {

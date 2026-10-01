@@ -34,3 +34,5 @@ export { resolveInRoot, dirname } from "./paths.js";
 export { walkBlocks, walkInline, inlinesOf, childrenOf } from "./walk.js";
 export { format, equivalent, renderUnchecked } from "./format.js";
 export type { FormatResult } from "./format.js";
+export { StreamParser, parseStream } from "./stream.js";
+export type { StreamUpdate } from "./stream.js";
