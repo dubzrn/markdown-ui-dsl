@@ -1,4 +1,5 @@
 import type { Diagnostic, Span } from "./diagnostics.js";
+import type { InlineNode } from "./inline.js";
 
 export type ContainerKind =
   "column" | "row" | "card" | "modal" | "header" | "footer" | "bubble-user" | "bubble-agent";
@@ -19,11 +20,13 @@ export interface FrontmatterNode extends Base {
 export interface LineNode extends Base {
   kind: "line";
   text: string;
+  inline: InlineNode[];
 }
 export interface HeadingNode extends Base {
   kind: "heading";
   level: number;
   text: string;
+  inline: InlineNode[];
 }
 export interface HintNode extends Base {
   kind: "hint";
@@ -54,11 +57,14 @@ export interface TableNode extends Base {
   kind: "table";
   header: string[];
   rows: string[][];
+  headerInline: InlineNode[][];
+  rowsInline: InlineNode[][][];
 }
 export interface ListItemNode extends Base {
   kind: "item";
   ordered: boolean;
   text: string;
+  inline: InlineNode[];
   /** Nested blocks: a layout block opened on the item line, and/or a nested list. */
   children: BlockNode[];
 }

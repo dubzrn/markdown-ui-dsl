@@ -47,7 +47,8 @@
 | T-013 | done | 87 valid + 61 invalid fixtures, schema, protocol, Python runner (`conformance/`) |
 | T-014 | done | `packages/core/src/diagnostics.ts` |
 | T-015 | done | block parser; 148/148 conformance; 150k-input fuzz |
-| T-016 | next | inline parser |
+| T-016 | done | `inline.ts`; 68 inline fixtures; 100k no-throw + 50k print-stability property; all example text resolves to typed nodes |
+| SP-4 | next | token-cost spike |
 
 ### T-001 · Fix example and documentation defects
 `S` · Deps: — · Implements: **QLT-04** · REQ: REQ-QLT-04

@@ -7,6 +7,7 @@ import type {
   ListItemNode,
   ListNode,
 } from "./ast.js";
+import { parseInline } from "./inline.js";
 import { makeDiagnostic, type Diagnostic, type Pos, type Span } from "./diagnostics.js";
 
 const OPENERS: Record<string, ContainerKind> = {
@@ -201,6 +202,7 @@ export function parse(source: string): Document {
         kind: "item",
         ordered,
         text: rest,
+        inline: parseInline(rest),
         children: [],
         span: { start: pos(l, indent + 1), end: pos(l, t.length + 1) },
       };
@@ -208,6 +210,7 @@ export function parse(source: string): Document {
       const kind = OPENERS[rest.trim()];
       if (kind !== undefined) {
         node.text = "";
+        node.inline = [];
         openContainer(kind, l, col, node.children);
       }
       continue;
@@ -312,6 +315,7 @@ export function parse(source: string): Document {
         kind: "heading",
         level: (h[1] as string).length,
         text: (h[2] as string).trim(),
+        inline: parseInline(h[2] as string),
         span: lineSpan(l),
       });
       continue;
@@ -343,12 +347,14 @@ export function parse(source: string): Document {
         kind: "table",
         header,
         rows,
+        headerInline: header.map((c) => parseInline(c)),
+        rowsInline: rows.map((r) => r.map((c) => parseInline(c))),
         span: { start: pos(l, 1), end: pos(endLine, endLine.text.length + 1) },
       });
       continue;
     }
 
-    sink().push({ kind: "line", text: trimmed, span: lineSpan(l) });
+    sink().push({ kind: "line", text: trimmed, inline: parseInline(trimmed), span: lineSpan(l) });
   }
 
   closeLists();
