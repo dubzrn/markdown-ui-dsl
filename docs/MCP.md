@@ -9,7 +9,7 @@
 
 ## Tools
 
-Every tool has a JSON-Schema `inputSchema` (unknown properties rejected), an `outputSchema`, and returns `structuredContent` plus the same JSON as text. All are annotated read-only.
+Every tool has a JSON-Schema `inputSchema` (unknown properties rejected), an `outputSchema`, and returns `structuredContent` plus the same JSON as text. All are annotated read-only except `mdui_sync_apply`, which computes (but does not write) changes.
 
 | Tool | Input | Output |
 |---|---|---|
@@ -25,11 +25,13 @@ Every tool has a JSON-Schema `inputSchema` (unknown properties rejected), an `ou
 | `mdui_coverage` | `requirements`, `specs` | `covered`, `uncovered`, `unknown`, `totals` |
 | `mdui_catalog` | `catalog?` | `components`, `allow`, `closed`, `issues` |
 | `mdui_rules` | none | `rules` |
+| `mdui_sync_plan` | `spec_path`, `spec`, `code[]`, `lock?` | per-anchor classification and edit scripts (read-only) |
+| `mdui_sync_apply` | same plus **`confirm`** (required), `resolve?`, `lock_path?` | `ok`, `files` to write, `applied`, `skipped`; refused unless `confirm` is true |
 
 ## Safety model
 
 - **Text in, text out.** Arguments carry document text (each at most 1,000,000 characters); the server reads and writes no files, so `[[ USE: … ]]` includes cannot be resolved and a path in a spec can never be opened.
-- **No tool changes anything.** There is deliberately no sync/apply/write tool. When one arrives (T-081) it will exist only with a mandatory `confirm` parameter that the *user's session* supplies; spec text can never grant it.
+- **No tool writes anything.** `mdui_sync_apply` only *computes* the files and returns them; the caller writes them. It is refused without `confirm: true`. Honest limit: `confirm` is an ordinary tool argument, so a client that lets the model set it freely gives no protection; clients should require a human approval step for this tool (it is not annotated read-only for that reason). Spec or code text can never supply it inside the server.
 - **Spec text is data.** Instruction-like text, bad URL schemes and the like are *reported* (`W7001`, `E7002`) and never acted on; the server's `instructions` say the same to the model.
 - Bad arguments are tool errors (`isError: true`), unknown tools are protocol errors (`-32602`), malformed JSON is `-32700`; nothing throws. A line over 8 MB is refused unparsed.
 
@@ -37,7 +39,7 @@ Every tool has a JSON-Schema `inputSchema` (unknown properties rejected), an `ou
 
 - Protocol and tool tests: `packages/mcp/test/server.test.ts` (including a real stdio child process and hostile-input cases).
 - **Two independent official clients**, run against the built server, both validating `structuredContent` against each tool's `outputSchema`:
-  - TypeScript SDK `@modelcontextprotocol/sdk` 1.31.0: `MCP_SDK_DIR=<dir with the sdk installed> node scripts/mcp-client-js.mjs`: PASS (initialize, 12 tools, every tool called, bad arguments are tool errors).
+  - TypeScript SDK `@modelcontextprotocol/sdk` 1.31.0: `MCP_SDK_DIR=<dir with the sdk installed> node scripts/mcp-client-js.mjs`: PASS (initialize, 14 tools, every tool called, bad arguments are tool errors).
   - Python SDK `mcp` 2.2.0: `python3 scripts/mcp-client-py.py`: PASS (same checks).
   Both run in the nightly workflow. Results above are from this revision; no other client (Claude Desktop, Cursor, VS Code) has been run by hand.
 

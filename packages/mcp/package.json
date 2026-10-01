@@ -24,6 +24,7 @@
     "@mdui/lint": "workspace:*",
     "@mdui/render": "workspace:*",
     "@mdui/spec": "workspace:*",
+    "@mdui/sync": "workspace:*",
     "@mdui/tokens": "workspace:*",
     "@mdui/tools": "workspace:*"
   },

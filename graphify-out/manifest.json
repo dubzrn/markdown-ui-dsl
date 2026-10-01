@@ -72,9 +72,9 @@
     "semantic_hash": ""
   },
   "docs/TASKS.md": {
-    "mtime": 1790879182.6144962,
-    "seen": 1790879256.5423706,
-    "ast_hash": "030ff33994e37d8c45b81e62f5f46ae8",
+    "mtime": 1790879340.2709324,
+    "seen": 1790879485.7669513,
+    "ast_hash": "0ea09dc8203b88c7d92ca48e5eefa63e",
     "semantic_hash": ""
   },
   "examples/action-tracker-detail.ui.md": {
@@ -1086,8 +1086,8 @@
     "semantic_hash": ""
   },
   "docs/LINT_RULES.md": {
-    "mtime": 1790879186.2797966,
-    "seen": 1790879256.542364,
+    "mtime": 1790879344.191806,
+    "seen": 1790879485.7669427,
     "ast_hash": "ba62dbd512924b01c8211ef8e98bb76a",
     "semantic_hash": ""
   },
@@ -1440,9 +1440,9 @@
     "semantic_hash": ""
   },
   "packages/mcp/package.json": {
-    "mtime": 1790875531.394364,
-    "seen": 1790875907.2453566,
-    "ast_hash": "5b4ff3ea3f99014c507640fe92377a58",
+    "mtime": 1790879275.4179473,
+    "seen": 1790879485.7667973,
+    "ast_hash": "d367df7f7ccd160b610cff7436fed41d",
     "semantic_hash": ""
   },
   "packages/mcp/src/bin.ts": {
@@ -1464,21 +1464,21 @@
     "semantic_hash": ""
   },
   "packages/mcp/src/server.ts": {
-    "mtime": 1790875580.9956095,
-    "seen": 1790875907.2453604,
-    "ast_hash": "df656b9a37b706661c148c1279f1e7be",
+    "mtime": 1790879412.7415748,
+    "seen": 1790879485.7668028,
+    "ast_hash": "f131de0c58623f8a70a592f54a7b5a53",
     "semantic_hash": ""
   },
   "packages/mcp/src/tools.ts": {
-    "mtime": 1790875581.1796095,
-    "seen": 1790875907.245361,
-    "ast_hash": "44a6195005529fad38b20a69300d9ce6",
+    "mtime": 1790879297.1518033,
+    "seen": 1790879485.7668037,
+    "ast_hash": "fa9f88949509483ed5b3bf6b56438061",
     "semantic_hash": ""
   },
   "packages/mcp/test/server.test.ts": {
-    "mtime": 1790875659.8956141,
-    "seen": 1790875907.2453623,
-    "ast_hash": "9fce3735282dcddc4062dac02f4b53d2",
+    "mtime": 1790879342.7678058,
+    "seen": 1790879485.7668052,
+    "ast_hash": "dc80d9ae6ffb35436664865a8555cef8",
     "semantic_hash": ""
   },
   "packages/mcp/test/tsconfig.json": {
@@ -1512,15 +1512,15 @@
     "semantic_hash": ""
   },
   "scripts/mcp-client-js.mjs": {
-    "mtime": 1790875834.6156244,
-    "seen": 1790875907.2454295,
-    "ast_hash": "710a76af687b7025947e5bed733fb2f3",
+    "mtime": 1790879328.715805,
+    "seen": 1790879485.7669039,
+    "ast_hash": "301ee8f0f5eb2b46463bf3b6473cd88c",
     "semantic_hash": ""
   },
   "scripts/mcp-client-py.py": {
-    "mtime": 1790875727.2180145,
-    "seen": 1790875907.2454307,
-    "ast_hash": "c275607131b770dd8acb538e849dcaf8",
+    "mtime": 1790879328.0080724,
+    "seen": 1790879485.766905,
+    "ast_hash": "d55a8bd12945979dc62efa9fa1fad9ec",
     "semantic_hash": ""
   },
   ".github/workflows/nightly.yml": {
@@ -1536,9 +1536,9 @@
     "semantic_hash": ""
   },
   "docs/MCP.md": {
-    "mtime": 1790875742.84275,
-    "seen": 1790875907.2454727,
-    "ast_hash": "aa8176c110df4612d65089a544591951",
+    "mtime": 1790879340.2691033,
+    "seen": 1790879485.7669437,
+    "ast_hash": "7a6af05ccdb86d1b6a0f56e7ac0f678a",
     "semantic_hash": ""
   },
   "packages/lint/src/rules/constraints.ts": {

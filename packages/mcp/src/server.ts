@@ -44,7 +44,7 @@ function toolList(): unknown[] {
     inputSchema: t.inputSchema,
     outputSchema: t.outputSchema,
     annotations: {
-      readOnlyHint: true,
+      readOnlyHint: t.name !== "mdui_sync_apply",
       destructiveHint: false,
       idempotentHint: true,
       openWorldHint: false,

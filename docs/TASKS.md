@@ -100,6 +100,7 @@
 | T-073 | done | three-way classifier; **888/888** on 400 generated cases, confusion matrix in `evals/NOV-01.md` (small generated screens) |
 | T-074 | done | `mdui sync plan|apply|relink|recover`; `--confirm` required; verified by re-extraction; journaled atomic writes confined to the root; 1,100-case round-trip with zero loss |
 | T-075 | done | spec patcher (minimal line edits, all-or-nothing per unit) and plan JSON hand-off (`toCode`/`toSpec`); scripted agent using only the plan reaches clean |
+| T-081 | partial | `mdui_sync_plan` and `mdui_sync_apply` (confirm mandatory, refused without it, returns files instead of writing); `verify` tool waits for the Oracle (T-077); verified with both official SDK clients (14 tools) |
 
 ### T-001 · Fix example and documentation defects
 `S` · Deps: — · Implements: **QLT-04** · REQ: REQ-QLT-04

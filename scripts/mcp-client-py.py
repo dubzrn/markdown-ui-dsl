@@ -40,8 +40,8 @@ async def main():
             init = await session.initialize()
             check("initialize", g(init, 'server_info', 'serverInfo').name == "mdui", f"server {g(init, 'server_info', 'serverInfo').name} {g(init, 'server_info', 'serverInfo').version}, mcp sdk {version('mcp')}, protocol {g(init, 'protocol_version', 'protocolVersion')}")
             tools = (await session.list_tools()).tools
-            check("tools/list", len(tools) >= 12 and all(g(t, 'output_schema', 'outputSchema') and g(t, 'input_schema', 'inputSchema') for t in tools), f"{len(tools)} tools")
-            check("no write/sync tool", not any(("sync" in t.name or "apply" in t.name or "write" in t.name) for t in tools))
+            check("tools/list", len(tools) >= 14 and all(g(t, 'output_schema', 'outputSchema') and g(t, 'input_schema', 'inputSchema') for t in tools), f"{len(tools)} tools")
+            check("no write tool; apply tool needs confirm", not any(("write" in t.name or "save" in t.name) for t in tools) and "confirm" in next(g(t, "input_schema", "inputSchema") for t in tools if t.name == "mdui_sync_apply")["required"])
             r = await session.call_tool("mdui_validate", {"source": "::: CARD :::\nx\n"})
             check("validate", not g(r, 'is_error', 'isError') and sc(r)["ok"] is False and sc(r)["errors"] == 1)
             r = await session.call_tool("mdui_lint", {"source": "[Go](javascript:alert(1))\n"})
@@ -53,7 +53,7 @@ async def main():
             r = await session.call_tool("mdui_validate", {"source": 5})
             check("bad arguments -> tool error", g(r, 'is_error', 'isError') is True)
             for t in tools:
-                args = {"mdui_diff": {"before": "a\n", "after": "b\n"}, "mdui_grammar": {"format": "lark"}, "mdui_coverage": {"requirements": "FR-1", "specs": []}}.get(
+                args = {"mdui_sync_plan": {"spec_path": "a.ui.md", "spec": "x\n", "code": []}, "mdui_sync_apply": {"spec_path": "a.ui.md", "spec": "x\n", "code": [], "confirm": True}, "mdui_diff": {"before": "a\n", "after": "b\n"}, "mdui_grammar": {"format": "lark"}, "mdui_coverage": {"requirements": "FR-1", "specs": []}}.get(
                     t.name, {} if t.name in ("mdui_catalog", "mdui_rules", "mdui_prompt") else {"source": "# Hi\n"})
                 r = await session.call_tool(t.name, args)
                 check(f"call {t.name}", not g(r, 'is_error', 'isError') and sc(r) is not None)

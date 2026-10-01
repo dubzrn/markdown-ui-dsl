@@ -36,10 +36,14 @@ check("initialize", info?.name === "mdui", `server ${info?.name} ${info?.version
 const { tools } = await client.listTools();
 check(
   "tools/list",
-  tools.length >= 12 && tools.every((t) => t.outputSchema && t.inputSchema),
+  tools.length >= 14 && tools.every((t) => t.outputSchema && t.inputSchema),
   `${tools.length} tools`,
 );
-check("no write/sync tool", !tools.some((t) => /sync|apply|write/.test(t.name)));
+check(
+  "no write tool; apply tool needs confirm",
+  !tools.some((t) => /write|save|exec/.test(t.name)) &&
+    tools.find((t) => t.name === "mdui_sync_apply")?.inputSchema.required.includes("confirm"),
+);
 
 const v = await client.callTool({
   name: "mdui_validate",
@@ -63,15 +67,19 @@ const bad = await client.callTool({ name: "mdui_validate", arguments: { source: 
 check("bad arguments -> tool error", bad.isError === true);
 for (const t of tools) {
   const args =
-    t.name === "mdui_diff"
-      ? { before: "a\n", after: "b\n" }
-      : t.name === "mdui_grammar"
-        ? { format: "lark" }
-        : t.name === "mdui_coverage"
-          ? { requirements: "FR-1", specs: [] }
-          : t.name === "mdui_catalog" || t.name === "mdui_rules" || t.name === "mdui_prompt"
-            ? {}
-            : { source: "# Hi\n" };
+    t.name === "mdui_sync_plan"
+      ? { spec_path: "a.ui.md", spec: "x\n", code: [] }
+      : t.name === "mdui_sync_apply"
+        ? { spec_path: "a.ui.md", spec: "x\n", code: [], confirm: true }
+        : t.name === "mdui_diff"
+          ? { before: "a\n", after: "b\n" }
+          : t.name === "mdui_grammar"
+            ? { format: "lark" }
+            : t.name === "mdui_coverage"
+              ? { requirements: "FR-1", specs: [] }
+              : t.name === "mdui_catalog" || t.name === "mdui_rules" || t.name === "mdui_prompt"
+                ? {}
+                : { source: "# Hi\n" };
   let ok = false;
   try {
     const r = await client.callTool({ name: t.name, arguments: args });

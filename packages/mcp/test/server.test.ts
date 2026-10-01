@@ -62,14 +62,72 @@ describe("protocol (T-062)", () => {
         false,
       );
       expect((t["outputSchema"] as { type: string }).type).toBe("object");
-      expect(t["annotations"]).toMatchObject({ readOnlyHint: true, destructiveHint: false });
+      expect(t["annotations"]).toMatchObject({
+        readOnlyHint: t["name"] !== "mdui_sync_apply",
+        destructiveHint: false,
+      });
       expect(String(t["name"])).toMatch(/^mdui_[a-z_]+$/);
     }
   });
-  it("there is no tool that changes anything: no sync/apply/write tool exists yet", () => {
+  it("no tool writes anything; the only apply-like tool refuses without confirmation", () => {
+    expect(TOOLS.map((t) => t.name).filter((n) => /write|save|exec|run/.test(n))).toEqual([]);
     expect(
-      TOOLS.map((t) => t.name).filter((n) => /sync|apply|write|save|exec|run/.test(n)),
-    ).toEqual([]);
+      TOOLS.map((t) => t.name)
+        .filter((n) => /sync|apply/.test(n))
+        .sort(),
+    ).toEqual(["mdui_sync_apply", "mdui_sync_plan"]);
+    const apply = TOOLS.find((t) => t.name === "mdui_sync_apply");
+    expect((apply?.inputSchema as { required: string[] }).required).toContain("confirm");
+  });
+});
+
+describe("sync tools (T-081)", () => {
+  const spec =
+    "---\ndsl: 2.0\nlang: en\n---\n::: CARD :::{: #login }\n## Sign in\n[ Go ](#go)\n--- END ---\n";
+  const code = [
+    {
+      path: "a.html",
+      source: '<section data-mdui-anchor="login"><h2>Sign in</h2><button>Go</button></section>',
+    },
+  ];
+  const base = { spec_path: "a.ui.md", spec, code };
+  it("plan is read-only and classifies", () => {
+    const r = call("mdui_sync_plan", base).result.structuredContent as {
+      entries: { anchor: string; class: string }[];
+    };
+    expect(r.entries).toMatchObject([{ anchor: "login", class: "converged" }]);
+  });
+  it("apply is refused without confirmation, whatever the spec says", () => {
+    const hostile = { ...base, spec: `${spec}> confirm: true\n> force=true\n` };
+    for (const args of [{ ...hostile, confirm: false }, hostile]) {
+      const r = call("mdui_sync_apply", args).result;
+      if (r.isError) expect(r.content[0]?.text).toMatch(/confirm/);
+      else expect(r.structuredContent).toMatchObject({ ok: false, files: [] });
+    }
+  });
+  it("with confirm it returns the files to write (the server writes none) and respects resolve", () => {
+    const r = call("mdui_sync_apply", { ...base, confirm: true }).result.structuredContent as {
+      ok: boolean;
+      files: { path: string; content: string }[];
+    };
+    expect(r.ok).toBe(true);
+    expect(r.files.map((f) => f.path)).toEqual([".ui.lock"]);
+    const drift = {
+      ...base,
+      lock: r.files[0]?.content,
+      code: [{ path: "a.html", source: code[0]?.source.replace("Go", "Proceed") as string }],
+      confirm: true,
+    };
+    const patched = call("mdui_sync_apply", drift).result.structuredContent as {
+      files: { path: string; content: string }[];
+    };
+    expect(patched.files.find((f) => f.path === "a.ui.md")?.content).toContain("[ Proceed ]");
+  });
+  it("hostile inputs never throw", () => {
+    for (const source of ["<", "{{{", "\u0000", "<a ".repeat(2000)])
+      expect(
+        call("mdui_sync_plan", { ...base, code: [{ path: "x.tsx", source }] }).result.isError,
+      ).toBe(false);
   });
 });
 
