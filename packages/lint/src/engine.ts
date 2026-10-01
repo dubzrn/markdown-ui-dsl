@@ -14,8 +14,10 @@ import type { LintConfig, Rule, RuleContext } from "./rule.js";
 import { a11yRules } from "./rules/a11y.js";
 import { semanticRules } from "./rules/semantic.js";
 import { structuralRules } from "./rules/structural.js";
+import { applyWaivers, collectWaivers, type Waiver } from "./waivers.js";
 import { catalogRules } from "./rules/catalog.js";
 import { safetyRules } from "./rules/safety.js";
+import { constraintRules } from "./rules/constraints.js";
 import { tokenRules } from "./rules/tokens.js";
 import { loadDesignSystem, type DesignSystem } from "@mdui/tokens";
 import { lastLine } from "./util.js";
@@ -27,6 +29,7 @@ export const ALL_RULES: Rule[] = [
   ...tokenRules,
   ...catalogRules,
   ...safetyRules,
+  ...constraintRules,
 ];
 
 export interface LintResult {
@@ -35,6 +38,8 @@ export interface LintResult {
   diagnostics: Diagnostic[];
   /** Suppression comments that matched nothing (reported as info by the CLI). */
   unusedSuppressions: { line: number; rules: string[] }[];
+  /** Constraint waivers found in the document (T-082), with how many diagnostics each suppressed. */
+  waivers: Waiver[];
 }
 
 const SUPPRESS_RE = /^<!--\s*mdui-disable(?:\s+([\w,\s-]*?))?\s*-->$/;
@@ -80,7 +85,12 @@ function suppressions(doc: Document): Suppression[] {
 /** Lint source text. Never throws. */
 export function lint(
   source: string,
-  opts: AnalyzeOptions & { config?: LintConfig; rules?: Rule[]; catalog?: Catalog } = {},
+  opts: AnalyzeOptions & {
+    config?: LintConfig;
+    rules?: Rule[];
+    catalog?: Catalog;
+    constraints?: Record<string, unknown>;
+  } = {},
 ): LintResult {
   const src = source.replace(/\r\n/g, "\n");
   const doc = parse(src);
@@ -93,6 +103,7 @@ export function lint(
     analysis,
     diagnostics,
     ...(opts.catalog !== undefined ? { catalog: opts.catalog } : {}),
+    ...(opts.constraints !== undefined ? { constraints: opts.constraints } : {}),
   };
   const out: Diagnostic[] = [];
   const covered = new Set<Diagnostic>();
@@ -130,10 +141,15 @@ export function lint(
     }
     return !dropped;
   });
+  const wv = collectWaivers(doc);
+  const waived = applyWaivers(kept, wv.waivers, wv.problems);
+  kept.length = 0;
+  kept.push(...waived);
   kept.sort((a, b) => a.span.start.offset - b.span.start.offset || a.code.localeCompare(b.code));
   return {
     doc,
     diagnostics: dedupe(kept),
+    waivers: wv.waivers,
     unusedSuppressions: sups
       .filter((s) => !s.used)
       .map((s) => ({ line: s.at, rules: s.rules === "all" ? [] : [...s.rules] })),

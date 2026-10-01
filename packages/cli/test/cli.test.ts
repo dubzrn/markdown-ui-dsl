@@ -466,4 +466,35 @@ describe("built binary", () => {
       expect(main(["coverage", "a.ui.md"], memIo({ ...files }).io)).toBe(EXIT.usage);
     });
   });
+
+  describe("constraints and waivers (T-079, T-082)", () => {
+    const spec =
+      '---\ndsl: 2.0\nlang: en\n---\n::: CARD :::\n> waive: form-fields reason="two fields are needed"\n[ text: a ]{: label="a" }\n[ text: b ]{: label="b" }\n--- END ---\n';
+    it("project-level constraints come from mdui.config.json", () => {
+      const m = memIo({
+        "/proj/mdui.config.json": JSON.stringify({ constraints: { "form-fields": 1 } }),
+        "/proj/a.ui.md": spec.replace('> waive: form-fields reason="two fields are needed"\n', ""),
+      });
+      expect(main(["lint", "--fail-on", "warn", "a.ui.md"], m.io)).toBe(EXIT.diagnostics);
+      expect(m.out()).toMatch(/W5302/);
+    });
+    it("--audit-waivers lists the waiver, in text and JSON", () => {
+      const files = {
+        "/proj/mdui.config.json": JSON.stringify({ constraints: { "form-fields": 1 } }),
+        "/proj/a.ui.md": spec,
+      };
+      const t = memIo({ ...files });
+      expect(main(["lint", "--audit-waivers", "a.ui.md"], t.io)).toBe(EXIT.ok);
+      expect(t.out()).toMatch(/waiver form-fields \(1 suppressed\): two fields are needed/);
+      const j = memIo({ ...files });
+      main(["lint", "--audit-waivers", "--json", "a.ui.md"], j.io);
+      expect(JSON.parse(j.out()).files[0].waivers).toEqual([
+        { rule: "form-fields", reason: "two fields are needed", line: 6, suppressed: 1 },
+      ]);
+    });
+    it("rejects a malformed constraints config", () => {
+      const m = memIo({ "/proj/mdui.config.json": '{"constraints": 5}', "/proj/a.ui.md": "x\n" });
+      expect(main(["lint", "a.ui.md"], m.io)).toBe(EXIT.usage);
+    });
+  });
 });

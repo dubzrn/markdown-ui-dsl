@@ -9,3 +9,5 @@ export { a11yRules } from "./rules/a11y.js";
 export { tokenRules } from "./rules/tokens.js";
 export { catalogRules } from "./rules/catalog.js";
 export { safetyRules, ALLOWED_SCHEMES, schemeOf } from "./rules/safety.js";
+export { constraintRules, CONSTRAINT_NAMES, parseValue } from "./rules/constraints.js";
+export { collectWaivers, type Waiver } from "./waivers.js";

@@ -14,6 +14,8 @@ export interface RuleContext {
   designSystem?: DesignSystem;
   /** Component catalog; the catalog rules are no-ops without one. */
   catalog?: Catalog;
+  /** Project-level constraint declarations (from mdui.config.json); frontmatter and region hints refine them. */
+  constraints?: Record<string, unknown>;
 }
 
 export interface Finding {
@@ -24,7 +26,14 @@ export interface Finding {
 }
 
 export type RuleCategory =
-  "structure" | "semantics" | "flow" | "accessibility" | "tokens" | "catalog" | "safety";
+  | "structure"
+  | "semantics"
+  | "flow"
+  | "accessibility"
+  | "tokens"
+  | "catalog"
+  | "safety"
+  | "constraints";
 
 export interface Rule {
   /** Stable kebab-case id, used in config, suppression comments and output. */

@@ -28,6 +28,7 @@ export interface Args {
     tokens: string | undefined;
     data: string | undefined;
     all: boolean;
+    auditWaivers: boolean;
   };
 }
 
@@ -84,6 +85,7 @@ export function parseArgs(argv: string[]): Args {
       tokens: undefined,
       data: undefined,
       all: false,
+      auditWaivers: false,
     },
   };
   const rest: string[] = [];
@@ -102,6 +104,7 @@ export function parseArgs(argv: string[]): Args {
     else if (a === "--write") out.flags.write = true;
     else if (a === "--force") out.flags.force = true;
     else if (a === "--all") out.flags.all = true;
+    else if (a === "--audit-waivers") out.flags.auditWaivers = true;
     else if (VALUE_FLAGS.includes(a) || VALUE_FLAGS.some((f) => a.startsWith(`${f}=`))) {
       const eq = a.indexOf("=");
       const name = eq === -1 ? a : a.slice(0, eq);

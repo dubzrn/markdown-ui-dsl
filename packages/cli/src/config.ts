@@ -7,11 +7,13 @@ export interface Config {
   /** Project root for resolving includes/data files, relative to the working directory. */
   root: string;
   rules: Record<string, "off" | "info" | "warn" | "error">;
+  /** Project-wide UX constraints (see docs/FEATURE_ADDITIONS.md NOV-04); frontmatter and region hints refine them. */
+  constraints?: Record<string, unknown>;
 }
 
 export class ConfigError extends Error {}
 
-const KEYS = ["failOn", "root", "rules"];
+const KEYS = ["failOn", "root", "rules", "constraints"];
 
 export function loadConfig(io: Io, explicit: string | undefined): Config {
   const cfg: Config = { failOn: "error", root: ".", rules: Object.create(null) as Config["rules"] };
@@ -49,6 +51,15 @@ export function loadConfig(io: Io, explicit: string | undefined): Config {
         throw new ConfigError(`rule "${id}": expected off|info|warn|error`);
       cfg.rules[id] = v as "off" | "info" | "warn" | "error";
     }
+  }
+  if (o["constraints"] !== undefined) {
+    if (
+      o["constraints"] === null ||
+      typeof o["constraints"] !== "object" ||
+      Array.isArray(o["constraints"])
+    )
+      throw new ConfigError("constraints must be an object");
+    cfg.constraints = o["constraints"] as Record<string, unknown>;
   }
   return cfg;
 }

@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { loadCatalog } from "@mdui/catalog";
 import { ALL_RULES, applyFixes, fixSource, lint, lintDesignSystem } from "../src/index.js";
@@ -180,6 +181,52 @@ const CASES: Record<string, Case> = {
     code: "W2801",
   },
   "document-language": { bad: "---\ndsl: 2.0\n---\nx\n", good: `${H}x\n` },
+};
+
+const evalFile = (p: string): string =>
+  readFileSync(new URL(`../../../evals/nov04/${p}.ui.md`, import.meta.url), "utf8");
+const CONSTRAINT_IDS = [
+  "max-primary-actions",
+  "form-fields",
+  "unique-primary-per-modal",
+  "max-nav-items",
+  "help-reachable",
+  "states-required",
+  "error-recovery-message",
+  "destructive-needs-confirm",
+  "every-input-labelled",
+  "heading-order",
+  "tap-target",
+  "flow-depth",
+  "back-path-exists",
+  "no-dead-ends",
+];
+const CODES: Record<string, string> = {
+  "max-primary-actions": "W5301",
+  "form-fields": "W5302",
+  "flow-depth": "W5303",
+  "back-path-exists": "W5304",
+  "destructive-needs-confirm": "W5305",
+  "no-dead-ends": "W5306",
+  "states-required": "W5307",
+  "error-recovery-message": "W5308",
+  "unique-primary-per-modal": "W5309",
+  "max-nav-items": "W5310",
+  "help-reachable": "W5311",
+  "every-input-labelled": "E5321",
+  "heading-order": "E5322",
+  "tap-target": "E5323",
+};
+for (const id of CONSTRAINT_IDS)
+  CASES[`constraint-${id}`] = {
+    bad: evalFile(`violations/${id}-1`),
+    good: evalFile(`clean/${id}`),
+    code: CODES[id] as string,
+  };
+CASES["constraint-declarations"] = {
+  bad: evalFile("violations/constraint-unknown"),
+  good: evalFile("clean/heading-order"),
+  code: "E5331",
 };
 
 const fired = (src: string, id: string): string[] => {

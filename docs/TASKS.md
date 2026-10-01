@@ -92,6 +92,8 @@
 | T-060 | done | Lark, GBNF, JSON-Schema emitters (`mdui grammar`); engine matrix measured with **Lark (Python), llguidance 1.9.1 and llama.cpp's GBNF validator: 25/25 good accepted, 7/7 broken refused**; two emitter bugs found by the engines and fixed; xgrammar, vLLM/SGLang/Outlines and hosted APIs **not verified** |
 | T-061 | todo | blocked on T-063 (model access and rubric); no benchmark has been run, so there is **no measured constrained-vs-unconstrained result** |
 | T-062 | done | `@mdui/mcp`: 12 read-only tools with input/output schemas, stdio; verified with the official TypeScript (1.31.0) and Python (2.2.0) SDK clients; no write/sync tool; Claude Desktop / Cursor / VS Code not run by hand |
+| T-079 | done | 14 constraints as lint rules `constraint-*` (11 warn, 3 accessibility errors) + declaration checks; frontmatter, config and region-hint declarations; flow rules on the navigation graph; `evals/NOV-04.md`: recall 31/31 on seeded violations, 0/15 false positives (small hand-written fixtures) |
+| T-082 | partial | `> waive: rule reason="…"` suppresses in region scope, E5333 / I5334, `mdui lint --audit-waivers` (text and JSON); recording waivers in `.ui.lock` waits for T-072 |
 
 ### T-001 · Fix example and documentation defects
 `S` · Deps: — · Implements: **QLT-04** · REQ: REQ-QLT-04

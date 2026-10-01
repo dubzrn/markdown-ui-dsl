@@ -73,6 +73,7 @@ Options:
   --all              prompt: full language reference, not only what the specs use
   --write            migrate: write the migrated files
   --force            migrate: write even when manual-review items remain
+  --audit-waivers    lint: list every constraint waiver (rule, reason, line, how many diagnostics it suppressed)
   --fix              lint: apply fixes in place (overlapping fixes are skipped)
   --check            fmt: do not write; exit 1 if any file would change
   -h, --help         Show this help
@@ -90,6 +91,7 @@ function failsOn(d: Diagnostic, level: FailOn): boolean {
 interface FileReport {
   file: string;
   diagnostics: Diagnostic[];
+  waivers?: { rule: string; reason: string; line: number; suppressed: number }[];
 }
 
 const view = (d: Diagnostic) => ({
@@ -103,7 +105,13 @@ const view = (d: Diagnostic) => ({
   endCol: d.span.end.col,
 });
 
-function report(io: Io, command: string, reports: FileReport[], json: boolean): void {
+function report(
+  io: Io,
+  command: string,
+  reports: FileReport[],
+  json: boolean,
+  audit = false,
+): void {
   const all = reports.flatMap((r) => r.diagnostics);
   const count = (s: Severity): number => all.filter((d) => d.severity === s).length;
   if (json) {
@@ -112,7 +120,11 @@ function report(io: Io, command: string, reports: FileReport[], json: boolean): 
         tool: "mdui",
         version: 1,
         command,
-        files: reports.map((r) => ({ file: r.file, diagnostics: r.diagnostics.map(view) })),
+        files: reports.map((r) => ({
+          file: r.file,
+          diagnostics: r.diagnostics.map(view),
+          ...(audit ? { waivers: r.waivers ?? [] } : {}),
+        })),
         summary: {
           files: reports.length,
           errors: count("error"),
@@ -128,6 +140,12 @@ function report(io: Io, command: string, reports: FileReport[], json: boolean): 
       io.stdout(
         `${r.file}:${d.span.start.line}:${d.span.start.col} ${d.severity} ${d.code} ${d.message}${d.rule !== undefined ? ` [${d.rule}]` : ""}\n`,
       );
+  if (audit)
+    for (const r of reports)
+      for (const w of r.waivers ?? [])
+        io.stdout(
+          `${r.file}:${w.line} waiver ${w.rule} (${w.suppressed} suppressed): ${w.reason}\n`,
+        );
   io.stdout(
     `${reports.length} file(s), ${count("error")} error(s), ${count("warn")} warning(s), ${count("info")} info\n`,
   );
@@ -488,7 +506,12 @@ function run(io: Io, args: Args, cfg: Config): number {
   const reports: FileReport[] = files.map((file) => {
     const src = readSource(io, root, file) as string;
     if (cmd === "lint") {
-      const opts = { file: rel(file), readFile, config: { rules: cfg.rules } };
+      const opts = {
+        file: rel(file),
+        readFile,
+        config: { rules: cfg.rules },
+        ...(cfg.constraints !== undefined ? { constraints: cfg.constraints } : {}),
+      };
       let result = lint(src, opts);
       if (args.flags.fix) {
         const fixed = fixSource(src, opts);
@@ -511,7 +534,16 @@ function run(io: Io, args: Args, cfg: Config): number {
           rule: "unused-suppression",
         };
       });
-      return { file, diagnostics: [...result.diagnostics, ...unused] };
+      return {
+        file,
+        diagnostics: [...result.diagnostics, ...unused],
+        waivers: result.waivers.map((w) => ({
+          rule: w.rule,
+          reason: w.reason,
+          line: w.line,
+          suppressed: w.suppressed,
+        })),
+      };
     }
     const doc = parse(src);
     const a = analyze(doc, { file: rel(file), readFile });
@@ -522,7 +554,7 @@ function run(io: Io, args: Args, cfg: Config): number {
       ),
     };
   });
-  report(io, cmd, reports, args.flags.json);
+  report(io, cmd, reports, args.flags.json, args.flags.auditWaivers);
   return reports.some((r) => r.diagnostics.some((d) => failsOn(d, failOn)))
     ? EXIT.diagnostics
     : EXIT.ok;
