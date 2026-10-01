@@ -26,6 +26,7 @@ export type InlineNode =
   | ({ kind: "toggle"; on: boolean; label: string } & WithAttrs)
   | ({ kind: "dropdown"; label: string; options?: string[]; dynamic?: string } & WithAttrs)
   | ({ kind: "widget"; widget: Lowercase<WidgetKind>; raw: string; args: WidgetArgs } & WithAttrs)
+  | ({ kind: "component"; name: string; raw: string; args: WidgetArgs } & WithAttrs)
   | { kind: "binding"; path: string }
   | ({ kind: "use"; path: string } & WithAttrs);
 
@@ -259,6 +260,10 @@ function inl(s: string, depth: number, inEmph: boolean, ctx: Ctx): InlineNode[] 
             };
             end = j + 1;
           } else {
+            // not a built-in: keep it as a custom component (a catalog may define it); E1302 stands unless one does
+            const raw = wm[2] as string;
+            node = { kind: "component", name: kind, raw, args: parseArgs(raw) };
+            end = j + 1;
             ctx.issues.push({ code: "E1302", message: `Unknown primitive ${kind}.` });
           }
         }
@@ -410,6 +415,8 @@ export function printInline(nodes: InlineNode[], opts: PrintOptions = {}): strin
         }
         case "widget":
           return `[ ${n.widget.toUpperCase()}: ${n.raw} ]${at(n)}`;
+        case "component":
+          return `[ ${n.name}: ${n.raw} ]${at(n)}`;
         case "binding":
           return `{{ ${n.path} }}`;
         case "use":

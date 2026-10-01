@@ -48,6 +48,15 @@ importers:
         specifier: 5.0.3
         version: 5.0.3(@types/node@22.20.4)(vite@8.3.1(@types/node@22.20.4)(esbuild@0.27.7)(yaml@2.9.1))
 
+  packages/catalog:
+    dependencies:
+      '@mdui/core':
+        specifier: workspace:*
+        version: link:../core
+      yaml:
+        specifier: 2.9.1
+        version: 2.9.1
+
   packages/cli:
     dependencies:
       '@mdui/core':
@@ -74,6 +83,9 @@ importers:
 
   packages/lint:
     dependencies:
+      '@mdui/catalog':
+        specifier: workspace:*
+        version: link:../catalog
       '@mdui/core':
         specifier: workspace:*
         version: link:../core

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { loadCatalog } from "@mdui/catalog";
 import { ALL_RULES, applyFixes, fixSource, lint, lintDesignSystem } from "../src/index.js";
 
 const H = "---\ndsl: 2.0\nlang: en\n---\n";
@@ -9,7 +10,10 @@ const FILES: Record<string, string> = {
   "a.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./b.ui.md ]]\n",
   "b.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./a.ui.md ]]\n",
 };
-const opts = { file: "main.ui.md", readFile: (p: string) => FILES[p] };
+const catalog = loadCatalog(
+  "components:\n  ProductCard:\n    props:\n      title: { type: string, required: true, positional: 0 }\n  MapView:\n    trust: third-party\n",
+).catalog;
+const opts = { file: "main.ui.md", readFile: (p: string) => FILES[p], catalog };
 
 interface Case {
   bad: string;
@@ -145,6 +149,21 @@ const CASES: Record<string, Case> = {
     good: DS("colors:\n  primary: red\nmdui:\n  breakpoints:\n    sm: 640px"),
   },
   "missing-primary": { bad: DS("colors:\n  secondary: red"), good: DS("colors:\n  primary: red") },
+  "unknown-component": {
+    bad: `${H}[ PRODUCTCRAD: Mug ]\n`,
+    good: `${H}[ PRODUCTCARD: Mug ]\n`,
+    code: "E6001",
+  },
+  "component-props": {
+    bad: `${H}[ PRODUCTCARD: ]\n`,
+    good: `${H}[ PRODUCTCARD: Mug ]\n`,
+    code: "E6002",
+  },
+  "third-party-component": {
+    bad: `${H}[ MAPVIEW: Paris ]\n`,
+    good: `${H}[ PRODUCTCARD: Mug ]\n`,
+    code: "W6003",
+  },
   "document-language": { bad: "---\ndsl: 2.0\n---\nx\n", good: `${H}x\n` },
 };
 

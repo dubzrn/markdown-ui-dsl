@@ -549,6 +549,52 @@
       ],
       "additionalProperties": false
     },
+    "InlineComponent": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "component"
+        },
+        "name": {
+          "type": "string"
+        },
+        "raw": {
+          "type": "string"
+        },
+        "args": {
+          "type": "object",
+          "properties": {
+            "positional": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "named": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "positional",
+            "named"
+          ],
+          "additionalProperties": false
+        },
+        "attrs": {
+          "$ref": "#/$defs/Attrs"
+        }
+      },
+      "required": [
+        "kind",
+        "name",
+        "raw",
+        "args"
+      ],
+      "additionalProperties": false
+    },
     "InlineBinding": {
       "type": "object",
       "properties": {

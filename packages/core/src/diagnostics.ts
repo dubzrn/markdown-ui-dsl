@@ -136,6 +136,14 @@ export const CODES = {
     severity: "warn",
     summary: "Button triggers a destructive action that has no `confirm`.",
   },
+  E6001: { severity: "error", summary: "Unknown component (not in the catalog)." },
+  E6002: { severity: "error", summary: "Component argument violates the catalog prop schema." },
+  W6003: { severity: "warn", summary: "Third-party component used without an explicit allow." },
+  E6101: {
+    severity: "error",
+    summary: "Component map entry names something that is not in the catalog.",
+  },
+  I6102: { severity: "info", summary: "Catalog component has no entry in the component map." },
   W1201: {
     severity: "warn",
     summary: "Unknown breakpoint in a responsive directive; treated as a plain hint.",

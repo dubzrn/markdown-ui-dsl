@@ -95,6 +95,8 @@ function inlineItem(n: InlineNode, line: number): Item {
       );
     case "widget":
       return mk(n.widget, n.raw, n.raw, n.attrs);
+    case "component":
+      return mk(n.name.toLowerCase(), n.raw, n.raw, n.attrs);
     case "binding":
       return mk("binding", n.path, n.path);
     case "use":

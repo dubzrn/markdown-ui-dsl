@@ -1,23 +1,23 @@
 # Graph Report - markdown-ui-dsl  (2026-10-01)
 
 ## Corpus Check
-- 47 files · ~49,813 words
+- 70 files · ~59,318 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 6 file(s) not represented in the graph (top: (none) 6)
+- Unclassified: 7 file(s) not represented in the graph (top: (none) 6, .ebnf 1)
 
 ## Summary
-- 500 nodes · 517 edges · 43 communities (33 shown, 10 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.87)
+- 655 nodes · 740 edges · 48 communities (35 shown, 13 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.91)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c6c37f88`
+- Built from commit: `d2f75949`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - skills.py
-- Phase 4 — Sync, verification and constraints (the novel features)
+- Phase 2 — Tooling and design system
 - Development Specification — Markdown-UI DSL v2 Program
 - reference.sh
 - Implementation Plan — Markdown-UI DSL v2 Program
@@ -29,10 +29,10 @@
 - README.md
 - Phase 3 — Agent integration, evals and the grammar pack
 - Agent skills — index, routing and vetting
-- Phase 2 — Tooling and design system
+- parse.ts
 - Blazor + Bootstrap 5 Design System
 - Flutter Material Design System
-- Build something great.
+- properties
 - 🧪 Simulation Testing Strategy
 - Jane Doe
 - mobile-app-layout.ui.md
@@ -40,16 +40,16 @@
 - action-tracker-master.ui.md
 - chat-interface.ui.md
 - login-form.ui.md
-- Phase 6 — 2.1 ecosystem
+- Phase 4 — Sync, verification and constraints (the novel features)
 - graph.sh
 - CLAUDE.md
 - package.json
 - compilerOptions
 - traceability.ts
-- scripts
-- AGENTS.md — markdown-ui-dsl
+- core/package.json
+- spec/package.json
 - config.json
-- SKILL.md
+- test/tsconfig.json
 - ADR-001 — Parser strategy
 - ADR-002 — Stack and pinned versions
 - ADR-003 — Package boundaries and the dependency rule
@@ -57,35 +57,48 @@
 - .prettierrc.json
 - Changelog
 - .changeset/README.md
+- conformance-harness.mjs
+- core/tsconfig.json
+- spec/tsconfig.json
+- spec/src/index.ts
+- ADR-005-v1-ambiguity-decisions.md
 
 ## God Nodes (most connected - your core abstractions)
 1. `Phase 1 — Language core` - 21 edges
 2. `compilerOptions` - 19 edges
 3. `Implementation Plan — Markdown-UI DSL v2 Program` - 16 edges
-4. `Phase 3 — Agent integration, evals and the grammar pack` - 15 edges
-5. `Phase 4 — Sync, verification and constraints (the novel features)` - 15 edges
-6. `Markdown UI DSL for AI Agents` - 14 edges
-7. `Phase 2 — Tooling and design system` - 14 edges
-8. `Development Specification — Markdown-UI DSL v2 Program` - 12 edges
-9. `Phase 6 — 2.1 ecosystem` - 12 edges
-10. `Locked-In Feature Additions — Markdown-UI DSL v2` - 11 edges
+4. `Base` - 15 edges
+5. `Phase 3 — Agent integration, evals and the grammar pack` - 15 edges
+6. `Phase 4 — Sync, verification and constraints (the novel features)` - 15 edges
+7. `Markdown UI DSL for AI Agents` - 14 edges
+8. `Phase 2 — Tooling and design system` - 14 edges
+9. `Development Specification — Markdown-UI DSL v2 Program` - 12 edges
+10. `Phase 6 — 2.1 ecosystem` - 12 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `3.2 Tooling (TLS)` --references--> `parse()`  [INFERRED]
+  docs/FEATURE_ADDITIONS.md → packages/core/src/parse.ts
+- `T-030 · Lint engine completion` --references--> `TextEdit`  [INFERRED]
+  docs/TASKS.md → packages/core/src/diagnostics.ts
 - `4.1 Markdown- and text-native UI/wireframe languages — *direct competitors*` --references--> `main()`  [INFERRED]
   docs/COMPETITIVE_RESEARCH.md → scripts/reference-manifest.py
+- `T-014 · Diagnostics model and code registry` --references--> `Span`  [INFERRED]
+  docs/TASKS.md → packages/core/src/diagnostics.ts
+- `T-014 · Diagnostics model and code registry` --references--> `TextEdit`  [INFERRED]
+  docs/TASKS.md → packages/core/src/diagnostics.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (43 total, 10 thin omitted)
+## Communities (48 total, 13 thin omitted)
 
 ### Community 0 - "skills.py"
-Cohesion: 0.10
-Nodes (15): declared(), first_path(), git(), licence(), main(), size_mb(), cmd_install(), cmd_sync() (+7 more)
-
-### Community 1 - "Phase 4 — Sync, verification and constraints (the novel features)"
 Cohesion: 0.06
-Nodes (32): Appendix A — Feature → task index, Conventions, Phase 0 — Foundations & hygiene, Phase 4 — Sync, verification and constraints (the novel features), Phase 5 — Interop, docs and GA release, T-001 · Fix example and documentation defects, T-002 · Monorepo scaffold and architecture decision records, T-003 · Continuous integration (+24 more)
+Nodes (28): 4.1 Markdown- and text-native UI/wireframe languages — *direct competitors*, 4.2 Agent-to-UI protocols and generative-UI frameworks, 4.3 Design-system and design-token formats for agents, 4.4 Spec-driven development (SDD) and agent-instruction standards, 4.5 Verification foundations (not competitors — enablers), 4. Competitor catalogue, Conformance corpus, Fixture (+20 more)
+
+### Community 1 - "Phase 2 — Tooling and design system"
+Cohesion: 0.05
+Nodes (44): Appendix A — Feature → task index, Conventions, Phase 0 — Foundations & hygiene, Phase 2 — Tooling and design system, Phase 5 — Interop, docs and GA release, Phase 6 — 2.1 ecosystem, Progress, T-001 · Fix example and documentation defects (+36 more)
 
 ### Community 2 - "Development Specification — Markdown-UI DSL v2 Program"
 Cohesion: 0.07
@@ -100,8 +113,8 @@ Cohesion: 0.07
 Nodes (27): 10. Communication and migration plan, 11. Definition of ready (per task, before starting), 12. Immediate next actions, 13. Competitive-intelligence cadence, 14.1 Paths by group, 14.2 Consult-first paths by phase / task, 14.3 Highest-leverage lifts (where reference code removes the most work), 14.4 Not vendored (and where to look instead) (+19 more)
 
 ### Community 5 - "Competitive Research Catalogue — Markdown-UI DSL"
-Cohesion: 0.09
-Nodes (23): 1. Executive summary, 2.1 Approach, 2.2 Source quality tiers, 2.3 Limitations and how to read novelty claims, 2.4 Verification pass (rev. 2, same day), 2. Method, 3.1 Capabilities (what exists), 3.2 Defects and risks found in the repository itself (+15 more)
+Cohesion: 0.12
+Nodes (17): 1. Executive summary, 2.1 Approach, 2.2 Source quality tiers, 2.3 Limitations and how to read novelty claims, 2.4 Verification pass (rev. 2, same day), 2. Method, 3.1 Capabilities (what exists), 3.2 Defects and risks found in the repository itself (+9 more)
 
 ### Community 6 - "Locked-In Feature Additions — Markdown-UI DSL v2"
 Cohesion: 0.09
@@ -113,15 +126,15 @@ Nodes (22): 1. OpenClaw Hub (Recommended), 2. GitHub Copilot (Agent Mode), 3. Cu
 
 ### Community 8 - "Phase 1 — Language core"
 Cohesion: 0.10
-Nodes (21): Phase 1 — Language core, T-006 · Reference-library hygiene and CI guards, T-010 · Normative grammar for v1.0.3, T-011 · Ambiguity and escaping decisions, T-012 · RFC-0001 — DSL 2.0 syntax, T-013 · Conformance corpus v1 and protocol, T-014 · Diagnostics model and code registry, T-015 · Block parser (+13 more)
+Nodes (20): Phase 1 — Language core, T-006 · Reference-library hygiene and CI guards, T-010 · Normative grammar for v1.0.3, T-011 · Ambiguity and escaping decisions, T-012 · RFC-0001 — DSL 2.0 syntax, T-013 · Conformance corpus v1 and protocol, T-015 · Block parser, T-016 · Inline parser (v1 components) (+12 more)
 
 ### Community 9 - "📱 Responsive Design"
 Cohesion: 0.12
 Nodes (16): Advanced UI Elements, Breakpoints, Chat Interfaces (Gemini / Minimal AI Style), Colors, 🧩 Component Mappings, 🎨 Design Tokens, 📐 General Rule of Thumb, Generation Rule (+8 more)
 
 ### Community 10 - "README.md"
-Cohesion: 0.11
-Nodes (16): Agent contributors, Changing the language: RFCs, Contributing, How work flows, Quick start, Reference library and lifting code, Versioning, Alternatives considered (+8 more)
+Cohesion: 0.05
+Nodes (36): AGENTS.md — markdown-ui-dsl, Checks before you finish, Code map (graphify), Commands, Read first, Skills, Working agreements, Agent contributors (+28 more)
 
 ### Community 11 - "Phase 3 — Agent integration, evals and the grammar pack"
 Cohesion: 0.13
@@ -131,9 +144,9 @@ Nodes (15): Phase 3 — Agent integration, evals and the grammar pack, T-050 · 
 Cohesion: 0.15
 Nodes (13): 1. Routing table — which skill for which work, 2. Project-local skills (32), 3.1 Vendored into the project (6), 3.2 Relevant but **not** vendored, 3.3 Proprietary — present but not redistributable, 3.4 Not relevant to this project, 3. Index of installed skills (authoring-environment snapshot, 110 skills), 4. How the 25 new skills were found (+5 more)
 
-### Community 13 - "Phase 2 — Tooling and design system"
-Cohesion: 0.14
-Nodes (14): Phase 2 — Tooling and design system, T-030 · Lint engine completion, T-031 · Semantic and flow lint rules, T-032 · Accessibility semantics and rules, T-034 · Canonical formatter, T-035 · Semantic diff, T-036 · Migrate tool, T-037 · Design-system loader (DESIGN.md + legacy) (+6 more)
+### Community 13 - "parse.ts"
+Cohesion: 0.06
+Nodes (50): T-014 · Diagnostics model and code registry, Base, BlockNode, CodeNode, CommentNode, ContainerKind, ContainerNode, DirectiveNode (+42 more)
 
 ### Community 14 - "Blazor + Bootstrap 5 Design System"
 Cohesion: 0.14
@@ -143,9 +156,9 @@ Nodes (13): Blazor + Bootstrap 5 Design System, Breakpoints (Bootstrap 5), Color
 Cohesion: 0.14
 Nodes (13): Breakpoints (logical pixels via `LayoutBuilder`), Colors, 🧩 Component Mappings, 🎨 Design Tokens, Flutter Material Design System, 📐 General Rule of Thumb, Generation Rule, Interactive Elements (+5 more)
 
-### Community 16 - "Build something great."
-Cohesion: 0.25
-Nodes (7): Build something great., Hero Section, Page Header, Product Cards, Responsive Layout Example, Side-by-Side Content Block, Why Responsive DSL?
+### Community 16 - "properties"
+Cohesion: 0.08
+Nodes (29): items, type, additionalProperties, properties, required, type, $id, pattern (+21 more)
 
 ### Community 17 - "🧪 Simulation Testing Strategy"
 Cohesion: 0.29
@@ -159,37 +172,37 @@ Nodes (4): Account Details, Jane Doe, Preferences, Recent Activity
 Cohesion: 0.50
 Nodes (3): Daily Goal, My Dashboard, Recent Transactions
 
-### Community 26 - "Phase 6 — 2.1 ecosystem"
-Cohesion: 0.17
-Nodes (12): Phase 6 — 2.1 ecosystem, T-100 · VS Code extension and language server, T-101 · GitHub Action and PR wireframe diff, T-102 · Figma importer, T-103 · HTML importer, T-104 · Adaptive Cards / Block Kit / Open-JSON-UI / A2UI-Express exporters, T-105 · Runtime generative-UI renderer (React), T-106 · Flutter oracle adapter (+4 more)
+### Community 26 - "Phase 4 — Sync, verification and constraints (the novel features)"
+Cohesion: 0.13
+Nodes (15): Phase 4 — Sync, verification and constraints (the novel features), T-070 · Anchor model, T-071 · Code extraction adapters (HTML, TSX), T-072 · `.ui.lock` format, T-073 · Three-way classifier, T-074 · `mdui sync` (plan/apply/relink) with atomic apply, T-075 · Spec patcher and agent hand-off protocol, T-076 · Oracle: AST → expected accessibility tree (+7 more)
 
 ### Community 29 - "package.json"
-Cohesion: 0.07
-Nodes (27): ADR-0003, NODE_BUILTINS, devDependencies, @changesets/cli, eslint, @eslint/js, fast-check, prettier (+19 more)
+Cohesion: 0.05
+Nodes (38): ADR-0003, NODE_BUILTINS, devDependencies, ajv, @changesets/cli, eslint, @eslint/js, fast-check (+30 more)
 
 ### Community 30 - "compilerOptions"
 Cohesion: 0.10
 Nodes (19): compilerOptions, declaration, exactOptionalPropertyTypes, ignoreDeprecations, isolatedModules, lib, module, moduleResolution (+11 more)
 
 ### Community 31 - "traceability.ts"
-Cohesion: 0.19
-Nodes (5): vitest, r, checkTraceability(), Report, taskBlocks()
+Cohesion: 0.24
+Nodes (4): r, checkTraceability(), Report, taskBlocks()
 
-### Community 32 - "scripts"
-Cohesion: 0.22
-Nodes (9): scripts, build, changeset, check, format, format:check, lint, test (+1 more)
+### Community 32 - "core/package.json"
+Cohesion: 0.13
+Nodes (14): dependencies, @mdui/spec, description, exports, files, license, name, scripts (+6 more)
 
-### Community 33 - "AGENTS.md — markdown-ui-dsl"
-Cohesion: 0.25
-Nodes (7): AGENTS.md — markdown-ui-dsl, Checks before you finish, Code map (graphify), Commands, Read first, Skills, Working agreements
+### Community 33 - "spec/package.json"
+Cohesion: 0.17
+Nodes (11): description, exports, files, license, name, scripts, build, typecheck (+3 more)
 
 ### Community 34 - "config.json"
 Cohesion: 0.25
 Nodes (7): access, baseBranch, changelog, commit, ignore, $schema, updateInternalDependencies
 
-### Community 35 - "SKILL.md"
-Cohesion: 0.29
-Nodes (6): Components, Frontmatter & Theming (Optional), Instructions, Layouts, Markdown-UI DSL Schema, Role
+### Community 35 - "test/tsconfig.json"
+Cohesion: 0.33
+Nodes (5): compilerOptions, types, extends, include, ../../../tsconfig.base.json
 
 ### Community 36 - "ADR-001 — Parser strategy"
 Cohesion: 0.40
@@ -211,25 +224,33 @@ Nodes (3): ADR-004 — Frontmatter: bundled strict YAML subset, Decision, Why
 Cohesion: 0.50
 Nodes (3): printWidth, singleQuote, trailingComma
 
+### Community 44 - "core/tsconfig.json"
+Cohesion: 0.50
+Nodes (3): extends, include, ../../tsconfig.base.json
+
+### Community 45 - "spec/tsconfig.json"
+Cohesion: 0.50
+Nodes (3): extends, include, ../../tsconfig.base.json
+
 ## Knowledge Gaps
-- **343 isolated node(s):** `$schema`, `changelog`, `commit`, `access`, `baseBranch` (+338 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 378 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **409 isolated node(s):** `$schema`, `changelog`, `commit`, `access`, `baseBranch` (+404 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 453 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Task Breakdown — Markdown-UI DSL v2 Program` connect `Phase 4 — Sync, verification and constraints (the novel features)` to `Phase 1 — Language core`, `README.md`, `Phase 3 — Agent integration, evals and the grammar pack`, `Phase 2 — Tooling and design system`, `Phase 6 — 2.1 ecosystem`?**
-  _High betweenness centrality (0.193) - this node is a cross-community bridge._
-- **Why does `Competitive Research Catalogue — Markdown-UI DSL` connect `Competitive Research Catalogue — Markdown-UI DSL` to `README.md`?**
-  _High betweenness centrality (0.121) - this node is a cross-community bridge._
+- **Why does `Task Breakdown — Markdown-UI DSL v2 Program` connect `Phase 2 — Tooling and design system` to `Phase 1 — Language core`, `Phase 4 — Sync, verification and constraints (the novel features)`, `README.md`, `Phase 3 — Agent integration, evals and the grammar pack`?**
+  _High betweenness centrality (0.182) - this node is a cross-community bridge._
+- **Why does `Competitive Research Catalogue — Markdown-UI DSL` connect `Competitive Research Catalogue — Markdown-UI DSL` to `skills.py`, `README.md`?**
+  _High betweenness centrality (0.120) - this node is a cross-community bridge._
+- **Why does `Locked-In Feature Additions — Markdown-UI DSL v2` connect `Locked-In Feature Additions — Markdown-UI DSL v2` to `README.md`?**
+  _High betweenness centrality (0.117) - this node is a cross-community bridge._
 - **What connects `$schema`, `changelog`, `commit` to the rest of the system?**
-  _343 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _409 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `skills.py` be split into smaller, more focused modules?**
-  _Cohesion score 0.09982174688057041 - nodes in this community are weakly interconnected._
-- **Should `Phase 4 — Sync, verification and constraints (the novel features)` be split into smaller, more focused modules?**
-  _Cohesion score 0.0625 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0596078431372549 - nodes in this community are weakly interconnected._
+- **Should `Phase 2 — Tooling and design system` be split into smaller, more focused modules?**
+  _Cohesion score 0.045454545454545456 - nodes in this community are weakly interconnected._
 - **Should `Development Specification — Markdown-UI DSL v2 Program` be split into smaller, more focused modules?**
   _Cohesion score 0.07142857142857142 - nodes in this community are weakly interconnected._
-- **Should `Implementation Plan — Markdown-UI DSL v2 Program` be split into smaller, more focused modules?**
-  _Cohesion score 0.07407407407407407 - nodes in this community are weakly interconnected._

@@ -1,7 +1,7 @@
 {
-  "name": "@mdui/lint",
+  "name": "@mdui/catalog",
   "version": "0.0.0",
-  "description": "Lint engine and rule catalogue for Markdown UI DSL documents.",
+  "description": "Component catalog (built-in primitives + project components) and component map for Markdown UI DSL.",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -16,8 +16,7 @@
   ],
   "dependencies": {
     "@mdui/core": "workspace:*",
-    "@mdui/tokens": "workspace:*",
-    "@mdui/catalog": "workspace:*"
+    "yaml": "2.9.1"
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean",

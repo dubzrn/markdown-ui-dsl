@@ -125,6 +125,16 @@ const defs = {
     },
     ["kind", "widget", "raw", "args"],
   ),
+  InlineComponent: obj(
+    {
+      kind: kind("component"),
+      name: str,
+      raw: str,
+      args: obj({ positional: arr(str), named: { type: "object", additionalProperties: str } }),
+      ...withAttrs,
+    },
+    ["kind", "name", "raw", "args"],
+  ),
   InlineBinding: obj({ kind: kind("binding"), path: str }),
   InlineUse: obj({ kind: kind("use"), path: str, ...withAttrs }, ["kind", "path"]),
   // ---- blocks

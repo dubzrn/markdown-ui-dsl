@@ -79,7 +79,9 @@
 | T-038 | done | reference resolution with cycle detection; exporters DTCG 2025.10 (own structural validator; upstream's Terrazzo conformance is skipped upstream), Tailwind v3 JSON, Tailwind v4 `@theme`, CSS vars; round trip preserves `{refs}`; golden outputs. Style Dictionary bridge not needed (native DTCG) |
 | T-039 | done | broken-ref, contrast-ratio (published WCAG vectors), orphaned-token, unknown-breakpoint, missing-primary + token diff with regressions; `mdui tokens lint|export|diff`; **40 lint rules** asserted ≥ 30 by test |
 | **Checkpoint 2** | reached | formatter, diff, preview, streaming, tokens, ≥ 30 lint rules, perf budgets |
-| T-050 | next | component catalog schema and loader |
+| T-050 | done | `@mdui/catalog`: schema, YAML loader (`builtins:` restricts built-ins, `allow:`), default catalog of every built-in, `validateUse`; 14 tests |
+| T-051 | done | lint rules `unknown-component` (E6001 + nearest-name fix), `component-props` (E6002), `third-party-component` (W6003); `lint(src,{catalog})`; a catalog-defined component supersedes parser E1302; 43 rules |
+| T-052 | partial | component map loader + `checkMap` (E6101, I6102) with React, Flutter and Blazor example maps; map not yet wired into the CLI; Storybook-manifest stretch pending |
 
 ### T-001 · Fix example and documentation defects
 `S` · Deps: — · Implements: **QLT-04** · REQ: REQ-QLT-04

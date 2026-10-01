@@ -1,4 +1,5 @@
 import type { AnalyzeResult, Diagnostic, Document, Severity, Span, TextEdit } from "@mdui/core";
+import type { Catalog } from "@mdui/catalog";
 import type { DesignSystem } from "@mdui/tokens";
 
 export interface RuleContext {
@@ -11,6 +12,8 @@ export interface RuleContext {
   diagnostics: Diagnostic[];
   /** Present when linting a design-system file (`lintDesignSystem`); token rules are no-ops without it. */
   designSystem?: DesignSystem;
+  /** Component catalog; the catalog rules are no-ops without one. */
+  catalog?: Catalog;
 }
 
 export interface Finding {
@@ -20,7 +23,8 @@ export interface Finding {
   fix?: TextEdit[];
 }
 
-export type RuleCategory = "structure" | "semantics" | "flow" | "accessibility" | "tokens";
+export type RuleCategory =
+  "structure" | "semantics" | "flow" | "accessibility" | "tokens" | "catalog";
 
 export interface Rule {
   /** Stable kebab-case id, used in config, suppression comments and output. */

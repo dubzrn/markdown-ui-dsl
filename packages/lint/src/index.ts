@@ -7,3 +7,4 @@ export { structuralRules } from "./rules/structural.js";
 export { semanticRules } from "./rules/semantic.js";
 export { a11yRules } from "./rules/a11y.js";
 export { tokenRules } from "./rules/tokens.js";
+export { catalogRules } from "./rules/catalog.js";

@@ -828,14 +828,19 @@
     "expect": {
       "inline": [
         {
-          "kind": "button",
-          "label": "FOO: bar"
+          "kind": "component",
+          "name": "FOO",
+          "raw": "bar",
+          "args": {
+            "positional": ["bar"],
+            "named": {}
+          }
         }
       ],
       "issues": ["E1302"]
     },
     "since": "2.0",
-    "notes": "unknown upper-case kind falls back to a button"
+    "notes": "unknown upper-case kind is kept as a custom component (a catalog may define it); E1302 stands unless one does"
   },
   {
     "id": "w-lowercase-not-widget",

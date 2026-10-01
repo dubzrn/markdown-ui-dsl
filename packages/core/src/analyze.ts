@@ -160,6 +160,7 @@ function inlineChecks(ctx: Ctx, run: InlineNode[], scope: Record<string, Shape>,
         noteId(ctx, n.attrs, span);
         break;
       case "widget":
+      case "component":
         noteId(ctx, n.attrs, span);
         break;
       case "use":

@@ -9,10 +9,12 @@ import {
   type Severity,
 } from "@mdui/core";
 import { applyFixes, type FixSourceResult } from "./fix.js";
+import type { Catalog } from "@mdui/catalog";
 import type { LintConfig, Rule, RuleContext } from "./rule.js";
 import { a11yRules } from "./rules/a11y.js";
 import { semanticRules } from "./rules/semantic.js";
 import { structuralRules } from "./rules/structural.js";
+import { catalogRules } from "./rules/catalog.js";
 import { tokenRules } from "./rules/tokens.js";
 import { loadDesignSystem, type DesignSystem } from "@mdui/tokens";
 import { lastLine } from "./util.js";
@@ -22,6 +24,7 @@ export const ALL_RULES: Rule[] = [
   ...semanticRules,
   ...a11yRules,
   ...tokenRules,
+  ...catalogRules,
 ];
 
 export interface LintResult {
@@ -75,13 +78,20 @@ function suppressions(doc: Document): Suppression[] {
 /** Lint source text. Never throws. */
 export function lint(
   source: string,
-  opts: AnalyzeOptions & { config?: LintConfig; rules?: Rule[] } = {},
+  opts: AnalyzeOptions & { config?: LintConfig; rules?: Rule[]; catalog?: Catalog } = {},
 ): LintResult {
   const src = source.replace(/\r\n/g, "\n");
   const doc = parse(src);
   const analysis = analyze(doc, opts);
-  const diagnostics = [...doc.diagnostics, ...analysis.diagnostics];
-  const ctx: RuleContext = { source: src, doc, analysis, diagnostics };
+  let diagnostics = [...doc.diagnostics, ...analysis.diagnostics];
+  if (opts.catalog !== undefined) diagnostics = withoutKnownE1302(diagnostics, doc, opts.catalog);
+  const ctx: RuleContext = {
+    source: src,
+    doc,
+    analysis,
+    diagnostics,
+    ...(opts.catalog !== undefined ? { catalog: opts.catalog } : {}),
+  };
   const out: Diagnostic[] = [];
   const covered = new Set<Diagnostic>();
   const cover = (code: string, offset: number): void => {
@@ -226,4 +236,32 @@ export function lintDesignSystem(
   }
   out.sort((a, b) => a.span.start.line - b.span.start.line || a.code.localeCompare(b.code));
   return { designSystem: ds, diagnostics: out };
+}
+
+/** With a catalog, the parser's generic "unknown primitive" (E1302) no longer applies to components the catalog defines. */
+function withoutKnownE1302(diags: Diagnostic[], doc: Document, catalog: Catalog): Diagnostic[] {
+  const known = new Map<number, number>(); // line → how many catalog-known custom components sit on it
+  const bump = (line: number): void => void known.set(line, (known.get(line) ?? 0) + 1);
+  walkBlocks(doc.body, ({ node }) => {
+    const line = node.span.start.line;
+    if (node.kind === "block" && Object.hasOwn(catalog.components, node.name.toUpperCase()))
+      bump(line);
+    const runs =
+      node.kind === "line" || node.kind === "heading" || node.kind === "item"
+        ? [node.inline]
+        : node.kind === "table"
+          ? [...node.headerInline, ...node.rowsInline.flat()]
+          : [];
+    for (const run of runs)
+      for (const n of run)
+        if (n.kind === "component" && Object.hasOwn(catalog.components, n.name.toUpperCase()))
+          bump(line);
+  });
+  return diags.filter((d) => {
+    if (d.code !== "E1302") return true;
+    const left = known.get(d.span.start.line) ?? 0;
+    if (left === 0) return true;
+    known.set(d.span.start.line, left - 1);
+    return false;
+  });
 }

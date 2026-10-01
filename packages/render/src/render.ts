@@ -176,6 +176,8 @@ function inlineNode(n: InlineNode, ctx: Ctx): string {
     }
     case "widget":
       return widget(n, ctx);
+    case "component":
+      return `<div class="mdui-use" data-component="${esc(n.name)}"${attrString(n.attrs)}>${esc(n.name)}${n.raw === "" ? "" : `: ${esc(n.raw)}`}</div>`;
   }
 }
 
