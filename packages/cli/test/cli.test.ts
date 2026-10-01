@@ -189,6 +189,37 @@ describe("fmt", () => {
   });
 });
 
+describe("lint --fix and rules", () => {
+  it("--fix applies safe fixes in place and reports what remains", () => {
+    const files: Record<string, string> = { "/proj/a.ui.md": "a\n--- END ---\n::: CARD :::\nx\n" };
+    const m = memIo(files);
+    expect(main(["lint", "--fix", "a.ui.md"], m.io)).toBe(EXIT.ok);
+    expect(files["/proj/a.ui.md"]).toBe("a\n::: CARD :::\nx\n--- END ---\n");
+    expect(main(["lint", "a.ui.md"], memIo(files).io)).toBe(EXIT.ok);
+  });
+  it("without --fix nothing is written", () => {
+    const src = "--- END ---\nx\n";
+    const files: Record<string, string> = { "/proj/a.ui.md": src };
+    expect(main(["lint", "a.ui.md"], memIo(files).io)).toBe(EXIT.diagnostics);
+    expect(files["/proj/a.ui.md"]).toBe(src);
+  });
+  it("unused suppressions are reported as info", () => {
+    const m = memIo({ "/proj/a.ui.md": "<!-- mdui-disable link-text -->\nplain\n" });
+    expect(main(["lint", "a.ui.md"], m.io)).toBe(EXIT.ok);
+    expect(m.out()).toContain("I1501");
+  });
+  it("rules lists the catalogue (text and json)", () => {
+    const m = memIo({});
+    expect(main(["rules", "--json"], m.io)).toBe(EXIT.ok);
+    const j = JSON.parse(m.out()) as { rules: { id: string; wcag: string[] }[] };
+    expect(j.rules.length).toBeGreaterThanOrEqual(30);
+    expect(j.rules.find((r) => r.id === "img-alt")?.wcag).toEqual(["1.1.1"]);
+    const t = memIo({});
+    main(["rules"], t.io);
+    expect(t.out()).toMatch(/\d+ rules\n$/);
+  });
+});
+
 describe("render", () => {
   it("writes HTML to stdout or --out, honours --style/--state, exits 1 on errors", () => {
     const src =

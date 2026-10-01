@@ -9,6 +9,7 @@ export interface Args {
     config: string | undefined;
     compact: boolean;
     check: boolean;
+    fix: boolean;
     style: string | undefined;
     state: string | undefined;
     theme: string | undefined;
@@ -32,6 +33,7 @@ export function parseArgs(argv: string[]): Args {
       config: undefined,
       compact: false,
       check: false,
+      fix: false,
       style: undefined,
       state: undefined,
       theme: undefined,
@@ -50,6 +52,7 @@ export function parseArgs(argv: string[]): Args {
     else if (a === "--version" || a === "-v") out.flags.version = true;
     else if (a === "--compact") out.flags.compact = true;
     else if (a === "--check") out.flags.check = true;
+    else if (a === "--fix") out.flags.fix = true;
     else if (VALUE_FLAGS.includes(a) || VALUE_FLAGS.some((f) => a.startsWith(`${f}=`))) {
       const eq = a.indexOf("=");
       const name = eq === -1 ? a : a.slice(0, eq);

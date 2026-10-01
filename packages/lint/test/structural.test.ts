@@ -25,7 +25,7 @@ describe("structural rules (T-028)", () => {
     }
   });
 
-  it("the fixed examples pass cleanly", () => {
+  it("the shipped examples pass cleanly under every rule", () => {
     const dir = new URL("../../../examples/", import.meta.url);
     for (const f of readdirSync(dir).filter((x) => x.endsWith(".ui.md")))
       expect(lint(readFileSync(new URL(f, dir), "utf8")).diagnostics, f).toEqual([]);
@@ -36,6 +36,7 @@ describe("structural rules (T-028)", () => {
   it("orphan-closer", () => expect(rules("--- END ---\n")).toEqual(["orphan-closer:E1002@1"]));
   it("duplicate-id", () =>
     expect(rules("---\ndsl: 2.0\n---\n[ A ]{: #a }\n[ B ]{: #a }\n")).toEqual([
+      "document-language:I3114@1",
       "duplicate-id:E2001@5",
     ]));
   it("unknown-directive", () =>
@@ -43,13 +44,15 @@ describe("structural rules (T-028)", () => {
   it("empty-container", () =>
     expect(rules("::: CARD :::\n--- END ---\n")).toEqual(["empty-container:W1401@1"]));
   it("empty-container exempts EMPTY", () =>
-    expect(rules("---\ndsl: 2.0\n---\n::: EMPTY :::\n--- END ---\n")).toEqual([]));
+    expect(rules("---\ndsl: 2.0\nlang: en\n---\n::: EMPTY :::\n--- END ---\n")).toEqual([]));
   it("broken-link-or-include: empty target", () =>
     expect(rules("[Docs]()\n")).toEqual(["broken-link-or-include:W2601@1"]));
   it("broken-link-or-include: missing include", () =>
     expect(
-      rules("---\ndsl: 2.0\n---\n[[ USE: ./nope.ui.md ]]\n", { readFile: () => undefined }),
-    ).toEqual(["broken-link-or-include:E2304@4"]));
+      rules("---\ndsl: 2.0\nlang: en\n---\n[[ USE: ./nope.ui.md ]]\n", {
+        readFile: () => undefined,
+      }),
+    ).toEqual(["broken-link-or-include:E2304@5"]));
 
   it("severity can be overridden and rules turned off", () => {
     const r = lint("::: CARD :::\n--- END ---\n", {
@@ -62,8 +65,8 @@ describe("structural rules (T-028)", () => {
     ).toEqual([]);
   });
 
-  it("an unmapped syntax diagnostic is reported as rule `syntax`", () => {
-    expect(rules("<!-- oops\n")).toEqual(["syntax:E1003@1"]);
+  it("an unterminated comment is reported by its rule", () => {
+    expect(rules("<!-- oops\n")).toEqual(["unterminated-block:E1003@1"]);
   });
 
   it("turning off balanced-blocks does not resurface its diagnostics as `syntax`", () => {

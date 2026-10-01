@@ -854,7 +854,12 @@
     "id": "use-two-cycle",
     "input": "---\ndsl: 2.0\n---\n[[ USE: ./a.ui.md ]]\n",
     "expect": {
-      "diagnostics": []
+      "diagnostics": [
+        {
+          "code": "E2302",
+          "line": 4
+        }
+      ]
     },
     "since": "2.0",
     "files": {
@@ -862,7 +867,7 @@
       "b.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./a.ui.md ]]\n"
     },
     "file": "main.ui.md",
-    "notes": "the cycle is reported inside the partials (ResolvedInclude.diagnostics), not on main"
+    "notes": "the cycle is found inside the partials and surfaced at the include line"
   },
   {
     "id": "use-subdir-relative",
@@ -892,10 +897,15 @@
     "file": "main.ui.md"
   },
   {
-    "id": "use-depth-limit-reported-in-partial",
+    "id": "use-depth-limit-surfaced-at-include",
     "input": "---\ndsl: 2.0\n---\n[[ USE: ./p0.ui.md ]]\n",
     "expect": {
-      "diagnostics": []
+      "diagnostics": [
+        {
+          "code": "E2303",
+          "line": 4
+        }
+      ]
     },
     "since": "2.0",
     "files": {
@@ -914,7 +924,7 @@
       "p12.ui.md": "---\ndsl: 2.0\ntype: partial\n---\nx\n"
     },
     "file": "main.ui.md",
-    "notes": "depth > 8 is reported at the include that exceeds it, inside the chain"
+    "notes": "depth > 8 is detected inside the chain and surfaced at the include line"
   },
   {
     "id": "flow-ok",

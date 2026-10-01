@@ -1,3 +1,5 @@
+import { dict } from "./dict.js";
+
 /** Strict YAML-subset frontmatter parser (T-017, ADR-004). Anything outside the subset is a diagnostic, never a silent mis-parse. */
 
 export type Scalar = string | number | boolean | null;
@@ -111,7 +113,7 @@ function flow(s: string, ctx: Ctx, line: number): YamlValue {
   }
   const parts = splitTop(inner);
   if (open === "[") return parts.filter((p) => p.trim() !== "").map((p) => scalar(p, ctx, line));
-  const obj: { [key: string]: YamlValue } = {};
+  const obj: { [key: string]: YamlValue } = dict<YamlValue>();
   for (const p of parts) {
     if (p.trim() === "") continue;
     const m = /^\s*("(?:[^"\\]|\\.)*"|'(?:[^']|'')*'|[^:\s][^:]*?)\s*:\s*(.*)$/.exec(p);
@@ -165,7 +167,7 @@ export function parseFrontmatter(raw: string): FrontmatterResult {
     if (text.trim() === "") return;
     rows.push({ indent: line.length - line.trimStart().length, text: text.trim(), line: i + 1 });
   });
-  const data: FrontmatterData = {};
+  const data: FrontmatterData = dict<YamlValue>();
   let pos = 0;
 
   const block = (indent: number): YamlValue => {
@@ -192,7 +194,7 @@ export function parseFrontmatter(raw: string): FrontmatterResult {
     return out;
   };
   const map = (indent: number): { [key: string]: YamlValue } => {
-    const obj: { [key: string]: YamlValue } = {};
+    const obj: { [key: string]: YamlValue } = dict<YamlValue>();
     for (let r = rows[pos]; r !== undefined; r = rows[pos]) {
       if (r.indent < indent) break;
       if (r.indent > indent) {
@@ -209,7 +211,7 @@ export function parseFrontmatter(raw: string): FrontmatterResult {
       pos++;
       const key = String(scalar(m[1] as string, ctx, r.line));
       if (key === "<<") unsupported(ctx, r.line, "merge keys");
-      if (key in obj)
+      if (Object.hasOwn(obj, key))
         ctx.issues.push({ code: "E1103", line: r.line, message: `Duplicate key "${key}".` });
       const rest = m[2];
       let value: YamlValue;

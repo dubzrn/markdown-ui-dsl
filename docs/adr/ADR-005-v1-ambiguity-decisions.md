@@ -23,3 +23,11 @@ Every decision has ≥ 2 positive and ≥ 2 negative fixtures in `packages/spec/
 - **D13.** Emphasis never nests: inside `**…**` or `*…*`, further `*`/`_` stay literal. Found by the print-stability property test (`***` is ambiguous). Underscore emphasis only applies at word boundaries (`snake_case` is text).
 - **D14.** Code spans bind tighter than every other delimiter: closers inside `` `…` `` are not seen.
 - **D15.** A comma cannot be escaped inside dropdown options in 1.x (comma is not in the D7 escape set).
+
+## Addendum (T-030) — user text as object keys
+
+- **D16.** Every dictionary keyed by user text (attribute names, frontmatter keys, widget arguments, action registry, binding scopes,
+  data shapes, config rule ids) is a null-prototype object (`dict()`), and membership uses `Object.hasOwn`. Found by fast-check:
+  a body line `toString` parsed as a container because `OPENERS["toString"]` resolved to `Object.prototype.toString`.
+  Regression: `tests/prototype-keys.test.ts` pushes seven prototype-key words through every API.
+- **D17.** Attribute names must start with a letter, so `__proto__=1` is a malformed attribute (`E1301`), not an unknown key.

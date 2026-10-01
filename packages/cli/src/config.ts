@@ -14,7 +14,7 @@ export class ConfigError extends Error {}
 const KEYS = ["failOn", "root", "rules"];
 
 export function loadConfig(io: Io, explicit: string | undefined): Config {
-  const cfg: Config = { failOn: "error", root: ".", rules: {} };
+  const cfg: Config = { failOn: "error", root: ".", rules: Object.create(null) as Config["rules"] };
   const path = posix.resolve(io.cwd, explicit ?? "mdui.config.json");
   const text = io.readFile(path);
   if (text === undefined) {

@@ -1,68 +1,170 @@
 import {
   analyze,
   parse,
+  walkBlocks,
   type AnalyzeOptions,
+  type BlockNode,
   type Diagnostic,
   type Document,
   type Severity,
 } from "@mdui/core";
+import { applyFixes, type FixSourceResult } from "./fix.js";
 import type { LintConfig, Rule, RuleContext } from "./rule.js";
+import { a11yRules } from "./rules/a11y.js";
+import { semanticRules } from "./rules/semantic.js";
 import { structuralRules } from "./rules/structural.js";
+import { lastLine } from "./util.js";
 
-export const ALL_RULES: Rule[] = [...structuralRules];
+export const ALL_RULES: Rule[] = [...structuralRules, ...semanticRules, ...a11yRules];
 
 export interface LintResult {
   doc: Document;
   /** Rule findings sorted by position, plus un-mapped syntax diagnostics (rule `syntax`). */
   diagnostics: Diagnostic[];
+  /** Suppression comments that matched nothing (reported as info by the CLI). */
+  unusedSuppressions: { line: number; rules: string[] }[];
 }
 
-const sevOf = (s: "info" | "warn" | "error"): Severity => s;
+const SUPPRESS_RE = /^<!--\s*mdui-disable(?:\s+([\w,\s-]*?))?\s*-->$/;
+
+interface Suppression {
+  /** Comment line. */
+  at: number;
+  from: number;
+  to: number;
+  rules: Set<string> | "all";
+  used: boolean;
+}
+
+/** `<!-- mdui-disable rule[, rule] -->` silences findings inside the *next* sibling node only. */
+function suppressions(doc: Document): Suppression[] {
+  const out: Suppression[] = [];
+  const scan = (nodes: BlockNode[]): void => {
+    nodes.forEach((n, i) => {
+      if (n.kind === "comment") {
+        const m = SUPPRESS_RE.exec(n.text.trim());
+        const next = nodes.slice(i + 1).find((x) => x.kind !== "comment");
+        if (m !== null && next !== undefined) {
+          const list = (m[1] ?? "").split(/[,\s]+/).filter(Boolean);
+          out.push({
+            at: n.span.start.line,
+            from: next.span.start.line,
+            to: lastLine(next),
+            rules: list.length === 0 ? "all" : new Set(list),
+            used: false,
+          });
+        }
+      }
+    });
+  };
+  scan(doc.body);
+  walkBlocks(doc.body, ({ node }) => {
+    if ("children" in node && node.kind !== "list") scan(node.children as BlockNode[]);
+    if (node.kind === "list") node.children.forEach((it) => scan(it.children));
+  });
+  return out;
+}
 
 /** Lint source text. Never throws. */
 export function lint(
   source: string,
   opts: AnalyzeOptions & { config?: LintConfig; rules?: Rule[] } = {},
 ): LintResult {
-  const doc = parse(source);
+  const src = source.replace(/\r\n/g, "\n");
+  const doc = parse(src);
   const analysis = analyze(doc, opts);
   const diagnostics = [...doc.diagnostics, ...analysis.diagnostics];
-  const ctx: RuleContext = { doc, analysis, diagnostics };
+  const ctx: RuleContext = { source: src, doc, analysis, diagnostics };
   const out: Diagnostic[] = [];
   const covered = new Set<Diagnostic>();
+  const cover = (code: string, offset: number): void => {
+    for (const d of diagnostics)
+      if (d.code === code && d.span.start.offset === offset) covered.add(d);
+  };
   for (const rule of opts.rules ?? ALL_RULES) {
     const setting = opts.config?.rules?.[rule.id] ?? rule.defaultSeverity;
-    if (setting === "off") {
-      // still mark the rule's own diagnostics as covered so they are not re-reported as `syntax`
-      rule.check(ctx, (f) => {
-        for (const d of diagnostics)
-          if (d.code === f.code && d.span.start.offset === f.span.start.offset) covered.add(d);
-      });
-      continue;
-    }
     rule.check(ctx, (f) => {
-      out.push({
+      cover(f.code, f.span.start.offset);
+      if (setting === "off") return;
+      const d: Diagnostic = {
         code: f.code,
-        severity: sevOf(setting),
+        severity: setting as Severity,
         message: f.message,
         span: f.span,
         rule: rule.id,
-      });
-      for (const d of diagnostics)
-        if (d.code === f.code && d.span.start.offset === f.span.start.offset) covered.add(d);
+      };
+      if (f.fix !== undefined) d.fix = f.fix;
+      out.push(d);
     });
   }
   for (const d of diagnostics) if (!covered.has(d)) out.push({ ...d, rule: "syntax" });
-  out.sort((a, b) => a.span.start.offset - b.span.start.offset || a.code.localeCompare(b.code));
-  return { doc, diagnostics: dedupe(out) };
+
+  const sups = suppressions(doc);
+  const kept = out.filter((d) => {
+    let dropped = false;
+    for (const s of sups) {
+      const line = d.span.start.line;
+      if (line >= s.from && line <= s.to && (s.rules === "all" || s.rules.has(d.rule ?? ""))) {
+        s.used = true;
+        dropped = true;
+      }
+    }
+    return !dropped;
+  });
+  kept.sort((a, b) => a.span.start.offset - b.span.start.offset || a.code.localeCompare(b.code));
+  return {
+    doc,
+    diagnostics: dedupe(kept),
+    unusedSuppressions: sups
+      .filter((s) => !s.used)
+      .map((s) => ({ line: s.at, rules: s.rules === "all" ? [] : [...s.rules] })),
+  };
 }
 
 function dedupe(list: Diagnostic[]): Diagnostic[] {
   const seen = new Set<string>();
   return list.filter((d) => {
-    const k = `${d.code}@${d.span.start.offset}@${d.message}`;
+    const k = `${d.code}@${d.span.start.offset}@${d.message}@${d.rule ?? ""}`;
     if (seen.has(k)) return false;
     seen.add(k);
     return true;
   });
+}
+
+const measure = (r: LintResult): [number, number] => [
+  r.diagnostics.filter((d) => d.severity === "error").length,
+  r.diagnostics.length,
+];
+const better = (a: [number, number], b: [number, number]): boolean =>
+  a[0] < b[0] || (a[0] === b[0] && a[1] < b[1]);
+
+/**
+ * Verified fixing. Fixes can interact through the parser (deleting a line may turn the next one into a table row or a
+ * frontmatter fence), so each fix is applied alone, the result re-linted, and the fix kept only if the document strictly
+ * improves (fewer errors, then fewer diagnostics). Repeats until no fix helps, so `fixSource(fixSource(x)) = fixSource(x)`.
+ */
+export function fixSource(source: string, opts: Parameters<typeof lint>[1] = {}): FixSourceResult {
+  let text = source.replace(/\r\n/g, "\n");
+  let applied = 0;
+  let rejected: { code: string; line: number }[] = [];
+  for (let round = 0; round < 100; round++) {
+    const cur = lint(text, opts);
+    const m = measure(cur);
+    rejected = [];
+    let progressed = false;
+    for (const d of cur.diagnostics) {
+      if (d.fix === undefined || d.fix.length === 0) continue;
+      const candidate = applyFixes(text, [d]).text;
+      if (candidate === text) continue;
+      if (better(measure(lint(candidate, opts)), m)) {
+        text = candidate;
+        applied++;
+        progressed = true;
+        break;
+      }
+      rejected.push({ code: d.code, line: d.span.start.line });
+    }
+    if (!progressed) break;
+  }
+  return { text, applied, rejected };
 }

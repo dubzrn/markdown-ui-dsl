@@ -1,3 +1,5 @@
+import { dict } from "./dict.js";
+
 /** Attribute lists `{: #id .class key=value flag }` (RFC-0001 §3a). */
 
 export interface Attrs {
@@ -24,11 +26,11 @@ const RESERVED_STRINGS = [
   "lang",
 ];
 const RESERVED_NUMBERS = ["min", "max", "step", "maxlength"];
-const ENUMS: Record<string, readonly string[]> = {
+const ENUMS: Record<string, readonly string[]> = dict<readonly string[]>({
   live: ["polite", "assertive"],
   scroll: ["x", "y", "both"],
   dir: ["ltr", "rtl"],
-};
+});
 export const RESERVED_KEYS = [
   ...RESERVED_FLAGS,
   ...RESERVED_STRINGS,
@@ -62,7 +64,7 @@ function tokens(src: string): string[] {
 }
 
 export function parseAttrs(src: string): { attrs: Attrs; issues: AttrIssue[] } {
-  const attrs: Attrs = { classes: [], props: {} };
+  const attrs: Attrs = { classes: [], props: dict<string | true>() };
   const issues: AttrIssue[] = [];
   for (const tok of tokens(src)) {
     if (tok.startsWith("#") && /^#[A-Za-z][\w-]*$/.test(tok)) {

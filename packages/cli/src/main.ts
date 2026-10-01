@@ -1,6 +1,6 @@
 import { posix } from "node:path";
 import { analyze, format, parse, type Diagnostic, type Severity } from "@mdui/core";
-import { lint } from "@mdui/lint";
+import { ALL_RULES, fixSource, lint } from "@mdui/lint";
 import { render } from "@mdui/render";
 import { parseArgs, UsageError, type Args } from "./args.js";
 import { ConfigError, loadConfig, type Config, type FailOn } from "./config.js";
@@ -18,7 +18,8 @@ Usage: mdui <command> [options] <files|dirs|globs...>
 
 Commands:
   validate   Parse and analyse; report syntax and semantic diagnostics
-  lint       Validate plus the rule catalogue (see mdui.config.json "rules")
+  lint       Validate plus the rule catalogue (see mdui.config.json "rules"); --fix applies safe fixes
+  rules      List the lint rules (--json for machine output)
   ast        Print the JSON AST of one file
   render     Render one file to HTML (--style sketch|clean|wireframe|none, --state, --theme, --out)
   fmt        Canonical formatting (rewrites files; --check only reports)
@@ -28,6 +29,7 @@ Options:
   --fail-on <level>  error (default) | warn | info | none
   --config <path>    Config file (default: ./mdui.config.json)
   --compact          ast: single-line JSON
+  --fix              lint: apply fixes in place (overlapping fixes are skipped)
   --check            fmt: do not write; exit 1 if any file would change
   -h, --help         Show this help
   -v, --version      Show the version
@@ -91,8 +93,31 @@ function readSource(io: Io, root: string, file: string): string | undefined {
   return io.readFile(posix.resolve(io.cwd, file)) ?? io.readFile(posix.resolve(root, file));
 }
 
+function listRules(io: Io, json: boolean): number {
+  const rows = ALL_RULES.map((r) => ({
+    id: r.id,
+    category: r.category,
+    severity: r.defaultSeverity,
+    codes: r.codes,
+    wcag: r.wcag ?? [],
+    fixable: r.fixable === true,
+    description: r.description,
+  }));
+  if (json)
+    io.stdout(JSON.stringify({ tool: "mdui", version: 1, command: "rules", rules: rows }) + "\n");
+  else {
+    for (const r of rows)
+      io.stdout(
+        `${r.id.padEnd(30)} ${r.severity.padEnd(6)} ${r.codes.join(",").padEnd(22)} ${r.category}${r.fixable ? " (fixable)" : ""}\n`,
+      );
+    io.stdout(`${rows.length} rules\n`);
+  }
+  return EXIT.ok;
+}
+
 function run(io: Io, args: Args, cfg: Config): number {
   const cmd = args.command as string;
+  if (cmd === "rules") return listRules(io, args.flags.json);
   const root = posix.resolve(io.cwd, cfg.root);
   const failOn = (args.flags.failOn ?? cfg.failOn) as FailOn;
   if (!["error", "warn", "info", "none"].includes(failOn))
@@ -180,12 +205,32 @@ function run(io: Io, args: Args, cfg: Config): number {
 
   const reports: FileReport[] = files.map((file) => {
     const src = readSource(io, root, file) as string;
-    if (cmd === "lint")
-      return {
-        file,
-        diagnostics: lint(src, { file: rel(file), readFile, config: { rules: cfg.rules } })
-          .diagnostics,
-      };
+    if (cmd === "lint") {
+      const opts = { file: rel(file), readFile, config: { rules: cfg.rules } };
+      let result = lint(src, opts);
+      if (args.flags.fix) {
+        const fixed = fixSource(src, opts);
+        if (fixed.text !== src.replace(/\r\n/g, "\n")) {
+          io.writeFile(posix.resolve(io.cwd, file), fixed.text);
+          result = lint(fixed.text, opts);
+        }
+        for (const rj of fixed.rejected)
+          io.stderr(
+            `${file}:${rj.line} fix for ${rj.code} skipped: it would not improve the document\n`,
+          );
+      }
+      const unused: Diagnostic[] = result.unusedSuppressions.map((u) => {
+        const p = { line: u.line, col: 1, offset: 0 };
+        return {
+          code: "I1501",
+          severity: "info",
+          message: `Suppression${u.rules.length > 0 ? ` of ${u.rules.join(", ")}` : ""} matched nothing.`,
+          span: { start: p, end: p },
+          rule: "unused-suppression",
+        };
+      });
+      return { file, diagnostics: [...result.diagnostics, ...unused] };
+    }
     const doc = parse(src);
     const a = analyze(doc, { file: rel(file), readFile });
     return {
@@ -201,7 +246,7 @@ function run(io: Io, args: Args, cfg: Config): number {
     : EXIT.ok;
 }
 
-const COMMANDS = ["validate", "lint", "ast", "fmt", "render"];
+const COMMANDS = ["validate", "lint", "ast", "fmt", "render", "rules"];
 
 /** CLI entry. Never throws; returns the process exit code. */
 export function main(argv: string[], io: Io): number {

@@ -77,6 +77,7 @@ export const CODES = {
     summary: "Malformed flow document (Screens table or Transitions list).",
   },
   E2502: { severity: "error", summary: "Invalid action registry entry." },
+  E2306: { severity: "error", summary: "An included file has errors." },
   E2401: {
     severity: "error",
     summary: "Flow transition names an action the source screen does not define.",
@@ -86,6 +87,55 @@ export const CODES = {
   W3201: { severity: "warn", summary: "REGION with states has no `default` state." },
   W1401: { severity: "warn", summary: "Container has no content." },
   W2601: { severity: "warn", summary: "Link or button has an empty target." },
+  I1501: { severity: "info", summary: "A `mdui-disable` comment suppressed nothing." },
+  W2701: { severity: "warn", summary: "Containers are nested deeper than 8 levels." },
+  W3101: {
+    severity: "warn",
+    summary: "Form control has no accessible name (label or placeholder).",
+  },
+  W3102: { severity: "warn", summary: "Image placeholder has no useful text alternative." },
+  W3103: { severity: "warn", summary: "Heading level skips (e.g. h1 → h3)." },
+  W3104: { severity: "warn", summary: "Document should have exactly one level-1 heading." },
+  W3105: { severity: "warn", summary: "Button text is empty or has no readable characters." },
+  W3106: {
+    severity: "warn",
+    summary: 'Link text is empty or not descriptive ("click here", "more").',
+  },
+  W3107: {
+    severity: "warn",
+    summary: "Landmark (HEADER/FOOTER) repeated without a distinguishing label.",
+  },
+  I3108: {
+    severity: "info",
+    summary:
+      "Adjacent interactive targets: ensure 24×24 CSS px size or spacing (WCAG 2.2 SC 2.5.8).",
+  },
+  W3109: {
+    severity: "warn",
+    summary: "`live` region attribute used on a control or with `assertive` outside an alert.",
+  },
+  W3110: { severity: "warn", summary: "Heading has no text." },
+  W3111: { severity: "warn", summary: "Table has an empty header cell." },
+  W3112: {
+    severity: "warn",
+    summary: "Tabs must have distinct labels and exactly one active tab.",
+  },
+  W3113: { severity: "warn", summary: "MODAL has no accessible name (heading or `label`)." },
+  I3114: { severity: "info", summary: "Document declares no `lang`." },
+  E4001: { severity: "error", summary: "Design token reference does not resolve." },
+  W4002: { severity: "warn", summary: "Token pair fails WCAG AA contrast (4.5:1)." },
+  I4003: { severity: "info", summary: "Token is defined but never referenced." },
+  W4004: { severity: "warn", summary: "Unknown breakpoint in the design system." },
+  W4005: { severity: "warn", summary: "Design system defines no primary color." },
+  W5101: { severity: "warn", summary: "Flow screen is unreachable from `start`." },
+  W5102: {
+    severity: "warn",
+    summary: "Flow screen is a dead end (not terminal, no outgoing transition).",
+  },
+  W5201: {
+    severity: "warn",
+    summary: "Button triggers a destructive action that has no `confirm`.",
+  },
   W1201: {
     severity: "warn",
     summary: "Unknown breakpoint in a responsive directive; treated as a plain hint.",

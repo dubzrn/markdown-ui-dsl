@@ -1,4 +1,5 @@
 /** Data shapes for validating `{{ path }}` bindings against `data:` (RFC-0001 §3c). */
+import { dict } from "./dict.js";
 import type { YamlValue } from "./frontmatter.js";
 
 export type Shape =
@@ -13,7 +14,7 @@ export const ANY: Shape = { kind: "any" };
 export function shapeOfValue(v: unknown): Shape {
   if (Array.isArray(v)) return { kind: "arr", item: v.length > 0 ? shapeOfValue(v[0]) : ANY };
   if (v !== null && typeof v === "object") {
-    const props: Record<string, Shape> = {};
+    const props: Record<string, Shape> = dict<Shape>();
     for (const [k, x] of Object.entries(v as Record<string, unknown>)) props[k] = shapeOfValue(x);
     return { kind: "obj", props };
   }
@@ -25,7 +26,7 @@ export function shapeOfSchema(s: unknown): Shape {
   if (s === null || typeof s !== "object") return ANY;
   const o = s as Record<string, unknown>;
   if (o["properties"] !== undefined && typeof o["properties"] === "object") {
-    const props: Record<string, Shape> = {};
+    const props: Record<string, Shape> = dict<Shape>();
     for (const [k, x] of Object.entries(o["properties"] as Record<string, unknown>))
       props[k] = shapeOfSchema(x);
     return { kind: "obj", props };
@@ -57,7 +58,7 @@ export function resolvePath(shape: Shape, path: string): Shape | undefined {
     if (cur.kind === "any") return ANY;
     if (m[1] !== undefined) {
       if (cur.kind !== "obj") return undefined;
-      const next: Shape | undefined = cur.props[m[1]];
+      const next: Shape | undefined = Object.hasOwn(cur.props, m[1]) ? cur.props[m[1]] : undefined;
       if (next === undefined) return undefined;
       cur = next;
     } else {

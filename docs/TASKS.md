@@ -69,7 +69,11 @@
 | T-042 | done | `StreamParser`: committed (final) vs tail (replaced) updates; final doc == batch over 12k random docs/chunkings; committed never retract; half-typed `{: ` / `[[ USE` / frontmatter / CRLF splits covered |
 | T-044 | done | `pnpm bench` (parse/format/lint/render/stream chunk), budgets tuned from data and recorded in SPEC §6, `--check` enforced in CI, baseline committed (`bench/baseline.json`) |
 | **Checkpoint 2** | partial | formatter ✓, preview (render) ✓, streaming ✓, perf ✓; diff, tokens, lint ≥ 30 rules pending |
-| T-030 | next | lint engine completion |
+| T-030 | done | config severities, `<!-- mdui-disable rule -->` (next node only; unused ones reported as I1501), `--fix` via verified `fixSource` (one fix at a time, re-lint, keep only if strictly better; idempotent by construction; 10k-doc property) |
+| T-031 | done | 15 semantic/flow rules (unresolved-binding, invalid-attribute, missing-default-state, unknown-action, flow-references, include-cycle, invalid-construct, frontmatter-valid, unterminated-block, table-shape, data-file, nesting-depth, destructive-without-confirm, flow-unreachable-screen, flow-dead-end), each with pass/fail fixtures |
+| T-032 | done | 14 a11y rules incl. the 9 named in the task; WCAG mapping limited to criteria confirmed by axe-core rule tags (canonical W3C text unreachable: 403) — `docs/LINT_RULES.md` generated, review against W3C before release |
+| **lint rule count** | 35 (≥ 30 asserted by test); token rules (T-039) will add 5 | |
+| T-035 | next | semantic diff |
 
 ### T-001 · Fix example and documentation defects
 `S` · Deps: — · Implements: **QLT-04** · REQ: REQ-QLT-04

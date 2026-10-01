@@ -36,3 +36,4 @@ export { format, equivalent, renderUnchecked } from "./format.js";
 export type { FormatResult } from "./format.js";
 export { StreamParser, parseStream } from "./stream.js";
 export type { StreamUpdate } from "./stream.js";
+export { dict } from "./dict.js";

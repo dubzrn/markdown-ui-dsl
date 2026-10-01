@@ -1,3 +1,5 @@
+import { dict } from "./dict.js";
+
 /** DSL 2.0 widget primitives `[ KIND: args ]` (RFC-0001 §3b). */
 
 export const WIDGET_KINDS = [
@@ -37,7 +39,7 @@ export function parseArgs(raw: string): WidgetArgs {
     } else cur += ch;
   }
   if (cur !== "") toks.push(cur);
-  const out: WidgetArgs = { positional: [], named: {} };
+  const out: WidgetArgs = { positional: [], named: dict<string>() };
   const unq = (s: string): string =>
     s.length >= 2 && s.startsWith('"') && s.endsWith('"') ? s.slice(1, -1) : s;
   for (const t of toks) {

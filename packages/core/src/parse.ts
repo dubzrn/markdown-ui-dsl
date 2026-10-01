@@ -11,10 +11,11 @@ import type {
 } from "./ast.js";
 import { dslVersion, parseFrontmatter, type FrontmatterData } from "./frontmatter.js";
 import { parseAttrs, splitAttrs, type Attrs } from "./attrs.js";
+import { dict } from "./dict.js";
 import { parseInline, type InlineIssue, type InlineNode } from "./inline.js";
 import { makeDiagnostic, type Diagnostic, type Pos, type Span } from "./diagnostics.js";
 
-const OPENERS: Record<string, ContainerKind> = {
+const OPENERS: Record<string, ContainerKind> = dict<ContainerKind>({
   "||| COLUMN |||": "column",
   "=== ROW ===": "row",
   "::: CARD :::": "card",
@@ -23,7 +24,7 @@ const OPENERS: Record<string, ContainerKind> = {
   "::: FOOTER :::": "footer",
   "::: BUBBLE USER :::": "bubble-user",
   "::: BUBBLE AGENT :::": "bubble-agent",
-};
+});
 const BREAKPOINTS = ["sm", "md", "lg", "xl"] as const;
 
 const END_RE = /^\s*--- END ---\s*$/;

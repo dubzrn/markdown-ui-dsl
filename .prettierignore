@@ -12,3 +12,4 @@ pnpm-lock.yaml
 .tools/
 packages/spec/schema/ast.schema.json
 packages/*/test/golden/
+docs/LINT_RULES.md

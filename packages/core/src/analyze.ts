@@ -1,4 +1,5 @@
 /** Semantic analysis: ids, regions/states, data bindings, actions, includes, flows (T-022, T-023, T-025, T-026). */
+import { dict } from "./dict.js";
 import type { Attrs } from "./attrs.js";
 import type { BlockNode, Document, NamedBlockNode } from "./ast.js";
 import { makeDiagnostic, type Diagnostic, type DiagnosticCode, type Span } from "./diagnostics.js";
@@ -104,14 +105,16 @@ function checkBinding(ctx: Ctx, path: string, scope: Record<string, Shape>, span
       add(ctx, "E2101", span, `\`props\` is only available inside partials (${path}).`);
     return;
   }
-  if (head in scope) {
+  if (Object.hasOwn(scope, head)) {
     if (resolvePath({ kind: "obj", props: scope }, path) === undefined)
       add(ctx, "E2101", span, `"${path}" is not in scope.`);
     return;
   }
   if (ctx.root === undefined) return; // no `data:` declared: nothing to validate against
   const merged: Shape =
-    ctx.root.kind === "obj" ? { kind: "obj", props: { ...ctx.root.props, ...scope } } : ctx.root;
+    ctx.root.kind === "obj"
+      ? { kind: "obj", props: dict<Shape>({ ...ctx.root.props, ...scope }) }
+      : ctx.root;
   if (resolvePath(merged, path) === undefined)
     add(ctx, "E2101", span, `"${path}" is not in the declared data.`);
 }
@@ -134,7 +137,7 @@ function inlineChecks(ctx: Ctx, run: InlineNode[], scope: Record<string, Shape>,
         scanString(ctx, n.label, scope, span);
         if (n.action?.startsWith("#") && Object.keys(ctx.actions).length > 0) {
           const name = n.action.slice(1);
-          if (!(name in ctx.actions))
+          if (!Object.hasOwn(ctx.actions, name))
             add(ctx, "E2501", span, `Action "${name}" is not in the actions registry.`);
         }
         noteId(ctx, n.attrs, span);
@@ -247,6 +250,13 @@ function includeUse(ctx: Ctx, rel: string, span: Span): void {
   const r = analyze(sub, { ...ctx.opts, file: target }, [...ctx.stack, here]);
   rec.diagnostics = [...sub.diagnostics, ...r.diagnostics];
   rec.includes = r.includes;
+  // Surface the first error found inside the include at the `[[ USE ]]` line, so linting the includer sees it.
+  const inner = rec.diagnostics.find((d) => d.severity === "error");
+  if (inner !== undefined) {
+    const code: DiagnosticCode =
+      inner.code === "E2302" || inner.code === "E2303" ? inner.code : "E2306";
+    add(ctx, code, span, `In "${target}" line ${inner.span.start.line}: ${inner.message}`);
+  }
 }
 
 function visit(
@@ -307,16 +317,15 @@ function visit(
           const path = m[2] as string;
           checkBinding(ctx, path, scope, span);
           const head = /^[A-Za-z_][\w-]*/.exec(path)?.[0] ?? "";
-          const base: Shape | undefined =
-            head in scope
-              ? resolvePath({ kind: "obj", props: scope }, path)
-              : ctx.root === undefined
-                ? ANY
-                : resolvePath(ctx.root, path);
+          const base: Shape | undefined = Object.hasOwn(scope, head)
+            ? resolvePath({ kind: "obj", props: scope }, path)
+            : ctx.root === undefined
+              ? ANY
+              : resolvePath(ctx.root, path);
           const item: Shape = base?.kind === "arr" ? base.item : ANY;
           if (base !== undefined && base.kind !== "arr" && base.kind !== "any")
             add(ctx, "E1303", span, `"${path}" is not a list.`);
-          inner = { ...scope, [alias]: item };
+          inner = dict<Shape>({ ...scope, [alias]: item });
         }
       } else if (n.name === "if") {
         const m = /^(!?)(\S+)$/.exec(a);
@@ -344,7 +353,7 @@ export function analyze(
     out: [],
     ids: new Map(),
     root: undefined,
-    actions: {},
+    actions: dict<ActionDef>(),
     includes: [],
   };
   const result: AnalyzeResult = {
@@ -355,7 +364,7 @@ export function analyze(
   if (doc.dsl !== "2.0") return result;
   loadData(ctx);
   loadActions(ctx);
-  visit(ctx, doc.body, {}, undefined);
+  visit(ctx, doc.body, dict<Shape>(), undefined);
   if (doc.meta["type"] === "flow") {
     const flow = extractFlow(doc);
     result.flow = flow;
