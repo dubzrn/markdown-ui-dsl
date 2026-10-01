@@ -15,7 +15,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "changeset": "changeset",
-    "check": "pnpm build && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test"
+    "mdui": "node packages/cli/dist/bin.js",
+    "schema:check": "node scripts/gen-ast-schema.mjs --check",
+    "check": "pnpm schema:check && pnpm build && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test"
   },
   "devDependencies": {
     "@changesets/cli": "3.0.3",

@@ -1,0 +1,1072 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dubzrn/markdown-ui-dsl/schema/ast-2.0.schema.json",
+  "title": "Markdown UI DSL document AST (DSL 2.0)",
+  "description": "JSON form of @mdui/core's Document. The $id encodes the DSL version; breaking changes bump it (see packages/spec/schema/README.md).",
+  "type": "object",
+  "required": [
+    "meta",
+    "dsl",
+    "body",
+    "diagnostics",
+    "lineStarts"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "frontmatter": {
+      "$ref": "#/$defs/Frontmatter"
+    },
+    "meta": {
+      "type": "object"
+    },
+    "dsl": {
+      "enum": [
+        "1",
+        "2.0"
+      ]
+    },
+    "body": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Block"
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Diagnostic"
+      }
+    },
+    "lineStarts": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      }
+    }
+  },
+  "$defs": {
+    "Pos": {
+      "type": "object",
+      "properties": {
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "col": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "line",
+        "col",
+        "offset"
+      ],
+      "additionalProperties": false
+    },
+    "Span": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/Pos"
+        },
+        "end": {
+          "$ref": "#/$defs/Pos"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "additionalProperties": false
+    },
+    "Attrs": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "classes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "props": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "const": true
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "classes",
+        "props"
+      ],
+      "additionalProperties": false
+    },
+    "Diagnostic": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[EWI][1-7][0-9]{3}$"
+        },
+        "rule": {
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "error",
+            "warn",
+            "info"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "fix": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "span": {
+                "$ref": "#/$defs/Span"
+              },
+              "newText": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "span",
+              "newText"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "message",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "Inline": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/InlineText"
+        },
+        {
+          "$ref": "#/$defs/InlineStrong"
+        },
+        {
+          "$ref": "#/$defs/InlineEm"
+        },
+        {
+          "$ref": "#/$defs/InlineCode"
+        },
+        {
+          "$ref": "#/$defs/InlineButton"
+        },
+        {
+          "$ref": "#/$defs/InlineLink"
+        },
+        {
+          "$ref": "#/$defs/InlineInput"
+        },
+        {
+          "$ref": "#/$defs/InlineImage"
+        },
+        {
+          "$ref": "#/$defs/InlineBadge"
+        },
+        {
+          "$ref": "#/$defs/InlineCheckbox"
+        },
+        {
+          "$ref": "#/$defs/InlineRadio"
+        },
+        {
+          "$ref": "#/$defs/InlineToggle"
+        },
+        {
+          "$ref": "#/$defs/InlineDropdown"
+        },
+        {
+          "$ref": "#/$defs/InlineWidget"
+        },
+        {
+          "$ref": "#/$defs/InlineBinding"
+        },
+        {
+          "$ref": "#/$defs/InlineUse"
+        }
+      ]
+    },
+    "InlineText": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "text"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "InlineStrong": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "strong"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Inline"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "children"
+      ],
+      "additionalProperties": false
+    },
+    "InlineEm": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "em"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Inline"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "children"
+      ],
+      "additionalProperties": false
+    },
+    "InlineCode": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "code"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "InlineButton": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "button"
+        },
+        "label": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "attrs": {
+          "$ref": "#/$defs/Attrs"
+        }
+      },
+      "required": [
+        "kind",
+        "label"
+      ],
+      "additionalProperties": false
+    },
+    "InlineLink": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "link"
+        },
+        "label": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "attrs": {
+          "$ref": "#/$defs/Attrs"
+        }
+      },
+      "required": [
+        "kind",
+        "label",
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    "InlineInput": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "input"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "attrs": {
+          "$ref": "#/$defs/Attrs"
+        }
+      },
+      "required": [
+        "kind",
+        "placeholder"
+      ],
+      "additionalProperties": false
+    },
+    "InlineImage": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "image"
+        },
+        "description": {
+          "type": "string"
+        },
+        "attrs": {
+          "$ref": "#/$defs/Attrs"
+        }
+      },
+      "required": [
+        "kind",
+        "description"
+      ],
+      "additionalProperties": false
+    },
+    "InlineBadge": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "badge"
+        },
+        "label": {
+          "type": "string"
+        },
+        "attrs": {
+          "$ref": "#/$defs/Attrs"
+        }
+      },
+      "required": [
+        "kind",
+        "label"
+      ],
+      "additionalProperties": false
+    },
+    "InlineCheckbox": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "checkbox"
+        },
+        "checked": {
+          "type": "boolean"
+        },
+        "label": {
+          "type": "string"
+        },
+        "attrs": {
+          "$ref": "#/$defs/Attrs"
+        }
+      },
+      "required": [
+        "kind",
+        "checked",
+        "label"
+      ],
+      "additionalProperties": false
+    },
+    "InlineRadio": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "radio"
+        },
+        "checked": {
+          "type": "boolean"
+        },
+        "label": {
+          "type": "string"
+        },
+        "attrs": {
+          "$ref": "#/$defs/Attrs"
+        }
+      },
+      "required": [
+        "kind",
+        "checked",
+        "label"
+      ],
+      "additionalProperties": false
+    },
+    "InlineToggle": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "toggle"
+        },
+        "on": {
+          "type": "boolean"
+        },
+        "label": {
+          "type": "string"
+        },
+        "attrs": {
+          "$ref": "#/$defs/Attrs"
+        }
+      },
+      "required": [
+        "kind",
+        "on",
+        "label"
+      ],
+      "additionalProperties": false
+    },
+    "InlineDropdown": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "dropdown"
+        },
+        "label": {
+          "type": "string"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dynamic": {
+          "type": "string"
+        },
+        "attrs": {
+          "$ref": "#/$defs/Attrs"
+        }
+      },
+      "required": [
+        "kind",
+        "label"
+      ],
+      "additionalProperties": false
+    },
+    "InlineWidget": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "widget"
+        },
+        "widget": {
+          "enum": [
+            "slider",
+            "date",
+            "file",
+            "progress",
+            "chart",
+            "stat",
+            "skeleton",
+            "avatar",
+            "icon",
+            "crumbs",
+            "pager",
+            "stepper",
+            "menubar"
+          ]
+        },
+        "raw": {
+          "type": "string"
+        },
+        "args": {
+          "type": "object",
+          "properties": {
+            "positional": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "named": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "positional",
+            "named"
+          ],
+          "additionalProperties": false
+        },
+        "attrs": {
+          "$ref": "#/$defs/Attrs"
+        }
+      },
+      "required": [
+        "kind",
+        "widget",
+        "raw",
+        "args"
+      ],
+      "additionalProperties": false
+    },
+    "InlineBinding": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "binding"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "InlineUse": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "use"
+        },
+        "path": {
+          "type": "string"
+        },
+        "attrs": {
+          "$ref": "#/$defs/Attrs"
+        }
+      },
+      "required": [
+        "kind",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "Block": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/Container"
+        },
+        {
+          "$ref": "#/$defs/NamedBlock"
+        },
+        {
+          "$ref": "#/$defs/Line"
+        },
+        {
+          "$ref": "#/$defs/Heading"
+        },
+        {
+          "$ref": "#/$defs/Hint"
+        },
+        {
+          "$ref": "#/$defs/Directive"
+        },
+        {
+          "$ref": "#/$defs/Comment"
+        },
+        {
+          "$ref": "#/$defs/Divider"
+        },
+        {
+          "$ref": "#/$defs/Code"
+        },
+        {
+          "$ref": "#/$defs/Tabs"
+        },
+        {
+          "$ref": "#/$defs/Table"
+        },
+        {
+          "$ref": "#/$defs/List"
+        }
+      ]
+    },
+    "Container": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "column",
+            "row",
+            "card",
+            "modal",
+            "header",
+            "footer",
+            "bubble-user",
+            "bubble-agent"
+          ]
+        },
+        "attrs": {
+          "$ref": "#/$defs/Attrs"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Block"
+          }
+        },
+        "closed": {
+          "type": "boolean"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "kind",
+        "children",
+        "closed",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "NamedBlock": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "block"
+        },
+        "name": {
+          "type": "string"
+        },
+        "args": {
+          "type": "string"
+        },
+        "attrs": {
+          "$ref": "#/$defs/Attrs"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Block"
+          }
+        },
+        "closed": {
+          "type": "boolean"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "kind",
+        "name",
+        "args",
+        "children",
+        "closed",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "Line": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "line"
+        },
+        "text": {
+          "type": "string"
+        },
+        "inline": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Inline"
+          }
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "kind",
+        "text",
+        "inline",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "Heading": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "heading"
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6
+        },
+        "text": {
+          "type": "string"
+        },
+        "inline": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Inline"
+          }
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "kind",
+        "level",
+        "text",
+        "inline",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "Hint": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "hint"
+        },
+        "text": {
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "kind",
+        "text",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "Directive": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "directive"
+        },
+        "breakpoint": {
+          "enum": [
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
+        "env": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tokens": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "kind",
+        "env",
+        "tokens",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "Comment": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "comment"
+        },
+        "text": {
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "kind",
+        "text",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "Divider": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "divider"
+        },
+        "label": {
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "kind",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "Code": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "code"
+        },
+        "info": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "kind",
+        "info",
+        "text",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "Tabs": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "tabs"
+        },
+        "tabs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "active": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "label",
+              "active"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "kind",
+        "tabs",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "Table": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "table"
+        },
+        "header": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "headerInline": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Inline"
+            }
+          }
+        },
+        "rowsInline": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Inline"
+              }
+            }
+          }
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "kind",
+        "header",
+        "rows",
+        "headerInline",
+        "rowsInline",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "List": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "list"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Item"
+          }
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "kind",
+        "children",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "Item": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "item"
+        },
+        "ordered": {
+          "type": "boolean"
+        },
+        "text": {
+          "type": "string"
+        },
+        "inline": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Inline"
+          }
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Block"
+          }
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "kind",
+        "ordered",
+        "text",
+        "inline",
+        "children",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "Frontmatter": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "frontmatter"
+        },
+        "raw": {
+          "type": "string"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "kind",
+        "raw",
+        "span"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -10,3 +10,4 @@ docs/
 dist/
 pnpm-lock.yaml
 .tools/
+packages/spec/schema/ast.schema.json

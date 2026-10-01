@@ -28,6 +28,7 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm schema:check
       - run: pnpm lint
       - run: pnpm format:check
       - run: pnpm build # core's typecheck needs @mdui/spec's built types
@@ -48,11 +49,19 @@ jobs:
       - run: pnpm build
 
   example-gate:
-    name: example gate (balanced containers)
+    name: example gate (mdui lint)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: python3 scripts/check-examples.py
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: node packages/cli/dist/bin.js lint examples bench/sp4 --fail-on warn
+      - run: python3 scripts/check-examples.py # independent balance check (kept as a cross-check of the parser)
 
   traceability:
     runs-on: ubuntu-latest

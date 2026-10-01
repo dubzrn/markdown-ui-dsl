@@ -1,0 +1,27 @@
+{
+  "name": "@mdui/cli",
+  "version": "0.0.0",
+  "description": "mdui command line: validate, lint, ast (and more) for Markdown UI DSL files.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "mdui": "./dist/bin.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@mdui/core": "workspace:*",
+    "@mdui/lint": "workspace:*"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts src/bin.ts --format esm --dts --clean",
+    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json"
+  }
+}

@@ -63,7 +63,13 @@ export default tseslint.config(
   ...tseslint.configs.strict,
   {
     // Node-side tooling may use Node globals; core/spec sources (below) may not.
-    files: ["scripts/**/*.{mjs,ts}", "bench/**/*.mjs", "tests/**/*.ts", "packages/*/test/**/*.ts"],
+    files: [
+      "packages/cli/src/**/*.ts",
+      "scripts/**/*.{mjs,ts}",
+      "bench/**/*.mjs",
+      "tests/**/*.ts",
+      "packages/*/test/**/*.ts",
+    ],
     languageOptions: { globals: { process: "readonly", console: "readonly", URL: "readonly" } },
   },
   {

@@ -20,6 +20,8 @@ export type Severity = "error" | "warn" | "info";
 
 export interface Diagnostic {
   code: string;
+  /** Lint rule that produced this finding (set by @mdui/lint). */
+  rule?: string;
   severity: Severity;
   message: string;
   span: Span;
@@ -82,6 +84,8 @@ export const CODES = {
   E2402: { severity: "error", summary: "Flow references an unknown screen id." },
   E2501: { severity: "error", summary: "Button target is not in the declared action registry." },
   W3201: { severity: "warn", summary: "REGION with states has no `default` state." },
+  W1401: { severity: "warn", summary: "Container has no content." },
+  W2601: { severity: "warn", summary: "Link or button has an empty target." },
   W1201: {
     severity: "warn",
     summary: "Unknown breakpoint in a responsive directive; treated as a plain hint.",
