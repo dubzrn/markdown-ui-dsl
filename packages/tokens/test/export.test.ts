@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   fromDtcg,
@@ -126,13 +126,16 @@ describe("DTCG export (T-038)", () => {
     expect(bad.join("\n")).toMatch(/no \$type/);
     expect(bad.join("\n")).toMatch(/unknown \$type/);
   });
-  it("exports the upstream sample design systems to valid DTCG", () => {
-    const base = new URL("../../../reference/tokens/design-md/examples/", import.meta.url);
-    for (const d of readdirSync(base)) {
-      const sample = loadDesignSystem(readFileSync(new URL(`${d}/DESIGN.md`, base), "utf8"));
-      expect(validateDtcg(toDtcg(sample).file), d).toEqual([]);
-    }
-  });
+  it.skipIf(!existsSync(new URL("../../../reference/tokens/design-md/examples/", import.meta.url)))(
+    "exports the upstream sample design systems to valid DTCG",
+    () => {
+      const base = new URL("../../../reference/tokens/design-md/examples/", import.meta.url);
+      for (const d of readdirSync(base)) {
+        const sample = loadDesignSystem(readFileSync(new URL(`${d}/DESIGN.md`, base), "utf8"));
+        expect(validateDtcg(toDtcg(sample).file), d).toEqual([]);
+      }
+    },
+  );
 });
 
 describe("Tailwind and CSS exports", () => {

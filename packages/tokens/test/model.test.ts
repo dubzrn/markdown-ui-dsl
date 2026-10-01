@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { isRef, loadDesignSystem, lookup, resolveRef, sections } from "../src/index.js";
 
@@ -82,18 +82,22 @@ describe("DESIGN.md loader (T-037)", () => {
       expect(Object.keys(ds.prose).length, f).toBeGreaterThan(1);
     }
   });
-  it("loads the upstream sample DESIGN.md files", () => {
-    const base = new URL("../../../reference/tokens/design-md/examples/", import.meta.url);
-    for (const d of readdirSync(base)) {
-      const ds = loadDesignSystem(readFileSync(new URL(`${d}/DESIGN.md`, base), "utf8"));
-      expect(ds.kind, d).toBe("design.md");
-      expect(
-        ds.diagnostics.filter((x) => x.severity === "error"),
-        d,
-      ).toEqual([]);
-      expect(Object.keys(ds.tokens.colors).length, d).toBeGreaterThan(0);
-    }
-  });
+  // `reference/` is an optional submodule (not checked out in CI): skipped there, run locally and in reference-check
+  it.skipIf(!existsSync(new URL("../../../reference/tokens/design-md/examples/", import.meta.url)))(
+    "loads the upstream sample DESIGN.md files",
+    () => {
+      const base = new URL("../../../reference/tokens/design-md/examples/", import.meta.url);
+      for (const d of readdirSync(base)) {
+        const ds = loadDesignSystem(readFileSync(new URL(`${d}/DESIGN.md`, base), "utf8"));
+        expect(ds.kind, d).toBe("design.md");
+        expect(
+          ds.diagnostics.filter((x) => x.severity === "error"),
+          d,
+        ).toEqual([]);
+        expect(Object.keys(ds.tokens.colors).length, d).toBeGreaterThan(0);
+      }
+    },
+  );
   it("never throws on malformed input", () => {
     for (const s of [
       "---\ncolors: [a, b]\n---\n",
