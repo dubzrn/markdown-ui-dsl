@@ -62,6 +62,11 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.strict,
   {
+    // Node-side tooling may use Node globals; core/spec sources (below) may not.
+    files: ["scripts/**/*.{mjs,ts}", "tests/**/*.ts", "packages/*/test/**/*.ts"],
+    languageOptions: { globals: { process: "readonly", console: "readonly" } },
+  },
+  {
     files: ["packages/spec/src/**/*.ts"],
     rules: banned(),
   },

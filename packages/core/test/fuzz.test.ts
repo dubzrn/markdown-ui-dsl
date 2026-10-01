@@ -3,12 +3,44 @@ import { describe, expect, it } from "vitest";
 import { outline, parse } from "../src/index.js";
 
 const TOKENS = [
-  "||| COLUMN |||", "=== ROW ===", "::: CARD :::", "::: MODAL :::", "::: BUBBLE USER :::", "--- END ---", "---",
-  "***", "> hint", "> @sm a: b", "> @xs a", "<!--", "-->", "```", "```yaml", "| A | B |", "| - | - |", "| 1 |",
-  "|[ A ]| B |", "- item", "  - nested", "1. one", "* star", "# H", "[ text: x ]", "[ Go ](#a)", "", "  ", "\r", "\\", "|", "\u0000", "é😀",
+  "||| COLUMN |||",
+  "=== ROW ===",
+  "::: CARD :::",
+  "::: MODAL :::",
+  "::: BUBBLE USER :::",
+  "--- END ---",
+  "---",
+  "***",
+  "> hint",
+  "> @sm a: b",
+  "> @xs a",
+  "<!--",
+  "-->",
+  "```",
+  "```yaml",
+  "| A | B |",
+  "| - | - |",
+  "| 1 |",
+  "|[ A ]| B |",
+  "- item",
+  "  - nested",
+  "1. one",
+  "* star",
+  "# H",
+  "[ text: x ]",
+  "[ Go ](#a)",
+  "",
+  "  ",
+  "\r",
+  "\\",
+  "|",
+  "\u0000",
+  "é😀",
 ];
 
-const lines = fc.array(fc.oneof(fc.constantFrom(...TOKENS), fc.string({ maxLength: 12 })), { maxLength: 30 });
+const lines = fc.array(fc.oneof(fc.constantFrom(...TOKENS), fc.string({ maxLength: 12 })), {
+  maxLength: 30,
+});
 
 describe("parser robustness (T-015)", () => {
   it("never throws on 100k random strings and always returns a tree", () => {
@@ -37,6 +69,9 @@ describe("parser robustness (T-015)", () => {
     );
   });
   it("is deterministic", () => {
-    fc.assert(fc.property(lines, (ls) => outline(parse(ls.join("\n"))) === outline(parse(ls.join("\n")))), { numRuns: 2_000 });
+    fc.assert(
+      fc.property(lines, (ls) => outline(parse(ls.join("\n"))) === outline(parse(ls.join("\n")))),
+      { numRuns: 2_000 },
+    );
   });
 });
