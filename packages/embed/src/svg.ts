@@ -4,7 +4,7 @@
  * The layout model is deliberately simple (estimated text metrics, equal-width rows and grids): it is a picture of the
  * wireframe, not a browser. Use `@mdui/render` when exact layout matters.
  */
-import type { BlockNode, Document, InlineNode } from "@mdui/core";
+import { walkBlocks, type BlockNode, type Document, type InlineNode } from "@mdui/core";
 
 export type SvgStyle = "wireframe" | "clean" | "sketch";
 export interface SvgOptions {
@@ -942,11 +942,16 @@ export function renderSvg(doc: Document, opts: SvgOptions = {}): string {
     { style, state: opts.state ?? "default", includes: opts.includes ?? new Map() },
     new Painter(style),
   );
-  const first = doc.body.find((b) => b.kind === "heading");
+  let first: BlockNode | undefined;
+  walkBlocks(doc.body, ({ node }) => {
+    if (first === undefined && node.kind === "heading") first = node;
+  });
   const title =
     opts.title ??
     (typeof doc.meta["title"] === "string" ? doc.meta["title"] : undefined) ??
-    (first?.kind === "heading" ? first.text : undefined) ??
+    (first !== undefined && (first as BlockNode).kind === "heading"
+      ? (first as BlockNode & { kind: "heading" }).text
+      : undefined) ??
     "Wireframe";
   const body = blocksOf(doc.body, ctx, width - 2 * PAD);
   const h = Math.ceil(body.h + 2 * PAD);

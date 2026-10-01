@@ -166,7 +166,7 @@ start: login
 ```
 Transition grammar: `- <screen-id> #<action> -> <screen-id> [when: <text>]?` (one transition per action; the `*` wildcard was dropped by RFC-0001 §7). Referenced `#action` must exist on the source screen (`E2401`).
 
-**Escaping (LNG-09).** `\[ \] \( \) \{ \} \| \> \# \`` escape the next character; fenced code and inline code are literal. Precedence for ambiguous brackets: (1) `[ ](…)` link/button, (2) `[ KIND: …]` widget, (3) `[ ]`/`[x]` checkbox at line start, (4) text.
+**Escaping (LNG-09).** `` \[ \] \( \) \{ \} \| \> \# \` `` escape the next character; fenced code and inline code are literal. Precedence for ambiguous brackets: (1) `[ ](…)` link/button, (2) `[ KIND: …]` widget, (3) `[ ]`/`[x]` checkbox at line start, (4) text.
 
 **Embedding (TLS-13).** A fenced block with info-string `mdui` embeds a spec in any Markdown file: ```` ```mdui style=sketch state=loading ```` … ```` ``` ````. Fence options: `style`, `state`, `viewport`, `theme`, `scale`. The same text is valid as a standalone `.ui.md` (frontmatter optional inside a fence). Rendering is provided by `@mdui/embed` adapters (remark, markdown-it, rehype, Obsidian) and by generated SVG artefacts; native rendering by GitHub is **not assumed** (Mermaid is rendered natively [S140]; a custom fence is not) and is verified at T-094.
 

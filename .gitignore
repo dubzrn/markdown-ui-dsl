@@ -429,3 +429,4 @@ dist/
 *.tsbuildinfo
 *.whl
 evals/results/
+site-dist/

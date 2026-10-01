@@ -45,7 +45,22 @@ const banned = (extra = []) => ({
   ],
 });
 
+const BROWSER = Object.fromEntries(
+  [
+    "window",
+    "document",
+    "performance",
+    "history",
+    "location",
+    "atob",
+    "btoa",
+    "setTimeout",
+    "clearTimeout",
+  ].map((n) => [n, "readonly"]),
+);
+
 export default tseslint.config(
+  { files: ["site-src/**/*.js"], languageOptions: { sourceType: "script", globals: BROWSER } },
   {
     ignores: [
       "**/dist/**",

@@ -1,5 +1,5 @@
 /** The ```` ```mdui ```` fence: info-string options and rendering. */
-import { analyze, parse, type Document } from "@mdui/core";
+import { analyze, parse, walkBlocks, type Document } from "@mdui/core";
 import { render, stylesheet } from "@mdui/render";
 import { escapeXml, renderSvg, type SvgStyle } from "./svg.js";
 
@@ -93,7 +93,10 @@ export function altOf(source: string): string {
   const doc = parse(source);
   const t = doc.meta["title"];
   if (typeof t === "string") return t;
-  const h = doc.body.find((b) => b.kind === "heading");
-  return h?.kind === "heading" ? h.text : "Wireframe";
+  let text: string | undefined;
+  walkBlocks(doc.body, ({ node }) => {
+    if (text === undefined && node.kind === "heading") text = node.text;
+  });
+  return text ?? "Wireframe";
 }
 export { escapeXml };
