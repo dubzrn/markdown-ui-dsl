@@ -2,11 +2,11 @@
 
 | | |
 |---|---|
-| **Status** | 🔒 **LOCKED — scope baseline v1** (2026-10-01). Changes only through the [change-control process](#8-change-control). |
-| **Derived from** | [`COMPETITIVE_RESEARCH.md`](COMPETITIVE_RESEARCH.md) (every feature cites its gap `G#` and sources `S##` there) |
+| **Status** | 🔒 **LOCKED — scope baseline v1.1** (rev. 2, 2026-10-01: +1 feature, 1 promoted, 6 amended after source verification — see [§10](#10-change-log-rev-2)). Changes only through the [change-control process](#8-change-control). |
+| **Derived from** | [`COMPETITIVE_RESEARCH.md`](COMPETITIVE_RESEARCH.md) rev. 2 (every feature cites its gap `G#` and sources `S##` there; source status codes V/V≈/C/U are defined in its §2.4) |
 | **Implemented by** | [`SPEC.md`](SPEC.md) → [`PLAN.md`](PLAN.md) → [`TASKS.md`](TASKS.md) |
 | **Baseline** | `markdown-ui-dsl` v1.0.3 · **Target** DSL `2.0` + toolchain `@mdui/*` 2.0 |
-| **Totals** | **46 features** — 13 Language · 12 Tooling · 6 Design-system · 6 Agent · 5 Quality · **4 Novel** |
+| **Totals** | **47 features** — 13 Language · 13 Tooling · 6 Design-system · 6 Agent · 5 Quality · **4 Novel** |
 
 ---
 
@@ -47,10 +47,10 @@
 | **LNG-01** | **Formal grammar & normative spec.** EBNF/PEG grammar for the full DSL (v1 surface first, then v2), published as the single normative reference; `SKILL.md` becomes a derived summary. | M | α | G1; B-01, B-03; [S09][S20][S38] |
 | **LNG-02** | **Typed closers + inline attributes.** Optional typed closers (`--- END COLUMN ---`); generic `--- END ---` still valid. Inline attribute list `{: #id .class key=value flag }` on any component or block opener (distinct delimiter, so it never collides with dropdown `{A, B}` options or `{{ }}` bindings). | M | α | G1, G15; B-03; [S01][S10] |
 | **LNG-03** | **Field attributes & validation hints.** `required`, `type=email\|password\|number\|date\|tel\|url`, `min`, `max`, `pattern`, `maxlength`, `readonly`, `disabled`, `autocomplete`, `label=`, `hint=`, `error=`. | M | α | G15; [S01] |
-| **LNG-04** | **Expanded primitives.** `GRID`, `ACCORDION`, `DRAWER`, `TOAST`, `TOOLTIP`, `STEPPER`, `BREADCRUMBS`, `PAGER`, `PROGRESS`, `SLIDER`, `DATE`, `FILE`, `AVATAR`, `ICON`, `SKELETON`, `CHART` (line/bar/pie/scatter), `STAT`, `CALLOUT`, `CODE`, `EMPTY STATE`. | S | β | G14; [S06][S04][S01] |
+| **LNG-04** | **Expanded primitives.** `GRID`, `ACCORDION`, `DRAWER`, `TOAST`, `TOOLTIP`, `STEPPER`, `BREADCRUMBS`, `PAGER`, `PROGRESS`, `SLIDER`, `DATE`, `FILE`, `AVATAR`, `ICON` (named icon set), `SKELETON`, `CHART` (line/bar/pie/scatter), `STAT`, `CALLOUT`, `CODE`, `EMPTY STATE`; **rev. 2 adds `TREE` (+ tree-table), `GROUP` (titled group box), `MENUBAR`, a `scroll` attribute (`x\|y\|both`) and labelled dividers** — all seen in PlantUML Salt. | S | β | G14, G28; [S06][S04][S01][S12] |
 | **LNG-05** | **UI states.** `::: REGION name :::` containing `::: STATE default\|loading\|empty\|error\|disabled\|… :::` alternatives, so loading/empty/error designs are first-class. | S | β | G11; [S72][S51] |
 | **LNG-06** | **Data model & binding (paths only).** Frontmatter `data:` (inline shape, JSON/YAML file, or JSON Schema); `{{ user.name }}` references; `::: EACH item in items :::`; `::: IF flag :::` (boolean path or `!path` only). Binding paths are validated against the model. | S | β | G10; B-06; [S20][S38][S44] |
-| **LNG-07** | **Partials / includes.** `[[ USE: ./partials/nav.ui.md ]]` with optional `{props}`; cycle detection; path-sandboxed to the project root. | S | β | G13; [S11][S53] |
+| **LNG-07** | **Partials / includes.** `[[ USE: ./partials/nav.ui.md ]]` with optional `{props}`; cycle detection; path-sandboxed to the project root. *(Salt's `!procedure` macros show the same reuse need.)* | S | β | G13; [S11][S53][S12] |
 | **LNG-08** | **Flow files.** `*.flow.md` declares screens (links to `.ui.md`), start screen, and transitions `from#action -> to [when: …]`; yields a navigation graph. | S | β | G12; [S58][S80][S53] |
 | **LNG-09** | **Escaping & collision rules.** Backslash escapes; fenced code is literal; precedence rules for `[ ]` checkbox vs link vs input; `---` fence vs closer disambiguated by position. | M | α | G1; B-03, B-06 |
 | **LNG-10** | **Language versioning & migration.** `dsl: 2.0` frontmatter key; unversioned files are treated as `1.x`; `mdui migrate` applies safe rewrites and reports manual items. | M | α | G1; B-08; [S20][S27] |
@@ -67,34 +67,35 @@
 | **TLS-03** | **Lint engine + rule catalog.** Rule API, severities (error/warn/info), config file, inline `<!-- mdui-disable rule -->`; ≥ 30 rules across structure, a11y, tokens, catalog, flows. | M | α | G3; [S09][S54] |
 | **TLS-04** | **Canonical formatter.** `mdui fmt` — idempotent, comment-preserving, stable attribute ordering. | S | β | G3 |
 | **TLS-05** | **Semantic diff.** `mdui diff a b` reports added/removed/moved/changed nodes and token deltas; non-zero exit on regressions. | S | β | G3; [S54][S86] |
-| **TLS-06** | **HTML preview.** Static render + `--watch` live-reload server; styles `sketch`, `clean`, `wireframe`, `none`; viewport/dark/state toggles. | S | β | G4; [S01][S51] |
+| **TLS-06** | **HTML preview.** Static render + `--watch` live-reload server; styles `sketch`, `clean`, `wireframe`, `none`; viewport/dark/state toggles; **rev. 2: `--scale`/`--dpi` zoom and a handwritten-sketch option (Salt parity)**. | S | β | G4, G28; [S01][S51][S12] |
 | **TLS-07** | **Streaming incremental parser.** Chunk-fed parser emitting partial AST; guarantee: streamed result equals batch result. | S | β | G5; [S06][S38][S27] |
 | **TLS-08** | **MCP server `@mdui/mcp`.** Tools: `parse`, `validate`, `lint`, `fmt`, `diff`, `render`, `prompt`, `catalog`, `sync_plan`, `verify`. | S | GA | G16; [S65][S72][S69] |
 | **TLS-09** | **VS Code extension + language server.** TextMate grammar, diagnostics from lint, preview pane, quick-fixes. | S | 2.1 | G4; [S01][S51] |
 | **TLS-10** | **GitHub Action.** Runs validate/lint/verify; posts a **wireframe diff** comment on PRs that touch `.ui.md`. | S | 2.1 | G4; [S73][S17] |
 | **TLS-11** | **Importers.** Figma → DSL (via Figma MCP) and HTML → DSL (best effort, lossy by design, always flagged). | C | 2.1 | G25; [S65][S70] |
-| **TLS-12** | **Stats / token report.** Token and size estimate for a spec vs the equivalent A2UI/json-render JSON. | C | 2.1 | evidence for P1/P8 value claim |
+| **TLS-12** | **Token benchmark & stats (promoted C→S, GA).** `mdui stats` plus a published benchmark: the *same* UI scenarios authored as mdui, A2UI JSON, A2UI *Express*, json-render JSON and OpenUI Lang, counted with a **named tokenizer**, with methodology and raw data; results published **whatever they show**. | S | GA | G27; [S115][S114][S38] |
+| **TLS-13** | **Embeddable fence & SVG renderer (new).** A ```` ```mdui ```` fence; `remark`/`markdown-it`/`rehype`/Obsidian adapters; **SVG output that displays inside GitHub/Notion/static sites**; *(2.1)* flow-diagram rendering with embedded screen previews, as Salt does inside activity diagrams. | S | GA (fence+SVG) · 2.1 (flow diagrams) | G26; B-09; [S117][S116][S140][S12] |
 
 ### 3.3 Design system & tokens (DSY)
 
 | ID | Feature — what is locked | Pri | Rel | Gap / evidence |
 |---|---|:-:|:-:|---|
 | **DSY-01** | **DESIGN.md as first-class theme.** `theme:` accepts a Google-format `DESIGN.md` (YAML tokens + prose sections) and the legacy prose design-system files; mdui adds only a `mdui:` extension block (breakpoints, framework mappings). | M | β | G8; [S54] |
-| **DSY-02** | **Token references & exporters.** `{colors.primary}` references resolved; export to Tailwind v3/v4, CSS custom properties, and DTCG (via Style Dictionary where possible). | S | β | G8; [S54][S60][S63] |
+| **DSY-02** | **Token references & exporters.** `{colors.primary}` references resolved; export to Tailwind v3/v4, CSS custom properties, and DTCG. Style Dictionary is used **only if its DTCG support is confirmed** (not stated in its README — verify at T-038); otherwise a native DTCG exporter. | S | β | G8; [S54][S60][S63][S141] |
 | **DSY-03** | **Token lint.** Broken refs (error), WCAG AA contrast on declared component pairs, orphaned tokens, unknown breakpoint keys. | S | β | G8, G9; [S54][S95] |
 | **DSY-04** | **Component catalog + trust levels.** `mdui.catalog.yaml` lists built-in primitives and project components with prop schemas and a trust level (`core`, `project`, `third-party`); unknown components fail lint. | M | β | G6; [S20][S24][S38] |
 | **DSY-05** | **More design-system examples.** React + shadcn (DESIGN.md-based), SwiftUI, Jetpack Compose, Vue/Nuxt, Angular Material, Lit (≥ 4 new). | S | GA | G8; [S76][S58] |
-| **DSY-06** | **Component map.** `mdui.map.yaml` maps DSL primitives/catalog items to code components, import paths and prop mappings (Code-Connect-style); optional autopopulation from Storybook manifests. | S | GA | G6; [S65][S72][S77] |
+| **DSY-06** | **Component map.** `mdui.map.yaml` maps DSL primitives/catalog items to code components, import paths and prop mappings (Code-Connect-style [S129]); optional autopopulation from Storybook manifests — **the Storybook MCP repo has moved into the main Storybook repo, so the integration targets the manifests, not the archived MCP package** [S130]. | S | GA | G6, G30; [S65][S72][S77][S129][S130] |
 
 ### 3.4 Agent integration (AGT)
 
 | ID | Feature — what is locked | Pri | Rel | Gap / evidence |
 |---|---|:-:|:-:|---|
-| **AGT-01** | **Agent Skills restructure + AGENTS.md.** `skills/markdown-ui-dsl/` follows the Agent Skills layout (`SKILL.md` + `references/` + `scripts/`), validated against the standard; add contributor `AGENTS.md`. | M | β | G19; [S89][S90] |
+| **AGT-01** | **Agent Skills restructure + AGENTS.md.** `skills/markdown-ui-dsl/` follows the Agent Skills layout with the **verified limits**: `SKILL.md` ≤ 500 lines, body < 5,000 tokens recommended, `name` ≤ 64 chars, `description` ≤ 1,024, `compatibility` ≤ 500, references one level deep, validated with `skills-ref validate` [S131]; add contributor `AGENTS.md`. Wireloom already ships a skill + `AGENTS.md` [S116]. | M | β | G19; [S89][S131][S90] |
 | **AGT-02** | **Prompt generator.** `mdui prompt` emits the minimal system prompt for *this project* from catalog + tokens + data model + few-shot examples. | M | β | G7; [S38][S06] |
 | **AGT-03** | **SDD interoperability.** `requirements:` frontmatter linking EARS requirement IDs; coverage lint ("requirement has no screen"); templates for Spec Kit, OpenSpec and Kiro flows. | S | GA | G21; [S81][S84][S86] |
 | **AGT-04** | **Safety hardening.** Spec text and hints are untrusted data; hints cannot disable confirmation; `force`/`autonomous` is a *tool parameter*, not magic words; URL scheme allow-list; lint for hints that look like instructions. | M | β | G20; B-04; [S20][S27] |
-| **AGT-05** | **Protocol exporters.** **S:** A2UI JSON (pinned v0.9.x), json-render spec. **C:** Adaptive Cards, Slack Block Kit, Open-JSON-UI. | S/C | GA / 2.1 | G22; [S20][S38][S43][S51][S37] |
+| **AGT-05** | **Protocol exporters.** **S:** A2UI JSON targeting the **v1.0 message set** (`createSurface`, `updateComponents`, `updateDataModel`, …), pinned to a spec commit because the spec README still says "candidate for stable" [S112][S113]; json-render spec. **C:** A2UI *Express* text, Adaptive Cards, Slack Block Kit, Open-JSON-UI. | S/C | GA / 2.1 | G22, G29; [S20][S112][S114][S38][S43][S51][S37] |
 | **AGT-06** | **Runtime generative-UI mode.** React renderer package that renders streamed DSL against a catalog with host-owned components (A2UI-style trust model). | C | 2.1 | G5, G6; [S20][S27][S06] |
 
 ### 3.5 Quality & governance (QLT)
@@ -102,7 +103,7 @@
 | ID | Feature — what is locked | Pri | Rel | Gap / evidence |
 |---|---|:-:|:-:|---|
 | **QLT-01** | **Conformance suite.** Language-neutral fixtures (valid/invalid + expected AST/diagnostics) so third-party parsers can claim conformance. | M | α | G18; B-07; [S01] |
-| **QLT-02** | **LLM eval harness.** promptfoo-based generation and sync evals with deterministic AST assertions and CI thresholds, across ≥ 3 agents. | M | β | G18; B-03, B-07; [S109] |
+| **QLT-02** | **LLM eval harness.** **Tool-agnostic**: assertions are `mdui validate`/`lint` runs; promptfoo [S109] is *one* runner (the repo states it is now OpenAI-owned [S136]); deterministic AST assertions first, rubric second; CI thresholds; ≥ 3 agents. | M | β | G18, G30; B-03, B-07; [S109][S136] |
 | **QLT-03** | **Accessibility semantics & lint.** `label`, `alt`, `role`, `live`, landmark roles from HEADER/FOOTER, heading-order, link-text, target-size annotations; WCAG 2.2 mapping table. | M | β | G9; [S95][S105][S107] |
 | **QLT-04** | **Repository hygiene.** Fix B-01 (4 unbalanced examples), B-02 (dead references), B-06 (prose abuse in example), duplicate README numbering; add CI that lints all examples. | M | α | B-01, B-02, B-06 |
 | **QLT-05** | **Governance & docs.** RFC process, CHANGELOG, CONTRIBUTING, versioning policy, docs site with in-browser playground. | S | GA | G1 |
@@ -119,6 +120,8 @@ graph LR
   TLS01 --> TLS03[TLS-03 Lint]
   TLS01 --> TLS07[TLS-07 Streaming]
   TLS01 --> TLS06[TLS-06 Preview]
+  TLS06 --> TLS13[TLS-13 Embed + SVG]
+  TLS13 --> TLS10[TLS-10 PR wireframe diff]
   LNG01 --> QLT01[QLT-01 Conformance]
   TLS03 --> QLT03[QLT-03 A11y lint]
   DSY01[DSY-01 DESIGN.md] --> DSY02[DSY-02 Tokens]
@@ -175,7 +178,7 @@ help-link       conflict     spec: "Need help?"  code: "Contact support"        
 
 **Risks.** Static code extraction is brittle → extraction uses *semantic summaries* (labels, roles, order, actions) and prefers the rendered accessibility tree (shared with NOV-02) over source parsing where available. Anchor churn → tree matching with similarity threshold and a `mdui sync relink` escape hatch.
 
-**Nearest prior art.** Tessl spec-level drift [S87]; Code Connect component mapping [S65]; OpenSpec deltas [S86]. None documented at layout-node granularity or with a three-way base.
+**Prior art (rev. 2).** The *technique* is established: UML **round-trip engineering** (Papyrus, Visual Paradigm) synchronises model and code bidirectionally with incremental merge [S148], and VCS **three-way merge** uses a common ancestor [S149]; in AI-spec tooling, Tessl detects spec-level drift [S87], Code Connect maps components [S129], OpenSpec tracks requirement deltas [S86]. **What remains new:** applying it to a **Markdown wireframe ↔ framework code** at **layout-node** granularity, with a committed lockfile and an **agent hand-off protocol**. *Judged by the sources reviewed; we claim the application, not the algorithm.*
 
 ### NOV-02 — Spec Oracle (accessibility-tree conformance with a Fidelity Score)
 
@@ -200,7 +203,7 @@ login-form.ui.md  fidelity 0.92  (24/26 expected nodes)
 
 **Risks.** Accessible-name inference differences between browsers → pin Chromium for CI, allow `name-match: loose`. Placeholder vs label ambiguity in `[ text: … ]` → require/lint `label=` (LNG-03) and document the fallback. Dynamic data → fixtures from the `data:` model.
 
-**Nearest prior art.** Playwright ARIA snapshots (hand-authored) [S96]; axe rule engine [S93]; Chromatic pixel baselines [S73]; Flutter `meetsGuideline` rules [S98]. None derives expectations from a wireframe spec.
+**Prior art (rev. 2).** Playwright ARIA snapshots are hand-written, **order-sensitive** and support partial matching [S132]; axe is a rule engine ("zero false positives", ~57% of WCAG issues) [S93]; **Design2Code** scores generated front-ends against a *reference render* (CLIP + block/text/position) and **WebAccessBench** measures WCAG conformance of generated UIs [S144][S145]; Chromatic is pixel-based [S73]; Flutter `meetsGuideline` is rule-based [S98]. **What remains new:** no surveyed system *derives the expected semantic tree from a wireframe spec*. **Design consequence of the verified matching rules:** because Playwright's native comparison is order-sensitive, mdui ships its **own matcher** (needed for order-insensitive regions such as `ROW` groups) *and* emits Playwright-compatible YAML templates for teams that want hand-runnable tests.
 
 ### NOV-03 — Valid-by-Construction Grammar Pack
 
@@ -214,11 +217,11 @@ login-form.ui.md  fidelity 0.92  (24/26 expected nodes)
 
 A **parity guarantee** ties grammar and parser together: every string the grammar accepts parses with zero errors; every valid conformance fixture is accepted (QLT-01). Dynamic specialisation of grammars from runtime context follows the decode-time-grammar line of research [S103].
 
-**Success metrics (targets).** (a) Grammar↔parser parity on ≥ 100k fuzz-generated strings and 100% of valid fixtures; (b) structural validity of constrained output **100%** by construction vs a **measured** unconstrained baseline per model (T-061 reports the baseline — we do not assume it); (c) semantic-quality delta of constrained vs unconstrained measured with the QLT-02 rubric and published (constrained decoding can affect quality [S104]).
+**Success metrics (targets).** (a) Grammar↔parser parity on ≥ 100k fuzz-generated strings and 100% of valid fixtures; (b) structural validity of constrained output **100% on engines with exact grammar enforcement** (local: llguidance, XGrammar, llama.cpp) vs a **measured** unconstrained baseline per model (T-061 reports it — we do not assume it); for **hosted APIs** the rate is *measured and reported, not promised* (a community thread reports hosted Lark outputs not always conforming [S152, title only]), and the toolchain **always re-validates with the reference parser**; (c) semantic-quality delta of constrained vs unconstrained measured with the QLT-02 rubric and published (constrained decoding can affect quality [S104]).
 
 **Risks / honesty.** Availability depends on the serving stack (CFG-capable APIs or local engines); this research did **not** verify CFG support on every hosted model, so the pack ships three targets and documents the capability matrix at release. Lark dialect differences between engines → per-engine emitters and tests.
 
-**Nearest prior art.** json-render/A2UI constrain JSON via schemas [S38][S20]; no surveyed Markdown UI DSL documents a decoding grammar, and none generates one from a project catalog.
+**Prior art (rev. 2).** **A2UI ships `Express.g4`, an ANTLR grammar for a compact UI DSL** [S114]; OpenUI Lang is a line-oriented DSL with typed component contracts [S115]; json-render/A2UI constrain *JSON* via schemas [S38][S20]; OpenAI custom tools accept Lark/regex grammars (verified in the cookbook) [S135]; XGrammar and llguidance make CFG decoding fast [S134][S100]. **What remains new:** none of the surveyed projects documents a decoding grammar for a **Markdown** wireframe DSL, **specialised per project catalog** and **parity-tested against the parser**, nor use of Express/OpenUI grammars for constrained decoding. *T-061 includes a comparison deliverable against `Express.g4` on equivalent UIs.*
 
 ### NOV-04 — UX Constraint Contracts
 
@@ -246,7 +249,7 @@ constraints:
 
 **Risks.** Heuristic thresholds are *configurable defaults*, not universal usability truth — documentation states that; rules ship `warn` by default except accessibility rules.
 
-**Nearest prior art.** DESIGN.md token lint [S54]; axe DOM rules [S93]; Nielsen as guidance [S108]. No surveyed system executes flow-level UX heuristics on a lo-fi spec.
+**Prior art (rev. 2).** DESIGN.md token lint [S54]; axe DOM rules [S93]; Nielsen as guidance [S108]; **Kiro turns requirements into executable properties checked by property-based testing** [S137] — the nearest *executable-spec* analogue, but requirements-level, not UI-level. **What remains new:** no surveyed system executes **flow-level UX heuristics on a lo-fi spec** before code exists; Wiremark/Salt model flows but document no constraints on them [S117][S12].
 
 ---
 
@@ -281,6 +284,7 @@ Together they close the loop: **constrain → generate → check → keep in syn
 | Replacing DESIGN.md, DTCG, A2UI, Agent Skills | P5 — adopt, don't fork. |
 | Authoring in JSON | P1 — JSON is an output. |
 | Guaranteeing "good UX" | NOV-04 enforces declared constraints; it does not define quality. |
+| Winning a raw token-count race at the expense of human readability | OpenUI Lang/A2UI Express are machine-first [S115][S114]; mdui is human-first (P1). We **measure and publish** (TLS-12) and may add a compact *profile*, but never contort the authoring syntax for tokens. |
 
 ---
 
@@ -297,3 +301,35 @@ Together they close the loop: **constrain → generate → check → keep in syn
 ## 9. Feature → task traceability
 
 Every feature ID above appears in the `Implements` column of [`TASKS.md`](TASKS.md); the plan's checkpoint on traceability (PLAN §7) requires 100% coverage before each release.
+
+
+---
+
+## 10. Change log (rev. 2)
+
+Driven by the verification pass in [`COMPETITIVE_RESEARCH.md` §2.4](COMPETITIVE_RESEARCH.md#24-verification-pass-rev-2-same-day). Processed under §8 (rev. 2 is the maintainers' own re-baseline of v1; no RFC required for the baseline itself, but each item below is traced to evidence).
+
+| Change | Type | Evidence |
+|---|---|---|
+| **TLS-13** Embeddable fence & SVG renderer | **Added** | Wiremark/Wireloom/Mermaid embed via fence/SVG [S117][S116][S140]; B-09 |
+| **TLS-12** Token benchmark | **Promoted** C→S, 2.1→GA; scope widened | OpenUI Lang published −52.8% vs JSON [S115]; A2UI Express [S114]; B-10 |
+| **LNG-04** primitives | Amended (+TREE, GROUP, MENUBAR, scroll, labelled dividers) | Salt capture [S12] |
+| **LNG-07**, **TLS-06** | Amended (macro-reuse evidence; `--scale/--dpi`, sketch option) | Salt capture [S12] |
+| **AGT-05** exporters | Amended: A2UI **v1.0** message set, Express as Could | A2UI protocol doc [S112][S114] |
+| **AGT-01** skill | Amended with verified limits | Agent Skills spec [S131] |
+| **QLT-02** harness | Amended: tool-agnostic | promptfoo ownership [S136] |
+| **DSY-02**, **DSY-06** | Amended: Style Dictionary/DTCG unconfirmed; Storybook MCP moved | [S63][S130] |
+| **NOV-01…04** prior-art and metrics | **Re-scoped** (claims narrowed, one metric tempered, one design consequence added) | §5 above |
+| LNG-08 flows | Re-justified: parity-plus, not unique | Wiremark named frames [S117]; Salt activity embedding [S12] |
+
+### Competitive response map
+
+| Competitor move (verified) | Our response |
+|---|---|
+| OpenUI Lang: compact streaming DSL, −52.8% tokens vs JSON [S115] | Measure ourselves (TLS-12, spike SP-4); stay human-first; streaming parser (TLS-07); possible compact profile decided on data |
+| A2UI v1.0 + Express text DSL [S112][S114] | Pin exporters to v1.0; Express exporter (Could); position mdui as the *human-authored source* that compiles to both |
+| Wiremark / Wireloom: fence + SVG in GitHub/Obsidian [S117][S116] | TLS-13 (fence, plugins, SVG) → TLS-10 PR wireframe diffs |
+| Wireloom: skill + AGENTS.md; zero-dep core [S116] | AGT-01; zero-dependency `@mdui/core` already mandated |
+| Salt: breadth of widgets and screens-in-flow [S12] | LNG-04 additions; flow-diagram render (2.1); real token theming where Salt's is partial |
+| Claude Design / Superdesign / Onlook: agent-native design→code loops [S146][S147][S157] | Vendor-neutral, diffable spec + verification (NOV-01/02) — the part a closed canvas does not provide |
+| Tooling churn: promptfoo → OpenAI; Storybook MCP moved; AI SDK RSC paused [S136][S130][S50] | Tool-agnostic harness; adapters behind pinned interfaces; no dependency on archived packages |

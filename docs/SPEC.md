@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| **Status** | Draft for maintainer sign-off · prepared 2026-10-01 |
-| **Scope** | Implements every feature in [`FEATURE_ADDITIONS.md`](FEATURE_ADDITIONS.md) (46 features, scope-locked) |
+| **Status** | Draft for maintainer sign-off · prepared 2026-10-01 · **rev. 2** (source-verification pass; see FEATURE_ADDITIONS §10) |
+| **Scope** | Implements every feature in [`FEATURE_ADDITIONS.md`](FEATURE_ADDITIONS.md) (47 features, scope-locked) |
 | **Evidence base** | [`COMPETITIVE_RESEARCH.md`](COMPETITIVE_RESEARCH.md) — `[S##]` citations resolve there |
 | **Next documents** | [`PLAN.md`](PLAN.md) (how/when) → [`TASKS.md`](TASKS.md) (work items) |
 | **Method** | Spec-driven development: assumptions first, then objective, commands, structure, style, testing, boundaries, measurable success criteria. Requirements use EARS ("WHEN … THE SYSTEM SHALL …") so each is testable [S84]. |
@@ -20,12 +20,12 @@
 | A2 | CLI binary `mdui`, npm scope `@mdui/*`. **Availability not verified.** | Rename in T-002; no design impact. |
 | A3 | License stays MIT; contributions under the same. | Decide before first publish (T-098). |
 | A4 | Capacity: one primary maintainer working with coding agents. PLAN §9 sizes the work in uncalibrated relative units (≈ 214 dev-days to GA, ≈ 43 solo weeks); it is an estimate, not a commitment, and is re-baselined after Phase 1 velocity is measured. | Re-baseline phases; scope is locked, so the *schedule* flexes, not the register. |
-| A5 | Google `DESIGN.md` is `alpha` [S54] and A2UI is pre-1.0 (v0.9.x, v1.0 RC) [S20]. Both are **pinned** and tracked; interop code isolated behind adapters. | Adapter shims absorb changes. |
+| A5 | Google `DESIGN.md` is `alpha` [S54][S143]. A2UI's protocol document declares **v1.0 (released 2026-06-08)** while its spec README still calls v1.0 "a candidate for becoming stable" [S112][S113]. Both are **pinned to a commit** and tracked; interop code is isolated behind adapters with contract tests. | Adapter shims absorb changes. |
 | A6 | Oracle (NOV-02) targets Chromium via Playwright first; Flutter second (2.1). | Reorder only. |
-| A7 | Constrained decoding (NOV-03) is available via CFG-capable APIs or local engines; **per-vendor support was not verified** in research and will be documented at release. | Pack still useful with local engines [S100][S101]. |
+| A7 | Constrained decoding (NOV-03): **verified** that OpenAI custom tools accept `lark`/`regex` grammars [S135] and that XGrammar/llguidance enforce CFGs on local engines [S134][S100]; a community report says hosted Lark outputs are not always conforming [S152, title only]. Per-vendor behaviour is documented at release; **the toolchain always re-validates model output with the reference parser** (REQ-NOV-03c). | Pack still useful with local engines; hosted use is "strong constraint", not a guarantee. |
 | A8 | Anthropic/OpenAI/Google/Cursor etc. agents all read Agent Skills / `AGENTS.md` [S89][S90]; per-agent behaviour is checked by evals (QLT-02), not assumed. | Evals expose gaps; fall back to flat-file install snippets as in README today. |
 
-**Open questions for the owner** (answers change tasks, not scope): (1) final CLI/package names; (2) packages in this repo vs sibling; (3) steering model — single maintainer vs. small council; (4) is the VS Code extension (2.1) wanted earlier than GA; (5) which three agents form the QLT-02 eval panel.
+**Open questions for the owner** (answers change tasks, not scope): (1) final CLI/package names; (2) packages in this repo vs sibling; (3) steering model — single maintainer vs. small council; (4) is the VS Code extension (2.1) wanted earlier than GA; (5) which three agents form the QLT-02 eval panel; (6) **upstream vs. fork** — upstream `MegaByteMark/markdown-ui-dsl` is small (23★, 10 forks, 17 commits [S120]) and this repository diverges substantially under this plan: contribute upstream, hard-fork with a new name, or coordinate with the upstream maintainer first?
 
 ---
 
@@ -72,6 +72,8 @@ requirements: [REQ-12, REQ-13] # AGT-03 (EARS IDs)
 constraints: { max-primary-actions: 1, no-dead-ends: true }          # NOV-04
 lang: en
 dir: ltr                       # LNG-12
+title: Sign in                 # rev. 2 (Salt parity [S12]) — screen title
+caption: Mobile, step 1 of 3   # rev. 2 — optional caption/legend shown by the renderer
 type: screen                   # screen (default) | flow | partial
 ---
 ```
@@ -87,7 +89,7 @@ type: screen                   # screen (default) | flow | partial
 ::: CARD :::{: #login-card }
 ```
 
-Reserved attribute vocabulary: `#id`, `.class`, `label`, `hint`, `error`, `alt`, `role`, `live`, `required`, `readonly`, `disabled`, `type`, `min`, `max`, `step`, `pattern`, `maxlength`, `autocomplete`, `primary`, `destructive`, `terminal`, `lang`, `dir`. The `{: … }` delimiter is distinct from dropdown options `{A, B}` and bindings `{{ x }}`, so no collision rules are needed.
+Reserved attribute vocabulary: `#id`, `.class`, `label`, `hint`, `error`, `alt`, `role`, `live`, `required`, `readonly`, `disabled`, `type`, `min`, `max`, `step`, `pattern`, `maxlength`, `autocomplete`, `scroll` (`x`|`y`|`both`), `primary`, `destructive`, `terminal`, `lang`, `dir`. The `{: … }` delimiter is distinct from dropdown options `{A, B}` and bindings `{{ x }}`, so no collision rules are needed.
 
 **Data binding (LNG-06).** `{{ path.to.value }}` in text/labels/attributes; `::: EACH item in items :::` … closer; `::: IF path :::` / `::: IF !path :::`. **Paths only** — no calls, operators or arithmetic. Paths are validated against `data:`. Missing path → `E2101`.
 
@@ -129,6 +131,10 @@ State names: `default`, `loading`, `empty`, `error`, `disabled`, `success`, or a
 | Breadcrumbs | `[ CRUMBS: Home > Settings > *Profile* ]` |
 | Pager | `[ PAGER: 3/10 ]` |
 | Stepper | `[ STEPPER: Account > *Profile* > Plan > Review ]` |
+| Tree / tree-table | `::: TREE :::` with nested list items (`- World` / `  - America`); columns via a trailing table-like `\|` row (rev. 2, from Salt `{T` [S12]) |
+| Group box | `::: GROUP "My group box" :::` (titled fieldset-style container) |
+| Menu bar | `[ MENUBAR: File \| Edit \| Source \| Refactor ]` with optional open menu `{: open="Edit" }` |
+| Labelled divider | `*** Section title ***` (plain `***` unchanged) |
 | Containers | `::: GRID cols=3 :::`, `::: ACCORDION :::` (children `::: PANEL "Title" open :::`), `::: DRAWER side=right :::`, `::: TOAST kind=success :::`, `::: TOOLTIP for=#id :::`, `::: CALLOUT info :::`, `::: EMPTY :::` |
 
 **Environment directives (LNG-13).** Same `> @…` family: `> @dark …`, `@light`, `@print`, `@reduced-motion`, `@contrast-more`, `@touch`, `@hover`, combinable with breakpoints (`> @md @dark surface: inverted`). Token vocabulary comes from the active design system.
@@ -156,6 +162,8 @@ start: login
 Transition grammar: `- <screen-id> (#<action>|*) -> <screen-id> [when: <text>]?`. Referenced `#action` must exist on the source screen (`E2401`).
 
 **Escaping (LNG-09).** `\[ \] \( \) \{ \} \| \> \# \`` escape the next character; fenced code and inline code are literal. Precedence for ambiguous brackets: (1) `[ ](…)` link/button, (2) `[ KIND: …]` widget, (3) `[ ]`/`[x]` checkbox at line start, (4) text.
+
+**Embedding (TLS-13).** A fenced block with info-string `mdui` embeds a spec in any Markdown file: ```` ```mdui style=sketch state=loading ```` … ```` ``` ````. Fence options: `style`, `state`, `viewport`, `theme`, `scale`. The same text is valid as a standalone `.ui.md` (frontmatter optional inside a fence). Rendering is provided by `@mdui/embed` adapters (remark, markdown-it, rehype, Obsidian) and by generated SVG artefacts; native rendering by GitHub is **not assumed** (Mermaid is rendered natively [S140]; a custom fence is not) and is verified at T-094.
 
 **Accessibility attributes (QLT-03).** `label`, `alt`, `role`, `live` (`polite|assertive`), heading levels from Markdown `#`; `HEADER`→`banner`, `FOOTER`→`contentinfo`, `MODAL`→`dialog` landmarks implied.
 
@@ -187,14 +195,14 @@ All commands accept `--json` (machine output) and `--config <path>`; exit codes:
 | `mdui fmt <files…> [--check]` | Canonical, idempotent formatting | TLS-04 |
 | `mdui ast <file>` | Emit JSON AST (validates against schema) | TLS-01 |
 | `mdui diff <a> <b>` | Semantic diff (nodes + tokens); non-zero on regression | TLS-05 |
-| `mdui render <file> [--style sketch\|clean\|wireframe\|none] [--watch] [--state s] [--viewport w]` | HTML preview | TLS-06 |
-| `mdui export <file> --to a2ui\|json-render\|tailwind\|css\|dtcg\|…` | Protocol / token exporters | AGT-05, DSY-02 |
+| `mdui render <file> [--style sketch\|clean\|wireframe\|none] [--format html\|svg] [--watch] [--state s] [--viewport w] [--scale n] [--dpi n]` | HTML/SVG preview | TLS-06, TLS-13 |
+| `mdui export <file> --to a2ui\|a2ui-express\|json-render\|tailwind\|css\|dtcg\|…` | Protocol / token exporters (A2UI = v1.0 message set) | AGT-05, DSY-02 |
 | `mdui prompt [--catalog …] [--agent claude\|copilot\|cursor\|generic]` | Project-specific system prompt | AGT-02 |
 | `mdui grammar --target lark\|gbnf\|json-schema [--catalog …] [--max-depth N]` | Decoding grammar | NOV-03 |
 | `mdui sync init\|plan\|apply\|relink <spec>` | Anchored three-way sync (`apply` requires `--confirm`) | NOV-01 |
 | `mdui verify <spec> --url <u> [--min-fidelity 0.95]` | Spec Oracle report | NOV-02, NOV-04 |
 | `mdui migrate <files…> [--write]` | v1→v2 safe rewrites | LNG-10 |
-| `mdui stats <file>` | Token/size report vs JSON equivalents | TLS-12 |
+| `mdui stats <file>` / `mdui stats --benchmark` | Token/size report; benchmark vs A2UI JSON/Express, json-render, OpenUI Lang with a named tokenizer | TLS-12 |
 | `mdui-mcp` | MCP server over stdio | TLS-08 |
 
 **Developer commands** (root `package.json`): `pnpm install` · `pnpm build` · `pnpm test` · `pnpm test:conformance` · `pnpm test:e2e` · `pnpm lint` · `pnpm typecheck` · `pnpm bench` · `pnpm eval` (LLM evals; non-blocking, needs keys) · `pnpm changeset`.
@@ -218,7 +226,8 @@ markdown-ui-dsl/
 │   ├── export/      @mdui/export  # A2UI, json-render, (2.1) Adaptive Cards/Block Kit/Open-JSON-UI (AGT-05)
 │   ├── grammar/     @mdui/grammar # Lark/GBNF/JSON-schema emitters (NOV-03)
 │   ├── sync/        @mdui/sync    # anchors, .ui.lock, 3-way classifier, code adapters (NOV-01)
-│   ├── oracle/      @mdui/oracle  # AST→ARIA compiler, Playwright runner, fidelity (NOV-02)
+│   ├── oracle/      @mdui/oracle  # AST→ARIA compiler, own matcher + Playwright runner, fidelity (NOV-02)
+│   ├── embed/       @mdui/embed   # ```mdui fence, remark/markdown-it/rehype/Obsidian adapters, SVG (TLS-13)
 │   ├── mcp/         @mdui/mcp     # MCP server (TLS-08)
 │   ├── cli/         @mdui/cli     # `mdui` binary
 │   └── vscode/                    # extension + LSP (TLS-09, 2.1)
@@ -231,7 +240,7 @@ markdown-ui-dsl/
 
 **Dependency rule (enforced by lint):** `core` has **zero runtime dependencies** and no Node-only APIs (must run in a browser for the docs playground). `spec` has none. `oracle`, `render` (dev server) and `cli` may use Node/Playwright. No package imports `cli`.
 
-**Stack decisions** (ADRs written in T-002): TypeScript (strict), Node ≥ 20 LTS, pnpm workspaces, Vitest, fast-check (properties), ESLint + Prettier, Changesets, Zod → JSON Schema (matches ecosystem practice [S06][S38]), Playwright as an optional peer dependency of `@mdui/oracle`. Versions are pinned at T-002 after checking current releases.
+**Stack decisions** (ADRs written in T-002): TypeScript (strict), Node ≥ 20 LTS, pnpm workspaces, Vitest, fast-check (properties), ESLint + Prettier, Changesets, Zod → JSON Schema (matches ecosystem practice [S06][S38]), Playwright as an optional peer dependency of `@mdui/oracle`. Versions are pinned at T-002 after checking current releases. **Eval harness is tool-agnostic** (promptfoo is one runner; it is now OpenAI-owned per its repo [S136]); no dependency on archived packages (Storybook MCP moved [S130]; AI SDK RSC paused [S50]).
 
 **Parser strategy (ADR-001).** Hand-written, line-oriented block parser with an explicit block stack plus an inline tokenizer, **not** a parser-generator output. Reasons: error recovery with precise spans, natural fit for streaming (TLS-07), and ability to keep going after a bad line. The **EBNF grammar is normative**; a Lark grammar is generated from it and **parity-tested** against the hand parser (NOV-03) so the two cannot drift.
 
@@ -317,7 +326,7 @@ IDs are `REQ-<feature>`; each is verified by the tasks named in `TASKS.md`.
 - **REQ-LNG-02** WHEN a typed closer does not match the innermost open block, THE parser SHALL emit `E1004` with the span of the closer and the expected kind; WHEN a generic closer is used, THE parser SHALL close the innermost block.
 - **REQ-LNG-02b** WHEN a component line ends with `{: … }`, THE parser SHALL attach the parsed attributes to that node and SHALL NOT interpret dropdown option braces as attributes.
 - **REQ-LNG-03** WHEN a field declares `type`, `min`, `max`, `pattern` or `required`, THE AST SHALL preserve them and THE renderer and Oracle SHALL reflect them (e.g. `textbox` with `required`).
-- **REQ-LNG-04** WHEN a spec uses a primitive from §2.2, THE parser SHALL produce a typed node with validated arguments, or a diagnostic with a fix.
+- **REQ-LNG-04** WHEN a spec uses a primitive from §2.2 (incl. `TREE`, `GROUP`, `MENUBAR`, `scroll`, labelled dividers), THE parser SHALL produce a typed node with validated arguments, or a diagnostic with a fix.
 - **REQ-LNG-05** WHEN a `REGION` contains `STATE` blocks without `default`, THE linter SHALL warn `W3201`; THE renderer SHALL expose a state switcher; THE Oracle SHALL compile one expected tree per state.
 - **REQ-LNG-06** WHEN a `{{ path }}` does not resolve against `data:`, THE validator SHALL emit `E2101`; THE system SHALL NOT evaluate any operator or function in a binding.
 - **REQ-LNG-07** WHEN an include path escapes the project root or forms a cycle, THE resolver SHALL emit `E2301`/`E2302` and SHALL NOT read the file.
@@ -340,7 +349,8 @@ IDs are `REQ-<feature>`; each is verified by the tasks named in `TASKS.md`.
 - **REQ-TLS-09** WHEN a diagnostic carries a fix, THE extension SHALL offer it as a quick-fix.
 - **REQ-TLS-10** WHEN a PR changes a `.ui.md`, THE Action SHALL post one updating comment containing the wireframe diff and lint/verify summary.
 - **REQ-TLS-11** THE importers SHALL mark every lossy conversion with a `<!-- imported: … -->` note and SHALL never overwrite an existing spec without `--force`.
-- **REQ-TLS-12** `stats` SHALL report estimated tokens for spec, A2UI JSON and json-render JSON with the estimator named in the report.
+- **REQ-TLS-12** `stats --benchmark` SHALL report token counts for the same scenarios authored as mdui, A2UI v1.0 JSON, A2UI Express, json-render JSON and OpenUI Lang with the tokenizer named, publish raw counts and methodology, and include every scenario (no selection).
+- **REQ-TLS-13** WHEN a Markdown file contains an `mdui` fence, THE adapters SHALL render it identically to the standalone spec under the same options; THE SVG renderer SHALL emit self-contained SVG with `<title>`/`<desc>`; WHEN a `.flow.md` is rendered, THE system SHALL draw screens as nodes and actions as labelled edges.
 
 ### Design system
 - **REQ-DSY-01** WHEN `theme:` points to a DESIGN.md, THE loader SHALL parse front matter tokens and section prose and report spec-version mismatches.
@@ -351,16 +361,16 @@ IDs are `REQ-<feature>`; each is verified by the tasks named in `TASKS.md`.
 - **REQ-DSY-06** WHEN a component map is present, THE sync and prompt tools SHALL use it for import paths and prop mapping.
 
 ### Agent
-- **REQ-AGT-01** THE skill directory SHALL validate against the Agent Skills specification and keep `SKILL.md` within the size target recorded at T-053.
+- **REQ-AGT-01** THE skill directory SHALL pass `skills-ref validate`, keep `SKILL.md` ≤ 500 lines with a body < 5,000 tokens, `name` ≤ 64 characters, `description` ≤ 1,024 and `compatibility` ≤ 500, and keep references one level deep [S131].
 - **REQ-AGT-02** `prompt` SHALL include only constructs permitted by the project catalog/tokens/data and SHALL be byte-for-byte deterministic.
 - **REQ-AGT-03** WHEN a spec lists `requirements:` IDs absent from the project requirements file, THE linter SHALL warn; WHEN a requirement has no screen, THE coverage report SHALL list it.
 - **REQ-AGT-04** THE system SHALL treat blockquote hints as layout guidance only; WHEN a hint matches an instruction pattern (e.g. "ignore previous", "force sync", "run"), THE linter SHALL warn `W7001`; confirmation/force SHALL be accepted only as tool parameters.
-- **REQ-AGT-05** THE A2UI and json-render exporters SHALL validate their output against the pinned upstream schemas (or documented subsets).
+- **REQ-AGT-05** THE A2UI exporter SHALL emit the v1.0 message set (`createSurface`, `updateComponents`, `updateDataModel`, …) with JSON-Pointer bindings, and THE A2UI and json-render exporters SHALL validate output against the pinned upstream schemas (or documented subsets) and warn on every construct they cannot map.
 - **REQ-AGT-06** WHERE a catalog is supplied, THE runtime renderer SHALL render only catalog components and SHALL ignore unknown nodes with a logged diagnostic.
 
 ### Quality
 - **REQ-QLT-01** THE conformance suite SHALL be runnable by any implementation via a documented JSON protocol.
-- **REQ-QLT-02** THE eval harness SHALL fail CI on a drop in structural-validity pass-rate below the configured threshold.
+- **REQ-QLT-02** THE eval harness SHALL fail CI on a drop in structural-validity pass-rate below the configured threshold, and SHALL express assertions as `mdui` CLI invocations so the runner (e.g. promptfoo) can be replaced without rewriting them.
 - **REQ-QLT-03** WHEN an input lacks an accessible name or an image lacks `alt`, THE linter SHALL emit the corresponding `3xxx` diagnostic.
 - **REQ-QLT-04** THE example gate SHALL fail if any example has unbalanced blocks.
 - **REQ-QLT-05** THE docs site SHALL include an in-browser playground using `@mdui/core` without a server.
@@ -369,8 +379,10 @@ IDs are `REQ-<feature>`; each is verified by the tasks named in `TASKS.md`.
 - **REQ-NOV-01a** WHEN `sync plan` runs, THE system SHALL classify every anchor into exactly one class of the three-way table (`FEATURE_ADDITIONS` §5) and SHALL not modify any file.
 - **REQ-NOV-01b** WHEN `sync apply --confirm` runs, THE system SHALL apply changes atomically, re-extract, and update `.ui.lock` only if the re-extracted state equals the intended state; otherwise it SHALL roll back.
 - **REQ-NOV-02a** WHEN `verify` runs, THE system SHALL compile the expected accessibility tree for each requested state/viewport and report per-node verdicts with spec line and anchor.
+- **REQ-NOV-02c** THE Oracle SHALL use its own matcher that supports order-insensitive regions, and SHALL also emit order-correct Playwright ARIA-snapshot YAML [S132] for hand-run tests.
 - **REQ-NOV-02b** THE Fidelity Score SHALL be computed by the documented weighted formula and SHALL be reproducible given the same page snapshot.
 - **REQ-NOV-03a** `grammar` output SHALL accept only documents the reference parser accepts with zero errors (parity), and SHALL reject components/tokens/data keys outside the supplied catalog/tokens/data.
+- **REQ-NOV-03c** THE toolchain SHALL validate every model-produced spec with the reference parser regardless of any decoding-time constraint, and SHALL report hosted-engine conformance separately from local-engine conformance.
 - **REQ-NOV-03b** THE benchmark SHALL report constrained vs unconstrained structural validity and a semantic-quality delta per tested model.
 - **REQ-NOV-04a** WHEN a constraint is violated, THE linter SHALL emit a `5xxx` diagnostic naming the rule, the heuristic it maps to, and the violating nodes.
 - **REQ-NOV-04b** WHEN a waiver exists, THE system SHALL suppress the diagnostic and record the waiver (rule, reason, location) in the lock for audit.
@@ -383,7 +395,7 @@ IDs are `REQ-<feature>`; each is verified by the tasks named in `TASKS.md`.
 |---|---|
 | **α** | v1 grammar published · 100% of the 7 examples (fixed) parse with 0 errors · ≥ 60 valid / ≥ 60 invalid fixtures pass · `mdui validate|lint|ast` work · B-01/B-02/B-06 closed and CI-guarded |
 | **β** | v2 syntax in grammar + parser · formatter idempotent (property) · streaming ≡ batch (≥ 10k cases) · DESIGN.md loader + token lint · catalog + `prompt` · skill passes Agent Skills validation · a11y rules (≥ 8) live · eval harness runs on ≥ 3 agents and reports B-03 nesting-error rate |
-| **GA** | All four novel features meet their **FEATURE_ADDITIONS §5** metrics (NOV-01: ≥ 95% classification, 0 data-loss/≥ 1,000 cases · NOV-02: recall ≥ 90%, FP ≤ 5% · NOV-03: parity ≥ 100k strings, baseline + delta published · NOV-04: ≥ 12 rules, recall ≥ 95%, 0 FP on clean set) · MCP server · A2UI + json-render exporters validated · ≥ 250 fixtures · docs site + playground live |
+| **GA** | All four novel features meet their **FEATURE_ADDITIONS §5** metrics (NOV-01: ≥ 95% classification, 0 data-loss/≥ 1,000 cases · NOV-02: recall ≥ 90%, FP ≤ 5% · NOV-03: parity ≥ 100k strings, baseline + delta published · NOV-04: ≥ 12 rules, recall ≥ 95%, 0 FP on clean set) · MCP server · A2UI + json-render exporters validated · ≥ 250 fixtures · docs site + playground live · **token benchmark published (all scenarios, named tokenizer)** · **`mdui` fence + SVG verified rendering in a GitHub README** |
 | **2.1** | VS Code ext. · Action with PR wireframe diff · importers · remaining exporters · runtime renderer · Flutter oracle |
 | **Always** | No release if conformance fixtures or example gate fail; no scope change without §8 change control |
 
@@ -402,4 +414,7 @@ IDs are `REQ-<feature>`; each is verified by the tasks named in `TASKS.md`.
 | Constrained decoding degrades quality or lacks vendor support (NOV-03) | feature value | measure delta (T-061); ship three targets; document support matrix |
 | Heuristic constraints perceived as dogma (NOV-04) | trust | configurable defaults, `warn` by default except a11y, explicit waivers |
 | Prompt-injection through specs (B-04) | agent compromise | AGT-04; injection fixtures in evals; tools take confirmation as parameters |
+| Faster-moving rivals (OpenUI Lang, A2UI v1.0/Express, Wiremark, Wireloom) [S115][S112][S117][S116] | positioning erodes | verification pass each minor release; TLS-12 benchmark; embed/SVG (TLS-13); keep the combination moat (design system + sync + verification) |
+| Upstream tooling churn/ownership (promptfoo→OpenAI, Storybook MCP moved, AI SDK RSC paused) [S136][S130][S50] | breakage, lock-in | tool-agnostic interfaces; adapters; no archived dependencies |
+| Hosted constrained-decoding not exact [S152] | validity claims fail | always re-validate; report hosted vs local separately |
 | Context-file benefit uncertain [S111] | wasted effort on AGENTS.md/skill size | measure with QLT-02 before expanding; keep skill minimal |

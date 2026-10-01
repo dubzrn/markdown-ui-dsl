@@ -4,8 +4,8 @@
 |---|---|
 | **Status** | Ready for sprint planning · prepared 2026-10-01 |
 | **Inputs** | [`FEATURE_ADDITIONS.md`](FEATURE_ADDITIONS.md) (scope) · [`SPEC.md`](SPEC.md) (requirements `REQ-*`) · [`PLAN.md`](PLAN.md) (order, phases, checkpoints) |
-| **Tasks** | 81 across 7 phases (0–6) · IDs are sparse by design (a range per phase); gaps are not missing tasks |
-| **Traceability** | Every feature ID and every `REQ-*` appears below; `scripts/check-traceability.ts` (T-005) enforces it in CI |
+| **Tasks** | 83 across 7 phases (0–6) · rev. 2 of 2026-10-01 (adds T-094, T-095, T-111; removes T-109 — folded into T-095; amends 14 others) · IDs are sparse by design (a range per phase); gaps are not missing tasks |
+| **Traceability** | Every feature ID (47) and every `REQ-*` appears below; `scripts/check-traceability.ts` (T-005) enforces it in CI |
 
 ---
 
@@ -109,10 +109,11 @@
 - **Split:** (a) buttons/links/tabs; (b) inputs/choices/toggles/dropdown(+`dynamic`); (c) badge/IMG/escapes.
 - **Done when:** every v1 inline construct yields a typed node; escapes and code spans are literal; precedence per T-011.
 - **Verify:** fixtures; property: `parse(print(node))` stable.
+- **Then:** run **spike SP-4** (PLAN §5) — a 2-day token-cost baseline of mdui vs A2UI JSON/Express, json-render and OpenUI Lang on three scenarios — before RFC-0001 freezes syntax that could be made cheaper.
 
 ### T-017 · Frontmatter parser and schema
 `M` · Deps: T-015, T-014 · Implements: **LNG-10** · REQ: REQ-LNG-10
-- **Do:** strict YAML-subset parser inside `core` (scalars, maps, lists, flow style), documented subset; unsupported syntax ⇒ `E1102`, never silent mis-parse; key schema (SPEC §2.2); unknown keys ⇒ warning; `dsl:` handling (absent ⇒ 1.x).
+- **Do:** strict YAML-subset parser inside `core` (scalars, maps, lists, flow style), documented subset; unsupported syntax ⇒ `E1102`, never silent mis-parse; key schema (SPEC §2.2, incl. rev. 2 `title`/`caption`/`legend` metadata); unknown keys ⇒ warning; `dsl:` handling (absent ⇒ 1.x).
 - **Done when:** all frontmatter in examples parses; unsupported constructs produce diagnostics; ≥ 30 fixtures.
 - **Verify:** conformance + fuzz.
 
@@ -136,7 +137,7 @@
 
 ### T-021 · v2 syntax — new primitives
 `L` · Deps: T-012, T-016 · Implements: **LNG-04** · REQ: REQ-LNG-04
-- **Split:** (a) form-like widgets (slider/date/file/progress); (b) data-like (chart/stat/skeleton/avatar/icon/crumbs/pager/stepper); (c) containers (grid/accordion/panel/drawer/toast/tooltip/callout/empty).
+- **Split:** (a) form-like widgets (slider/date/file/progress); (b) data-like (chart/stat/skeleton/avatar/icon/crumbs/pager/stepper); (c) containers (grid/accordion/panel/drawer/toast/tooltip/callout/empty); (d) **rev. 2 — Salt-derived:** `TREE` (+ tree-table), `GROUP` (titled group box), `MENUBAR`, `{: scroll=x|y|both }`, labelled dividers, named `ICON` set [S12].
 - **Done when:** each primitive has a typed node, argument validation with fix hints, and a fixture pair.
 - **Verify:** conformance; example per primitive added to `examples/`.
 
@@ -233,7 +234,7 @@
 
 ### T-038 · Token references and exporters
 `M` · Deps: T-037 · Implements: **DSY-02** · REQ: REQ-DSY-02
-- **Do:** resolve `{colors.primary}` chains with cycle detection; exporters: DTCG, Tailwind v3 JSON, Tailwind v4 `@theme`, CSS variables [S54][S60]; optional Style Dictionary bridge [S63].
+- **Do:** resolve `{colors.primary}` chains with cycle detection; exporters: DTCG, Tailwind v3 JSON, Tailwind v4 `@theme`, CSS variables [S54][S60]; Style Dictionary bridge **only if DTCG support is confirmed** (its README does not state it; Amazon origin also unconfirmed [S63]) — otherwise a native DTCG exporter.
 - **Done when:** exported DTCG validates against the DTCG format; round-trip preserves references.
 - **Verify:** golden outputs; DTCG validation.
 
@@ -251,7 +252,7 @@
 
 ### T-041 · Preview server and toggles
 `S` · Deps: T-040 · Implements: **TLS-06, LNG-05, LNG-13** · REQ: REQ-TLS-06, REQ-LNG-05, REQ-LNG-13
-- **Do:** `render --watch`, live reload, viewport/theme/state toggles.
+- **Do:** `render --watch`, live reload, viewport/theme/state toggles; **rev. 2:** `--scale <n|WxH>` and `--dpi`, and a handwritten/sketch option (Salt parity [S12]).
 - **Done when:** edit→update ≤ 500 ms (measured); toggles switch breakpoint/theme/state.
 - **Verify:** e2e smoke with Playwright; timing assertion with tolerance.
 
@@ -288,14 +289,14 @@
 
 ### T-052 · Component map
 `M` · Deps: T-050 · Implements: **DSY-06** · REQ: REQ-DSY-06
-- **Do:** `mdui.map.yaml` schema/loader (primitive/catalog item → code component, import path, prop mapping) [S65]. *Stretch:* auto-populate from a Storybook components manifest [S72] — if it exceeds one day, defer to 2.1 via RFC.
+- **Do:** `mdui.map.yaml` schema/loader (primitive/catalog item → code component, import path, prop mapping) [S65]. *Stretch:* auto-populate from a Storybook components manifest [S72] — target the manifests, **not** the archived `storybookjs/mcp` package (moved into the main Storybook repo, v10.6.0 [S130]); if it exceeds one day, defer to 2.1 via RFC.
 - **Done when:** map resolves for the three framework examples; unknown mappings diagnosed (`E6101`).
 - **Verify:** fixtures.
 
 ### T-053 · Agent Skills restructure
 `M` · Deps: T-012, T-054, T-055 · Implements: **AGT-01** · REQ: REQ-AGT-01
-- **Do:** convert `skills/markdown-ui-dsl/` to the Agent Skills layout (`SKILL.md` + `references/` for syntax, v2 additions, sync protocol, safety; `scripts/` for validators) [S89]; validate against the standard; **read the findings of [S111]** and record in an ADR how they change the amount of context shipped; keep the skill fully usable **without** the toolchain; update README install sections.
-- **Done when:** passes the standard's validator; size target recorded (project goal: `SKILL.md` ≤ 500 lines — to be confirmed against the spec); a no-tooling agent run still produces valid specs (checked in T-063).
+- **Do:** convert `skills/markdown-ui-dsl/` to the Agent Skills layout (`SKILL.md` + `references/` for syntax, v2 additions, sync protocol, safety; `scripts/` for validators) [S89]; validate with `skills-ref validate` against the verified limits [S131]; **read the findings of [S111]** and record in an ADR how they change the amount of context shipped; keep the skill fully usable **without** the toolchain; update README install sections.
+- **Done when:** passes the standard's validator; **limits met: `SKILL.md` ≤ 500 lines, body < 5,000 tokens, `name` ≤ 64 chars, `description` ≤ 1,024, `compatibility` ≤ 500, references one level deep** [S131]; a no-tooling agent run still produces valid specs (checked in T-063).
 - **Verify:** validator; eval run.
 
 ### T-054 · Prompt generator
@@ -327,6 +328,7 @@
 - **Split:** (a) EBNF→Lark transform; (b) grammar-driven string generator; (c) parity runner vs reference parser.
 - **Done when:** every valid fixture accepted; ≥ 100k generated strings parse with **zero** errors under the reference parser; invalid fixtures rejected or flagged as "grammar-accepted/semantic-rejected" with an allow-list.
 - **Verify:** nightly parity fuzz.
+- **Reference point:** record grammar size/shape vs A2UI's `Express.g4` [S114] for the same UI scenarios (input to T-061).
 
 ### T-059 · Catalog-aware dynamic grammar
 `L` · Deps: T-058, T-050, T-037, T-022 · Implements: **NOV-03** · REQ: REQ-NOV-03a
@@ -336,14 +338,14 @@
 - **Verify:** negative fixtures; parity fuzz on specialised grammars.
 
 ### T-060 · GBNF and JSON-Schema emitters; engine matrix
-`M` · Deps: T-058 · Implements: **NOV-03** · REQ: REQ-NOV-03a
-- **Do:** GBNF (llama.cpp) and JSON-schema emitters; test against ≥ 2 engines where installable (llguidance [S100], llama.cpp); publish a **support matrix** including vendors *not verified* in research (A7).
+`M` · Deps: T-058 · Implements: **NOV-03** · REQ: REQ-NOV-03a, REQ-NOV-03c
+- **Do:** GBNF (llama.cpp) and JSON-schema emitters; test against ≥ 2 engines where installable (llguidance [S100], llama.cpp); publish a **support matrix** including vendors *not verified* in research (A7); OpenAI custom tools accept `lark`/`regex` grammars [S135] but hosted conformance is reported as imperfect [S152], so the matrix lists **"strong constraint, always re-validate"** for hosted engines.
 - **Done when:** at least two engines accept the grammar and generate parseable output in a smoke test.
 - **Verify:** CI smoke (skipped with notice when engines absent) + manual run recorded.
 
 ### T-061 · Constrained-decoding benchmark
-`M` · Deps: T-059, T-060, T-063 · Implements: **NOV-03** · REQ: REQ-NOV-03b
-- **Do:** harness comparing constrained vs unconstrained generation per model: structural validity, catalog adherence, nesting errors, semantic-quality delta using the T-063 rubric; publish results in `evals/NOV-03.md`.
+`M` · Deps: T-059, T-060, T-063 · Implements: **NOV-03** · REQ: REQ-NOV-03b, REQ-NOV-03c
+- **Do:** harness comparing constrained vs unconstrained generation per model: structural validity, catalog adherence, nesting errors, semantic-quality delta using the T-063 rubric; publish results in `evals/NOV-03.md`; **comparison deliverable:** grammar acceptance and size vs `Express.g4` [S114] on equivalent UIs; hosted-API conformance measured separately from local engines.
 - **Done when:** report includes the **measured unconstrained baseline** and the delta with confidence notes; no claim beyond data.
 - **Verify:** reproducible script; results reviewed.
 
@@ -355,7 +357,7 @@
 
 ### T-063 · LLM eval harness and TESTING.md rewrite
 `M` · Deps: T-054, T-055, T-028 · Implements: **QLT-02** · REQ: REQ-QLT-02
-- **Do:** promptfoo configs [S109]; ≥ 30 generation prompts, sync scenarios, injection prompts; **deterministic assertions via `mdui validate`/`lint`** first, rubric second; panel of ≥ 3 agents (owner picks); **record the v1 nesting-error baseline** (B-03 hypothesis) in `evals/BASELINE.md`; rewrite `TESTING.md` around the real suites (keep the manual checklists as release acceptance).
+- **Do:** **tool-agnostic harness** — assertions are `mdui validate`/`lint` invocations; promptfoo [S109] is one runner (its repo states it is now OpenAI-owned [S136]), with an adapter boundary so another runner can replace it; ≥ 30 generation prompts, sync scenarios, injection prompts; **deterministic assertions via `mdui validate`/`lint`** first, rubric second; panel of ≥ 3 agents (owner picks); **record the v1 nesting-error baseline** (B-03 hypothesis) in `evals/BASELINE.md`; rewrite `TESTING.md` around the real suites (keep the manual checklists as release acceptance).
 - **Done when:** CI fails below configured structural-validity threshold; baseline numbers published whatever they show.
 - **Verify:** dry-run with recorded provider mocks; nightly workflow green.
 
@@ -405,14 +407,14 @@
 - **Verify:** fixture agent harness.
 
 ### T-076 · Oracle: AST → expected accessibility tree
-`L` · Deps: T-019, T-022, T-032 · Implements: **NOV-02, LNG-03, LNG-05, LNG-13** · REQ: REQ-NOV-02a, REQ-LNG-03, REQ-LNG-05, REQ-LNG-13
-- **Split:** (a) role/name mapping table (documented); (b) state/viewport/theme expansion; (c) ARIA-snapshot YAML emitter [S96][S97].
+`L` · Deps: T-019, T-022, T-032 · Implements: **NOV-02, LNG-03, LNG-05, LNG-13** · REQ: REQ-NOV-02a, REQ-NOV-02c, REQ-LNG-03, REQ-LNG-05, REQ-LNG-13
+- **Split:** (a) role/name mapping table (documented); (b) state/viewport/theme expansion; (c) Playwright-compatible ARIA-snapshot YAML emitter — note Playwright's native matching is **order-sensitive** with partial matching by omission [S132], so emitted templates must be order-correct.
 - **Done when:** mapping covers every primitive; one expected tree per state/environment; label-vs-placeholder fallback documented and configurable.
 - **Verify:** golden expected trees.
 
 ### T-077 · Oracle runner, Fidelity Score and mutation benchmark
-`L` · Deps: T-076, T-070 · Implements: **NOV-02** · REQ: REQ-NOV-02a, REQ-NOV-02b
-- **Split:** (a) Playwright driver (optional peer dep); (b) matcher (subset/strict) + verdicts mapped to spec line/anchor; (c) weighted score + JSON/Markdown reports; (d) golden mutation set.
+`L` · Deps: T-076, T-070 · Implements: **NOV-02** · REQ: REQ-NOV-02a, REQ-NOV-02b, REQ-NOV-02c
+- **Split:** (a) Playwright driver (optional peer dep); (b) **own matcher** (subset/strict; supports order-insensitive regions, which Playwright's native comparison does not [S132]) + verdicts mapped to spec line/anchor; (c) weighted score + JSON/Markdown reports; (d) golden mutation set.
 - **Do:** formula `Σ(w·matched)/Σ(w·expected)` with weights interactive 3 / heading 2 / landmark 2 / text 1 (configurable).
 - **Done when:** on ≥ 10 apps × ≥ 20 seeded mutations: **recall ≥ 90%**, **false-positive ≤ 5%** on semantic-preserving refactors; ≤ 5 s per screen; score reproducible from a saved snapshot.
 - **Verify:** benchmark suite; results in `evals/NOV-02.md`.
@@ -459,12 +461,12 @@
 ---
 
 ## Phase 5 — Interop, docs and GA release
-*Goal: protocol exporters, docs site/playground, hardening and publication. Slice delivered: v2.0.0.*
+*Goal: protocol exporters, embeddable rendering, honest token benchmark, docs site/playground, hardening and publication. Slice delivered: v2.0.0.*
 
 ### T-090 · A2UI exporter
 `L` · Deps: T-019, T-050 · Implements: **AGT-05** · REQ: REQ-AGT-05
 - **Split:** (a) node→A2UI component mapping table; (b) data model/binding mapping; (c) schema validation against the pinned upstream version.
-- **Do:** `mdui export --to a2ui`; pin A2UI v0.9.x [S20]; document unmappable constructs and how they degrade.
+- **Do:** `mdui export --to a2ui`; target the **A2UI v1.0 message set** (`createSurface`, `updateComponents`, `updateDataModel`, `deleteSurface`) with JSON-Pointer data bindings, **pinned to a spec commit** because the spec README still calls v1.0 "a candidate for becoming stable" [S112][S113]; document unmappable constructs and how they degrade.
 - **Done when:** output validates against the pinned schema; unmappable constructs produce warnings, never silent drops.
 - **Verify:** golden outputs; schema validation; upstream sample renders (manual).
 
@@ -480,9 +482,22 @@
 - **Done when:** playground parses/lints/previews with no server; every diagnostic code has a doc page; search works.
 - **Verify:** build + link check + e2e smoke.
 
+### T-094 · Embeddable fence, adapters and SVG renderer
+`L` · Deps: T-040, T-042 · Implements: **TLS-13** · REQ: REQ-TLS-13
+- **Split:** (a) SVG renderer (sketch/clean/wireframe) sharing the node→layout model; (b) ```` ```mdui ```` fence + `remark`/`markdown-it`/`rehype` adapters in `@mdui/embed`; (c) Obsidian adapter and GitHub-friendly output (generated `.svg` + Markdown image embeds).
+- **Do:** self-contained SVG (no external fonts, real text not outlines, `<title>`/`<desc>`); fence info-string options (`mdui style=sketch state=loading`); zero-dependency `@mdui/core` retained (adapters isolated). Document what GitHub renders natively (Mermaid does [S140]; a custom fence needs generated SVG or the PR bot — **verify at build time**). Prior art: Wiremark adapters [S117], Wireloom SVG in GitHub [S116].
+- **Done when:** a README with an `mdui` fence renders via remark and markdown-it; generated SVG displays in a GitHub-rendered README in a sandbox repo (evidence attached); SVG is within a size budget (proposed ≤ 50 kB for the login example).
+- **Verify:** golden SVG; adapter tests; manual GitHub render check.
+
+### T-095 · Token benchmark and stats
+`M` · Deps: T-016, T-021, T-090, T-091 · Implements: **TLS-12** · REQ: REQ-TLS-12
+- **Do:** author ≥ 10 UI scenarios (the 7 examples + OpenUI-style contact-form scenarios [S115]) as mdui, A2UI v1.0 JSON, A2UI Express, json-render JSON and OpenUI Lang; count tokens with a **named tokenizer** (plus a second tokenizer family); `mdui stats`; publish methodology and raw counts in `evals/TOKENS.md`; **report every scenario, including those mdui loses**.
+- **Done when:** the report is reproducible by script; a decision on a compact *profile* is recorded (RFC if yes) — driven by data, not assertion (P1 stays: human readability is not traded away).
+- **Verify:** re-run determinism; an independent reviewer re-counts three scenarios.
+
 ### T-093 · GA hardening
-`M` · Deps: T-074, T-077, T-079, T-090, T-091 · Implements: *(all — release quality)* · REQ: —
-- **Do:** security review (path sandbox, URL schemes, injection fixtures), perf budgets met (T-044), a11y of preview/docs, docs completeness, **re-run novelty check** (FEATURE_ADDITIONS §8.5) and update COMPETITIVE_RESEARCH §8, final traceability pass.
+`M` · Deps: T-074, T-077, T-079, T-090, T-091, T-094, T-095 · Implements: *(all — release quality)* · REQ: —
+- **Do:** security review (path sandbox, URL schemes, injection fixtures), perf budgets met (T-044), a11y of preview/docs, docs completeness, **re-run novelty check and the source-verification pass** (FEATURE_ADDITIONS §8.5; COMPETITIVE_RESEARCH §2.4 — re-verify every `C`/`U` and star/version snapshot) and update COMPETITIVE_RESEARCH §8, final traceability pass.
 - **Done when:** checklist in PLAN §7 (GA) all green; known limitations documented.
 - **Verify:** checklist sign-off.
 
@@ -523,9 +538,9 @@
 - **Done when:** round-trip DSL→HTML→DSL preserves structure on the corpus.
 - **Verify:** round-trip tests.
 
-### T-104 · Adaptive Cards / Block Kit / Open-JSON-UI exporters
+### T-104 · Adaptive Cards / Block Kit / Open-JSON-UI / A2UI-Express exporters
 `L` · Deps: T-090 · Implements: **AGT-05** · REQ: REQ-AGT-05
-- **Split:** one exporter per target; validate against each target's schema [S43][S51][S37].
+- **Split:** one exporter per target (incl. **A2UI Express** text [S114]); validate against each target's schema/grammar [S43][S51][S37][S114].
 - **Done when:** each validates; unsupported constructs warned.
 - **Verify:** golden + schema validation.
 
@@ -553,14 +568,14 @@
 - **Done when:** classification accuracy ≥ 95% on per-adapter fixture sets.
 - **Verify:** fixtures.
 
-### T-109 · Stats / token report
-`S` · Deps: T-090, T-091 · Implements: **TLS-12** · REQ: REQ-TLS-12
-- **Do:** `mdui stats` comparing estimated tokens of spec vs A2UI vs json-render; name the estimator used.
-- **Done when:** report reproducible; estimator documented.
-- **Verify:** golden report.
+### T-111 · Flow-diagram rendering with embedded screens
+`M` · Deps: T-025, T-094 · Implements: **TLS-13** · REQ: REQ-TLS-13
+- **Do:** render a `.flow.md` as an SVG diagram whose nodes embed screen previews and whose edges carry action labels and `when:` guards (Salt embeds screens in activity diagrams, including `while`/`repeat` conditions [S12]; Wiremark links named frames [S117]).
+- **Done when:** the sample flow renders with correct edges and `terminal` markers; layout is deterministic; the SVG has a text alternative (title/desc + transition list).
+- **Verify:** golden SVG.
 
 ### T-110 · Release engineering — v2.1
-`S` · Deps: T-098, T-100, T-101, T-104, T-105, T-106, T-107, T-108, T-109 · Implements: *(release)* · REQ: —
+`S` · Deps: T-098, T-100, T-101, T-104, T-105, T-106, T-107, T-108, T-111 · Implements: *(release)* · REQ: —
 - **Do:** ship what's done (items may slip without blocking others); changelog; docs.
 - **Done when:** published; deferred items re-queued via RFC.
 - **Verify:** clean-room install.
@@ -595,7 +610,8 @@
 | TLS-09 | T-100 |
 | TLS-10 | T-101 |
 | TLS-11 | T-102, T-103 |
-| TLS-12 | T-109 |
+| TLS-13 | T-094, T-111 |
+| TLS-12 | T-095 |
 | DSY-01 | T-037 |
 | DSY-02 | T-038 |
 | DSY-03 | T-039 |

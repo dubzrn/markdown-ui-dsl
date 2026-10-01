@@ -3,8 +3,8 @@
 | | |
 |---|---|
 | **Status** | Draft for maintainer sign-off · prepared 2026-10-01 |
-| **Implements** | [`FEATURE_ADDITIONS.md`](FEATURE_ADDITIONS.md) (46 features) per [`SPEC.md`](SPEC.md) |
-| **Work items** | [`TASKS.md`](TASKS.md) — 81 tasks, 7 phases |
+| **Implements** | [`FEATURE_ADDITIONS.md`](FEATURE_ADDITIONS.md) (47 features) per [`SPEC.md`](SPEC.md) |
+| **Work items** | [`TASKS.md`](TASKS.md) — 83 tasks, 7 phases · **rev. 2** (source-verification pass: +3 tasks, −1, 14 amended; spike SP-4 added) |
 | **Method** | Planning & task breakdown: read-only analysis → dependency graph → vertical slices → small verifiable tasks → checkpoints between phases |
 
 ---
@@ -13,7 +13,7 @@
 
 1. **Vertical slices, not layers.** Every phase ends with something a user can run end-to-end (e.g. after Phase 1: `mdui validate|lint` on real specs), never "the parser is done but nothing uses it".
 2. **Dependency-first.** The grammar → parser → AST spine gates everything; it is scheduled first and kept on the critical path (§4).
-3. **Riskiest assumption earliest.** Three time-boxed **spikes** (§5) de-risk the novel features before Phase 4 commits to them.
+3. **Riskiest assumption earliest.** Four time-boxed **spikes** (§5) de-risk the novel features and the token-efficiency question before the syntax freezes or Phase 4 commits.
 4. **Small tasks.** `S`/`M` preferred; every `L` is split at the start of its phase (TASKS gives the split). Each task has *Done when* and *Verify*, so an agent or human can pick one up cold.
 5. **Checkpoints between phases** with measurable gates (§7). No phase starts on a red checkpoint.
 6. **Compatibility is a gate, not a hope.** The v1 compatibility test (T-024) is release-blocking from Phase 1 onward.
@@ -118,13 +118,14 @@ Each phase lists its **slice**, tasks, parallel streams, checkpoint and release.
 - **Parallel streams:** *Sync* (T-070→T-071→T-072→T-073→T-074→T-075) ∥ *Oracle* (T-076→T-077→T-078; needs T-070 for anchor mapping) ∥ *Constraints* (T-079→T-080→T-082).
 - **Checkpoint 4 (GA candidate):** all four novel metrics met or *honestly reported*.
 
-### Phase 5 — Interop, docs, GA  *(≈ 19 days)*
+### Phase 5 — Interop, embedding, benchmark, docs, GA  *(≈ 27 days)*
 - **Slice:** v2.0.0 published.
-- **Tasks:** T-090 A2UI exporter · T-091 json-render exporter · T-092 docs site + playground · T-093 hardening · T-098 release.
+- **Tasks:** T-090 A2UI v1.0 exporter · T-091 json-render exporter · T-092 docs site + playground · **T-094 embeddable fence + SVG renderer (new)** · **T-095 token benchmark (new; replaces T-109)** · T-093 hardening · T-098 release.
+- **Order:** (T-090 ∥ T-091 ∥ T-094) → T-095 (needs both exporters) → T-092 ∥ → T-093 → T-098.
 - **Checkpoint 5 → 2.0.0 GA.**
 
-### Phase 6 — 2.1 ecosystem  *(≈ 41 days; independent items)*
-- **Tasks:** T-100 VS Code · T-101 GitHub Action · T-102 Figma importer · T-103 HTML importer · T-104 other exporters · T-105 runtime renderer · T-106 Flutter oracle · T-107 i18n/RTL · T-108 Dart/Razor sync · T-109 stats · T-110 release.
+### Phase 6 — 2.1 ecosystem  *(≈ 43 days; independent items)*
+- **Tasks:** T-100 VS Code · T-101 GitHub Action · T-102 Figma importer · T-103 HTML importer · T-104 other exporters · T-105 runtime renderer · T-106 Flutter oracle · T-107 i18n/RTL · T-108 Dart/Razor sync · **T-111 flow-diagram rendering (new)** · T-110 release.
 - **Order:** by demand; items may slip individually without blocking the release (T-110 ships what is done).
 - **Checkpoint 6 → 2.1.**
 
@@ -138,7 +139,9 @@ Each phase lists its **slice**, tasks, parallel streams, checkpoint and release.
 | **SP-2 Grammar feasibility** | after T-010 | Does the v1 EBNF → Lark/GBNF translate and get accepted by llguidance [S100] and llama.cpp with no left-recursion/ambiguity blockers? Is typed-closer matching expressible? | 2 d | Proceed with T-058–T-060. | Adjust grammar shape in RFC-0001 (e.g. require typed closers) *before* v2 syntax freezes. |
 | **SP-3 Anchor stability** | after T-015 | Does tree-matching with a similarity threshold keep ≥ 95% of anchors stable across realistic edits (relabel, reorder, wrap)? | 2 d | Proceed with T-070 design. | Fall back to explicit anchors only (`{: #id }`), lock-assigned anchors become "advisory". |
 
-Spike effort (≈ 6 days) is added to the estimate in §9. Spike results are linked from the corresponding task PR.
+| **SP-4 Token baseline** | after T-016 | How many tokens does mdui spend vs A2UI JSON, A2UI Express [S114], json-render and OpenUI Lang [S115] on three representative scenarios (login, table+filters, dashboard)? Is the gap large enough to warrant a compact *profile*? | 2 d | If competitive → proceed; publish in T-095. | If materially worse → open an RFC for a compact profile *before* RFC-0001 freezes v2 syntax; never trade away human readability (P1) without data. |
+
+Spike effort (≈ 8 days) is added to the estimate in §9. Spike results are linked from the corresponding task PR.
 
 ---
 
@@ -169,7 +172,7 @@ A phase is *done* only when every box is checked. Metrics are the **proposed tar
 - [ ] All 7 examples (fixed) validate and lint clean; the 4 original broken examples are regression fixtures that **fail** `balanced-blocks`
 - [ ] T-024 compat gate green and wired as required check
 - [ ] `mdui validate|lint|ast` documented; exit-code contract tested
-- [ ] SP-1/SP-2/SP-3 results recorded
+- [ ] SP-1/SP-2/SP-3/SP-4 results recorded
 - [ ] Traceability script green
 
 **Checkpoint 2 (end Phase 2)**
@@ -196,10 +199,12 @@ A phase is *done* only when every box is checked. Metrics are the **proposed tar
 - [ ] Any missed metric is published as measured, with an RFC for the follow-up (no unverifiable claims ship)
 
 **Checkpoint 5 — GA (end Phase 5)**
-- [ ] A2UI and json-render exports validate against pinned upstream schemas
+- [ ] A2UI **v1.0** and json-render exports validate against pinned upstream schemas
 - [ ] Docs site + in-browser playground live; every diagnostic code documented
 - [ ] Security review complete (path sandbox, URL schemes, injection)
-- [ ] Novelty re-check done; COMPETITIVE_RESEARCH §8 updated
+- [ ] Novelty re-check and **source re-verification (every `C`/`U` entry, star/version snapshots)** done; COMPETITIVE_RESEARCH §8 and §9 updated
+- [ ] `mdui` fence renders via remark and markdown-it; generated SVG verified displaying in a GitHub README (evidence attached)
+- [ ] Token benchmark published with named tokenizer, all scenarios, raw counts — including any scenario mdui loses
 - [ ] Clean-room install of CLI, MCP, skill; migration guide published; license decision recorded
 - [ ] Full traceability pass; known limitations documented
 
@@ -223,6 +228,10 @@ A phase is *done* only when every box is checked. Metrics are the **proposed tar
 | R9 | Scope creep from "just one more primitive" | H | M | FEATURE_ADDITIONS §8 change control | PRs touching the register without RFC |
 | R10 | Name/scope unavailability (A2) | L | L | Resolve in T-002 | Registry lookup fails |
 | R11 | Benefit of agent context files uncertain [S111] | M | L | Measure via T-063 before expanding skill; keep minimal | Eval shows no lift from context |
+| R12 | Faster-moving rivals erode positioning (OpenUI Lang 9.9k★, A2UI v1.0/Express, Wiremark, Wireloom) [S115][S112][S117][S116] | H | M | Re-run the verification pass every minor release (§13); TLS-12 benchmark; TLS-13; protect the combination moat | A rival ships design-system + sync + verification |
+| R13 | Token benchmark shows mdui materially costlier | M | M | SP-4 early; compact-profile RFC; keep P1; publish honestly | SP-4 gap beyond a threshold set at SP-4 |
+| R14 | Upstream churn/ownership: A2UI v1.0 "candidate", promptfoo→OpenAI, Storybook MCP moved, AI SDK RSC paused [S113][S136][S130][S50] | M | M | Pin to commits; adapter boundaries; tool-agnostic harness | Upstream release breaks goldens or archives a dependency |
+| R15 | Prior-art narrowing of novel claims (round-trip engineering, Design2Code, Express.g4, Kiro) [S148][S144][S114][S137] | M | L | Claims re-scoped in FEATURE_ADDITIONS §5; each ships a falsifiable metric; re-check at GA | A competitor documents an equivalent |
 
 ---
 
@@ -237,16 +246,16 @@ A phase is *done* only when every box is checked. Metrics are the **proposed tar
 | 2 Tooling & tokens | 13 | 3 | 8 | 2 | 37 |
 | 3 Agent / evals / grammar | 14 | 1 | 10 | 3 | 46 |
 | 4 Sync · Oracle · Constraints | 14 | 4 | 4 | 6 | 46 |
-| 5 Interop · docs · GA | 5 | 0 | 3 | 2 | 19 |
-| **GA scope (0–5)** | **70** | | | | **214** (+ ≈ 6 spikes = **≈ 220**) |
-| 6 2.1 ecosystem | 11 | 2 | 3 | 6 | 41 |
-| **Total** | **81** | 18 | 39 | 24 | **255** |
+| 5 Interop · embedding · benchmark · docs · GA | 7 | 0 | 4 | 3 | 27 |
+| **GA scope (0–5)** | **72** | | | | **222** (+ ≈ 8 spikes = **≈ 230**) |
+| 6 2.1 ecosystem | 11 | 1 | 4 | 6 | 43 |
+| **Total** | **83** | 17 | 41 | 25 | **265** |
 
 | Scenario | Calendar to GA (illustrative) |
 |---|---|
-| One developer, sequential | ≈ 44 weeks (220 ÷ 5) |
-| Two parallel streams (e.g. maintainer + agents on independent tasks), ~75% efficiency | ≈ 24–30 weeks |
-| Three streams, ~65% efficiency | ≈ 20–24 weeks |
+| One developer, sequential | ≈ 46 weeks (230 ÷ 5) |
+| Two parallel streams (e.g. maintainer + agents on independent tasks), ~75–85% efficiency | ≈ 27–31 weeks |
+| Three streams, ~65–75% efficiency | ≈ 20–24 weeks |
 | Theoretical floor (critical path only) | ≈ 10 weeks (48 days) — not achievable in practice |
 
 Efficiency factors are assumptions, not measurements; the credible number comes from Phase 1 velocity.
@@ -273,6 +282,18 @@ Efficiency factors are assumptions, not measurements; the credible number comes 
 
 ## 12. Immediate next actions
 
-1. Maintainer reviews this document set; answers the five open questions in SPEC §0.
+1. Maintainer reviews this document set; answers the **six** open questions in SPEC §0 (new: upstream vs. fork).
 2. Start **Phase 0**: T-001 (fix the broken examples) can begin immediately and needs no tooling.
 3. In parallel, start T-010 (v1 grammar) and spike SP-2; both are independent of the scaffold.
+
+## 13. Competitive-intelligence cadence
+
+The rev. 2 verification pass showed how fast the field moves (A2UI went to v1.0 and shipped a text DSL; OpenUI Lang appeared with benchmarks; Storybook MCP moved; promptfoo changed owner). Hence a standing process:
+
+| When | What | Output |
+|---|---|---|
+| Each minor release (and at T-093) | Re-run the verification pass: re-fetch every `V` source for version/star/status drift; try to upgrade `C`/`U` entries; run fresh discovery searches (curated lists such as [S121], GitHub topic pages) | Updated COMPETITIVE_RESEARCH §4/§5/§9; changelog entry |
+| Continuously | Watch list: OpenUI Lang [S115], A2UI + Express [S112][S114], Wiremark [S117], Wireloom [S116], json-render [S38], DESIGN.md [S54], MCP Apps [S122], Claude Design [S146] | Issue per notable change |
+| On a rival shipping a covered capability | RFC to re-scope or re-justify the affected feature (FEATURE_ADDITIONS §8) | RFC |
+
+**Rule:** no competitive claim leaves the repository (README, announcement, comparison page) unless its sources are `V`/`V≈` and re-checked within the same minor release.
