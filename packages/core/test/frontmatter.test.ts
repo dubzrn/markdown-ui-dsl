@@ -33,6 +33,10 @@ describe("dslVersion", () => {
 });
 
 describe("frontmatter robustness", () => {
+  it("a flow collection as a key does not throw (fuzz counterexample)", () => {
+    for (const s of ["{}:", "[]:", "{a: 1}: x", "[1, 2]: y"])
+      expect(() => parseFrontmatter(s)).not.toThrow();
+  });
   it("never throws on 100k random strings", () => {
     fc.assert(
       fc.property(fc.string({ maxLength: 80 }), (s) => typeof parseFrontmatter(s) === "object"),

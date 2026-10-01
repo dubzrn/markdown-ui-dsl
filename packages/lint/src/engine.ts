@@ -15,6 +15,7 @@ import { a11yRules } from "./rules/a11y.js";
 import { semanticRules } from "./rules/semantic.js";
 import { structuralRules } from "./rules/structural.js";
 import { catalogRules } from "./rules/catalog.js";
+import { safetyRules } from "./rules/safety.js";
 import { tokenRules } from "./rules/tokens.js";
 import { loadDesignSystem, type DesignSystem } from "@mdui/tokens";
 import { lastLine } from "./util.js";
@@ -25,6 +26,7 @@ export const ALL_RULES: Rule[] = [
   ...a11yRules,
   ...tokenRules,
   ...catalogRules,
+  ...safetyRules,
 ];
 
 export interface LintResult {

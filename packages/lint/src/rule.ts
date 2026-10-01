@@ -24,7 +24,7 @@ export interface Finding {
 }
 
 export type RuleCategory =
-  "structure" | "semantics" | "flow" | "accessibility" | "tokens" | "catalog";
+  "structure" | "semantics" | "flow" | "accessibility" | "tokens" | "catalog" | "safety";
 
 export interface Rule {
   /** Stable kebab-case id, used in config, suppression comments and output. */

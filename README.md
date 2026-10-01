@@ -36,52 +36,32 @@ If your agent supports OpenClaw registry integration, you can install this skill
 claw install markdown-ui-dsl
 ```
 
-### 2. GitHub Copilot (Agent Mode)
-Copilot Agent mode works best when using its explicit Skill architecture. Set it up using these steps:
+The skill is a folder: `SKILL.md` plus `references/` (syntax, DSL 2.0, sync protocol, safety) and `scripts/`. Agents that support the Agent Skills layout load the references on demand, so install the **whole folder**:
 
-1. Initialise your `copilot-instructions.md` by asking Copilot to setup your project for AI agent assistance, or manually create `.github/copilot-instructions.md`.
-2. Create a folder for the skill and download the DSL instructions:
 ```bash
-mkdir -p .github/skills/markdown-ui-dsl
-curl -o .github/skills/markdown-ui-dsl/SKILL.md https://raw.githubusercontent.com/MegaByteMark/markdown-ui-dsl/main/skills/markdown-ui-dsl/SKILL.md
+BASE=https://raw.githubusercontent.com/MegaByteMark/markdown-ui-dsl/main/skills/markdown-ui-dsl
+DEST=.github/skills/markdown-ui-dsl   # or .claude/skills/..., .agents/skills/...
+mkdir -p $DEST/references $DEST/scripts
+curl -so $DEST/SKILL.md $BASE/SKILL.md
+for f in syntax v2-additions sync-protocol safety; do curl -so $DEST/references/$f.md $BASE/references/$f.md; done
+curl -so $DEST/scripts/check_balance.py $BASE/scripts/check_balance.py
 ```
-3. Open your `.github/copilot-instructions.md` file and add the following mapping:
+
+### 2. GitHub Copilot (Agent Mode)
+Install the folder above into `.github/skills/markdown-ui-dsl`, then add this mapping to `.github/copilot-instructions.md`:
 ```markdown
 ## Skills
 - For interpreting `ui.md` files, use the `markdown-ui-dsl` skill to generate components based on the specifications provided.
 ```
 
-### 3. Cursor / Roo Code / Cline
-For agents that use single flat rules files, you can append the skill directly:
+### 3. Claude Code, Codex, Gemini CLI, Cursor and other Agent Skills hosts
+Put the folder where your agent looks for skills (`.claude/skills/`, `.agents/skills/`, ...).
+
+### 4. Flat-file agents (`.cursorrules`, `.clinerules`, `CLAUDE.md`, system prompts)
+These read one file, so concatenate the skill with the references you need:
 ```bash
-# For Cursor (picks up from .cursorrules)
-curl -o .cursorrules https://raw.githubusercontent.com/MegaByteMark/markdown-ui-dsl/main/skills/markdown-ui-dsl/SKILL.md
-
-# For Cline/Roo Code (picks up from .clinerules)
-curl -o .clinerules https://raw.githubusercontent.com/MegaByteMark/markdown-ui-dsl/main/skills/markdown-ui-dsl/SKILL.md
-```
-
-### 4. Claude Code
-Claude Code automatically looks for a `CLAUDE.md` file in the root of your project to understand project-specific rules and conventions. You can append the skill directly to it:
-```bash
-curl -s https://raw.githubusercontent.com/MegaByteMark/markdown-ui-dsl/main/skills/markdown-ui-dsl/SKILL.md >> CLAUDE.md
-```
-
-### 5. Gemini CLI
-For Gemini CLI, download the skill into your project and pass it as a system prompt or context flag when running your generation commands:
-```bash
-mkdir -p .ai/skills
-curl -o .ai/skills/markdown-ui-dsl.md https://raw.githubusercontent.com/MegaByteMark/markdown-ui-dsl/main/skills/markdown-ui-dsl/SKILL.md
-
-# Example usage:
-# gemini query "Build the login UI" --system-prompt .ai/skills/markdown-ui-dsl.md
-```
-
-### 6. GPT Codex (and other CLI agents)
-Download the instruction file into your workspace and reference it as a system prompt when initiating your AI codebase session:
-```bash
-mkdir -p .ai/skills
-curl -o .ai/skills/markdown-ui-dsl.md https://raw.githubusercontent.com/MegaByteMark/markdown-ui-dsl/main/skills/markdown-ui-dsl/SKILL.md
+D=skills/markdown-ui-dsl   # a checkout of this repo
+cat $D/SKILL.md $D/references/syntax.md $D/references/safety.md >> .cursorrules
 ```
 
 ## Recommended Project Structure

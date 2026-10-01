@@ -209,7 +209,9 @@ export function parseFrontmatter(raw: string): FrontmatterResult {
         continue;
       }
       pos++;
-      const key = String(scalar(m[1] as string, ctx, r.line));
+      const ks = scalar(m[1] as string, ctx, r.line);
+      // A flow collection used as a key (`{}: x`) is not a usable key: keep its source text.
+      const key = typeof ks === "object" && ks !== null ? (m[1] as string) : String(ks);
       if (key === "<<") unsupported(ctx, r.line, "merge keys");
       if (Object.hasOwn(obj, key))
         ctx.issues.push({ code: "E1103", line: r.line, message: `Duplicate key "${key}".` });
