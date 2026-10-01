@@ -25,6 +25,11 @@ function findClose(s: string, from: number, close: string): number {
   for (let i = from; i < s.length; i++) {
     if (s[i] === "\\") i++;
     else if (s.startsWith(close, i)) return i;
+    else if (s[i] === "`") {
+      // code spans bind tighter than any other delimiter (D8)
+      const j = s.indexOf("`", i + 1);
+      if (j > i + 1) i = j;
+    }
   }
   return -1;
 }
@@ -77,8 +82,8 @@ function lineStart(s: string): InlineNode | undefined {
   return undefined;
 }
 
-/** `inEm` is internal: emphasis does not nest inside emphasis (keeps printing unambiguous). */
-export function parseInline(input: string, depth = 0, inEm = false): InlineNode[] {
+/** `inEmph` is internal: emphasis never nests (`**a *b* c**` keeps the inner stars literal), which keeps printing unambiguous. */
+export function parseInline(input: string, depth = 0, inEmph = false): InlineNode[] {
   const s = depth === 0 ? input.trim() : input;
   const head = depth === 0 ? lineStart(s) : undefined;
   if (head !== undefined) return [head];
@@ -158,17 +163,17 @@ export function parseInline(input: string, depth = 0, inEm = false): InlineNode[
     if (c === "*" && depth < MAX_DEPTH) {
       const strong = s.startsWith("**", i);
       const mark = strong ? "**" : "*";
-      const j = inEm && !strong ? -1 : findClose(s, i + mark.length, mark);
+      const j = inEmph ? -1 : findClose(s, i + mark.length, mark);
       const body = j === -1 ? "" : s.slice(i + mark.length, j);
       if (j !== -1 && body.trim() !== "" && !/^\s|\s$/.test(body)) {
         flush();
-        const children = parseInline(body, depth + 1, inEm || !strong);
+        const children = parseInline(body, depth + 1, true);
         out.push(strong ? { kind: "strong", children } : { kind: "em", children });
         i = j + mark.length;
         continue;
       }
     }
-    if (c === "_" && depth < MAX_DEPTH && !inEm && !isAlnum(s[i - 1])) {
+    if (c === "_" && depth < MAX_DEPTH && !inEmph && !isAlnum(s[i - 1])) {
       const j = findClose(s, i + 1, "_");
       const body = j === -1 ? "" : s.slice(i + 1, j);
       if (j !== -1 && body !== "" && !/^\s|\s$/.test(body) && !isAlnum(s[j + 1])) {
@@ -188,25 +193,17 @@ export function parseInline(input: string, depth = 0, inEm = false): InlineNode[
 const esc = (t: string): string =>
   [...t].map((ch) => (ESCAPABLE.includes(ch) ? `\\${ch}` : ch)).join("");
 
-const isEmphasis = (n: InlineNode | undefined): boolean => n?.kind === "strong" || n?.kind === "em";
-
 /** Canonical printer; `parseInline(printInline(x))` equals `x` after normalisation. */
-export function printInline(nodes: InlineNode[], inEmphasis = false): string {
+export function printInline(nodes: InlineNode[]): string {
   return nodes
     .map((n): string => {
       switch (n.kind) {
         case "text":
           return esc(n.value);
         case "strong":
-          return `**${printInline(n.children, true)}**`;
-        case "em": {
-          // `*` directly next to another emphasis run is ambiguous (`***`), so use `_` there.
-          const mark =
-            inEmphasis || isEmphasis(n.children[0]) || isEmphasis(n.children[n.children.length - 1])
-              ? "_"
-              : "*";
-          return `${mark}${printInline(n.children, true)}${mark}`;
-        }
+          return `**${printInline(n.children)}**`;
+        case "em":
+          return `*${printInline(n.children)}*`;
         case "code":
           return `\`${n.value}\``;
         case "button":

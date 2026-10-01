@@ -17,3 +17,9 @@ Every decision has ≥ 2 positive and ≥ 2 negative fixtures in `packages/spec/
 | D10 | **Missing/extra closers.** Unclosed container ⇒ `E1001` at its opener, auto-closed at end of file. A `--- END ---` with nothing open ⇒ `E1002`, ignored. The parser always returns a tree. |
 | D11 | **Hints.** A `>` line is a hint. `> @sm|md|lg|xl a: b, c: d` is a responsive directive. An unknown `@token` ⇒ hint + `W1201`; a known breakpoint with malformed pairs ⇒ hint + `W1203`. |
 | D12 | **Line model.** Every non-blank line that is not another block is one `line` node (the DSL is line-oriented, unlike CommonMark paragraphs). |
+
+## Addendum (T-016) — emphasis
+
+- **D13.** Emphasis never nests: inside `**…**` or `*…*`, further `*`/`_` stay literal. Found by the print-stability property test (`***` is ambiguous). Underscore emphasis only applies at word boundaries (`snake_case` is text).
+- **D14.** Code spans bind tighter than every other delimiter: closers inside `` `…` `` are not seen.
+- **D15.** A comma cannot be escaped inside dropdown options in 1.x (comma is not in the D7 escape set).

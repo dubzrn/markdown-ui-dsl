@@ -767,7 +767,7 @@
     "notes": "D6"
   },
   {
-    "id": "strong-nested-em",
+    "id": "emphasis-does-not-nest",
     "input": "**a *b* c**",
     "expect": {
       "inline": [
@@ -776,26 +776,33 @@
           "children": [
             {
               "kind": "text",
-              "value": "a "
-            },
-            {
-              "kind": "em",
-              "children": [
-                {
-                  "kind": "text",
-                  "value": "b"
-                }
-              ]
-            },
-            {
-              "kind": "text",
-              "value": " c"
+              "value": "a *b* c"
             }
           ]
         }
       ]
     },
-    "since": "1.0"
+    "since": "1.0",
+    "notes": "emphasis never nests; inner stars stay literal"
+  },
+  {
+    "id": "code-binds-tighter-than-em",
+    "input": "*`*`*",
+    "expect": {
+      "inline": [
+        {
+          "kind": "em",
+          "children": [
+            {
+              "kind": "code",
+              "value": "*"
+            }
+          ]
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "code spans are skipped when looking for closers"
   },
   {
     "id": "d8-code-span",
