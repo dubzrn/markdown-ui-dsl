@@ -4,6 +4,13 @@ import { dirname } from "node:path";
 import { main } from "./main.js";
 import type { Io } from "./io.js";
 
+// `mdui … | head` closes the pipe early: that is not an error.
+for (const stream of [process.stdout, process.stderr])
+  stream.on("error", (e: NodeJS.ErrnoException) => {
+    if (e.code === "EPIPE") process.exit(process.exitCode ?? 0);
+    throw e;
+  });
+
 const io: Io = {
   cwd: process.cwd().replace(/\\/g, "/"),
   stdout: (s) => void process.stdout.write(s),

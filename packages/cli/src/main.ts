@@ -22,7 +22,9 @@ import {
   migrate,
   type Agent,
 } from "@mdui/tools";
-import { loadCatalog, loadMap } from "@mdui/catalog";
+import { defaultCatalog, loadCatalog, loadMap } from "@mdui/catalog";
+import { AST_SCHEMA } from "@mdui/spec";
+import { buildGrammar, toGbnf, toJsonSchema, toLark } from "@mdui/grammar";
 import { render } from "@mdui/render";
 import { parseArgs, UsageError, type Args } from "./args.js";
 import { ConfigError, loadConfig, type Config, type FailOn } from "./config.js";
@@ -46,6 +48,7 @@ Commands:
   tokens     Design systems: tokens lint|export|diff <DESIGN.md…> (export: --to dtcg|tailwind3|tailwind4|css)
   prompt     Compose an agent prompt from your specs, catalog and tokens (--agent, --catalog, --map, --design, --all)
   coverage   Which requirements do the specs cover? --requirements <file> (Spec Kit, OpenSpec or Kiro style); exit 1 if any is uncovered or unknown
+  grammar    Emit a generation grammar: --format lark|gbnf|json-schema [--dsl 1|2.0] [--catalog c.yaml] [--max-depth N] [--tokens a,b] [--data x.y,z]
   rules      List the lint rules (--json for machine output)
   ast        Print the JSON AST of one file
   render     Render one file to HTML (--style sketch|clean|wireframe|none, --state, --theme, --out)
@@ -62,6 +65,11 @@ Options:
   --map <path>       prompt: component map (YAML)
   --design <path>    prompt: DESIGN.md design system
   --requirements <p> coverage: requirements document
+  --format <f>       grammar: lark | gbnf | json-schema
+  --dsl <v>          grammar: 1 | 2.0 (default 2.0)
+  --max-depth <n>    grammar: container nesting bound
+  --tokens <list>    grammar: allowed directive token names, comma separated
+  --data <list>      grammar: allowed binding paths, comma separated
   --all              prompt: full language reference, not only what the specs use
   --write            migrate: write the migrated files
   --force            migrate: write even when manual-review items remain
@@ -272,8 +280,56 @@ function runCoverage(io: Io, args: Args): number {
   return r.uncovered.length > 0 || r.unknown.length > 0 ? EXIT.diagnostics : EXIT.ok;
 }
 
+function runGrammar(io: Io, args: Args): number {
+  const format = args.flags.format ?? "lark";
+  if (!["lark", "gbnf", "json-schema"].includes(format))
+    throw new UsageError("--format must be lark|gbnf|json-schema");
+  const dsl = args.flags.dsl ?? "2.0";
+  if (dsl !== "1" && dsl !== "2.0") throw new UsageError("--dsl must be 1 or 2.0");
+  let maxDepth: number | undefined;
+  if (args.flags.maxDepth !== undefined) {
+    maxDepth = Number(args.flags.maxDepth);
+    if (!Number.isInteger(maxDepth) || maxDepth < 1 || maxDepth > 12)
+      throw new UsageError("--max-depth must be an integer from 1 to 12");
+  }
+  const list = (v: string | undefined): string[] | undefined =>
+    v === undefined
+      ? undefined
+      : v
+          .split(",")
+          .map((x) => x.trim())
+          .filter((x) => x !== "");
+  let catalog;
+  if (args.flags.catalog !== undefined) {
+    const text = io.readFile(posix.resolve(io.cwd, args.flags.catalog));
+    if (text === undefined) throw new UsageError(`no such file: ${args.flags.catalog}`);
+    const r = loadCatalog(text);
+    catalog = r.catalog;
+    for (const i of r.issues) io.stderr(`warning: ${args.flags.catalog}: ${i.message}\n`);
+  }
+  const tokens = list(args.flags.tokens);
+  const dataPaths = list(args.flags.data);
+  let text: string;
+  if (format === "json-schema") {
+    text = JSON.stringify(toJsonSchema(AST_SCHEMA, catalog ?? defaultCatalog()), null, 2) + "\n";
+  } else {
+    const g = buildGrammar({
+      dsl,
+      ...(catalog !== undefined ? { catalog } : {}),
+      ...(tokens !== undefined ? { tokens } : {}),
+      ...(dataPaths !== undefined ? { dataPaths } : {}),
+      ...(maxDepth !== undefined ? { maxDepth } : {}),
+    });
+    text = format === "lark" ? toLark(g) : toGbnf(g);
+  }
+  if (args.flags.out !== undefined) io.writeFile(posix.resolve(io.cwd, args.flags.out), text);
+  else io.stdout(text);
+  return EXIT.ok;
+}
+
 function run(io: Io, args: Args, cfg: Config): number {
   const cmd = args.command as string;
+  if (cmd === "grammar") return runGrammar(io, args);
   if (cmd === "coverage") return runCoverage(io, args);
   if (cmd === "prompt") return runPrompt(io, args);
   if (cmd === "rules") return listRules(io, args.flags.json);
@@ -484,6 +540,7 @@ const COMMANDS = [
   "tokens",
   "prompt",
   "coverage",
+  "grammar",
 ];
 
 /** CLI entry. Never throws; returns the process exit code. */

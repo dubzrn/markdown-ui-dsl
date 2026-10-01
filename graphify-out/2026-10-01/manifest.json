@@ -72,9 +72,9 @@
     "semantic_hash": ""
   },
   "docs/TASKS.md": {
-    "mtime": 1790873747.9826643,
-    "seen": 1790873753.6124291,
-    "ast_hash": "c268f982bb63edafd10a330e8309cde4",
+    "mtime": 1790873935.2619836,
+    "seen": 1790873938.9071329,
+    "ast_hash": "0dea49bce5a7250ebdbf1ddb45fe8d7c",
     "semantic_hash": ""
   },
   "examples/action-tracker-detail.ui.md": {
@@ -240,9 +240,9 @@
     "semantic_hash": ""
   },
   ".github/workflows/ci.yml": {
-    "mtime": 1790837351.9952314,
-    "seen": 1790839484.479669,
-    "ast_hash": "2be6308d51a1a814293bef47f34bb820",
+    "mtime": 1790873820.8991582,
+    "seen": 1790873938.9071114,
+    "ast_hash": "5ecdeb6dc6837c9fb3c0fec30fb2ec9a",
     "semantic_hash": ""
   },
   "CHANGELOG.md": {
@@ -972,9 +972,9 @@
     "semantic_hash": ""
   },
   "packages/tokens/test/model.test.ts": {
-    "mtime": 1790838458.927554,
-    "seen": 1790839484.4796345,
-    "ast_hash": "f31dc971993dabb3aff7f7ef8e6d0bc9",
+    "mtime": 1790873881.888657,
+    "seen": 1790873938.90707,
+    "ast_hash": "18d917407642abb4b943e2d03647ccd1",
     "semantic_hash": ""
   },
   "packages/tokens/test/tsconfig.json": {
@@ -1311,6 +1311,48 @@
     "mtime": 1790873450.5400589,
     "seen": 1790873753.6124573,
     "ast_hash": "5abcbaa91e2b0963df6a3b3e61ed2b9f",
+    "semantic_hash": ""
+  },
+  "packages/lint/test/design-systems.test.ts": {
+    "mtime": 1790873828.8085713,
+    "seen": 1790873938.9070272,
+    "ast_hash": "73ba730db6e82a6666da13daaf243e2f",
+    "semantic_hash": ""
+  },
+  "examples/design-systems/angular-material.md": {
+    "mtime": 1790873803.290276,
+    "seen": 1790873938.9071505,
+    "ast_hash": "3cd608b323fff3a28b2620ab0ece5611",
+    "semantic_hash": ""
+  },
+  "examples/design-systems/compose.md": {
+    "mtime": 1790873803.020819,
+    "seen": 1790873938.9071531,
+    "ast_hash": "c241e16e47962e8d1c7d4efd3a0c859f",
+    "semantic_hash": ""
+  },
+  "examples/design-systems/lit.md": {
+    "mtime": 1790873803.4352937,
+    "seen": 1790873938.9071553,
+    "ast_hash": "511db30e690635426fb317cd5e8054c0",
+    "semantic_hash": ""
+  },
+  "examples/design-systems/react-shadcn.md": {
+    "mtime": 1790873802.7266247,
+    "seen": 1790873938.9071562,
+    "ast_hash": "853c81d76e7bac7f3b2619bb7f07b88b",
+    "semantic_hash": ""
+  },
+  "examples/design-systems/swiftui.md": {
+    "mtime": 1790873802.8656228,
+    "seen": 1790873938.9071572,
+    "ast_hash": "a65bdd63a523f9625777f1f08e2f5586",
+    "semantic_hash": ""
+  },
+  "examples/design-systems/vue-nuxt.md": {
+    "mtime": 1790873803.156287,
+    "seen": 1790873938.907158,
+    "ast_hash": "5f40e2582397e3e1041b4069770a853a",
     "semantic_hash": ""
   }
 }

@@ -399,4 +399,71 @@ describe("built binary", () => {
       expect(f["/proj/p.md" as keyof typeof f]).toMatch(/^<markdown-ui-dsl>/);
     });
   });
+
+  describe("grammar (T-058..T-060)", () => {
+    it("emits Lark, GBNF and JSON Schema", () => {
+      for (const [format, probe] of [
+        ["lark", /^start: document$/m],
+        ["gbnf", /^root ::= document$/m],
+        ["json-schema", /"\$defs"/],
+      ] as const) {
+        const m = memIo({});
+        expect(main(["grammar", "--format", format], m.io)).toBe(EXIT.ok);
+        expect(m.out()).toMatch(probe);
+      }
+    });
+    it("is deterministic and honours --dsl and --max-depth", () => {
+      const a = memIo({});
+      const b = memIo({});
+      main(["grammar", "--dsl", "1", "--max-depth", "2"], a.io);
+      main(["grammar", "--dsl", "1", "--max-depth", "2"], b.io);
+      expect(a.out()).toBe(b.out());
+      expect(a.out()).toMatch(/blocks_2/);
+      expect(a.out()).not.toMatch(/SLIDER/);
+    });
+    it("a catalog restricts the components", () => {
+      const m = memIo({
+        "/proj/c.yaml":
+          "builtins: [COLUMN, CARD]\ncomponents:\n  Rating:\n    props:\n      value: { type: number, positional: 0 }\n",
+      });
+      expect(main(["grammar", "--catalog", "c.yaml"], m.io)).toBe(EXIT.ok);
+      expect(m.out()).toMatch(/RATING/);
+      expect(m.out()).not.toMatch(/CHART|SLIDER|ACCORDION/);
+    });
+    it("rejects bad options", () => {
+      const m = memIo({});
+      expect(main(["grammar", "--format", "nope"], m.io)).toBe(EXIT.usage);
+      expect(main(["grammar", "--dsl", "3"], m.io)).toBe(EXIT.usage);
+      expect(main(["grammar", "--max-depth", "0"], m.io)).toBe(EXIT.usage);
+      expect(main(["grammar", "--catalog", "missing.yaml"], m.io)).toBe(EXIT.usage);
+    });
+  });
+
+  describe("coverage (T-056)", () => {
+    const files = {
+      "/proj/req.md": "- **FR-001**: a\n- **FR-002**: b\n",
+      "/proj/a.ui.md": "---\ndsl: 2.0\nrequirements: [FR-001]\n---\nx\n",
+    };
+    it("exits 1 and lists what is uncovered", () => {
+      const m = memIo({ ...files });
+      expect(main(["coverage", "--requirements", "req.md", "a.ui.md"], m.io)).toBe(
+        EXIT.diagnostics,
+      );
+      expect(m.out()).toMatch(/uncovered: FR-002/);
+      expect(m.out()).toMatch(/1\/2/);
+    });
+    it("exits 0 when everything is covered, and prints JSON", () => {
+      const m = memIo({
+        ...files,
+        "/proj/b.ui.md": "---\ndsl: 2.0\nrequirements: [FR-002]\n---\nx\n",
+      });
+      expect(
+        main(["coverage", "--json", "--requirements", "req.md", "a.ui.md", "b.ui.md"], m.io),
+      ).toBe(EXIT.ok);
+      expect(JSON.parse(m.out())).toMatchObject({ command: "coverage", uncovered: [] });
+    });
+    it("needs --requirements", () => {
+      expect(main(["coverage", "a.ui.md"], memIo({ ...files }).io)).toBe(EXIT.usage);
+    });
+  });
 });

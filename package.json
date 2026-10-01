@@ -21,7 +21,8 @@
     "schema:check": "node scripts/gen-ast-schema.mjs --check",
     "lint:docs": "node scripts/gen-lint-docs.mjs",
     "lint:docs:check": "node scripts/gen-lint-docs.mjs --check",
-    "check": "pnpm schema:check && pnpm build && pnpm lint:docs:check && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test"
+    "check": "pnpm schema:check && pnpm build && pnpm lint:docs:check && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test",
+    "parity": "node scripts/grammar-parity.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "3.0.3",

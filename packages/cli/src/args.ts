@@ -22,6 +22,11 @@ export interface Args {
     map: string | undefined;
     design: string | undefined;
     requirements: string | undefined;
+    format: string | undefined;
+    dsl: string | undefined;
+    maxDepth: string | undefined;
+    tokens: string | undefined;
+    data: string | undefined;
     all: boolean;
   };
 }
@@ -41,6 +46,11 @@ const VALUE_FLAGS = [
   "--map",
   "--design",
   "--requirements",
+  "--format",
+  "--dsl",
+  "--max-depth",
+  "--tokens",
+  "--data",
 ];
 
 export function parseArgs(argv: string[]): Args {
@@ -68,6 +78,11 @@ export function parseArgs(argv: string[]): Args {
       map: undefined,
       design: undefined,
       requirements: undefined,
+      format: undefined,
+      dsl: undefined,
+      maxDepth: undefined,
+      tokens: undefined,
+      data: undefined,
       all: false,
     },
   };
@@ -104,6 +119,11 @@ export function parseArgs(argv: string[]): Args {
       else if (name === "--map") out.flags.map = value;
       else if (name === "--design") out.flags.design = value;
       else if (name === "--requirements") out.flags.requirements = value;
+      else if (name === "--format") out.flags.format = value;
+      else if (name === "--dsl") out.flags.dsl = value;
+      else if (name === "--max-depth") out.flags.maxDepth = value;
+      else if (name === "--tokens") out.flags.tokens = value;
+      else if (name === "--data") out.flags.data = value;
       else out.flags.out = value;
     } else if (a.startsWith("-") && a !== "-") throw new UsageError(`unknown option ${a}`);
     else rest.push(a);

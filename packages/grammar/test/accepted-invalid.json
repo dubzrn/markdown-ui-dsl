@@ -1,0 +1,41 @@
+{
+  "_note": "Invalid conformance fixtures the context-free grammar still accepts. They fail for semantic or value reasons (frontmatter content, table width, token/breakpoint values, attribute values), which a grammar cannot express. New invalid fixtures must be rejected by the grammar or be added here deliberately.",
+  "v1/invalid.json": [
+    "frontmatter-unterminated",
+    "frontmatter-unterminated-only-fence",
+    "frontmatter-unterminated-then-card",
+    "table-row-too-short",
+    "table-row-too-long",
+    "table-two-bad-rows",
+    "table-bad-row-after-ok",
+    "directive-unknown-bp-xs",
+    "directive-unknown-bp-2xl",
+    "directive-unknown-bp-dark-v1",
+    "directive-missing-value",
+    "directive-missing-colon",
+    "directive-empty",
+    "directive-trailing-comma",
+    "directive-one-bad-pair",
+    "directive-in-card-bad",
+    "fm-unknown-key",
+    "fm-duplicate-key",
+    "fm-unsupported-anchor",
+    "fm-bad-dsl",
+    "fm-unterminated-table"
+  ],
+  "v2/invalid.json": [
+    "v2-unknown-env",
+    "v2-unknown-with-known",
+    "v2-two-breakpoints",
+    "v2-env-no-pairs",
+    "v2-env-missing-value",
+    "v2-env-bad-pair",
+    "v2-unknown-breakpoint-xs"
+  ],
+  "v2/block-invalid.json": [
+    "attrs-bad-number",
+    "attrs-bad-enum",
+    "attrs-unknown-key",
+    "attrs-flag-with-value"
+  ]
+}

@@ -1,11 +1,12 @@
 {
-  "name": "@mdui/cli",
+  "name": "@mdui/mcp",
   "version": "0.0.0",
-  "description": "mdui command line: validate, lint, ast (and more) for Markdown UI DSL files.",
+  "description": "MCP server for Markdown UI DSL: parse, validate, lint, fix, format, diff, render, prompt, grammar and coverage as tools.",
   "license": "MIT",
   "type": "module",
+  "sideEffects": false,
   "bin": {
-    "mdui": "./dist/bin.js"
+    "mdui-mcp": "./dist/bin.js"
   },
   "exports": {
     ".": {

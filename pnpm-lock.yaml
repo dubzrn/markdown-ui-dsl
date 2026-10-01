@@ -65,12 +65,18 @@ importers:
       '@mdui/core':
         specifier: workspace:*
         version: link:../core
+      '@mdui/grammar':
+        specifier: workspace:*
+        version: link:../grammar
       '@mdui/lint':
         specifier: workspace:*
         version: link:../lint
       '@mdui/render':
         specifier: workspace:*
         version: link:../render
+      '@mdui/spec':
+        specifier: workspace:*
+        version: link:../spec
       '@mdui/tokens':
         specifier: workspace:*
         version: link:../tokens
@@ -84,6 +90,18 @@ importers:
         specifier: workspace:*
         version: link:../spec
 
+  packages/grammar:
+    dependencies:
+      '@mdui/catalog':
+        specifier: workspace:*
+        version: link:../catalog
+      '@mdui/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mdui/lint':
+        specifier: workspace:*
+        version: link:../lint
+
   packages/lint:
     dependencies:
       '@mdui/catalog':
@@ -95,6 +113,33 @@ importers:
       '@mdui/tokens':
         specifier: workspace:*
         version: link:../tokens
+
+  packages/mcp:
+    dependencies:
+      '@mdui/catalog':
+        specifier: workspace:*
+        version: link:../catalog
+      '@mdui/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mdui/grammar':
+        specifier: workspace:*
+        version: link:../grammar
+      '@mdui/lint':
+        specifier: workspace:*
+        version: link:../lint
+      '@mdui/render':
+        specifier: workspace:*
+        version: link:../render
+      '@mdui/spec':
+        specifier: workspace:*
+        version: link:../spec
+      '@mdui/tokens':
+        specifier: workspace:*
+        version: link:../tokens
+      '@mdui/tools':
+        specifier: workspace:*
+        version: link:../tools
 
   packages/render:
     dependencies:

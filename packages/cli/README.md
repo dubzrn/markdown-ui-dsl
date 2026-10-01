@@ -47,3 +47,11 @@ Options: `--json` · `--fail-on error|warn|info|none` (default `error`) · `--co
 `mdui prompt [--agent generic|claude|cursor|copilot|codex|gemini] [--catalog c.yaml] [--map m.yaml] [--design DESIGN.md] [--all] [--out file] [specs…]`
 
 Composes the context an agent needs: a language reference limited to the constructs your specs use (a project without charts never mentions `CHART`; `--all` includes everything), project components from the catalog, design tokens, bound data paths, the component map, a few examples and the trust rules. Output is deterministic: same inputs, same bytes, regardless of file order. `--agent` changes only the wrapper (XML sections for `claude`, an `.mdc` header for `cursor`).
+
+## `coverage`
+
+`mdui coverage --requirements <file> [--json] <specs…>`: which requirements do the `.ui.md` specs cover (frontmatter `requirements:`)? Understands Spec Kit ids (`FR-001`), OpenSpec names (`### Requirement: Name`) and Kiro numbers (`### Requirement N:`; a reference `N.k` covers `N`). Exit 1 when a requirement is uncovered or a spec references one that does not exist. See [`docs/SDD_INTEROP.md`](../../docs/SDD_INTEROP.md).
+
+## `grammar`
+
+`mdui grammar --format lark|gbnf|json-schema [--dsl 1|2.0] [--catalog c.yaml] [--max-depth N] [--tokens a,b] [--data x.y,z] [--out file]`: emits a generation grammar for constrained decoding. Containers nest recursively, so an opener without its closer (or, in 2.0, a mismatched typed closer) cannot be generated. In 2.0 the grammar is closed-world: `[ UPPER: … ]` only for catalog widgets, `::: NAME … :::` only for catalog containers, with prop shapes from the catalog. `--tokens` restricts directive names, `--data` restricts `{{ binding }}` paths, `--max-depth` bounds nesting. Details, limits and the engine matrix: [`docs/GRAMMAR.md`](../../docs/GRAMMAR.md).
