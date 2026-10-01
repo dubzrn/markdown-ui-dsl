@@ -17,12 +17,29 @@ export interface Args {
     theme: string | undefined;
     out: string | undefined;
     to: string | undefined;
+    agent: string | undefined;
+    catalog: string | undefined;
+    map: string | undefined;
+    design: string | undefined;
+    all: boolean;
   };
 }
 
 export class UsageError extends Error {}
 
-const VALUE_FLAGS = ["--fail-on", "--config", "--style", "--state", "--theme", "--out", "--to"];
+const VALUE_FLAGS = [
+  "--fail-on",
+  "--config",
+  "--style",
+  "--state",
+  "--theme",
+  "--out",
+  "--to",
+  "--agent",
+  "--catalog",
+  "--map",
+  "--design",
+];
 
 export function parseArgs(argv: string[]): Args {
   const out: Args = {
@@ -44,6 +61,11 @@ export function parseArgs(argv: string[]): Args {
       theme: undefined,
       out: undefined,
       to: undefined,
+      agent: undefined,
+      catalog: undefined,
+      map: undefined,
+      design: undefined,
+      all: false,
     },
   };
   const rest: string[] = [];
@@ -61,6 +83,7 @@ export function parseArgs(argv: string[]): Args {
     else if (a === "--fix") out.flags.fix = true;
     else if (a === "--write") out.flags.write = true;
     else if (a === "--force") out.flags.force = true;
+    else if (a === "--all") out.flags.all = true;
     else if (VALUE_FLAGS.includes(a) || VALUE_FLAGS.some((f) => a.startsWith(`${f}=`))) {
       const eq = a.indexOf("=");
       const name = eq === -1 ? a : a.slice(0, eq);
@@ -73,6 +96,10 @@ export function parseArgs(argv: string[]): Args {
       else if (name === "--state") out.flags.state = value;
       else if (name === "--theme") out.flags.theme = value;
       else if (name === "--to") out.flags.to = value;
+      else if (name === "--agent") out.flags.agent = value;
+      else if (name === "--catalog") out.flags.catalog = value;
+      else if (name === "--map") out.flags.map = value;
+      else if (name === "--design") out.flags.design = value;
       else out.flags.out = value;
     } else if (a.startsWith("-") && a !== "-") throw new UsageError(`unknown option ${a}`);
     else rest.push(a);

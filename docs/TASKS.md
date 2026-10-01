@@ -82,6 +82,7 @@
 | T-050 | done | `@mdui/catalog`: schema, YAML loader (`builtins:` restricts built-ins, `allow:`), default catalog of every built-in, `validateUse`; 14 tests |
 | T-051 | done | lint rules `unknown-component` (E6001 + nearest-name fix), `component-props` (E6002), `third-party-component` (W6003); `lint(src,{catalog})`; a catalog-defined component supersedes parser E1302; 43 rules |
 | T-052 | partial | component map loader + `checkMap` (E6101, I6102) with React, Flutter and Blazor example maps; map not yet wired into the CLI; Storybook-manifest stretch pending |
+| T-054 | done | `mdui prompt` + `composePrompt` in `@mdui/tools`: used-construct slices, catalog, tokens, bindings, map, examples, trust section; 6 flavours; deterministic (order-independent) and never mentions unused widgets; 11 tests |
 | T-053 | partial | skill restructured (`SKILL.md` 53 lines + 4 one-level references + `scripts/check_balance.py`); `agentskills validate` passes; limits enforced by `tests/skill.test.ts`; ADR-006 (S111 **unreadable**: arxiv.org blocked in the sandbox); no-tooling eval awaits T-063 |
 | T-055 | partial | rules `url-scheme` (E7002, obfuscated schemes) and `instruction-like-text` (W7001); 38 injection fixtures; confirm-bypass clause removed from the skill; trust model in `references/safety.md`; LLM evals await T-063 |
 

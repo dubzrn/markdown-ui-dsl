@@ -373,4 +373,30 @@ describe("built binary", () => {
     expect(r.stdout.toString()).toContain("E1001");
     expect(spawnSync("node", [bin, "nope"], { cwd: dir }).status).toBe(2);
   });
+
+  describe("prompt (T-054)", () => {
+    const files = {
+      "/proj/a.ui.md": "::: CARD :::\n[ Go ](#go)\n--- END ---\n",
+    };
+    it("composes a deterministic prompt", () => {
+      const a = memIo({ ...files });
+      const b = memIo({ ...files });
+      expect(main(["prompt", "a.ui.md"], a.io)).toBe(EXIT.ok);
+      expect(main(["prompt", "a.ui.md"], b.io)).toBe(EXIT.ok);
+      expect(a.out()).toBe(b.out());
+      expect(a.out()).toMatch(/CARD/);
+      expect(a.out()).not.toMatch(/CHART/);
+    });
+    it("rejects an unknown agent and a missing file", () => {
+      const m = memIo({ ...files });
+      expect(main(["prompt", "--agent", "nope", "a.ui.md"], m.io)).toBe(EXIT.usage);
+      expect(main(["prompt", "missing.ui.md"], m.io)).toBe(EXIT.usage);
+    });
+    it("writes with --out", () => {
+      const f = { ...files };
+      const m = memIo(f);
+      expect(main(["prompt", "--agent", "claude", "--out", "p.md", "a.ui.md"], m.io)).toBe(EXIT.ok);
+      expect(f["/proj/p.md" as keyof typeof f]).toMatch(/^<markdown-ui-dsl>/);
+    });
+  });
 });

@@ -41,3 +41,9 @@ Options: `--json` · `--fail-on error|warn|info|none` (default `error`) · `--co
 ```
 
 `changed` ops add `before`/`after`; `moved` ops add `from`. Regressions: a removed `required` element, or a W3xxx accessibility rule that newly fails.
+
+## `prompt`
+
+`mdui prompt [--agent generic|claude|cursor|copilot|codex|gemini] [--catalog c.yaml] [--map m.yaml] [--design DESIGN.md] [--all] [--out file] [specs…]`
+
+Composes the context an agent needs: a language reference limited to the constructs your specs use (a project without charts never mentions `CHART`; `--all` includes everything), project components from the catalog, design tokens, bound data paths, the component map, a few examples and the trust rules. Output is deterministic: same inputs, same bytes, regardless of file order. `--agent` changes only the wrapper (XML sections for `claude`, an `.mdc` header for `cursor`).

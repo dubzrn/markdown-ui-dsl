@@ -11,7 +11,8 @@ import {
   toTailwind4,
   validateDtcg,
 } from "@mdui/tokens";
-import { diffDocuments, formatDiff, migrate } from "@mdui/tools";
+import { AGENTS, composePrompt, diffDocuments, formatDiff, migrate, type Agent } from "@mdui/tools";
+import { loadCatalog, loadMap } from "@mdui/catalog";
 import { render } from "@mdui/render";
 import { parseArgs, UsageError, type Args } from "./args.js";
 import { ConfigError, loadConfig, type Config, type FailOn } from "./config.js";
@@ -33,6 +34,7 @@ Commands:
   diff       Semantic diff of two files (exit 1 on regressions)
   migrate    v1 → 2.0 (dry run by default; --write applies, --force overrides manual-review items)
   tokens     Design systems: tokens lint|export|diff <DESIGN.md…> (export: --to dtcg|tailwind3|tailwind4|css)
+  prompt     Compose an agent prompt from your specs, catalog and tokens (--agent, --catalog, --map, --design, --all)
   rules      List the lint rules (--json for machine output)
   ast        Print the JSON AST of one file
   render     Render one file to HTML (--style sketch|clean|wireframe|none, --state, --theme, --out)
@@ -44,6 +46,11 @@ Options:
   --config <path>    Config file (default: ./mdui.config.json)
   --compact          ast: single-line JSON
   --to <format>      tokens export: dtcg | tailwind3 | tailwind4 | css
+  --agent <name>     prompt: generic | claude | cursor | copilot | codex | gemini
+  --catalog <path>   prompt/lint: component catalog (YAML)
+  --map <path>       prompt: component map (YAML)
+  --design <path>    prompt: DESIGN.md design system
+  --all              prompt: full language reference, not only what the specs use
   --write            migrate: write the migrated files
   --force            migrate: write even when manual-review items remain
   --fix              lint: apply fixes in place (overlapping fixes are skipped)
@@ -190,8 +197,51 @@ function runTokens(io: Io, args: Args, cfg: Config): number {
   return d.regressions.length > 0 ? EXIT.diagnostics : EXIT.ok;
 }
 
+function runPrompt(io: Io, args: Args): number {
+  const agent = args.flags.agent ?? "generic";
+  if (!(AGENTS as readonly string[]).includes(agent))
+    throw new UsageError(`--agent must be ${AGENTS.join("|")}`);
+  const abs = (f: string): string => posix.resolve(io.cwd, f);
+  const need = (f: string): string => {
+    const t = io.readFile(abs(f));
+    if (t === undefined) throw new UsageError(`no such file: ${f}`);
+    return t;
+  };
+  const { files, missing } = expand(io, args.positional);
+  if (missing.length > 0) throw new UsageError(`no such file: ${missing.join(", ")}`);
+  const documents = files.map((path) => ({ path, source: need(path) }));
+  const issues: string[] = [];
+  let catalog;
+  if (args.flags.catalog !== undefined) {
+    const r = loadCatalog(need(args.flags.catalog));
+    catalog = r.catalog;
+    issues.push(...r.issues.map((i) => `${args.flags.catalog}: ${i.message}`));
+  }
+  let map;
+  if (args.flags.map !== undefined) {
+    const r = loadMap(need(args.flags.map));
+    map = r.map;
+    issues.push(...r.issues.map((i) => `${args.flags.map}: ${i.message}`));
+  }
+  const designSystem =
+    args.flags.design !== undefined ? loadDesignSystem(need(args.flags.design)) : undefined;
+  const text = composePrompt({
+    documents,
+    all: args.flags.all,
+    agent: agent as Agent,
+    ...(catalog !== undefined ? { catalog } : {}),
+    ...(map !== undefined ? { map } : {}),
+    ...(designSystem !== undefined ? { designSystem } : {}),
+  });
+  if (args.flags.out !== undefined) io.writeFile(abs(args.flags.out), text);
+  else io.stdout(text);
+  for (const w of issues) io.stderr(`warning: ${w}\n`);
+  return EXIT.ok;
+}
+
 function run(io: Io, args: Args, cfg: Config): number {
   const cmd = args.command as string;
+  if (cmd === "prompt") return runPrompt(io, args);
   if (cmd === "rules") return listRules(io, args.flags.json);
   if (cmd === "tokens") return runTokens(io, args, cfg);
   const root = posix.resolve(io.cwd, cfg.root);
@@ -388,7 +438,18 @@ function run(io: Io, args: Args, cfg: Config): number {
     : EXIT.ok;
 }
 
-const COMMANDS = ["validate", "lint", "ast", "fmt", "render", "rules", "diff", "migrate", "tokens"];
+const COMMANDS = [
+  "validate",
+  "lint",
+  "ast",
+  "fmt",
+  "render",
+  "rules",
+  "diff",
+  "migrate",
+  "tokens",
+  "prompt",
+];
 
 /** CLI entry. Never throws; returns the process exit code. */
 export function main(argv: string[], io: Io): number {

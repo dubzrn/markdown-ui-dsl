@@ -1,24 +1,24 @@
 # Graph Report - markdown-ui-dsl  (2026-10-01)
 
 ## Corpus Check
-- 186 files · ~126,448 words
+- 195 files · ~128,827 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 8 file(s) not represented in the graph (top: (none) 6, .ebnf 2)
+- Unclassified: 13 file(s) not represented in the graph (top: (none) 6, .whl 5, .ebnf 2)
 
 ## Summary
-- 1872 nodes · 2954 edges · 140 communities (119 shown, 21 thin omitted)
+- 1909 nodes · 3009 edges · 145 communities (126 shown, 19 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 51 edges (avg confidence: 0.92)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f93351d3`
+- Built from commit: `89e0c343`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - skills.py
 - Phase 2 — Tooling and design system
-- Development Specification — Markdown-UI DSL v2 Program
+- Locked-In Feature Additions — Markdown-UI DSL v2
 - reference.sh
 - Implementation Plan — Markdown-UI DSL v2 Program
 - Competitive Research Catalogue — Markdown-UI DSL
@@ -45,7 +45,7 @@
 - CLAUDE.md
 - package.json
 - compilerOptions
-- traceability.ts
+- safety.ts
 - core/package.json
 - spec/package.json
 - config.json
@@ -106,11 +106,11 @@
 - cli/src/index.ts
 - Phase 6 — 2.1 ecosystem
 - cli.test.ts
-- inline.test.ts
+- vitest
 - InlineBinding
 - InlineCode
-- gen-ast-schema.mjs
-- compat.test.ts
+- ref_node_fs
+- 5. Novel / breakthrough features
 - properties
 - RFC NNNN — Title
 - conformance.test.ts
@@ -120,7 +120,7 @@
 - SKILL.md
 - Contributing
 - gen-lint-docs.mjs
-- format.test.ts
+- Span
 - e2e/tsconfig.json
 - InlineImage
 - InlineInput
@@ -130,20 +130,20 @@
 - SP-4 — Token-cost baseline (mdui vs A2UI v1.0 JSON)
 - eslint.config.js
 - catalog/test/tsconfig.json
-- main
+- run
 - cli/test/tsconfig.json
 - cli/tsconfig.json
-- schema.test.ts
+- Development Specification — Markdown-UI DSL v2 Program
 - lint/test/tsconfig.json
 - render/test/tsconfig.json
 - Tabs
 - tokens/test/tsconfig.json
 - tools/test/tsconfig.json
-- vitest
+- 8. Requirements (EARS)
 - Lint rules and diagnostic codes
 - Task Breakdown — Markdown-UI DSL v2 Program
 - catalog/tsconfig.json
-- ref_node_fs
+- required
 - lint/tsconfig.json
 - render/tsconfig.json
 - tokens/tsconfig.json
@@ -151,13 +151,18 @@
 - 00_simple-login-form.ui.md
 - messy.in.md
 - messy.out.md
+- 3. Feature register
+- ADR-006: Skill structure and context budget
+- 1. Objective
+- 2. Language specification (normative drafts — finalised via RFC-0001 in T-012)
+- 7. Boundaries
 
 ## God Nodes (most connected - your core abstractions)
 1. `$defs` - 35 edges
-2. `vitest` - 32 edges
+2. `vitest` - 34 edges
 3. `kind` - 30 edges
-4. `parse()` - 23 edges
-5. `lint()` - 22 edges
+4. `lint()` - 24 edges
+5. `parse()` - 23 edges
 6. `Phase 1 — Language core` - 21 edges
 7. `compilerOptions` - 19 edges
 8. `parseWith()` - 18 edges
@@ -169,17 +174,17 @@
   docs/COMPETITIVE_RESEARCH.md → packages/lint/src/engine.ts
 - `4.3 Design-system and design-token formats for agents` --references--> `lint()`  [INFERRED]
   docs/COMPETITIVE_RESEARCH.md → packages/lint/src/engine.ts
+- `3.5 Quality & governance (QLT)` --references--> `lint()`  [INFERRED]
+  docs/FEATURE_ADDITIONS.md → packages/lint/src/engine.ts
 - `6. Testing strategy` --references--> `lint()`  [INFERRED]
   docs/SPEC.md → packages/lint/src/engine.ts
 - `T-003 · Continuous integration` --references--> `lint()`  [INFERRED]
   docs/TASKS.md → packages/lint/src/engine.ts
-- `4. Project structure` --references--> `render()`  [INFERRED]
-  docs/SPEC.md → packages/render/src/render.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (140 total, 21 thin omitted)
+## Communities (145 total, 19 thin omitted)
 
 ### Community 0 - "skills.py"
 Cohesion: 0.07
@@ -189,9 +194,9 @@ Nodes (21): Conformance corpus, Fixture, Outline, Runner protocol, Construct →
 Cohesion: 0.14
 Nodes (14): Phase 2 — Tooling and design system, T-030 · Lint engine completion, T-031 · Semantic and flow lint rules, T-032 · Accessibility semantics and rules, T-034 · Canonical formatter, T-035 · Semantic diff, T-036 · Migrate tool, T-037 · Design-system loader (DESIGN.md + legacy) (+6 more)
 
-### Community 2 - "Development Specification — Markdown-UI DSL v2 Program"
-Cohesion: 0.04
-Nodes (46): 10. Change log (rev. 2), 1. Design principles (non-negotiable constraints on every feature), 2. Priority and release key, 4. Feature dependency overview, 5. Novel / breakthrough features, 6. How the novel features compound, 7. Explicit non-goals (locked out of scope), 8. Change control (+38 more)
+### Community 2 - "Locked-In Feature Additions — Markdown-UI DSL v2"
+Cohesion: 0.18
+Nodes (11): 10. Change log (rev. 2), 1. Design principles (non-negotiable constraints on every feature), 2. Priority and release key, 4. Feature dependency overview, 6. How the novel features compound, 7. Explicit non-goals (locked out of scope), 8. Change control, 9. Feature → task traceability (+3 more)
 
 ### Community 3 - "reference.sh"
 Cohesion: 0.60
@@ -206,8 +211,8 @@ Cohesion: 0.09
 Nodes (23): 1. Executive summary, 2.1 Approach, 2.2 Source quality tiers, 2.3 Limitations and how to read novelty claims, 2.4 Verification pass (rev. 2, same day), 2. Method, 3.1 Capabilities (what exists), 3.2 Defects and risks found in the repository itself (+15 more)
 
 ### Community 6 - "lint"
-Cohesion: 0.09
-Nodes (22): 3.1 Language (LNG), 3.3 Design system & tokens (DSY), 3.4 Agent integration (AGT), 3.5 Quality & governance (QLT), 3. Feature register, T-063 · LLM eval harness and TESTING.md rewrite, ALL_RULES, dedupe() (+14 more)
+Cohesion: 0.10
+Nodes (20): ALL_RULES, dedupe(), lint(), lintDesignSystem(), withoutKnownE1302(), codes(), Case, CASES (+12 more)
 
 ### Community 7 - "Markdown UI DSL for AI Agents"
 Cohesion: 0.13
@@ -222,16 +227,16 @@ Cohesion: 0.12
 Nodes (16): Advanced UI Elements, Breakpoints, Chat Interfaces (Gemini / Minimal AI Style), Colors, 🧩 Component Mappings, 🎨 Design Tokens, 📐 General Rule of Thumb, Generation Rule (+8 more)
 
 ### Community 11 - "Phase 3 — Agent integration, evals and the grammar pack"
-Cohesion: 0.14
-Nodes (14): Phase 3 — Agent integration, evals and the grammar pack, T-050 · Component catalog schema and loader, T-051 · Catalog lint rules, T-052 · Component map, T-053 · Agent Skills restructure, T-054 · Prompt generator, T-055 · Safety hardening, T-056 · SDD interoperability (+6 more)
+Cohesion: 0.13
+Nodes (15): Phase 3 — Agent integration, evals and the grammar pack, T-050 · Component catalog schema and loader, T-051 · Catalog lint rules, T-052 · Component map, T-053 · Agent Skills restructure, T-054 · Prompt generator, T-055 · Safety hardening, T-056 · SDD interoperability (+7 more)
 
 ### Community 12 - "Agent skills — index, routing and vetting"
 Cohesion: 0.15
 Nodes (13): 1. Routing table — which skill for which work, 2. Project-local skills (32), 3.1 Vendored into the project (6), 3.2 Relevant but **not** vendored, 3.3 Proprietary — present but not redistributable, 3.4 Not relevant to this project, 3. Index of installed skills (authoring-environment snapshot, 110 skills), 4. How the 25 new skills were found (+5 more)
 
 ### Community 13 - "parse.ts"
-Cohesion: 0.09
-Nodes (40): Base, CodeNode, CommentNode, ContainerKind, ContainerNode, DirectiveNode, DividerNode, HeadingNode (+32 more)
+Cohesion: 0.11
+Nodes (35): Base, CodeNode, CommentNode, ContainerKind, ContainerNode, DirectiveNode, DividerNode, HeadingNode (+27 more)
 
 ### Community 14 - "Blazor + Bootstrap 5 Design System"
 Cohesion: 0.14
@@ -269,9 +274,9 @@ Nodes (14): engines, node, name, packageManager, private, type, version, axe-cor
 Cohesion: 0.10
 Nodes (19): compilerOptions, declaration, exactOptionalPropertyTypes, ignoreDeprecations, isolatedModules, lib, module, moduleResolution (+11 more)
 
-### Community 31 - "traceability.ts"
-Cohesion: 0.27
-Nodes (4): r, checkTraceability(), Report, taskBlocks()
+### Community 31 - "safety.ts"
+Cohesion: 0.20
+Nodes (8): ALLOWED_SCHEMES, instructionLikeText, normaliseTarget(), safetyRules, schemeOf(), STRONG, urlScheme, WEAK
 
 ### Community 32 - "core/package.json"
 Cohesion: 0.13
@@ -310,8 +315,8 @@ Cohesion: 0.50
 Nodes (3): printWidth, singleQuote, trailingComma
 
 ### Community 43 - "packages_core_dist_index"
-Cohesion: 0.12
-Nodes (13): 3.2 Tooling (TLS), DiffOp, DiffResult, formatDiff(), literalLines(), MEANING_CHANGES, migrate(), MigrateChange (+5 more)
+Cohesion: 0.13
+Nodes (12): 3.2 Tooling (TLS), DiffOp, DiffResult, formatDiff(), literalLines(), MEANING_CHANGES, migrate(), MigrateChange (+4 more)
 
 ### Community 44 - "core/tsconfig.json"
 Cohesion: 0.50
@@ -326,36 +331,36 @@ Cohesion: 0.50
 Nodes (3): Addendum (T-016) — emphasis, Addendum (T-030) — user text as object keys, ADR-005 — DSL 1.0.x ambiguity and escaping decisions (T-011, LNG-09)
 
 ### Community 48 - "catalog/test/catalog.test.ts"
-Cohesion: 0.05
-Nodes (35): Progress, T-001 · Fix example and documentation defects, T-002 · Monorepo scaffold and architecture decision records, T-003 · Continuous integration, T-004 · Governance and contributor docs, T-005 · Traceability checker, CatalogIssue, loadCatalog() (+27 more)
+Cohesion: 0.06
+Nodes (33): Progress, T-001 · Fix example and documentation defects, T-003 · Continuous integration, T-004 · Governance and contributor docs, T-005 · Traceability checker, CatalogIssue, loadCatalog(), TRUSTS (+25 more)
 
 ### Community 49 - "render.ts"
-Cohesion: 0.09
-Nodes (32): { encode: cl100k }, { encode: o200k }, require, rows, sm, su, axePath, examples (+24 more)
+Cohesion: 0.13
+Nodes (26): axePath, examples, exe, files, require, styles, esc(), MAP (+18 more)
 
 ### Community 50 - "engine.ts"
-Cohesion: 0.11
-Nodes (23): better(), DesignSystemLint, fixSource(), LintResult, measure(), Suppression, suppressions(), applyFixes() (+15 more)
+Cohesion: 0.10
+Nodes (24): better(), DesignSystemLint, fixSource(), LintResult, measure(), Suppression, suppressions(), applyFixes() (+16 more)
 
 ### Community 51 - "analyze.ts"
 Cohesion: 0.15
-Nodes (33): add(), analyze(), checkBinding(), collectActions(), flowChecks(), includeUse(), inlineChecks(), keySpan() (+25 more)
+Nodes (34): add(), analyze(), checkBinding(), collectActions(), flowChecks(), includeUse(), inlineChecks(), keySpan() (+26 more)
 
 ### Community 52 - "core/src/index.ts"
 Cohesion: 0.10
-Nodes (25): T-014 · Diagnostics model and code registry, ActionDef, ActionRegistry, AnalyzeOptions, AnalyzeResult, CodeInfo, CODES, DiagnosticCode (+17 more)
+Nodes (24): T-014 · Diagnostics model and code registry, ActionDef, ActionRegistry, AnalyzeOptions, AnalyzeResult, CodeInfo, CODES, DiagnosticCode (+16 more)
 
 ### Community 53 - "attrs"
 Cohesion: 0.07
 Nodes (33): type, $ref, type, Divider, InlineBadge, InlineButton, InlineCheckbox, InlineRadio (+25 more)
 
 ### Community 54 - "stream.ts"
-Cohesion: 0.13
-Nodes (18): Ctx, ResolvedInclude, BlockNode, Document, FrontmatterNode, Diagnostic, isOpen(), parseStream() (+10 more)
+Cohesion: 0.18
+Nodes (16): Ctx, ResolvedInclude, BlockNode, Document, FrontmatterNode, Diagnostic, FrontmatterData, ParseInit (+8 more)
 
 ### Community 55 - "inline.ts"
-Cohesion: 0.10
-Nodes (29): ADR-0005, AttrIssue, ENUMS, parseAttrs(), RESERVED_FLAGS, RESERVED_KEYS, RESERVED_NUMBERS, RESERVED_STRINGS (+21 more)
+Cohesion: 0.09
+Nodes (32): ADR-0005, T-002 · Monorepo scaffold and architecture decision records, AttrIssue, ENUMS, parseAttrs(), RESERVED_FLAGS, RESERVED_KEYS, RESERVED_NUMBERS (+24 more)
 
 ### Community 56 - "analysis.ts"
 Cohesion: 0.12
@@ -374,8 +379,8 @@ Cohesion: 0.09
 Nodes (12): catalogRules, componentProps, CONTAINER_NAME, INLINE_BUILTIN, thirdPartyComponent, unknownComponent, Use, uses() (+4 more)
 
 ### Community 60 - "main.ts"
-Cohesion: 0.10
-Nodes (10): COMMANDS, failsOn(), FileReport, listRules(), RANK, readSource(), report(), run() (+2 more)
+Cohesion: 0.11
+Nodes (3): COMMANDS, FileReport, RANK
 
 ### Community 61 - "cli/package.json"
 Cohesion: 0.08
@@ -390,8 +395,8 @@ Cohesion: 0.12
 Nodes (23): enum, Directive, additionalProperties, properties, required, type, items, type (+15 more)
 
 ### Community 64 - "Pos"
-Cohesion: 0.08
-Nodes (23): minimum, type, Pos, Span, $ref, minimum, type, minimum (+15 more)
+Cohesion: 0.14
+Nodes (14): minimum, type, Pos, minimum, type, minimum, type, additionalProperties (+6 more)
 
 ### Community 65 - "$defs"
 Cohesion: 0.10
@@ -402,12 +407,12 @@ Cohesion: 0.19
 Nodes (20): toHex(), Dim, DTCG_TYPES, dtcgColor(), dtcgDim(), DtcgNode, ExportReport, family() (+12 more)
 
 ### Community 67 - "frontmatter.ts"
-Cohesion: 0.16
-Nodes (18): ADR-0004, Ctx, dslVersion(), findLine(), flow(), FrontmatterData, FrontmatterIssue, FrontmatterResult (+10 more)
+Cohesion: 0.17
+Nodes (16): ADR-0004, Ctx, dslVersion(), findLine(), flow(), FrontmatterIssue, FrontmatterResult, KNOWN_KEYS (+8 more)
 
 ### Community 68 - "diff.ts"
-Cohesion: 0.17
-Nodes (17): `diff --json`, `--json` output (version 1), @mdui/cli, attrSig(), blockItem(), count(), Ctx, diffDocuments() (+9 more)
+Cohesion: 0.18
+Nodes (14): attrSig(), blockItem(), count(), Ctx, diffDocuments(), diffLists(), emit(), inlineItem() (+6 more)
 
 ### Community 69 - "a11y.ts"
 Cohesion: 0.10
@@ -426,12 +431,12 @@ Cohesion: 0.11
 Nodes (19): additionalProperties, pattern, required, type, Code, Diagnostic, additionalProperties, properties (+11 more)
 
 ### Community 73 - "run.mjs"
-Cohesion: 0.11
+Cohesion: 0.12
 Nodes (7): BUDGETS_MS, dir, examples, machine, results, src, stream
 
 ### Community 74 - "format.ts"
-Cohesion: 0.21
-Nodes (16): printAttrs(), canonicalInline(), equivalent(), format(), FormatResult, formatTable(), hasRich(), indentOf() (+8 more)
+Cohesion: 0.24
+Nodes (13): printAttrs(), canonicalInline(), FormatResult, formatTable(), hasRich(), indentOf(), OPENER_TEXT, renderUnchecked() (+5 more)
 
 ### Community 75 - "semantic.ts"
 Cohesion: 0.11
@@ -446,8 +451,8 @@ Cohesion: 0.12
 Nodes (16): dependencies, @mdui/core, yaml, description, exports, files, @mdui/core, yaml (+8 more)
 
 ### Community 78 - "tokens.ts"
-Cohesion: 0.15
-Nodes (8): Finding, brokenRef, contrastRatio, ds(), missingPrimary, orphanedToken, tokenRules, unknownBreakpoint
+Cohesion: 0.18
+Nodes (7): brokenRef, contrastRatio, ds(), missingPrimary, orphanedToken, tokenRules, unknownBreakpoint
 
 ### Community 80 - "tokens/src/model.ts"
 Cohesion: 0.14
@@ -486,7 +491,7 @@ Cohesion: 0.14
 Nodes (14): anyOf, additionalProperties, properties, required, type, items, type, Attrs (+6 more)
 
 ### Community 89 - "cli/src/index.ts"
-Cohesion: 0.28
+Cohesion: 0.30
 Nodes (8): io, Config, ConfigError, FailOn, KEYS, loadConfig(), Io, VERSION
 
 ### Community 90 - "Phase 6 — 2.1 ecosystem"
@@ -494,12 +499,12 @@ Cohesion: 0.17
 Nodes (12): Phase 6 — 2.1 ecosystem, T-100 · VS Code extension and language server, T-101 · GitHub Action and PR wireframe diff, T-102 · Figma importer, T-103 · HTML importer, T-104 · Adaptive Cards / Block Kit / Open-JSON-UI / A2UI-Express exporters, T-105 · Runtime generative-UI renderer (React), T-106 · Flutter oracle adapter (+4 more)
 
 ### Community 91 - "cli.test.ts"
-Cohesion: 0.23
+Cohesion: 0.22
 Nodes (7): expand(), globToRegExp(), isGlob(), SKIP_DIRS, walk(), EXIT, DS()
 
-### Community 92 - "inline.test.ts"
-Cohesion: 0.18
-Nodes (9): node(), outline(), lines, TOKENS, Fixture, fixtures, PIECES, soup (+1 more)
+### Community 92 - "vitest"
+Cohesion: 0.07
+Nodes (28): equivalent(), format(), strip(), InlineIssue, parse(), directives(), conf, corpus (+20 more)
 
 ### Community 93 - "InlineBinding"
 Cohesion: 0.17
@@ -509,13 +514,13 @@ Nodes (12): InlineBinding, InlineUse, additionalProperties, properties, required
 Cohesion: 0.17
 Nodes (12): InlineCode, InlineText, additionalProperties, properties, required, type, additionalProperties, properties (+4 more)
 
-### Community 95 - "gen-ast-schema.mjs"
-Cohesion: 0.17
-Nodes (7): defs, file, int1, schema, span, str, withAttrs
+### Community 95 - "ref_node_fs"
+Cohesion: 0.04
+Nodes (28): { encode: cl100k }, { encode: o200k }, require, rows, sm, su, BROKEN_FRONTMATTER, CHANGES_MEANING (+20 more)
 
-### Community 96 - "compat.test.ts"
-Cohesion: 0.18
-Nodes (9): BROKEN_FRONTMATTER, CHANGES_MEANING, dir, examples, Fixture, fixtures, shared, strip() (+1 more)
+### Community 96 - "5. Novel / breakthrough features"
+Cohesion: 0.22
+Nodes (8): 5. Novel / breakthrough features, NOV-01 — Anchored Three-Way Sync (`.ui.lock`), NOV-02 — Spec Oracle (accessibility-tree conformance with a Fidelity Score), NOV-03 — Valid-by-Construction Grammar Pack, NOV-04 — UX Constraint Contracts, 2.3 AST (TLS-01), dsl(), AST JSON Schema
 
 ### Community 97 - "properties"
 Cohesion: 0.20
@@ -526,8 +531,8 @@ Cohesion: 0.22
 Nodes (8): Alternatives considered, Compatibility, Motivation, RFC NNNN — Title, Security, Summary, Syntax and semantics, Unresolved questions
 
 ### Community 99 - "conformance.test.ts"
-Cohesion: 0.22
-Nodes (7): dir, Fixture, invalid, invalid2, schema, valid, valid2
+Cohesion: 0.12
+Nodes (14): node(), outline(), dir, Fixture, invalid, invalid2, schema, valid (+6 more)
 
 ### Community 100 - "AGENTS.md — markdown-ui-dsl"
 Cohesion: 0.25
@@ -542,8 +547,8 @@ Cohesion: 0.25
 Nodes (7): Build something great., Hero Section, Page Header, Product Cards, Responsive Layout Example, Side-by-Side Content Block, Why Responsive DSL?
 
 ### Community 103 - "SKILL.md"
-Cohesion: 0.25
-Nodes (7): Row, Components, Frontmatter & Theming (Optional), Instructions, Layouts, Markdown-UI DSL Schema, Role
+Cohesion: 0.10
+Nodes (16): Row, Safety and trust model, Keeping spec and code in sync, Components, DSL 1.x reference, Frontmatter & Theming (Optional), Layouts, Markdown-UI DSL (+8 more)
 
 ### Community 104 - "Contributing"
 Cohesion: 0.29
@@ -553,9 +558,9 @@ Nodes (7): Agent contributors, Changing the language: RFCs, Contributing, How wo
 Cohesion: 0.29
 Nodes (3): codeRows, file, rows
 
-### Community 106 - "format.test.ts"
-Cohesion: 0.29
-Nodes (6): conf, corpus, docs, Fixture, golden, TOKENS
+### Community 106 - "Span"
+Cohesion: 0.22
+Nodes (9): Span, $ref, end, start, additionalProperties, properties, required, type (+1 more)
 
 ### Community 107 - "e2e/tsconfig.json"
 Cohesion: 0.29
@@ -578,8 +583,8 @@ Cohesion: 0.29
 Nodes (7): InlineToggle, additionalProperties, properties, required, type, type, on
 
 ### Community 112 - "Installation & Setup"
-Cohesion: 0.29
-Nodes (7): 1. OpenClaw Hub (Recommended), 2. GitHub Copilot (Agent Mode), 3. Cursor / Roo Code / Cline, 4. Claude Code, 5. Gemini CLI, 6. GPT Codex (and other CLI agents), Installation & Setup
+Cohesion: 0.40
+Nodes (5): 1. OpenClaw Hub (Recommended), 2. GitHub Copilot (Agent Mode), 3. Claude Code, Codex, Gemini CLI, Cursor and other Agent Skills hosts, 4. Flat-file agents (`.cursorrules`, `.clinerules`, `CLAUDE.md`, system prompts), Installation & Setup
 
 ### Community 113 - "SP-4 — Token-cost baseline (mdui vs A2UI v1.0 JSON)"
 Cohesion: 0.33
@@ -593,9 +598,9 @@ Nodes (4): ADR-0003, NODE_BUILTINS, @eslint/js, typescript-eslint
 Cohesion: 0.33
 Nodes (5): compilerOptions, types, extends, include, ../../../tsconfig.base.json
 
-### Community 116 - "main"
-Cohesion: 0.47
-Nodes (5): Args, parseArgs(), UsageError, VALUE_FLAGS, main()
+### Community 116 - "run"
+Cohesion: 0.23
+Nodes (12): Args, parseArgs(), UsageError, VALUE_FLAGS, failsOn(), listRules(), main(), readSource() (+4 more)
 
 ### Community 117 - "cli/test/tsconfig.json"
 Cohesion: 0.33
@@ -605,9 +610,9 @@ Nodes (5): compilerOptions, types, extends, include, ../../../tsconfig.base.json
 Cohesion: 0.33
 Nodes (5): compilerOptions, types, extends, include, ../../tsconfig.base.json
 
-### Community 119 - "schema.test.ts"
-Cohesion: 0.33
-Nodes (5): fixtureFiles, inputs, schema, validate, ajv
+### Community 119 - "Development Specification — Markdown-UI DSL v2 Program"
+Cohesion: 0.25
+Nodes (8): 0. Assumptions surfaced (confirm or correct before Phase 0 starts), 10. Risks (spec-level; schedule risks are in PLAN §8), 3. Commands, 4. Project structure, 5. Code style, 6. Testing strategy, 9. Success criteria (release gates), Development Specification — Markdown-UI DSL v2 Program
 
 ### Community 120 - "lint/test/tsconfig.json"
 Cohesion: 0.33
@@ -629,6 +634,10 @@ Nodes (5): compilerOptions, types, extends, include, ../../../tsconfig.base.json
 Cohesion: 0.33
 Nodes (5): compilerOptions, types, extends, include, ../../../tsconfig.base.json
 
+### Community 125 - "8. Requirements (EARS)"
+Cohesion: 0.33
+Nodes (6): 8. Requirements (EARS), Agent, Design system, Novel, Quality, Tooling
+
 ### Community 126 - "Lint rules and diagnostic codes"
 Cohesion: 0.50
 Nodes (3): Diagnostic code registry, Lint rules and diagnostic codes, WCAG mapping — status
@@ -640,6 +649,10 @@ Nodes (4): Appendix A — Feature → task index, Conventions, Phase 0 — Found
 ### Community 128 - "catalog/tsconfig.json"
 Cohesion: 0.50
 Nodes (3): extends, include, ../../tsconfig.base.json
+
+### Community 129 - "required"
+Cohesion: 0.33
+Nodes (5): Language, `diff --json`, `--json` output (version 1), @mdui/cli, required()
 
 ### Community 130 - "lint/tsconfig.json"
 Cohesion: 0.50
@@ -657,25 +670,45 @@ Nodes (3): extends, include, ../../tsconfig.base.json
 Cohesion: 0.50
 Nodes (3): extends, include, ../../tsconfig.base.json
 
+### Community 140 - "3. Feature register"
+Cohesion: 0.40
+Nodes (5): 3.1 Language (LNG), 3.3 Design system & tokens (DSY), 3.4 Agent integration (AGT), 3.5 Quality & governance (QLT), 3. Feature register
+
+### Community 141 - "ADR-006: Skill structure and context budget"
+Cohesion: 0.50
+Nodes (3): ADR-006: Skill structure and context budget, Consequences, Decision
+
+### Community 142 - "1. Objective"
+Cohesion: 0.50
+Nodes (4): 1.1 What and why, 1.2 Users, 1.3 Success (summary — full criteria in §9), 1. Objective
+
+### Community 143 - "2. Language specification (normative drafts — finalised via RFC-0001 in T-012)"
+Cohesion: 0.50
+Nodes (4): 2.1 Compatibility baseline (v1.0.3, unchanged), 2.2 DSL 2.0 additions, 2.4 Diagnostics, 2. Language specification (normative drafts — finalised via RFC-0001 in T-012)
+
+### Community 144 - "7. Boundaries"
+Cohesion: 0.50
+Nodes (4): 7. Boundaries, ✅ Always, ⚠️ Ask first, 🚫 Never
+
 ## Knowledge Gaps
-- **917 isolated node(s):** `$schema`, `changelog`, `commit`, `access`, `baseBranch` (+912 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1064 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **21 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **934 isolated node(s):** `$schema`, `changelog`, `commit`, `access`, `baseBranch` (+929 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1086 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `vitest` connect `vitest` to `ref_node_fs`, `lint`, `parse.ts`, `package.json`, `traceability.ts`, `packages_core_dist_index`, `catalog/test/catalog.test.ts`, `render.ts`, `analyze.ts`, `core/src/index.ts`, `stream.ts`, `analysis.ts`, `frontmatter.ts`, `format.ts`, `export.test.ts`, `color.ts`, `cli.test.ts`, `inline.test.ts`, `compat.test.ts`, `conformance.test.ts`, `format.test.ts`, `schema.test.ts`?**
-  _High betweenness centrality (0.073) - this node is a cross-community bridge._
-- **Why does `Progress` connect `catalog/test/catalog.test.ts` to `diff.ts`, `format.ts`, `packages_core_dist_index`, `tokens/src/model.ts`, `engine.ts`, `stream.ts`, `Task Breakdown — Markdown-UI DSL v2 Program`?**
-  _High betweenness centrality (0.070) - this node is a cross-community bridge._
+- **Why does `vitest` connect `vitest` to `conformance.test.ts`, `frontmatter.ts`, `lint`, `packages_core_dist_index`, `export.test.ts`, `catalog/test/catalog.test.ts`, `render.ts`, `analyze.ts`, `core/src/index.ts`, `stream.ts`, `color.ts`, `analysis.ts`, `cli.test.ts`, `package.json`, `ref_node_fs`?**
+  _High betweenness centrality (0.086) - this node is a cross-community bridge._
 - **Why does `Task Breakdown — Markdown-UI DSL v2 Program` connect `Task Breakdown — Markdown-UI DSL v2 Program` to `Phase 2 — Tooling and design system`, `Phase 5 — Interop, docs and GA release`, `Phase 6 — 2.1 ecosystem`, `Phase 1 — Language core`, `README.md`, `Phase 3 — Agent integration, evals and the grammar pack`, `catalog/test/catalog.test.ts`, `Phase 4 — Sync, verification and constraints (the novel features)`?**
+  _High betweenness centrality (0.064) - this node is a cross-community bridge._
+- **Why does `Progress` connect `catalog/test/catalog.test.ts` to `diff.ts`, `packages_core_dist_index`, `tokens/src/model.ts`, `engine.ts`, `stream.ts`, `inline.ts`, `vitest`, `Task Breakdown — Markdown-UI DSL v2 Program`?**
   _High betweenness centrality (0.062) - this node is a cross-community bridge._
 - **What connects `$schema`, `changelog`, `commit` to the rest of the system?**
-  _917 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _934 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `skills.py` be split into smaller, more focused modules?**
-  _Cohesion score 0.07188160676532769 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0666049953746531 - nodes in this community are weakly interconnected._
 - **Should `Phase 2 — Tooling and design system` be split into smaller, more focused modules?**
   _Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected._
-- **Should `Development Specification — Markdown-UI DSL v2 Program` be split into smaller, more focused modules?**
-  _Cohesion score 0.0425531914893617 - nodes in this community are weakly interconnected._
+- **Should `Implementation Plan — Markdown-UI DSL v2 Program` be split into smaller, more focused modules?**
+  _Cohesion score 0.07407407407407407 - nodes in this community are weakly interconnected._

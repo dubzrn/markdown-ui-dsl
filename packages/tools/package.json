@@ -15,8 +15,10 @@
     "dist"
   ],
   "dependencies": {
+    "@mdui/catalog": "workspace:*",
     "@mdui/core": "workspace:*",
-    "@mdui/lint": "workspace:*"
+    "@mdui/lint": "workspace:*",
+    "@mdui/tokens": "workspace:*"
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean",

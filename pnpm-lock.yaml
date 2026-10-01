@@ -59,6 +59,9 @@ importers:
 
   packages/cli:
     dependencies:
+      '@mdui/catalog':
+        specifier: workspace:*
+        version: link:../catalog
       '@mdui/core':
         specifier: workspace:*
         version: link:../core
@@ -109,12 +112,18 @@ importers:
 
   packages/tools:
     dependencies:
+      '@mdui/catalog':
+        specifier: workspace:*
+        version: link:../catalog
       '@mdui/core':
         specifier: workspace:*
         version: link:../core
       '@mdui/lint':
         specifier: workspace:*
         version: link:../lint
+      '@mdui/tokens':
+        specifier: workspace:*
+        version: link:../tokens
 
 packages:
 

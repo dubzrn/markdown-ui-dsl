@@ -17,6 +17,7 @@
     "dist"
   ],
   "dependencies": {
+    "@mdui/catalog": "workspace:*",
     "@mdui/core": "workspace:*",
     "@mdui/lint": "workspace:*",
     "@mdui/render": "workspace:*",
