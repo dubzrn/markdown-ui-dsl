@@ -607,3 +607,19 @@ describe("export (T-090, T-091)", () => {
     expect(main(["export", "a.ui.md", "--to", "figma"], memIo(files).io)).toBe(EXIT.usage);
   });
 });
+
+describe("stats (T-095)", () => {
+  it("reports size, block and control counts, as text and JSON", () => {
+    const files = { "/proj/a.ui.md": "::: CARD :::\n# Hi\n[ Go ](#go)\n--- END ---\n" };
+    const m = memIo(files);
+    expect(main(["stats", "a.ui.md"], m.io)).toBe(EXIT.ok);
+    expect(m.out()).toMatch(/a\.ui\.md: \d+ bytes, \d+ lines, ~\d+ tokens/);
+    const j = memIo(files);
+    main(["stats", "a.ui.md", "--json"], j.io);
+    const r = JSON.parse(j.out()) as {
+      files: { blocks: Record<string, number>; inline: Record<string, number> }[];
+    };
+    expect(r.files[0]?.blocks).toMatchObject({ card: 1, heading: 1 });
+    expect(r.files[0]?.inline).toMatchObject({ button: 1 });
+  });
+});

@@ -1,5 +1,14 @@
 import { posix } from "node:path";
-import { analyze, format, parse, type Diagnostic, type Severity } from "@mdui/core";
+import {
+  analyze,
+  format,
+  inlinesOf,
+  parse,
+  walkBlocks,
+  walkInline,
+  type Diagnostic,
+  type Severity,
+} from "@mdui/core";
 import { ALL_RULES, fixSource, lint, lintDesignSystem } from "@mdui/lint";
 import {
   diffTokens,
@@ -53,6 +62,7 @@ Commands:
   coverage   Which requirements do the specs cover? --requirements <file> (Spec Kit, OpenSpec or Kiro style); exit 1 if any is uncovered or unknown
   grammar    Emit a generation grammar: --format lark|gbnf|json-schema [--dsl 1|2.0] [--catalog c.yaml] [--max-depth N] [--tokens a,b] [--data x.y,z]
   sync       Anchored three-way sync: plan|apply|relink|recover <spec> --code <files> [--lock p] [--confirm] [--resolve a=code,b=spec] [--map m.yaml]
+  stats      <spec>...: size and structure (bytes, lines, blocks, controls, estimated tokens); --json
   export     <spec> --to a2ui|json-render [--state s] [--out f] [--strict]: agent-UI formats; warnings (stderr) list every construct that degrades
   preview    live preview server: <spec> [--port N]; or <spec> --png out.png [--scale 2|1280x800] [--dpi N] [--style s] [--theme t] [--state s]
   verify     Spec Oracle: <spec> --url U | --html F [--min-fidelity 0.95] [--baseline b.json | --write-baseline] [--strict] [--name-match loose] [--state s] [--chromium path]
@@ -547,6 +557,47 @@ function run(io: Io, args: Args, cfg: Config): number {
     return args.flags.strict && out.warnings.length > 0 ? EXIT.diagnostics : EXIT.ok;
   }
 
+  if (cmd === "stats") {
+    const rowsOut = files.map((file) => {
+      const src = readSource(io, root, file) as string;
+      const doc = parse(src);
+      const kinds: Record<string, number> = {};
+      const controls: Record<string, number> = {};
+      walkBlocks(doc.body, ({ node }) => {
+        kinds[node.kind] = (kinds[node.kind] ?? 0) + 1;
+        for (const run of inlinesOf(node))
+          walkInline(run, (n) => {
+            if (n.kind !== "text") controls[n.kind] = (controls[n.kind] ?? 0) + 1;
+          });
+      });
+      const bytes = new TextEncoder().encode(src).length;
+      return {
+        file: rel(file),
+        bytes,
+        lines: src.split("\n").length,
+        blocks: kinds,
+        inline: controls,
+        estTokens: Math.ceil(bytes / 4),
+      };
+    });
+    if (args.flags.json)
+      io.stdout(
+        JSON.stringify({ tool: "mdui", version: 1, command: "stats", files: rowsOut }) + "\n",
+      );
+    else
+      for (const r of rowsOut)
+        io.stdout(
+          `${r.file}: ${r.bytes} bytes, ${r.lines} lines, ~${r.estTokens} tokens (bytes/4: an estimate; scripts/eval-tokens.mjs counts with named tokenizers)\n  blocks: ${Object.entries(
+            r.blocks,
+          )
+            .map(([k, v]) => `${k}=${v}`)
+            .join(" ")}\n  inline: ${Object.entries(r.inline)
+            .map(([k, v]) => `${k}=${v}`)
+            .join(" ")}\n`,
+        );
+    return EXIT.ok;
+  }
+
   if (cmd === "fmt") {
     const changed: string[] = [];
     for (const file of files) {
@@ -653,6 +704,7 @@ const COMMANDS = [
   "sync",
   "preview",
   "export",
+  "stats",
 ];
 
 /** CLI entry. Never throws; returns the process exit code. */

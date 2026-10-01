@@ -109,6 +109,7 @@
 | T-083 | done | 494 fixtures in four suites, `manifest.json` with sha-256, protocol-v1 Python runner, shipped in `@mdui/spec` `files`, CI manifest + runner steps, `docs/CONFORMANCE.md`. The implementation under test is the TS reference; there is no independent second implementation |
 | T-090 | partial | `@mdui/export` `exportA2ui` + `mdui export --to a2ui`; every example validates against the vendored A2UI v1.0 schemas (pinned `102ec1a04975`); warnings for every degraded/dropped/synthesized construct (`docs/EXPORT.md`). Not rendered by an upstream A2UI renderer (manual check outstanding) |
 | T-091 | partial | `exportJsonRender` + `mdui export --to json-render`; every example passes json-render's own `validateSpec` (`@json-render/core@0.21.0`, orphan check on); catalog is this project's own `mdui` catalog. Not rendered in an application (manual check outstanding) |
+| T-095 | partial | `evals/TOKENS.md` + `evals/tokens/results.json` from `scripts/eval-tokens.mjs` (re-run reproduces exactly; checked in CI): 7 OpenUI scenarios (mdui hand-written here, upstream samples vendored) + 7 examples; 3 tokenizers (o200k, cl100k, legacy Claude); counting validated against upstream totals (2 of 4 exact); `mdui stats`. Gaps: A2UI Express **not measured**, the comparison is not like for like, an independent re-count of three scenarios is outstanding |
 
 ### T-001 · Fix example and documentation defects
 `S` · Deps: — · Implements: **QLT-04** · REQ: REQ-QLT-04

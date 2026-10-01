@@ -26,6 +26,7 @@
     "conformance": "node scripts/gen-conformance-manifest.mjs --check && python3 packages/spec/conformance/runners/run.py -- node scripts/conformance-harness.mjs"
   },
   "devDependencies": {
+    "@anthropic-ai/tokenizer": "^0.0.4",
     "@changesets/cli": "3.0.3",
     "@eslint/js": "^10.0.0",
     "@types/node": "^22.20.4",
@@ -33,6 +34,7 @@
     "axe-core": "^4.13.0",
     "eslint": "10.11.0",
     "fast-check": "4.10.2",
+    "gpt-tokenizer": "^4.0.0",
     "playwright-core": "^1.63.0",
     "prettier": "3.9.9",
     "tsup": "8.5.1",
