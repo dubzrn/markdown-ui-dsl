@@ -71,6 +71,9 @@ importers:
       '@mdui/lint':
         specifier: workspace:*
         version: link:../lint
+      '@mdui/oracle':
+        specifier: workspace:*
+        version: link:../oracle
       '@mdui/render':
         specifier: workspace:*
         version: link:../render
@@ -86,6 +89,9 @@ importers:
       '@mdui/tools':
         specifier: workspace:*
         version: link:../tools
+      playwright-core:
+        specifier: '>=1.49'
+        version: 1.63.0
 
   packages/core:
     dependencies:
@@ -146,6 +152,16 @@ importers:
       '@mdui/tools':
         specifier: workspace:*
         version: link:../tools
+
+  packages/oracle:
+    dependencies:
+      '@mdui/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      playwright-core:
+        specifier: ^1.63.0
+        version: 1.63.0
 
   packages/render:
     dependencies:

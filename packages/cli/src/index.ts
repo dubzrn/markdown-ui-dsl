@@ -3,3 +3,4 @@ export type { Io } from "./io.js";
 export { loadConfig, ConfigError } from "./config.js";
 export type { Config, FailOn } from "./config.js";
 export { expand, globToRegExp } from "./glob.js";
+export { runVerify, playwrightDriver, type Driver, type PageRead } from "./verify.js";

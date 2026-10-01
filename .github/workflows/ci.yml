@@ -52,6 +52,9 @@ jobs:
       - run: pnpm test:e2e
         env:
           CHROMIUM_PATH: ""
+      - run: node scripts/eval-nov02.mjs --check
+        env:
+          CHROMIUM_PATH: ""
 
   bench:
     name: performance budgets

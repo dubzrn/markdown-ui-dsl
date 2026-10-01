@@ -51,6 +51,7 @@ Commands:
   coverage   Which requirements do the specs cover? --requirements <file> (Spec Kit, OpenSpec or Kiro style); exit 1 if any is uncovered or unknown
   grammar    Emit a generation grammar: --format lark|gbnf|json-schema [--dsl 1|2.0] [--catalog c.yaml] [--max-depth N] [--tokens a,b] [--data x.y,z]
   sync       Anchored three-way sync: plan|apply|relink|recover <spec> --code <files> [--lock p] [--confirm] [--resolve a=code,b=spec] [--map m.yaml]
+  verify     Spec Oracle: <spec> --url U | --html F [--min-fidelity 0.95] [--baseline b.json | --write-baseline] [--strict] [--name-match loose] [--state s] [--chromium path]
   rules      List the lint rules (--json for machine output)
   ast        Print the JSON AST of one file
   render     Render one file to HTML (--style sketch|clean|wireframe|none, --state, --theme, --out)

@@ -160,7 +160,7 @@ function inlineNode(n: InlineNode, ctx: Ctx): string {
     case "radio":
       return `<label><input type="radio"${n.checked ? " checked" : ""}${attrString(n.attrs)}> ${esc(n.label)}</label>`;
     case "toggle":
-      return `<button type="button" role="switch" aria-checked="${n.on}"${attrString(n.attrs)}>${esc(n.label)}: ${n.on ? "on" : "off"}</button>`;
+      return `<button type="button" role="switch" aria-checked="${n.on}" aria-label="${esc(n.label)}"${attrString(n.attrs)}>${esc(n.label)}: ${n.on ? "on" : "off"}</button>`;
     case "dropdown": {
       const opts = n.options ?? (n.dynamic !== undefined ? [`(dynamic: ${n.dynamic})`] : []);
       const all = [n.label, ...opts.filter((o) => o !== n.label)];
@@ -401,9 +401,29 @@ export function render(doc: Document, opts: RenderOptions = {}): string {
   };
   const lang = typeof doc.meta["lang"] === "string" ? doc.meta["lang"] : "en";
   const dir = doc.meta["dir"] === "rtl" ? "rtl" : "ltr";
-  const body = blocks(doc.body, ctx);
+  // In a full document, a top-level leading HEADER / trailing FOOTER sits outside <main>, so the browser exposes it as the
+  // banner / contentinfo landmark (a <header> inside <main> is not one). Fragments keep everything in <main>.
+  const nodes = doc.body;
+  let from = 0;
+  let to = nodes.length;
+  if (opts.fragment !== true) {
+    const isBlank = (n: BlockNode): boolean => n.kind === "comment" || n.kind === "directive";
+    while (from < to && (nodes[from]?.kind === "header" || isBlank(nodes[from] as BlockNode)))
+      from++;
+    while (to > from && (nodes[to - 1]?.kind === "footer" || isBlank(nodes[to - 1] as BlockNode)))
+      to--;
+    if (!nodes.slice(0, from).some((n) => n.kind === "header")) from = 0;
+    if (!nodes.slice(to).some((n) => n.kind === "footer")) to = nodes.length;
+  }
+  const scope = `class="mdui mdui-style-${style}" data-theme="${opts.theme ?? "auto"}"`;
+  const outside = (list: BlockNode[]): string =>
+    list.length === 0 ? "" : `<div ${scope}>\n${blocks(list, ctx)}\n</div>\n`;
+  const head = outside(nodes.slice(0, from));
+  const foot = outside(nodes.slice(to));
+  const body = blocks(nodes.slice(from, to), ctx);
   const theme = opts.theme ?? "auto";
-  const main = `<main class="mdui mdui-style-${style}" data-theme="${theme}"${directiveAttrs(doc.body)}>\n${body}\n</main>`;
+  const main =
+    `${head}<main class="mdui mdui-style-${style}" data-theme="${theme}"${directiveAttrs(doc.body)}>\n${body}\n</main>\n${foot}`.trimEnd();
   if (opts.fragment === true) return main;
   const title =
     opts.title ??

@@ -101,6 +101,10 @@
 | T-074 | done | `mdui sync plan|apply|relink|recover`; `--confirm` required; verified by re-extraction; journaled atomic writes confined to the root; 1,100-case round-trip with zero loss |
 | T-075 | done | spec patcher (minimal line edits, all-or-nothing per unit) and plan JSON hand-off (`toCode`/`toSpec`); scripted agent using only the plan reaches clean |
 | T-081 | partial | `mdui_sync_plan` and `mdui_sync_apply` (confirm mandatory, refused without it, returns files instead of writing); `verify` tool waits for the Oracle (T-077); verified with both official SDK clients (14 tools) |
+| T-076 | done | `@mdui/oracle`: AST to expected accessibility tree (every primitive, per state, order-correct Playwright ARIA template, configurable weights and label-vs-placeholder). Responsive/theme expansion beyond STATE is not implemented (a document has one tree) |
+| T-077 | done | Chromium driver (optional peer dep), own order-aware subset/strict matcher with unordered regions, per-node verdicts at spec lines, weighted Fidelity Score, `evals/NOV-02.md`: **10 apps x 24 seeded mutations: recall 98.8% (237/240); 240 refactors: 0 false positives; slowest screen 49 ms**. Apps are the project's own rendered examples (see Limits in docs/ORACLE.md) |
+| T-078 | done | `mdui verify` with `--min-fidelity`, baselines (`--write-baseline`), `--name-match loose`, `--strict`, `--json`, exit contract; CI runs the benchmark in the e2e job. Not run against a third-party app |
+| T-080 | done | post-code verification of `every-input-labelled`, `heading-order`, `landmarks-present`, `help-reachable`, `tap-target` (bounding boxes) with violations mapped to spec lines; fixtures are unit tests plus a real-Chromium test, not an app suite with seeded violations |
 
 ### T-001 · Fix example and documentation defects
 `S` · Deps: — · Implements: **QLT-04** · REQ: REQ-QLT-04

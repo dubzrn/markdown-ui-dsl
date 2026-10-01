@@ -30,6 +30,14 @@ export interface Args {
     all: boolean;
     auditWaivers: boolean;
     confirm: boolean;
+    url: string | undefined;
+    html: string | undefined;
+    minFidelity: string | undefined;
+    baseline: string | undefined;
+    nameMatch: string | undefined;
+    chromium: string | undefined;
+    strict: boolean;
+    writeBaseline: boolean;
     code: string | undefined;
     lock: string | undefined;
     resolve: string | undefined;
@@ -59,6 +67,12 @@ const VALUE_FLAGS = [
   "--code",
   "--lock",
   "--resolve",
+  "--url",
+  "--html",
+  "--min-fidelity",
+  "--baseline",
+  "--name-match",
+  "--chromium",
 ];
 
 export function parseArgs(argv: string[]): Args {
@@ -94,6 +108,14 @@ export function parseArgs(argv: string[]): Args {
       all: false,
       auditWaivers: false,
       confirm: false,
+      url: undefined,
+      html: undefined,
+      minFidelity: undefined,
+      baseline: undefined,
+      nameMatch: undefined,
+      chromium: undefined,
+      strict: false,
+      writeBaseline: false,
       code: undefined,
       lock: undefined,
       resolve: undefined,
@@ -117,6 +139,8 @@ export function parseArgs(argv: string[]): Args {
     else if (a === "--all") out.flags.all = true;
     else if (a === "--audit-waivers") out.flags.auditWaivers = true;
     else if (a === "--confirm") out.flags.confirm = true;
+    else if (a === "--strict") out.flags.strict = true;
+    else if (a === "--write-baseline") out.flags.writeBaseline = true;
     else if (VALUE_FLAGS.includes(a) || VALUE_FLAGS.some((f) => a.startsWith(`${f}=`))) {
       const eq = a.indexOf("=");
       const name = eq === -1 ? a : a.slice(0, eq);
@@ -142,6 +166,12 @@ export function parseArgs(argv: string[]): Args {
       else if (name === "--code") out.flags.code = value;
       else if (name === "--lock") out.flags.lock = value;
       else if (name === "--resolve") out.flags.resolve = value;
+      else if (name === "--url") out.flags.url = value;
+      else if (name === "--html") out.flags.html = value;
+      else if (name === "--min-fidelity") out.flags.minFidelity = value;
+      else if (name === "--baseline") out.flags.baseline = value;
+      else if (name === "--name-match") out.flags.nameMatch = value;
+      else if (name === "--chromium") out.flags.chromium = value;
       else out.flags.out = value;
     } else if (a.startsWith("-") && a !== "-") throw new UsageError(`unknown option ${a}`);
     else rest.push(a);

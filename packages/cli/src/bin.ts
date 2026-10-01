@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 import { mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
-import { main } from "./main.js";
+import { main, EXIT } from "./main.js";
+import { parseArgs, UsageError } from "./args.js";
+import { runVerify } from "./verify.js";
 import type { Io } from "./io.js";
 
 // `mdui … | head` closes the pipe early: that is not an error.
@@ -40,4 +42,12 @@ const io: Io = {
   removeFile: (p) => rmSync(p, { force: true }),
 };
 
-process.exitCode = main(process.argv.slice(2), io);
+// `verify` drives a browser, so it is async and handled here; everything else is synchronous.
+if (process.argv[2] === "verify") {
+  try {
+    process.exitCode = await runVerify(io, parseArgs(process.argv.slice(2)));
+  } catch (e) {
+    process.stderr.write(`mdui: ${e instanceof Error ? e.message : String(e)}\n`);
+    process.exitCode = e instanceof UsageError ? EXIT.usage : EXIT.internal;
+  }
+} else process.exitCode = main(process.argv.slice(2), io);
