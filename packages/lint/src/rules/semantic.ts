@@ -187,7 +187,36 @@ export const flowDeadEnd: Rule = {
   },
 };
 
+export const requirementsFormat: Rule = {
+  id: "requirements-format",
+  category: "semantics",
+  description:
+    "`requirements:` in frontmatter is a list of requirement identifiers; empty or non-scalar entries and duplicates are flagged (W2801).",
+  defaultSeverity: "warn",
+  codes: ["W2801"],
+  check(ctx, report) {
+    const v = ctx.doc.meta["requirements"];
+    const span = ctx.doc.frontmatter?.span;
+    if (v === undefined || span === undefined) return;
+    const list = Array.isArray(v) ? v : [v];
+    const seen = new Set<string>();
+    for (const e of list) {
+      const ok = (typeof e === "string" && e.trim() !== "") || typeof e === "number";
+      if (!ok)
+        report({
+          code: "W2801",
+          message: "`requirements` entries must be non-empty identifiers.",
+          span,
+        });
+      else if (seen.has(String(e).trim()))
+        report({ code: "W2801", message: `Duplicate requirement "${String(e).trim()}".`, span });
+      else seen.add(String(e).trim());
+    }
+  },
+};
+
 export const semanticRules: Rule[] = [
+  requirementsFormat,
   unresolvedBinding,
   invalidAttribute,
   missingDefaultState,

@@ -21,6 +21,7 @@ export interface Args {
     catalog: string | undefined;
     map: string | undefined;
     design: string | undefined;
+    requirements: string | undefined;
     all: boolean;
   };
 }
@@ -39,6 +40,7 @@ const VALUE_FLAGS = [
   "--catalog",
   "--map",
   "--design",
+  "--requirements",
 ];
 
 export function parseArgs(argv: string[]): Args {
@@ -65,6 +67,7 @@ export function parseArgs(argv: string[]): Args {
       catalog: undefined,
       map: undefined,
       design: undefined,
+      requirements: undefined,
       all: false,
     },
   };
@@ -100,6 +103,7 @@ export function parseArgs(argv: string[]): Args {
       else if (name === "--catalog") out.flags.catalog = value;
       else if (name === "--map") out.flags.map = value;
       else if (name === "--design") out.flags.design = value;
+      else if (name === "--requirements") out.flags.requirements = value;
       else out.flags.out = value;
     } else if (a.startsWith("-") && a !== "-") throw new UsageError(`unknown option ${a}`);
     else rest.push(a);

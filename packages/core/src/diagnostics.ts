@@ -136,6 +136,7 @@ export const CODES = {
     severity: "warn",
     summary: "Button triggers a destructive action that has no `confirm`.",
   },
+  W2801: { severity: "warn", summary: "Malformed or duplicate `requirements:` entry." },
   W7001: { severity: "warn", summary: "Text reads as an instruction to an agent." },
   E7002: { severity: "error", summary: "Link or button target uses a disallowed URL scheme." },
   E6001: { severity: "error", summary: "Unknown component (not in the catalog)." },

@@ -11,7 +11,17 @@ import {
   toTailwind4,
   validateDtcg,
 } from "@mdui/tokens";
-import { AGENTS, composePrompt, diffDocuments, formatDiff, migrate, type Agent } from "@mdui/tools";
+import {
+  AGENTS,
+  composePrompt,
+  coverage,
+  diffDocuments,
+  extractRequirements,
+  formatCoverage,
+  formatDiff,
+  migrate,
+  type Agent,
+} from "@mdui/tools";
 import { loadCatalog, loadMap } from "@mdui/catalog";
 import { render } from "@mdui/render";
 import { parseArgs, UsageError, type Args } from "./args.js";
@@ -35,6 +45,7 @@ Commands:
   migrate    v1 → 2.0 (dry run by default; --write applies, --force overrides manual-review items)
   tokens     Design systems: tokens lint|export|diff <DESIGN.md…> (export: --to dtcg|tailwind3|tailwind4|css)
   prompt     Compose an agent prompt from your specs, catalog and tokens (--agent, --catalog, --map, --design, --all)
+  coverage   Which requirements do the specs cover? --requirements <file> (Spec Kit, OpenSpec or Kiro style); exit 1 if any is uncovered or unknown
   rules      List the lint rules (--json for machine output)
   ast        Print the JSON AST of one file
   render     Render one file to HTML (--style sketch|clean|wireframe|none, --state, --theme, --out)
@@ -50,6 +61,7 @@ Options:
   --catalog <path>   prompt/lint: component catalog (YAML)
   --map <path>       prompt: component map (YAML)
   --design <path>    prompt: DESIGN.md design system
+  --requirements <p> coverage: requirements document
   --all              prompt: full language reference, not only what the specs use
   --write            migrate: write the migrated files
   --force            migrate: write even when manual-review items remain
@@ -239,8 +251,30 @@ function runPrompt(io: Io, args: Args): number {
   return EXIT.ok;
 }
 
+function runCoverage(io: Io, args: Args): number {
+  if (args.flags.requirements === undefined)
+    throw new UsageError("coverage needs --requirements <file>");
+  const reqText = io.readFile(posix.resolve(io.cwd, args.flags.requirements));
+  if (reqText === undefined) throw new UsageError(`no such file: ${args.flags.requirements}`);
+  const { files, missing } = expand(io, args.positional);
+  if (missing.length > 0) throw new UsageError(`no such file: ${missing.join(", ")}`);
+  const specs = files.map((path) => ({
+    path,
+    source: io.readFile(posix.resolve(io.cwd, path)) ?? "",
+  }));
+  const requirements = extractRequirements(reqText);
+  if (requirements.length === 0)
+    throw new UsageError(`no requirements found in ${args.flags.requirements}`);
+  const r = coverage(requirements, specs);
+  if (args.flags.json)
+    io.stdout(JSON.stringify({ tool: "mdui", version: 1, command: "coverage", ...r }) + "\n");
+  else io.stdout(formatCoverage(r));
+  return r.uncovered.length > 0 || r.unknown.length > 0 ? EXIT.diagnostics : EXIT.ok;
+}
+
 function run(io: Io, args: Args, cfg: Config): number {
   const cmd = args.command as string;
+  if (cmd === "coverage") return runCoverage(io, args);
   if (cmd === "prompt") return runPrompt(io, args);
   if (cmd === "rules") return listRules(io, args.flags.json);
   if (cmd === "tokens") return runTokens(io, args, cfg);
@@ -449,6 +483,7 @@ const COMMANDS = [
   "migrate",
   "tokens",
   "prompt",
+  "coverage",
 ];
 
 /** CLI entry. Never throws; returns the process exit code. */

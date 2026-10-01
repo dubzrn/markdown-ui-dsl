@@ -174,6 +174,11 @@ const CASES: Record<string, Case> = {
     good: `${H}> @md layout: row\n`,
     code: "W7001",
   },
+  "requirements-format": {
+    bad: `---\ndsl: 2.0\nlang: en\nrequirements: [FR-001, FR-001]\n---\nx\n`,
+    good: `---\ndsl: 2.0\nlang: en\nrequirements: [FR-001, FR-002]\n---\nx\n`,
+    code: "W2801",
+  },
   "document-language": { bad: "---\ndsl: 2.0\n---\nx\n", good: `${H}x\n` },
 };
 

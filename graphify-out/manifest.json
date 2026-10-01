@@ -48,9 +48,9 @@
     "semantic_hash": ""
   },
   "docs/COMPETITIVE_RESEARCH.md": {
-    "mtime": 1790822674.3714235,
-    "seen": 1790824496.0938444,
-    "ast_hash": "5eb0d04686b2229329012a104083190b",
+    "mtime": 1790873362.4847033,
+    "seen": 1790873753.6124218,
+    "ast_hash": "c68146042913211f5280a756458f66fa",
     "semantic_hash": ""
   },
   "docs/FEATURE_ADDITIONS.md": {
@@ -72,9 +72,9 @@
     "semantic_hash": ""
   },
   "docs/TASKS.md": {
-    "mtime": 1790840060.7769122,
-    "seen": 1790840116.7656007,
-    "ast_hash": "4599c6d55666a89fc046c7334ffaa190",
+    "mtime": 1790873747.9826643,
+    "seen": 1790873753.6124291,
+    "ast_hash": "c268f982bb63edafd10a330e8309cde4",
     "semantic_hash": ""
   },
   "examples/action-tracker-detail.ui.md": {
@@ -306,9 +306,9 @@
     "semantic_hash": ""
   },
   "packages/core/src/diagnostics.ts": {
-    "mtime": 1790839528.1575038,
-    "seen": 1790839926.8719475,
-    "ast_hash": "992586c199026a2a6d723e7dc2ce0181",
+    "mtime": 1790873589.9357748,
+    "seen": 1790873753.6122777,
+    "ast_hash": "9e4e56de59a1260d5019934aa3f84489",
     "semantic_hash": ""
   },
   "packages/core/src/index.ts": {
@@ -510,9 +510,9 @@
     "semantic_hash": ""
   },
   "packages/cli/src/args.ts": {
-    "mtime": 1790840021.6977406,
-    "seen": 1790840116.7654119,
-    "ast_hash": "cabe34a10b86ecea874d850e2be7bd82",
+    "mtime": 1790873474.083411,
+    "seen": 1790873753.6122599,
+    "ast_hash": "98237bd6b34984ce0da61762d9648a5d",
     "semantic_hash": ""
   },
   "packages/cli/src/bin.ts": {
@@ -546,9 +546,9 @@
     "semantic_hash": ""
   },
   "packages/cli/src/main.ts": {
-    "mtime": 1790840021.8257406,
-    "seen": 1790840116.7654195,
-    "ast_hash": "4f7894d45ad9368ab3bb0ebdd9db093d",
+    "mtime": 1790873493.033638,
+    "seen": 1790873753.612268,
+    "ast_hash": "19c37cd71f1fd436f86944f855852c4c",
     "semantic_hash": ""
   },
   "packages/cli/test/cli.test.ts": {
@@ -750,9 +750,9 @@
     "semantic_hash": ""
   },
   "packages/lint/src/rules/semantic.ts": {
-    "mtime": 1790837120.673568,
-    "seen": 1790839484.4795895,
-    "ast_hash": "2c948ba524abadbb322cf62726f5094a",
+    "mtime": 1790873589.934422,
+    "seen": 1790873753.6123202,
+    "ast_hash": "62d93ef566e45cbfed2c0d4bb5621216",
     "semantic_hash": ""
   },
   "packages/lint/src/rules/structural.ts": {
@@ -780,9 +780,9 @@
     "semantic_hash": ""
   },
   "packages/lint/test/rules.test.ts": {
-    "mtime": 1790839541.733712,
-    "seen": 1790839926.8720005,
-    "ast_hash": "90587320f7e085b921c5dd1562a41fb7",
+    "mtime": 1790873589.9350736,
+    "seen": 1790873753.6123261,
+    "ast_hash": "84b1de442f5b5d50771e473e99abc59c",
     "semantic_hash": ""
   },
   "packages/lint/test/structural.test.ts": {
@@ -1002,9 +1002,9 @@
     "semantic_hash": ""
   },
   "packages/tools/src/index.ts": {
-    "mtime": 1790839993.3283253,
-    "seen": 1790840116.7655435,
-    "ast_hash": "93f22432a576d79dddad093a1bc81b34",
+    "mtime": 1790873429.7080896,
+    "seen": 1790873753.6123748,
+    "ast_hash": "5d535ef5ced0b9464753345848d50e93",
     "semantic_hash": ""
   },
   "packages/tools/src/migrate.ts": {
@@ -1086,9 +1086,9 @@
     "semantic_hash": ""
   },
   "docs/LINT_RULES.md": {
-    "mtime": 1790840063.789743,
-    "seen": 1790840116.7655964,
-    "ast_hash": "46a5569fd32e4cec7a5e7244b478d3e5",
+    "mtime": 1790873609.3114922,
+    "seen": 1790873753.6124234,
+    "ast_hash": "1e4a4941a8719c30d480ff1057932908",
     "semantic_hash": ""
   },
   "docs/rfcs/0001-dsl-2.0-syntax.md": {
@@ -1218,9 +1218,9 @@
     "semantic_hash": ""
   },
   "docs/adr/ADR-006-skill-structure-and-context-budget.md": {
-    "mtime": 1790839720.1992626,
-    "seen": 1790839926.8721325,
-    "ast_hash": "9b0eab24142690bdb4ec24951f2c6ef0",
+    "mtime": 1790873362.4837155,
+    "seen": 1790873753.612435,
+    "ast_hash": "3321c4e80ed45c0c9542a3fde0271419",
     "semantic_hash": ""
   },
   "skills/markdown-ui-dsl/references/safety.md": {
@@ -1257,6 +1257,60 @@
     "mtime": 1790840051.1617422,
     "seen": 1790840116.7655497,
     "ast_hash": "36a29963367260ca87afb9eae79e49d9",
+    "semantic_hash": ""
+  },
+  "packages/tools/src/coverage.ts": {
+    "mtime": 1790873453.8514829,
+    "seen": 1790873753.6123724,
+    "ast_hash": "5373e398194a2944601cbe47ff37d274",
+    "semantic_hash": ""
+  },
+  "packages/tools/test/coverage.test.ts": {
+    "mtime": 1790873698.4594975,
+    "seen": 1790873753.612378,
+    "ast_hash": "2824bea69c3b3fb931cba51fde8b58ad",
+    "semantic_hash": ""
+  },
+  "docs/SDD_INTEROP.md": {
+    "mtime": 1790873589.936055,
+    "seen": 1790873753.6124256,
+    "ast_hash": "5f516e1cc5fc50125935314593a1e3e3",
+    "semantic_hash": ""
+  },
+  "examples/sdd/kiro/.kiro/specs/login/login.ui.md": {
+    "mtime": 1790873450.5500107,
+    "seen": 1790873753.6124527,
+    "ast_hash": "ed9342fffc9993d1a0ec832fb8aebdd1",
+    "semantic_hash": ""
+  },
+  "examples/sdd/kiro/.kiro/specs/login/requirements.md": {
+    "mtime": 1790873450.5477855,
+    "seen": 1790873753.612454,
+    "ast_hash": "7ec656ee9bb90049d2fb3bf74607e9bc",
+    "semantic_hash": ""
+  },
+  "examples/sdd/openspec/openspec/specs/auth/login.ui.md": {
+    "mtime": 1790873450.5456603,
+    "seen": 1790873753.6124547,
+    "ast_hash": "f4be059e5f1e69e1d94e07e7a08b9f71",
+    "semantic_hash": ""
+  },
+  "examples/sdd/openspec/openspec/specs/auth/spec.md": {
+    "mtime": 1790873450.5435796,
+    "seen": 1790873753.6124554,
+    "ast_hash": "a296cf2cd5c235eb18a08d3cb5355f20",
+    "semantic_hash": ""
+  },
+  "examples/sdd/spec-kit/specs/001-login/login.ui.md": {
+    "mtime": 1790873450.541648,
+    "seen": 1790873753.6124566,
+    "ast_hash": "a26041de0c1172e06dd906d7b2052fc9",
+    "semantic_hash": ""
+  },
+  "examples/sdd/spec-kit/specs/001-login/spec.md": {
+    "mtime": 1790873450.5400589,
+    "seen": 1790873753.6124573,
+    "ast_hash": "5abcbaa91e2b0963df6a3b3e61ed2b9f",
     "semantic_hash": ""
   }
 }
