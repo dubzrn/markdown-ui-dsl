@@ -3,8 +3,8 @@
 | | |
 |---|---|
 | **Status** | Draft for maintainer sign-off · prepared 2026-10-01 |
-| **Implements** | [`FEATURE_ADDITIONS.md`](FEATURE_ADDITIONS.md) (47 features) per [`SPEC.md`](SPEC.md) |
-| **Work items** | [`TASKS.md`](TASKS.md) — 83 tasks, 7 phases · **rev. 2** (source-verification pass: +3 tasks, −1, 14 amended; spike SP-4 added) |
+| **Implements** | [`FEATURE_ADDITIONS.md`](FEATURE_ADDITIONS.md) (48 features) per [`SPEC.md`](SPEC.md) |
+| **Work items** | [`TASKS.md`](TASKS.md) — 84 tasks, 7 phases · **rev. 3** (reference library: +T-006, `reference/` paths on 43 tasks, new §14; rev. 2: source-verification pass) |
 | **Method** | Planning & task breakdown: read-only analysis → dependency graph → vertical slices → small verifiable tasks → checkpoints between phases |
 
 ---
@@ -17,7 +17,8 @@
 4. **Small tasks.** `S`/`M` preferred; every `L` is split at the start of its phase (TASKS gives the split). Each task has *Done when* and *Verify*, so an agent or human can pick one up cold.
 5. **Checkpoints between phases** with measurable gates (§7). No phase starts on a red checkpoint.
 6. **Compatibility is a gate, not a hope.** The v1 compatibility test (T-024) is release-blocking from Phase 1 onward.
-7. **Scope is locked; schedule flexes.** If capacity falls short, slip the release train (§8), do not silently drop features — use FEATURE_ADDITIONS §8 change control.
+7. **Lift before you build.** Before writing any non-trivial module, search `reference/` (§14): 32 pinned upstream repos hold working parsers, validators, streaming engines, SVG renderers, ARIA-tree code, grammar tools, conformance suites and eval harnesses. Lift through `scripts/reference.sh lift` (licence-checked, provenance-logged) and **improve** what you take.
+8. **Scope is locked; schedule flexes.** If capacity falls short, slip the release train (§8), do not silently drop features — use FEATURE_ADDITIONS §8 change control.
 
 ---
 
@@ -88,10 +89,10 @@ Selected cross-phase edges that are easy to miss:
 
 Each phase lists its **slice**, tasks, parallel streams, checkpoint and release. Sizes and acceptance criteria are in TASKS.md.
 
-### Phase 0 — Foundations & hygiene  *(≈ 7 days)*
+### Phase 0 — Foundations & hygiene  *(≈ 8 days)*
 - **Slice:** green CI; repository defects fixed and guarded.
-- **Tasks:** T-001 fix examples/docs · T-002 monorepo + ADRs · T-003 CI · T-004 governance docs · T-005 traceability checker.
-- **Order:** T-001, T-002, T-004 in parallel → T-003, T-005.
+- **Tasks:** T-001 fix examples/docs · T-002 monorepo + ADRs · T-003 CI · T-004 governance docs · T-005 traceability checker · **T-006 reference-library hygiene and CI guards (new)**.
+- **Order:** T-001, T-002, T-004 in parallel → T-003, T-005 → T-006.
 - **Why first:** B-01 shows the reference examples (the agent's few-shot material) are currently broken; fixing them is the highest value-per-hour change in the whole plan and needs no toolchain.
 
 ### Phase 1 — Language core  *(≈ 59 days; contains the spine)*
@@ -232,6 +233,9 @@ A phase is *done* only when every box is checked. Metrics are the **proposed tar
 | R13 | Token benchmark shows mdui materially costlier | M | M | SP-4 early; compact-profile RFC; keep P1; publish honestly | SP-4 gap beyond a threshold set at SP-4 |
 | R14 | Upstream churn/ownership: A2UI v1.0 "candidate", promptfoo→OpenAI, Storybook MCP moved, AI SDK RSC paused [S113][S136][S130][S50] | M | M | Pin to commits; adapter boundaries; tool-agnostic harness | Upstream release breaks goldens or archives a dependency |
 | R15 | Prior-art narrowing of novel claims (round-trip engineering, Design2Code, Express.g4, Kiro) [S148][S144][S114][S137] | M | L | Claims re-scoped in FEATURE_ADDITIONS §5; each ships a falsifiable metric; re-check at GA | A competitor documents an equivalent |
+| R16 | Licence contamination from lifted code (MPL/unknown licences; Wiremark and ASCIIwire have **no licence file**) | M | H | `reference.sh lift` refuses unknown/copyleft without sign-off; provenance log; study-only rule for unlicensed repos | A lift without a notices entry; a CI guard failure |
+| R17 | Reference pins go stale / repos get archived (Storybook MCP already moved) | M | L | Pin refresh at the §13 cadence; manifest check in CI | `reference-manifest.py --check` warns |
+| R18 | Over-reliance on upstream shapes (cargo-culting) causes AST/API drift from our SPEC | M | M | "Improve, don't just copy" rule; PR must state the improvement; conformance suite is the arbiter | Lifted code needs shims to fit SPEC |
 
 ---
 
@@ -241,19 +245,19 @@ A phase is *done* only when every box is checked. Metrics are the **proposed tar
 
 | Phase | Tasks | `S` | `M` | `L` | Dev-days |
 |---|:-:|:-:|:-:|:-:|:-:|
-| 0 Foundations | 5 | 4 | 1 | 0 | 7 |
+| 0 Foundations | 6 | 5 | 1 | 0 | 8 |
 | 1 Language core | 19 | 4 | 10 | 5 | 59 |
 | 2 Tooling & tokens | 13 | 3 | 8 | 2 | 37 |
 | 3 Agent / evals / grammar | 14 | 1 | 10 | 3 | 46 |
 | 4 Sync · Oracle · Constraints | 14 | 4 | 4 | 6 | 46 |
 | 5 Interop · embedding · benchmark · docs · GA | 7 | 0 | 4 | 3 | 27 |
-| **GA scope (0–5)** | **72** | | | | **222** (+ ≈ 8 spikes = **≈ 230**) |
+| **GA scope (0–5)** | **73** | | | | **223** (+ ≈ 8 spikes = **≈ 231**) |
 | 6 2.1 ecosystem | 11 | 1 | 4 | 6 | 43 |
-| **Total** | **83** | 17 | 41 | 25 | **265** |
+| **Total** | **84** | 18 | 41 | 25 | **266** |
 
 | Scenario | Calendar to GA (illustrative) |
 |---|---|
-| One developer, sequential | ≈ 46 weeks (230 ÷ 5) |
+| One developer, sequential | ≈ 46 weeks (231 ÷ 5) — *before* any saving from lifting reference code, which is deliberately not assumed until measured |
 | Two parallel streams (e.g. maintainer + agents on independent tasks), ~75–85% efficiency | ≈ 27–31 weeks |
 | Three streams, ~65–75% efficiency | ≈ 20–24 weeks |
 | Theoretical floor (critical path only) | ≈ 10 weeks (48 days) — not achievable in practice |
@@ -278,13 +282,14 @@ Efficiency factors are assumptions, not measurements; the credible number comes 
 
 ## 11. Definition of ready (per task, before starting)
 
-1. All `Deps` merged. 2. `REQ-*` text read. 3. For `L`: split into ≤ `M` sub-tasks recorded on the issue. 4. Verification layer identified (SPEC §6). 5. Boundaries (SPEC §7) re-read if the task touches I/O, paths, or network. 6. Any "Ask first" item raised and answered.
+1. All `Deps` merged. 2. `REQ-*` text read. 2b. **The task's *Reference* paths (and `scripts/reference.sh find <concept>`) searched; lift candidates and their licences noted on the issue.** 3. For `L`: split into ≤ `M` sub-tasks recorded on the issue. 4. Verification layer identified (SPEC §6). 5. Boundaries (SPEC §7) re-read if the task touches I/O, paths, or network. 6. Any "Ask first" item raised and answered.
 
 ## 12. Immediate next actions
 
 1. Maintainer reviews this document set; answers the **six** open questions in SPEC §0 (new: upstream vs. fork).
 2. Start **Phase 0**: T-001 (fix the broken examples) can begin immediately and needs no tooling.
 3. In parallel, start T-010 (v1 grammar) and spike SP-2; both are independent of the scaffold.
+4. Initialise the reference library you need (`scripts/reference.sh init <group>`) and keep §14 open while planning each task.
 
 ## 13. Competitive-intelligence cadence
 
@@ -297,3 +302,115 @@ The rev. 2 verification pass showed how fast the field moves (A2UI went to v1.0 
 | On a rival shipping a covered capability | RFC to re-scope or re-justify the affected feature (FEATURE_ADDITIONS §8) | RFC |
 
 **Rule:** no competitive claim leaves the repository (README, announcement, comparison page) unless its sources are `V`/`V≈` and re-checked within the same minor release.
+
+## 14. Reference library — `reference/` (lift, don't re-invent)
+
+**32 upstream repositories are vendored as pinned, shallow git submodules** under `reference/` so every task can start from working, field-tested code. Mechanics, licence rules and the generated manifest (pins, dates, licences, sizes) live in [`reference/README.md`](../reference/README.md); tooling is `scripts/reference.sh` and `scripts/reference-manifest.py`; every lift is logged in [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md) (feature QLT-06, task T-006).
+
+**Protocol — find → licence-check → lift → improve → log.** A lift is complete only when the PR names a concrete improvement over upstream (tests/conformance fixtures, strict types and spans, diagnostics instead of exceptions, safety, accessibility, measured performance, determinism). Repos **without a LICENSE file** — Wiremark and ASCIIwire (MIT *declared* in `package.json`/README only) and Kiro (nothing) — are **study-only** until a licence is confirmed; **axe-core is MPL-2.0** (file-level copyleft → read, mirror semantics, re-implement; lifting needs sign-off); DTCG reports are under the W3C Software and Document License (tests under W3C 3-clause BSD).
+
+```bash
+git clone --recurse-submodules --shallow-submodules https://github.com/dubzrn/markdown-ui-dsl.git   # everything (~1.3 GB)
+scripts/reference.sh init verification        # or only what you need: dsl | protocols | tokens | sdd | verification
+scripts/reference.sh find 'accessible.?name'  # search all reference code before writing anything
+scripts/reference.sh lift reference/verification/playwright/packages/injected/src/roleUtils.ts packages/oracle/src/role-utils.ts
+```
+
+### 14.1 Paths by group
+
+**Markdown/text-native UI DSLs and renderers** (`reference/dsl/`)
+
+| Path | Upstream | Lift / study first | Tasks |
+|---|---|---|---|
+| `reference/dsl/markdoc` | [markdoc/markdoc](https://github.com/markdoc/markdoc) | src/tokenizer + src/parser.ts (block/inline tokenising patterns)<br>src/formatter.ts (canonical formatter)<br>src/schema.ts + validator (typed schema, severity model)<br>src/ast, src/transformer.ts (AST→output pipeline) | T-015, T-016, T-019, T-030, T-034 |
+| `reference/dsl/mdocui` | [mdocui/mdocui](https://github.com/mdocui/mdocui) | packages/core (streaming tokenizer/parser, component registry, generatePrompt)<br>packages/react (renderer + error boundaries)<br>packages/cli<br>SKILL.md (agent-skill example) | T-042, T-050, T-054, T-053, T-105 |
+| `reference/dsl/wiremd` | [akonan/wiremd](https://github.com/akonan/wiremd) | src/parser (Markdown→AST) and tests/<br>src/renderer (7 visual styles; sketch/clean/wireframe)<br>src/cli + bin (watch/live-reload)<br>vscode-extension/, figma-plugin/, skills/ | T-015, T-016, T-027, T-040, T-041, T-100, T-102 |
+| `reference/dsl/wiremark` | [Blackburn-Labs/wiremark](https://github.com/Blackburn-Labs/wiremark) | packages/core (parser, layout engine, SVG renderer)<br>packages/cli<br>host adapters pattern (remark/markdown-it/Obsidian) — see docs/<br>AGENTS.md (agent guidance) | T-094, T-111, T-025, T-053 |
+| `reference/dsl/wireloom` | [StardockCorp/Wireloom](https://github.com/StardockCorp/Wireloom) | src/parser + src/renderer (SVG, zero-dep)<br>INTEGRATION.md (embedding guide)<br>AGENTS.md + skill file (agent packaging)<br>test/ (fixture style) | T-094, T-053, T-004 |
+| `reference/dsl/asciiwire` | [iwabuchi404/ASCIIwire](https://github.com/iwabuchi404/ASCIIwire) | packages/core (ASCII layout renderer)<br>packages/cli<br>packages/vscode<br>README mentions an MCP server — locate before relying on it | T-062, T-100 |
+| `reference/dsl/markdown-ui` | [BlueprintLabIO/markdown-ui](https://github.com/BlueprintLabIO/markdown-ui) | packages/@markdown-ui (mdui-lang parser, marked extension)<br>chart/slider/quiz widget renderers<br>demo-page/ | T-021, T-094 |
+| `reference/dsl/openui` | [thesysdev/openui](https://github.com/thesysdev/openui) | packages/lang-core (language core/parser)<br>packages/react-lang, vue-lang, svelte-lang, angular-lang<br>packages/a2ui (A2UI bridge)<br>benchmarks/ (token-count methodology — template for TLS-12)<br>packages/devtools, openui-cli | T-042, T-095, T-090, T-105, SP-4 |
+| `reference/dsl/mdx` | [mdx-js/mdx](https://github.com/mdx-js/mdx) | packages/remark-mdx (remark plugin patterns)<br>packages/loader, rollup, esbuild (bundler integration)<br>docs/ (embedding conventions) | T-094 |
+
+**Agent-to-UI protocols and generative-UI frameworks** (`reference/protocols/`)
+
+| Path | Upstream | Lift / study first | Tasks |
+|---|---|---|---|
+| `reference/protocols/a2ui` | [google/A2UI](https://github.com/google/A2UI) | specification/v1_0 (message set, JSON Schemas) → exporter target<br>specification/inference_formats/express/Express.g4 (compact UI DSL grammar)<br>conformance/ (language-neutral conformance suite design → QLT-01)<br>eval/ (a2ui_eval, datasets, baselines → QLT-02 harness design)<br>catalogs/, renderers/, samples/, typescript/ | T-090, T-058, T-013, T-083, T-063, T-095, T-105 |
+| `reference/protocols/genui` | [flutter/genui](https://github.com/flutter/genui) | packages/genui (catalog items, surface controller)<br>packages/genui_a2a (A2UI connector)<br>packages/json_schema_builder (validation) | T-050, T-090, T-106 |
+| `reference/protocols/json-render` | [vercel-labs/json-render](https://github.com/vercel-labs/json-render) | packages/core (catalog, spec, SpecStream compiler, prompt())<br>packages/codegen, packages/mcp, packages/directives<br>packages/devtools* (inspector UX)<br>skills/ and AGENTS.md (agent packaging) | T-042, T-050, T-054, T-062, T-091, T-105 |
+| `reference/protocols/ext-apps` | [modelcontextprotocol/ext-apps](https://github.com/modelcontextprotocol/ext-apps) | specification/2026-01-26/apps.mdx (normative text)<br>src/app-bridge.ts, src/app.ts (host/app protocol)<br>docs/ and examples/ (sandbox proxy pattern) | T-105, T-055 |
+| `reference/protocols/mcp-ui` | [idosal/mcp-ui](https://github.com/idosal/mcp-ui) | sdks/ (server/client patterns, three languages)<br>docs/<br>examples/ | T-062, T-105 |
+| `reference/protocols/remote-dom` | [Shopify/remote-dom](https://github.com/Shopify/remote-dom) | packages/core (RemoteElement, mutation sync)<br>packages/polyfill (minimal DOM for workers)<br>packages/react, preact, signals | T-105 |
+| `reference/protocols/ag-ui` | [ag-ui-protocol/ag-ui](https://github.com/ag-ui-protocol/ag-ui) | docs/ (event + state concepts)<br>integrations/ and middlewares/ (adapter patterns)<br>apps/ (dojo examples) | T-105 |
+| `reference/protocols/tambo` | [tambo-ai/tambo](https://github.com/tambo-ai/tambo) | packages/react-ui-base, ui-registry (component registry patterns)<br>packages/core, client (streaming props)<br>devdocs/ and AGENTS.md | T-050, T-105 |
+| `reference/protocols/hashbrown` | [liveloveapp/hashbrown](https://github.com/liveloveapp/hashbrown) | packages/core (Skillet schemas, streaming JSON parser)<br>packages/react, angular (UI kits)<br>provider adapters (anthropic, openai, google, ollama) | T-042, T-050 |
+
+**Design tokens and design↔code mapping** (`reference/tokens/`)
+
+| Path | Upstream | Lift / study first | Tasks |
+|---|---|---|---|
+| `reference/tokens/design-md` | [google-labs-code/design.md](https://github.com/google-labs-code/design.md) | packages/cli (lint rules, diff, export implementations)<br>docs/spec.md (normative token/section spec)<br>examples/ | T-037, T-038, T-039, T-035 |
+| `reference/tokens/dtcg` | [design-tokens/community-group](https://github.com/design-tokens/community-group) | schemas/ (JSON Schemas for validation)<br>test-suite/ (conformance model → QLT-01)<br>technical-reports/ (format, color, resolver) | T-038, T-083 |
+| `reference/tokens/style-dictionary` | [style-dictionary/style-dictionary](https://github.com/style-dictionary/style-dictionary) | lib/ (transforms, formats, resolution)<br>__tests__/ (golden-style tests)<br>docs/ | T-038 |
+| `reference/tokens/code-connect` | [figma/code-connect](https://github.com/figma/code-connect) | cli/ and react/ (mapping extraction)<br>compose/, swiftui/ (non-web mappings)<br>docs/ | T-052 |
+
+**Spec-driven development and agent-instruction standards** (`reference/sdd/`)
+
+| Path | Upstream | Lift / study first | Tasks |
+|---|---|---|---|
+| `reference/sdd/spec-kit` | [github/spec-kit](https://github.com/github/spec-kit) | templates/ (constitution/checklist templates) and templates/commands (specify/plan/tasks prompts)<br>spec-driven.md (method write-up)<br>extensions/, bundles/, presets/, integrations/ (packaging per agent)<br>src/specify_cli | T-056, T-004 |
+| `reference/sdd/openspec` | [Fission-AI/OpenSpec](https://github.com/Fission-AI/OpenSpec) | src/core (delta parsing/merging)<br>src/commands, src/cli<br>openspec/ (the project's own specs — dogfood example) | T-035, T-056 |
+| `reference/sdd/kiro` | [kirodotdev/Kiro](https://github.com/kirodotdev/Kiro) | docs/ (spec, steering, hooks conventions)<br>specs/ and .kiro/ (example specs) | T-056 |
+| `reference/sdd/agentskills` | [agentskills/agentskills](https://github.com/agentskills/agentskills) | skills-ref/ (validator implementation → scripts/ in our skill)<br>docs/specification.mdx (limits: ≤500 lines, name ≤64, description ≤1,024) | T-053, T-004 |
+| `reference/sdd/agents-md` | [agentsmd/agents.md](https://github.com/agentsmd/agents.md) | README.md and AGENTS.md (format by example) | T-004, T-053 |
+
+**Verification, constrained decoding and evaluation** (`reference/verification/`)
+
+| Path | Upstream | Lift / study first | Tasks |
+|---|---|---|---|
+| `reference/verification/llguidance` | [guidance-ai/llguidance](https://github.com/guidance-ai/llguidance) | docs/ (grammar syntax — target for our Lark emitter)<br>parser/ (earley/lexer design)<br>json_schema_test_suite/ (test approach)<br>python/ (bindings for the T-060 engine smoke test) | T-058, T-059, T-060, T-061 |
+| `reference/verification/xgrammar` | [mlc-ai/xgrammar](https://github.com/mlc-ai/xgrammar) | docs/ (EBNF dialect)<br>python/ + examples/ (integration for T-060 smoke tests)<br>cpp/ (pushdown-automaton reference) | T-060, T-061 |
+| `reference/verification/axe-core` | [dequelabs/axe-core](https://github.com/dequelabs/axe-core) | lib/rules + lib/checks (rule/check definitions to mirror in our lint)<br>lib/commons (accessible-name, role, target-size helpers)<br>locales/ (message conventions) | T-032, T-077, T-080 |
+| `reference/verification/playwright` | [microsoft/playwright](https://github.com/microsoft/playwright) | packages/injected/src/ariaSnapshot.ts (accessibility-tree generation + template matching)<br>packages/injected/src/roleUtils.ts (role + accessible-name computation — core of the Oracle's expectations)<br>packages/isomorphic/ariaSnapshot.ts + packages/isomorphic/ariaSnapshotRenderer.ts (template parse/render)<br>docs/src/aria-snapshots.md (semantics: order-sensitive, partial matching) | T-076, T-077, T-080 |
+| `reference/verification/promptfoo` | [promptfoo/promptfoo](https://github.com/promptfoo/promptfoo) | src/assertions (assertion types: is-json, javascript, similar, llm-rubric)<br>src/providers (provider adapter patterns)<br>code-scan-action/ and CI examples | T-063 |
+
+### 14.2 Consult-first paths by phase / task
+
+Each task in [`TASKS.md`](TASKS.md) also carries its own *Reference* line.
+
+| Phase | Task → reference paths |
+|---|---|
+| Phase 0 — Foundations | **T-004** → `reference/dsl/wireloom`, `reference/sdd/spec-kit`, `reference/sdd/agentskills`, `reference/sdd/agents-md`<br>**T-006** → `scripts/reference.sh`, `scripts/reference-manifest.py` |
+| Phase 1 — Language core | **T-013** → `reference/protocols/a2ui`<br>**T-015** → `reference/dsl/markdoc`, `reference/dsl/wiremd`<br>**T-016** → `reference/dsl/markdoc`, `reference/dsl/wiremd`<br>**T-019** → `reference/dsl/markdoc`<br>**T-021** → `reference/dsl/markdown-ui`<br>**T-025** → `reference/dsl/wiremark`<br>**T-027** → `reference/dsl/wiremd` |
+| Phase 2 — Tooling & design system | **T-030** → `reference/dsl/markdoc`<br>**T-032** → `reference/verification/axe-core`<br>**T-034** → `reference/dsl/markdoc`<br>**T-035** → `reference/tokens/design-md`, `reference/sdd/openspec`<br>**T-037** → `reference/tokens/design-md`<br>**T-038** → `reference/tokens/design-md`, `reference/tokens/dtcg`, `reference/tokens/style-dictionary`<br>**T-039** → `reference/tokens/design-md`<br>**T-040** → `reference/dsl/wiremd`<br>**T-041** → `reference/dsl/wiremd`<br>**T-042** → `reference/dsl/mdocui`, `reference/dsl/openui`, `reference/protocols/json-render`, `reference/protocols/hashbrown` |
+| Phase 3 — Agent integration, evals, grammar pack | **T-050** → `reference/dsl/mdocui`, `reference/protocols/genui`, `reference/protocols/json-render`, `reference/protocols/tambo`, `reference/protocols/hashbrown`<br>**T-052** → `reference/tokens/code-connect`<br>**T-053** → `reference/dsl/mdocui`, `reference/dsl/wiremark`, `reference/dsl/wireloom`, `reference/sdd/agentskills`, `reference/sdd/agents-md`<br>**T-054** → `reference/dsl/mdocui`, `reference/protocols/json-render`<br>**T-055** → `reference/protocols/ext-apps`<br>**T-056** → `reference/sdd/spec-kit`, `reference/sdd/openspec`, `reference/sdd/kiro`<br>**T-058** → `reference/protocols/a2ui`, `reference/verification/llguidance`<br>**T-059** → `reference/verification/llguidance`<br>**T-060** → `reference/verification/llguidance`, `reference/verification/xgrammar`<br>**T-061** → `reference/verification/llguidance`, `reference/verification/xgrammar`<br>**T-062** → `reference/dsl/asciiwire`, `reference/protocols/json-render`, `reference/protocols/mcp-ui`<br>**T-063** → `reference/protocols/a2ui`, `reference/verification/promptfoo` |
+| Phase 4 — Sync · Oracle · Constraints | **T-076** → `reference/verification/playwright`<br>**T-077** → `reference/verification/axe-core`, `reference/verification/playwright`<br>**T-080** → `reference/verification/axe-core`, `reference/verification/playwright`<br>**T-083** → `reference/protocols/a2ui`, `reference/tokens/dtcg` |
+| Phase 5 — Interop · embedding · benchmark · docs · GA | **T-090** → `reference/dsl/openui`, `reference/protocols/a2ui`, `reference/protocols/genui`<br>**T-091** → `reference/protocols/json-render`<br>**T-094** → `reference/dsl/wiremark`, `reference/dsl/wireloom`, `reference/dsl/markdown-ui`, `reference/dsl/mdx`<br>**T-095** → `reference/dsl/openui`, `reference/protocols/a2ui` |
+| Phase 6 — 2.1 ecosystem | **T-100** → `reference/dsl/wiremd`, `reference/dsl/asciiwire`<br>**T-102** → `reference/dsl/wiremd`<br>**T-105** → `reference/dsl/mdocui`, `reference/dsl/openui`, `reference/protocols/a2ui`, `reference/protocols/json-render`, `reference/protocols/ext-apps`, `reference/protocols/mcp-ui`, `reference/protocols/remote-dom`, `reference/protocols/ag-ui`, `reference/protocols/tambo`<br>**T-106** → `reference/protocols/genui`<br>**T-111** → `reference/dsl/wiremark` |
+| Spikes | **SP-4** → `reference/dsl/openui` |
+
+### 14.3 Highest-leverage lifts (where reference code removes the most work)
+
+| Need | Best starting point | Why | Task |
+|---|---|---|---|
+| Accessible role/name computation + ARIA tree + template matching (Oracle core) | `reference/verification/playwright/packages/injected/src/{roleUtils,ariaSnapshot,ariaSnapshotDistiller}.ts`, `packages/isomorphic/ariaSnapshot*.ts` | Production-grade, Apache-2.0; saves re-deriving the accessible-name algorithm; note its matcher is order-sensitive (we add our own) | T-076, T-077 |
+| Language-neutral conformance suite + eval harness design | `reference/protocols/a2ui/conformance/`, `reference/protocols/a2ui/eval/`, `reference/tokens/dtcg/test-suite/` | Same problem already solved for a sibling spec; copy the fixture schema and runner protocol | T-013, T-063, T-083 |
+| Streaming parser | `reference/dsl/mdocui/packages/core`, `reference/protocols/json-render/packages/core` (SpecStream), `reference/protocols/hashbrown/packages/core`, `reference/dsl/openui/packages/lang-core` | Four independent streaming designs to compare; take the best tests | T-042 |
+| Markdown tokenizer/parser/formatter patterns, schema validation | `reference/dsl/markdoc/src/{tokenizer,parser.ts,formatter.ts,schema.ts}` | Mature AST pipeline and formatter (MIT) | T-015–T-019, T-034 |
+| SVG wireframe renderer, zero-dep, GitHub-visible | `reference/dsl/wireloom/src/renderer`, `reference/dsl/wiremark/packages/core` | Shortest path to TLS-13 (Wiremark unlicensed → study only) | T-094, T-111 |
+| Wireframe HTML styles, CLI watch, editor extension | `reference/dsl/wiremd/src/{renderer,cli}`, `vscode-extension/` | Seven styles and live reload already built (MIT) | T-040, T-041, T-100 |
+| A2UI v1.0 schemas, Express grammar, token benchmark method | `reference/protocols/a2ui/specification/`, `reference/dsl/openui/benchmarks/` | Exporter target + the baseline we must beat/measure | T-090, T-095, SP-4 |
+| DESIGN.md lint/diff/export and DTCG validation | `reference/tokens/design-md/packages/cli`, `reference/tokens/dtcg/schemas` | Ready-made rules and schemas (Apache-2.0 / check DTCG licence file) | T-037–T-039 |
+| Constrained-decoding grammar dialects | `reference/verification/llguidance/docs`, `reference/verification/xgrammar/docs` | Exact syntax our Lark/GBNF emitters must target | T-058–T-060 |
+| Agent-skill validator | `reference/sdd/agentskills/skills-ref` | Becomes our `scripts/` validator for T-053 | T-053 |
+| Accessibility rule definitions | `reference/verification/axe-core/lib/{rules,checks,commons}` | Mirror rule semantics (target-size exceptions etc.) in our lint | T-032, T-080 |
+
+### 14.4 Not vendored (and where to look instead)
+
+- **microsoft/AdaptiveCards** — Large multi-platform repo; only templating/schema ideas needed — consult docs/README via URL; add with sparse checkout if schema lifting is required.
+- **penpot/penpot** — Very large (Clojure/CLJS); MPL-2.0 copyleft. MCP/design-token behaviour is documented externally.
+- **storybookjs/storybook** — Very large monorepo; only docs/ai/manifests are relevant (standalone MCP repo is archived). Add sparse if needed.
+- **mermaid-js/mermaid** — Large; only the fence-rendering integration pattern matters — see dsl/mdx and dsl/wiremark adapters.
+- **BuilderIO/mitosis** — Large; codegen idea only (T-094+ not planned).
+- **Non-GitHub / closed systems** — PlantUML Salt (plantuml.com — captured as PDF in the research task), Balsamiq, Figma/Stitch/Claude Design, OpenAI ChatKit/Apps SDK: no source repository to vendor.

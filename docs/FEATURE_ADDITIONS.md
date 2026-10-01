@@ -2,11 +2,11 @@
 
 | | |
 |---|---|
-| **Status** | 🔒 **LOCKED — scope baseline v1.1** (rev. 2, 2026-10-01: +1 feature, 1 promoted, 6 amended after source verification — see [§10](#10-change-log-rev-2)). Changes only through the [change-control process](#8-change-control). |
+| **Status** | 🔒 **LOCKED — scope baseline v1.2** (rev. 3, 2026-10-01: +QLT-06 reference library; rev. 2: +1 feature, 1 promoted, 6 amended after source verification — see [§10](#10-change-log-rev-2)). Changes only through the [change-control process](#8-change-control). |
 | **Derived from** | [`COMPETITIVE_RESEARCH.md`](COMPETITIVE_RESEARCH.md) rev. 2 (every feature cites its gap `G#` and sources `S##` there; source status codes V/V≈/C/U are defined in its §2.4) |
 | **Implemented by** | [`SPEC.md`](SPEC.md) → [`PLAN.md`](PLAN.md) → [`TASKS.md`](TASKS.md) |
 | **Baseline** | `markdown-ui-dsl` v1.0.3 · **Target** DSL `2.0` + toolchain `@mdui/*` 2.0 |
-| **Totals** | **47 features** — 13 Language · 13 Tooling · 6 Design-system · 6 Agent · 5 Quality · **4 Novel** |
+| **Totals** | **48 features** — 13 Language · 13 Tooling · 6 Design-system · 6 Agent · 6 Quality · **4 Novel** |
 
 ---
 
@@ -107,6 +107,7 @@
 | **QLT-03** | **Accessibility semantics & lint.** `label`, `alt`, `role`, `live`, landmark roles from HEADER/FOOTER, heading-order, link-text, target-size annotations; WCAG 2.2 mapping table. | M | β | G9; [S95][S105][S107] |
 | **QLT-04** | **Repository hygiene.** Fix B-01 (4 unbalanced examples), B-02 (dead references), B-06 (prose abuse in example), duplicate README numbering; add CI that lints all examples. | M | α | B-01, B-02, B-06 |
 | **QLT-05** | **Governance & docs.** RFC process, CHANGELOG, CONTRIBUTING, versioning policy, docs site with in-browser playground. | S | GA | G1 |
+| **QLT-06** | **Reference library & provenance (rev. 3).** `reference/` holds 32 pinned, shallow upstream repos as submodules (A2UI, json-render, Markdoc, wiremd, Wiremark, Wireloom, OpenUI, DESIGN.md, DTCG, llguidance, XGrammar, axe-core, Playwright ARIA engine, …); `scripts/reference.sh` searches, checks licences and **lifts** code with automatic provenance logging in `THIRD_PARTY_NOTICES.md`; a generated manifest maps every repo to what to lift and which tasks use it; CI keeps `reference/` out of builds/lint and `packages/` free of imports from it. Rule: **find → licence-check → lift → improve → log** ([`reference/README.md`](../reference/README.md)). | M | α | efficiency; B-07; reuse of verified prior art [S20][S38][S06][S01][S132] |
 
 ---
 
@@ -333,3 +334,10 @@ Driven by the verification pass in [`COMPETITIVE_RESEARCH.md` §2.4](COMPETITIVE
 | Salt: breadth of widgets and screens-in-flow [S12] | LNG-04 additions; flow-diagram render (2.1); real token theming where Salt's is partial |
 | Claude Design / Superdesign / Onlook: agent-native design→code loops [S146][S147][S157] | Vendor-neutral, diffable spec + verification (NOV-01/02) — the part a closed canvas does not provide |
 | Tooling churn: promptfoo → OpenAI; Storybook MCP moved; AI SDK RSC paused [S136][S130][S50] | Tool-agnostic harness; adapters behind pinned interfaces; no dependency on archived packages |
+
+### Rev. 3 (reference library)
+
+| Change | Type | Evidence |
+|---|---|---|
+| **QLT-06** Reference library & provenance | **Added** (Must, α) | Owner request to avoid re-creating existing code; 32 verified upstream repos on disk; A2UI ships a conformance suite and eval harness, Playwright ships the ARIA engine, json-render/OpenUI/mdocUI ship streaming parsers [S20][S132][S38][S115][S06] |
+| Effect on estimates | Plan | Lifting is expected to cut build effort for T-015/T-042/T-063/T-076/T-077/T-090 — **not yet quantified**; T-044-style measurement of actual lift savings is recorded in PR descriptions ("improvement made") and reviewed at checkpoints |

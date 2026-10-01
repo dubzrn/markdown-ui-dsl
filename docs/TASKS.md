@@ -4,8 +4,8 @@
 |---|---|
 | **Status** | Ready for sprint planning · prepared 2026-10-01 |
 | **Inputs** | [`FEATURE_ADDITIONS.md`](FEATURE_ADDITIONS.md) (scope) · [`SPEC.md`](SPEC.md) (requirements `REQ-*`) · [`PLAN.md`](PLAN.md) (order, phases, checkpoints) |
-| **Tasks** | 83 across 7 phases (0–6) · rev. 2 of 2026-10-01 (adds T-094, T-095, T-111; removes T-109 — folded into T-095; amends 14 others) · IDs are sparse by design (a range per phase); gaps are not missing tasks |
-| **Traceability** | Every feature ID (47) and every `REQ-*` appears below; `scripts/check-traceability.ts` (T-005) enforces it in CI |
+| **Tasks** | 84 across 7 phases (0–6) · rev. 3 of 2026-10-01 (rev. 2: +T-094, T-095, T-111, −T-109, 14 amended; rev. 3: +T-006 and per-task `reference/` paths on 43 tasks) · IDs are sparse by design (a range per phase); gaps are not missing tasks |
+| **Traceability** | Every feature ID (48) and every `REQ-*` appears below; `scripts/check-traceability.ts` (T-005) enforces it in CI |
 
 ---
 
@@ -21,6 +21,7 @@
 3. Public API/CLI/diagnostic changes documented; a Changeset exists.
 4. No new runtime dependency in `@mdui/core`/`@mdui/spec` without sign-off (SPEC §7).
 5. Traceability fields (`Implements`, `REQ`) are correct.
+6. **Reference first:** the *Reference* line of the task (paths under `reference/`) was consulted; anything lifted went through `scripts/reference.sh lift`, and the PR states what was **improved over upstream**.
 
 **Fields:** `Size` · `Deps` (must be done first) · `Implements` (feature IDs) · `REQ` (SPEC §8) · **Do** · **Done when** · **Verify**.
 
@@ -54,6 +55,7 @@
 - **Do:** `CONTRIBUTING.md`, RFC process + `docs/rfcs/0000-template.md`, `CHANGELOG.md`, versioning policy (toolchain semver; DSL version = `dsl:` key), contributor `AGENTS.md` (commands, boundaries from SPEC §7), update `.github/ISSUE_TEMPLATE/feature_request.md` to point at the RFC process.
 - **Done when:** a new contributor can find commands, boundaries and RFC process from `README` in ≤ 2 clicks; template renders.
 - **Verify:** maintainer review; link check.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/wireloom`, `reference/sdd/spec-kit`, `reference/sdd/agentskills`, `reference/sdd/agents-md`
 
 ### T-005 · Traceability checker
 `S` · Deps: T-002 · Implements: *(governance)* · REQ: —
@@ -65,6 +67,13 @@
 
 ## Phase 1 — Language core
 *Goal: a published grammar, a conformant parser and AST, and a CLI that validates specs. Slice delivered: `mdui validate|lint|ast` on v1 and v2 specs with a conformance suite.*
+
+### T-006 · Reference-library hygiene and CI guards
+`S` · Deps: T-002, T-003 · Implements: **QLT-06** · REQ: REQ-QLT-06
+- **Do:** exclude `reference/**` from ESLint, Prettier, Vitest, `tsc` project references, coverage, knip/dependency checks, Changesets and the traceability script; CI job `reference-check` running `python3 scripts/reference-manifest.py --check`, a guard that fails if `packages/**` imports from `reference/**`, a check that every `THIRD_PARTY_NOTICES.md` destination exists, and `git submodule status` shows no unintended pin changes; document `git clone --recurse-submodules --shallow-submodules` and the `scripts/reference.sh init <group>` flow in `CONTRIBUTING.md`.
+- **Done when:** the guards fail on three seeded violations (an import from `reference/`, a missing notices destination, a manifest path that no longer exists) and pass on the clean tree; builds/tests/lint are unaffected by an initialised `reference/` (timings recorded).
+- **Verify:** CI run + seeded-violation branch.
+- **Reference (lift/study, see `reference/README.md`):** `scripts/reference.sh`, `scripts/reference-manifest.py`, `reference/manifest.json`
 
 ### T-010 · Normative grammar for v1.0.3
 `M` · Deps: — · Implements: **LNG-01** · REQ: REQ-LNG-01
@@ -90,6 +99,7 @@
 - **Do:** fixture schema (`{id, input, expect:{ast?, diagnostics[]}, since, notes}`); ≥ 60 valid + ≥ 60 invalid fixtures; include the 7 fixed examples as valid and the **original 4 broken examples as invalid regression fixtures**; runner protocol doc for third-party implementations.
 - **Done when:** corpus validates against its own schema; protocol doc lets a non-TS implementation run it.
 - **Verify:** schema validation test; one throwaway Python runner stub proves language-neutrality.
+- **Reference (lift/study, see `reference/README.md`):** `reference/protocols/a2ui`
 
 ### T-014 · Diagnostics model and code registry
 `S` · Deps: T-002 · Implements: **TLS-01** · REQ: REQ-TLS-01
@@ -103,12 +113,14 @@
 - **Do:** containers, surfaces, dividers, hints, comments, lists, tables, code fences; precise spans; recovery that continues after bad lines.
 - **Done when:** all valid v1 fixtures parse with zero errors; invalid fixtures yield exactly the expected diagnostics; parser **never throws** on ≥ 100k random inputs.
 - **Verify:** conformance runner + fast-check fuzz.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/markdoc`, `reference/dsl/wiremd`
 
 ### T-016 · Inline parser (v1 components)
 `L` · Deps: T-015, T-011 · Implements: **LNG-01, LNG-09** · REQ: REQ-LNG-01, REQ-LNG-09
 - **Split:** (a) buttons/links/tabs; (b) inputs/choices/toggles/dropdown(+`dynamic`); (c) badge/IMG/escapes.
 - **Done when:** every v1 inline construct yields a typed node; escapes and code spans are literal; precedence per T-011.
 - **Verify:** fixtures; property: `parse(print(node))` stable.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/markdoc`, `reference/dsl/wiremd`
 - **Then:** run **spike SP-4** (PLAN §5) — a 2-day token-cost baseline of mdui vs A2UI JSON/Express, json-render and OpenUI Lang on three scenarios — before RFC-0001 freezes syntax that could be made cheaper.
 
 ### T-017 · Frontmatter parser and schema
@@ -128,6 +140,7 @@
 - **Do:** AST types (SPEC §2.3), Zod definitions, generated versioned JSON Schema in `@mdui/spec`.
 - **Done when:** every conformance AST validates; schema `$id` encodes the DSL version; breaking-change policy documented.
 - **Verify:** schema validation over the whole corpus.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/markdoc`
 
 ### T-020 · v2 syntax — typed closers, attributes, field attributes
 `M` · Deps: T-012, T-016 · Implements: **LNG-02, LNG-03** · REQ: REQ-LNG-02, REQ-LNG-02b, REQ-LNG-03
@@ -140,6 +153,7 @@
 - **Split:** (a) form-like widgets (slider/date/file/progress); (b) data-like (chart/stat/skeleton/avatar/icon/crumbs/pager/stepper); (c) containers (grid/accordion/panel/drawer/toast/tooltip/callout/empty); (d) **rev. 2 — Salt-derived:** `TREE` (+ tree-table), `GROUP` (titled group box), `MENUBAR`, `{: scroll=x|y|both }`, labelled dividers, named `ICON` set [S12].
 - **Done when:** each primitive has a typed node, argument validation with fix hints, and a fixture pair.
 - **Verify:** conformance; example per primitive added to `examples/`.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/markdown-ui`
 
 ### T-022 · v2 syntax — regions/states, data model, binding
 `L` · Deps: T-012, T-017, T-020 · Implements: **LNG-05, LNG-06** · REQ: REQ-LNG-05, REQ-LNG-06
@@ -164,6 +178,7 @@
 - **Do:** `type: flow` documents: screens table, transitions list, `start`, `terminal`; graph model; reference validation (`E2401`) against screen files' `#actions`.
 - **Done when:** graph exposes reachability, depth, dead-ends (inputs for NOV-04); unknown refs diagnosed.
 - **Verify:** fixtures with cycles and unreachable nodes.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/wiremark`
 
 ### T-026 · Action registry
 `S` · Deps: T-017, T-020 · Implements: **LNG-11** · REQ: REQ-LNG-11
@@ -176,6 +191,7 @@
 - **Do:** `mdui` binary, glob handling, `--json`, `--fail-on`, exit-code contract (0/1/2/3), config loading; switch the example gate to `mdui validate`.
 - **Done when:** exit codes verified for each outcome; JSON output schema documented.
 - **Verify:** CLI snapshot tests; example gate uses the real tool.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/wiremd`
 
 ### T-028 · Lint engine MVP and structural rules
 `M` · Deps: T-027 · Implements: **TLS-03** · REQ: REQ-TLS-03
@@ -195,6 +211,7 @@
 - **Do:** config file, per-rule severity overrides, `<!-- mdui-disable rule -->` scoping, `--fix` applying `TextEdit`s with overlap detection, deterministic ordering.
 - **Done when:** suppression affects only the next node; overlapping fixes are skipped with a notice; fix application is idempotent.
 - **Verify:** unit + property (apply twice = once).
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/markdoc`
 
 ### T-031 · Semantic and flow lint rules
 `M` · Deps: T-030, T-022, T-025, T-026 · Implements: **TLS-03** · REQ: REQ-TLS-03
@@ -207,18 +224,21 @@
 - **Do:** ≥ 8 rules: `input-label`, `img-alt`, `heading-order`, `single-h1`, `button-text`, `link-text`, `duplicate-landmark`, `target-size-annotation` (WCAG 2.2 2.5.8 [S95]), `live-region-misuse`; WCAG-2.2 mapping table in docs (verify against canonical W3C text before release — canonical site unreachable during research).
 - **Done when:** each rule maps to a cited criterion; fixtures pass/fail.
 - **Verify:** rule tests; mapping table reviewed.
+- **Reference (lift/study, see `reference/README.md`):** `reference/verification/axe-core`
 
 ### T-034 · Canonical formatter
 `M` · Deps: T-020, T-018 · Implements: **TLS-04** · REQ: REQ-TLS-04
 - **Do:** `mdui fmt [--check]`: stable attribute order, spacing, closer style preserved (typed vs generic), comments preserved.
 - **Done when:** `fmt(fmt(x)) = fmt(x)` and `parse(fmt(x)) ≡ parse(x)` over the corpus and ≥ 10k generated inputs.
 - **Verify:** fast-check properties; golden files.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/markdoc`
 
 ### T-035 · Semantic diff
 `M` · Deps: T-019 · Implements: **TLS-05** · REQ: REQ-TLS-05
 - **Do:** tree diff (added/removed/moved/changed) using anchor-friendly matching; human + JSON output; exit 1 on regressions (removed required node, a11y rule newly failing).
 - **Done when:** moves detected as moves (not delete+add) on fixtures; JSON schema documented.
 - **Verify:** golden diffs.
+- **Reference (lift/study, see `reference/README.md`):** `reference/tokens/design-md`, `reference/sdd/openspec`
 
 ### T-036 · Migrate tool
 `S` · Deps: T-024, T-020 · Implements: **LNG-10** · REQ: REQ-LNG-10
@@ -231,36 +251,42 @@
 - **Do:** parse Google DESIGN.md front matter (colors, typography, rounded, spacing, components, `{ref}`) and section prose [S54]; keep legacy prose design systems working; pin DESIGN.md spec version, report mismatches; `mdui:` extension block for breakpoints/framework mapping.
 - **Done when:** the three existing example design systems load; a sample DESIGN.md loads; version mismatch is a warning, not a crash.
 - **Verify:** fixtures incl. upstream sample files.
+- **Reference (lift/study, see `reference/README.md`):** `reference/tokens/design-md`
 
 ### T-038 · Token references and exporters
 `M` · Deps: T-037 · Implements: **DSY-02** · REQ: REQ-DSY-02
 - **Do:** resolve `{colors.primary}` chains with cycle detection; exporters: DTCG, Tailwind v3 JSON, Tailwind v4 `@theme`, CSS variables [S54][S60]; Style Dictionary bridge **only if DTCG support is confirmed** (its README does not state it; Amazon origin also unconfirmed [S63]) — otherwise a native DTCG exporter.
 - **Done when:** exported DTCG validates against the DTCG format; round-trip preserves references.
 - **Verify:** golden outputs; DTCG validation.
+- **Reference (lift/study, see `reference/README.md`):** `reference/tokens/design-md`, `reference/tokens/dtcg`, `reference/tokens/style-dictionary`
 
 ### T-039 · Token lint and token diff
 `M` · Deps: T-038, T-030, T-035 · Implements: **DSY-03, TLS-05** · REQ: REQ-DSY-03, REQ-TLS-05
 - **Do:** `broken-ref` (error), `contrast-ratio` (WCAG AA 4.5:1 on declared component pairs), `orphaned-token`, `unknown-breakpoint`, `missing-primary`; token deltas in `diff` with regression exit.
 - **Done when:** contrast computation matches reference values on a published test vector set; **total lint rules ≥ 30 asserted by a test**.
 - **Verify:** vectors; rule-count test.
+- **Reference (lift/study, see `reference/README.md`):** `reference/tokens/design-md`
 
 ### T-040 · HTML renderer
 `L` · Deps: T-021, T-022, T-018 · Implements: **TLS-06, LNG-03, LNG-05, LNG-13** · REQ: REQ-TLS-06, REQ-LNG-03, REQ-LNG-05, REQ-LNG-13
 - **Split:** (a) node→semantic HTML (landmarks, roles); (b) styles `sketch|clean|wireframe|none`; (c) responsive/env CSS + state variants.
 - **Done when:** output uses semantic elements and ARIA matching the SPEC mapping; required/type attributes reflected; every state renders; preview chrome itself passes axe (dogfooding [S93]).
 - **Verify:** golden HTML; axe run on rendered examples.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/wiremd`
 
 ### T-041 · Preview server and toggles
 `S` · Deps: T-040 · Implements: **TLS-06, LNG-05, LNG-13** · REQ: REQ-TLS-06, REQ-LNG-05, REQ-LNG-13
 - **Do:** `render --watch`, live reload, viewport/theme/state toggles; **rev. 2:** `--scale <n|WxH>` and `--dpi`, and a handwritten/sketch option (Salt parity [S12]).
 - **Done when:** edit→update ≤ 500 ms (measured); toggles switch breakpoint/theme/state.
 - **Verify:** e2e smoke with Playwright; timing assertion with tolerance.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/wiremd`
 
 ### T-042 · Streaming incremental parser
 `L` · Deps: T-021, T-022 · Implements: **TLS-07** · REQ: REQ-TLS-07
 - **Split:** (a) incremental line buffer + partial-block state; (b) partial AST + retraction events; (c) equivalence harness.
 - **Done when:** for ≥ 10k random chunkings the streamed final AST equals batch AST; partial ASTs never expose a node later silently removed (only via retraction events); handles half-typed attribute lists and tags.
 - **Verify:** fast-check chunking property; fixtures for pathological splits (inside `{: `, inside `[[ USE`).
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/mdocui`, `reference/dsl/openui`, `reference/protocols/json-render`, `reference/protocols/hashbrown`
 
 ### T-044 · Benchmark harness and performance budgets
 `S` · Deps: T-027, T-042 · Implements: *(quality)* · REQ: —
@@ -280,6 +306,7 @@
 - **Do:** `mdui.catalog.yaml` (built-in primitives + project components, prop schemas, trust level `core|project|third-party`); default catalog for all primitives; loader + validation.
 - **Done when:** default catalog covers every built-in; custom components typed; trust levels exposed to lint.
 - **Verify:** fixtures.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/mdocui`, `reference/protocols/genui`, `reference/protocols/json-render`, `reference/protocols/tambo`, `reference/protocols/hashbrown`
 
 ### T-051 · Catalog lint rules
 `S` · Deps: T-050, T-030 · Implements: **DSY-04** · REQ: REQ-DSY-04
@@ -292,30 +319,35 @@
 - **Do:** `mdui.map.yaml` schema/loader (primitive/catalog item → code component, import path, prop mapping) [S65]. *Stretch:* auto-populate from a Storybook components manifest [S72] — target the manifests, **not** the archived `storybookjs/mcp` package (moved into the main Storybook repo, v10.6.0 [S130]); if it exceeds one day, defer to 2.1 via RFC.
 - **Done when:** map resolves for the three framework examples; unknown mappings diagnosed (`E6101`).
 - **Verify:** fixtures.
+- **Reference (lift/study, see `reference/README.md`):** `reference/tokens/code-connect`
 
 ### T-053 · Agent Skills restructure
 `M` · Deps: T-012, T-054, T-055 · Implements: **AGT-01** · REQ: REQ-AGT-01
 - **Do:** convert `skills/markdown-ui-dsl/` to the Agent Skills layout (`SKILL.md` + `references/` for syntax, v2 additions, sync protocol, safety; `scripts/` for validators) [S89]; validate with `skills-ref validate` against the verified limits [S131]; **read the findings of [S111]** and record in an ADR how they change the amount of context shipped; keep the skill fully usable **without** the toolchain; update README install sections.
 - **Done when:** passes the standard's validator; **limits met: `SKILL.md` ≤ 500 lines, body < 5,000 tokens, `name` ≤ 64 chars, `description` ≤ 1,024, `compatibility` ≤ 500, references one level deep** [S131]; a no-tooling agent run still produces valid specs (checked in T-063).
 - **Verify:** validator; eval run.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/mdocui`, `reference/dsl/wiremark`, `reference/dsl/wireloom`, `reference/sdd/agentskills`, `reference/sdd/agents-md`
 
 ### T-054 · Prompt generator
 `M` · Deps: T-050, T-037, T-012 · Implements: **AGT-02, DSY-06** · REQ: REQ-AGT-02, REQ-DSY-06
 - **Do:** `mdui prompt` composes: language reference slice (only used constructs), catalog, tokens, data model, component map, few-shot examples; per-agent flavours; deterministic output.
 - **Done when:** byte-identical across runs; a project without charts never mentions `CHART`.
 - **Verify:** snapshot; determinism test.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/mdocui`, `reference/protocols/json-render`
 
 ### T-055 · Safety hardening
 `M` · Deps: T-030, T-012 · Implements: **AGT-04** · REQ: REQ-AGT-04
 - **Do:** `W7001` instruction-like hint detector; `E7002` URL-scheme allow-list (`http`, `https`, `mailto`, `tel`, in-app `#`/`/` routes); `confirm`/`force` defined **only** as tool parameters (spec text can never grant them); skill/reference text rewritten so hints are layout-only; ≥ 20 injection fixtures.
 - **Done when:** fixtures cannot cause lint-clean pass for `javascript:` links or instruction hints; docs state the trust model (spec text = data).
 - **Verify:** fixtures; evals in T-063.
+- **Reference (lift/study, see `reference/README.md`):** `reference/protocols/ext-apps`
 
 ### T-056 · SDD interoperability
 `M` · Deps: T-017, T-030 · Implements: **AGT-03** · REQ: REQ-AGT-03
 - **Do:** `requirements:` frontmatter + coverage lint; templates and walkthroughs for Spec Kit [S81], OpenSpec [S86] and Kiro (EARS) [S84].
 - **Done when:** a sample project shows `.ui.md` participating in each flow; coverage report lists uncovered requirements.
 - **Verify:** sample projects lint clean; docs reviewed.
+- **Reference (lift/study, see `reference/README.md`):** `reference/sdd/spec-kit`, `reference/sdd/openspec`, `reference/sdd/kiro`
 
 ### T-057 · Design-system examples (≥ 4 new)
 `M` · Deps: T-037, T-038 · Implements: **DSY-05** · REQ: REQ-DSY-05
@@ -328,6 +360,7 @@
 - **Split:** (a) EBNF→Lark transform; (b) grammar-driven string generator; (c) parity runner vs reference parser.
 - **Done when:** every valid fixture accepted; ≥ 100k generated strings parse with **zero** errors under the reference parser; invalid fixtures rejected or flagged as "grammar-accepted/semantic-rejected" with an allow-list.
 - **Verify:** nightly parity fuzz.
+- **Reference (lift/study, see `reference/README.md`):** `reference/protocols/a2ui`, `reference/verification/llguidance`
 - **Reference point:** record grammar size/shape vs A2UI's `Express.g4` [S114] for the same UI scenarios (input to T-061).
 
 ### T-059 · Catalog-aware dynamic grammar
@@ -336,30 +369,35 @@
 - **Do:** specialise the grammar from catalog + tokens + data model [S103]; options `--max-depth`.
 - **Done when:** strings using components/tokens/keys outside the supplied sets are rejected; typed-closer mismatches impossible by grammar.
 - **Verify:** negative fixtures; parity fuzz on specialised grammars.
+- **Reference (lift/study, see `reference/README.md`):** `reference/verification/llguidance`
 
 ### T-060 · GBNF and JSON-Schema emitters; engine matrix
 `M` · Deps: T-058 · Implements: **NOV-03** · REQ: REQ-NOV-03a, REQ-NOV-03c
 - **Do:** GBNF (llama.cpp) and JSON-schema emitters; test against ≥ 2 engines where installable (llguidance [S100], llama.cpp); publish a **support matrix** including vendors *not verified* in research (A7); OpenAI custom tools accept `lark`/`regex` grammars [S135] but hosted conformance is reported as imperfect [S152], so the matrix lists **"strong constraint, always re-validate"** for hosted engines.
 - **Done when:** at least two engines accept the grammar and generate parseable output in a smoke test.
 - **Verify:** CI smoke (skipped with notice when engines absent) + manual run recorded.
+- **Reference (lift/study, see `reference/README.md`):** `reference/verification/llguidance`, `reference/verification/xgrammar`
 
 ### T-061 · Constrained-decoding benchmark
 `M` · Deps: T-059, T-060, T-063 · Implements: **NOV-03** · REQ: REQ-NOV-03b, REQ-NOV-03c
 - **Do:** harness comparing constrained vs unconstrained generation per model: structural validity, catalog adherence, nesting errors, semantic-quality delta using the T-063 rubric; publish results in `evals/NOV-03.md`; **comparison deliverable:** grammar acceptance and size vs `Express.g4` [S114] on equivalent UIs; hosted-API conformance measured separately from local engines.
 - **Done when:** report includes the **measured unconstrained baseline** and the delta with confidence notes; no claim beyond data.
 - **Verify:** reproducible script; results reviewed.
+- **Reference (lift/study, see `reference/README.md`):** `reference/verification/llguidance`, `reference/verification/xgrammar`
 
 ### T-062 · MCP server (core tools)
 `L` · Deps: T-027, T-030, T-034, T-035, T-040, T-054 · Implements: **TLS-08** · REQ: REQ-TLS-08
 - **Split:** (a) server scaffold + schemas; (b) parse/validate/lint/fmt/diff; (c) render/prompt/catalog.
 - **Done when:** every tool has JSON-Schema input and structured output; verified with ≥ 2 MCP clients; `sync_apply` tool absent until T-081 and requires confirmation then.
 - **Verify:** protocol tests; manual client runs recorded.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/asciiwire`, `reference/protocols/json-render`, `reference/protocols/mcp-ui`
 
 ### T-063 · LLM eval harness and TESTING.md rewrite
 `M` · Deps: T-054, T-055, T-028 · Implements: **QLT-02** · REQ: REQ-QLT-02
 - **Do:** **tool-agnostic harness** — assertions are `mdui validate`/`lint` invocations; promptfoo [S109] is one runner (its repo states it is now OpenAI-owned [S136]), with an adapter boundary so another runner can replace it; ≥ 30 generation prompts, sync scenarios, injection prompts; **deterministic assertions via `mdui validate`/`lint`** first, rubric second; panel of ≥ 3 agents (owner picks); **record the v1 nesting-error baseline** (B-03 hypothesis) in `evals/BASELINE.md`; rewrite `TESTING.md` around the real suites (keep the manual checklists as release acceptance).
 - **Done when:** CI fails below configured structural-validity threshold; baseline numbers published whatever they show.
 - **Verify:** dry-run with recorded provider mocks; nightly workflow green.
+- **Reference (lift/study, see `reference/README.md`):** `reference/protocols/a2ui`, `reference/verification/promptfoo`
 
 > **Checkpoint 3 (β gate)** — PLAN §7.
 
@@ -411,6 +449,7 @@
 - **Split:** (a) role/name mapping table (documented); (b) state/viewport/theme expansion; (c) Playwright-compatible ARIA-snapshot YAML emitter — note Playwright's native matching is **order-sensitive** with partial matching by omission [S132], so emitted templates must be order-correct.
 - **Done when:** mapping covers every primitive; one expected tree per state/environment; label-vs-placeholder fallback documented and configurable.
 - **Verify:** golden expected trees.
+- **Reference (lift/study, see `reference/README.md`):** `reference/verification/playwright`
 
 ### T-077 · Oracle runner, Fidelity Score and mutation benchmark
 `L` · Deps: T-076, T-070 · Implements: **NOV-02** · REQ: REQ-NOV-02a, REQ-NOV-02b, REQ-NOV-02c
@@ -418,6 +457,7 @@
 - **Do:** formula `Σ(w·matched)/Σ(w·expected)` with weights interactive 3 / heading 2 / landmark 2 / text 1 (configurable).
 - **Done when:** on ≥ 10 apps × ≥ 20 seeded mutations: **recall ≥ 90%**, **false-positive ≤ 5%** on semantic-preserving refactors; ≤ 5 s per screen; score reproducible from a saved snapshot.
 - **Verify:** benchmark suite; results in `evals/NOV-02.md`.
+- **Reference (lift/study, see `reference/README.md`):** `reference/verification/axe-core`, `reference/verification/playwright`
 
 ### T-078 · Oracle CI mode, thresholds and baselines
 `S` · Deps: T-077 · Implements: **NOV-02** · REQ: REQ-NOV-02b
@@ -437,6 +477,7 @@
 - **Do:** verify measurable subset through the Oracle (tap-target via bounding boxes, labels, heading order, landmark presence); report alongside fidelity.
 - **Done when:** ≥ 4 rules verified post-code; violations map to spec nodes.
 - **Verify:** fixture apps with seeded violations.
+- **Reference (lift/study, see `reference/README.md`):** `reference/verification/axe-core`, `reference/verification/playwright`
 
 ### T-081 · MCP sync and verify tools
 `S` · Deps: T-062, T-074, T-077 · Implements: **TLS-08, NOV-01, NOV-02** · REQ: REQ-TLS-08
@@ -455,6 +496,7 @@
 - **Do:** grow to ≥ 250 fixtures covering v2; package as `@mdui/spec` conformance bundle + runner protocol; publish "claiming conformance" guide.
 - **Done when:** the Python stub runner from T-013 passes the bundle; versioned alongside the grammar.
 - **Verify:** third-language run.
+- **Reference (lift/study, see `reference/README.md`):** `reference/protocols/a2ui`, `reference/tokens/dtcg`
 
 > **Checkpoint 4 (GA candidate)** — PLAN §7: all four novel metrics met.
 
@@ -469,12 +511,14 @@
 - **Do:** `mdui export --to a2ui`; target the **A2UI v1.0 message set** (`createSurface`, `updateComponents`, `updateDataModel`, `deleteSurface`) with JSON-Pointer data bindings, **pinned to a spec commit** because the spec README still calls v1.0 "a candidate for becoming stable" [S112][S113]; document unmappable constructs and how they degrade.
 - **Done when:** output validates against the pinned schema; unmappable constructs produce warnings, never silent drops.
 - **Verify:** golden outputs; schema validation; upstream sample renders (manual).
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/openui`, `reference/protocols/a2ui`, `reference/protocols/genui`
 
 ### T-091 · json-render exporter
 `M` · Deps: T-019, T-050 · Implements: **AGT-05** · REQ: REQ-AGT-05
 - **Do:** emit a json-render spec + catalog definition [S38]; flat element map with stable IDs; document limitations.
 - **Done when:** output validates against json-render's schema/Zod catalog for the supported subset.
 - **Verify:** golden + validation.
+- **Reference (lift/study, see `reference/README.md`):** `reference/protocols/json-render`
 
 ### T-092 · Docs site and in-browser playground
 `L` · Deps: T-042, T-040, T-083 · Implements: **QLT-05** · REQ: REQ-QLT-05
@@ -488,12 +532,14 @@
 - **Do:** self-contained SVG (no external fonts, real text not outlines, `<title>`/`<desc>`); fence info-string options (`mdui style=sketch state=loading`); zero-dependency `@mdui/core` retained (adapters isolated). Document what GitHub renders natively (Mermaid does [S140]; a custom fence needs generated SVG or the PR bot — **verify at build time**). Prior art: Wiremark adapters [S117], Wireloom SVG in GitHub [S116].
 - **Done when:** a README with an `mdui` fence renders via remark and markdown-it; generated SVG displays in a GitHub-rendered README in a sandbox repo (evidence attached); SVG is within a size budget (proposed ≤ 50 kB for the login example).
 - **Verify:** golden SVG; adapter tests; manual GitHub render check.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/wiremark`, `reference/dsl/wireloom`, `reference/dsl/markdown-ui`, `reference/dsl/mdx`
 
 ### T-095 · Token benchmark and stats
 `M` · Deps: T-016, T-021, T-090, T-091 · Implements: **TLS-12** · REQ: REQ-TLS-12
 - **Do:** author ≥ 10 UI scenarios (the 7 examples + OpenUI-style contact-form scenarios [S115]) as mdui, A2UI v1.0 JSON, A2UI Express, json-render JSON and OpenUI Lang; count tokens with a **named tokenizer** (plus a second tokenizer family); `mdui stats`; publish methodology and raw counts in `evals/TOKENS.md`; **report every scenario, including those mdui loses**.
 - **Done when:** the report is reproducible by script; a decision on a compact *profile* is recorded (RFC if yes) — driven by data, not assertion (P1 stays: human readability is not traded away).
 - **Verify:** re-run determinism; an independent reviewer re-counts three scenarios.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/openui`, `reference/protocols/a2ui`
 
 ### T-093 · GA hardening
 `M` · Deps: T-074, T-077, T-079, T-090, T-091, T-094, T-095 · Implements: *(all — release quality)* · REQ: —
@@ -519,6 +565,7 @@
 - **Split:** (a) TextMate grammar; (b) LSP diagnostics/quick-fixes; (c) preview pane.
 - **Done when:** diagnostics and quick-fixes live; preview updates on edit; published to the marketplace.
 - **Verify:** extension tests; manual smoke.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/wiremd`, `reference/dsl/asciiwire`
 
 ### T-101 · GitHub Action and PR wireframe diff
 `M` · Deps: T-035, T-040, T-078 · Implements: **TLS-10** · REQ: REQ-TLS-10
@@ -531,6 +578,7 @@
 - **Do:** import via the Figma MCP design context [S65]; lossy conversions annotated; never overwrite without `--force`.
 - **Done when:** a sample file converts to a lint-clean `.ui.md` with annotations.
 - **Verify:** recorded fixtures (no live Figma in CI).
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/wiremd`
 
 ### T-103 · HTML importer
 `M` · Deps: T-019, T-034 · Implements: **TLS-11** · REQ: REQ-TLS-11
@@ -549,12 +597,14 @@
 - **Do:** render a streamed DSL against a catalog with host-owned components; unknown nodes ignored + logged; no executable content.
 - **Done when:** demo app streams a spec and renders only catalog components; security tests pass.
 - **Verify:** component tests; security fixtures.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/mdocui`, `reference/dsl/openui`, `reference/protocols/a2ui`, `reference/protocols/json-render`, `reference/protocols/ext-apps`, `reference/protocols/mcp-ui`, `reference/protocols/remote-dom`, `reference/protocols/ag-ui`, `reference/protocols/tambo`
 
 ### T-106 · Flutter oracle adapter
 `L` · Deps: T-077 · Implements: **NOV-02** · REQ: REQ-NOV-02a
 - **Do:** compile expected semantics for Flutter and verify via `SemanticsController` [S98][S99]; confirm the identifier mechanism for anchors.
 - **Done when:** recall/FP metrics replicated on a Flutter golden set.
 - **Verify:** Flutter test run in CI.
+- **Reference (lift/study, see `reference/README.md`):** `reference/protocols/genui`
 
 ### T-107 · i18n / RTL
 `M` · Deps: T-040, T-022 · Implements: **LNG-12** · REQ: REQ-LNG-12
@@ -573,6 +623,7 @@
 - **Do:** render a `.flow.md` as an SVG diagram whose nodes embed screen previews and whose edges carry action labels and `when:` guards (Salt embeds screens in activity diagrams, including `while`/`repeat` conditions [S12]; Wiremark links named frames [S117]).
 - **Done when:** the sample flow renders with correct edges and `terminal` markers; layout is deterministic; the SVG has a text alternative (title/desc + transition list).
 - **Verify:** golden SVG.
+- **Reference (lift/study, see `reference/README.md`):** `reference/dsl/wiremark`
 
 ### T-110 · Release engineering — v2.1
 `S` · Deps: T-098, T-100, T-101, T-104, T-105, T-106, T-107, T-108, T-111 · Implements: *(release)* · REQ: —

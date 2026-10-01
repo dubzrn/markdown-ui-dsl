@@ -1,0 +1,4 @@
+# Reference repositories are vendored study material, not project source.
+reference/** linguist-vendored
+reference/** linguist-generated=false
+reference/** -diff
