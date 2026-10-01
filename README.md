@@ -51,7 +51,7 @@ curl -o .github/skills/markdown-ui-dsl/SKILL.md https://raw.githubusercontent.co
 - For interpreting `ui.md` files, use the `markdown-ui-dsl` skill to generate components based on the specifications provided.
 ```
 
-### 2. Cursor / Roo Code / Cline
+### 3. Cursor / Roo Code / Cline
 For agents that use single flat rules files, you can append the skill directly:
 ```bash
 # For Cursor (picks up from .cursorrules)
@@ -61,13 +61,13 @@ curl -o .cursorrules https://raw.githubusercontent.com/MegaByteMark/markdown-ui-
 curl -o .clinerules https://raw.githubusercontent.com/MegaByteMark/markdown-ui-dsl/main/skills/markdown-ui-dsl/SKILL.md
 ```
 
-### 3. Claude Code
+### 4. Claude Code
 Claude Code automatically looks for a `CLAUDE.md` file in the root of your project to understand project-specific rules and conventions. You can append the skill directly to it:
 ```bash
 curl -s https://raw.githubusercontent.com/MegaByteMark/markdown-ui-dsl/main/skills/markdown-ui-dsl/SKILL.md >> CLAUDE.md
 ```
 
-### 4. Gemini CLI
+### 5. Gemini CLI
 For Gemini CLI, download the skill into your project and pass it as a system prompt or context flag when running your generation commands:
 ```bash
 mkdir -p .ai/skills
@@ -77,7 +77,7 @@ curl -o .ai/skills/markdown-ui-dsl.md https://raw.githubusercontent.com/MegaByte
 # gemini query "Build the login UI" --system-prompt .ai/skills/markdown-ui-dsl.md
 ```
 
-### 5. GPT Codex (and other CLI agents)
+### 6. GPT Codex (and other CLI agents)
 Download the instruction file into your workspace and reference it as a system prompt when initiating your AI codebase session:
 ```bash
 mkdir -p .ai/skills
@@ -141,7 +141,7 @@ theme: ./design-system.md
 ---
 ```
 
-By writing your styling rules, design tokens, and standard CSS classes into a single `design-system.md` file, the AI agent will consistently apply your branding and layout guidelines across every component it generates. Check out the `examples/design-system.md` file for inspiration.
+By writing your styling rules, design tokens, and standard CSS classes into a single `design-system.md` file, the AI agent will consistently apply your branding and layout guidelines across every component it generates. Check out the files in [`examples/design-systems/`](examples/design-systems/) for inspiration.
 
 ## Responsive Design
 The DSL supports media-query-style responsive behaviour through **responsive directives** — a natural extension of the existing blockquote hint syntax. Prefix any design directive with `@<breakpoint>` to scope it to a specific viewport size:

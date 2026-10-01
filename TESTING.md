@@ -12,13 +12,13 @@ To verify the agent correctly understands the DSL syntax and your specific `desi
 **Objective:** Prove the agent understands layout primitives (`||| COLUMN |||`, `=== ROW ===`) and maps them to the appropriate framework tokens.
 
 **Prompt to the AI:**
-> "Using the `markdown-ui-dsl.md` skill, generate the UI component described in `examples/login-form.ui.md`."
+> "Using the `markdown-ui-dsl` skill (`skills/markdown-ui-dsl/SKILL.md`), generate the UI component described in `examples/login-form.ui.md`."
 
 **Evaluation Checklist (Manual or Scripted):**
 - [ ] Did the agent inject a spec reference comment at the top of the file? (e.g. `// UI Spec: wireframes/login-form.ui.md`)
 - [ ] Did the `||| COLUMN |||` correctly map to a visual vertical stack in the target framework?
 - [ ] Did the nested `=== ROW ===` block generate a valid flex-row or horizontal container?
-- [ ] Were the specific design tokens mandated in the referenced `design-system.md` file applied?
+- [ ] Were the specific design tokens mandated in the referenced design-system file (e.g. `examples/design-systems/web-tailwind.md`) applied?
 
 ### 2. Test: Two-Way Binding (Code -> Spec)
 **Objective:** Prove the agent will surgically update the Markdown wireframe when a change is requested on the code side.

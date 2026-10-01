@@ -27,4 +27,4 @@ component: src/app/actions/page.tsx
 
 --- END ---
 
-||| COLUMN |||
+--- END ---
