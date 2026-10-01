@@ -1,0 +1,47 @@
+(* Markdown UI DSL 2.0 — grammar delta over v1.ebnf (RFC-0001, T-012). Applies only when frontmatter declares `dsl: 2.0`.
+ * Productions here extend or replace v1 productions of the same name; everything else is inherited.
+ * Notation as in v1.ebnf.  Status: accepted syntax; parser support lands per task (T-020 … T-026).
+ *)
+
+(* ---- 3a closers and attributes ---- *)
+end_marker      = "--- END ---" | "--- END " , kind_name , " ---" ;   (* typed closer must equal the innermost open block's kind (E1004) *)
+kind_name       = "COLUMN" | "ROW" | "CARD" | "MODAL" | "HEADER" | "FOOTER" | "BUBBLE"
+                | "REGION" | "STATE" | "GRID" | "ACCORDION" | "PANEL" | "DRAWER" | "TOAST" | "TOOLTIP"
+                | "CALLOUT" | "EMPTY" | "TREE" | "GROUP" | "EACH" | "IF" ;
+attrs           = "{:" , SP , attr , { SP , attr } , OWS , "}" ;     (* "{:" must be followed by SP, "#", "." or a letter *)
+attr            = "#" , identifier | "." , identifier | identifier , "=" , attr_value | identifier ;
+attr_value      = identifier | number | '"' , { ? any character except '"' ? } , '"' ;
+number          = digit , { digit | "." } ;
+container_opener= container_opener_v1 , [ attrs ] | kind_opener , [ attrs ] ;   (* attribute list may follow any opener *)
+button          = button_v1 , [ attrs ] ;  link = link_v1 , [ attrs ] ;
+text_input      = text_input_v1 , [ attrs ] ;  dropdown = dropdown_v1 , [ attrs ] ;
+
+(* ---- 3b primitives ---- *)
+widget          = "[" , OWS , widget_kind , ":" , OWS , widget_args , OWS , "]" , [ attrs ] ;
+widget_kind     = "SLIDER" | "DATE" | "FILE" | "PROGRESS" | "CHART" | "STAT" | "SKELETON" | "AVATAR"
+                | "ICON" | "CRUMBS" | "PAGER" | "STEPPER" | "MENUBAR" ;     (* unknown upper-case kind: E1302 *)
+widget_args     = ? widget-specific, positional first then key=value; quoted when containing spaces ? ;
+kind_opener     = "::: " , container_kind , { SP , container_arg } , " :::" ;
+container_kind  = "GRID" | "ACCORDION" | "PANEL" | "DRAWER" | "TOAST" | "TOOLTIP" | "CALLOUT" | "EMPTY" | "TREE" | "GROUP"
+                | "REGION" | "STATE" | "EACH" | "IF" ;
+container_arg   = identifier | number | '"' , { ? any character except '"' ? } , '"' | identifier , "=" , attr_value | "!" , path ;
+labelled_divider= "***" , SP , ? text without "***" ? , SP , "***" ;       (* bare "***" remains divider *)
+
+(* ---- 3c bindings, states, includes ---- *)
+binding         = "{{" , OWS , path , OWS , "}}" ;                    (* path only; calls/operators ⇒ E2102 *)
+path            = identifier , { "." , identifier | "[" , digit , { digit } , "]" } ;
+each_opener     = "::: EACH " , identifier , " in " , path , " :::" ;
+if_opener       = "::: IF " , [ "!" ] , path , " :::" ;
+region          = "::: REGION " , identifier , " :::" , { state | block } , "--- END REGION ---" ;
+state           = "::: STATE " , state_name , " :::" , { block } , "--- END STATE ---" ;
+state_name      = letter_lc , { letter_lc | digit | "-" } ;
+use             = "[[" , OWS , "USE:" , OWS , rel_path , OWS , "]]" , [ attrs ] ;
+rel_path        = ? relative path, no ".." segment that escapes the project root (E2301) ? ;
+
+(* ---- 3d flows, environment directives, constraints ---- *)
+flow_transition = "- " , screen_id , " #" , identifier , " -> " , screen_id , [ " [when: " , text , "]" ] ;
+screen_id       = identifier ;
+directive       = "> " , { env_token , SP } , [ breakpoint_token , SP ] , token_pair , { OWS , "," , OWS , token_pair } ;
+env_token       = "@dark" | "@light" | "@print" | "@reduced-motion" | "@contrast-more" | "@touch" | "@hover" ;
+breakpoint_token= "@sm" | "@md" | "@lg" | "@xl" ;
+constraint_hint = "> constraint: " , identifier , "=" , attr_value | "> waive: " , identifier , SP , 'reason="' , { ? any character except '"' ? } , '"' ;

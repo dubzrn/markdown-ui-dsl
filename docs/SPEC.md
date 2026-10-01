@@ -81,7 +81,7 @@ type: screen                   # screen (default) | flow | partial
 **Typed closers (LNG-02).** `--- END COLUMN ---`, `--- END ROW ---`, `--- END CARD ---`, `--- END MODAL ---`, `--- END HEADER ---`, `--- END FOOTER ---`, `--- END BUBBLE ---`, `--- END REGION ---`, `--- END STATE ---`, `--- END GRID ---`, … Generic `--- END ---` closes the innermost block. A typed closer that does not match the innermost open block is error `E1004`. The YAML fence `---` is only valid on line 1 and never contains the word `END`.
 
 **Inline attributes (LNG-02, LNG-03).** Trailing `{: … }` on a component line or block opener:
-`{: #id .class key=value "quoted key"="v" flag }`.
+`{: #id .class key=value key="quoted value" flag }` (keys are bare identifiers; RFC-0001 §7 dropped quoted keys).
 
 ```markdown
 [ text: Email address ]{: #email type=email required label="Email" autocomplete=email }
@@ -159,7 +159,7 @@ start: login
 - login #forgot-password -> reset
 - reset #back -> login
 ```
-Transition grammar: `- <screen-id> (#<action>|*) -> <screen-id> [when: <text>]?`. Referenced `#action` must exist on the source screen (`E2401`).
+Transition grammar: `- <screen-id> #<action> -> <screen-id> [when: <text>]?` (one transition per action; the `*` wildcard was dropped by RFC-0001 §7). Referenced `#action` must exist on the source screen (`E2401`).
 
 **Escaping (LNG-09).** `\[ \] \( \) \{ \} \| \> \# \`` escape the next character; fenced code and inline code are literal. Precedence for ambiguous brackets: (1) `[ ](…)` link/button, (2) `[ KIND: …]` widget, (3) `[ ]`/`[x]` checkbox at line start, (4) text.
 
