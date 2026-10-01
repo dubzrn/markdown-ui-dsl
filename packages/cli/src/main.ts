@@ -28,6 +28,7 @@ import { runSync } from "./sync.js";
 import { auditWaivers, parseLock, specWaivers } from "@mdui/sync";
 import { buildGrammar, toGbnf, toJsonSchema, toLark } from "@mdui/grammar";
 import { render } from "@mdui/render";
+import { exportA2ui, exportJsonRender } from "@mdui/export";
 import { parseArgs, UsageError, type Args } from "./args.js";
 import { ConfigError, loadConfig, type Config, type FailOn } from "./config.js";
 import { expand } from "./glob.js";
@@ -52,6 +53,7 @@ Commands:
   coverage   Which requirements do the specs cover? --requirements <file> (Spec Kit, OpenSpec or Kiro style); exit 1 if any is uncovered or unknown
   grammar    Emit a generation grammar: --format lark|gbnf|json-schema [--dsl 1|2.0] [--catalog c.yaml] [--max-depth N] [--tokens a,b] [--data x.y,z]
   sync       Anchored three-way sync: plan|apply|relink|recover <spec> --code <files> [--lock p] [--confirm] [--resolve a=code,b=spec] [--map m.yaml]
+  export     <spec> --to a2ui|json-render [--state s] [--out f] [--strict]: agent-UI formats; warnings (stderr) list every construct that degrades
   preview    live preview server: <spec> [--port N]; or <spec> --png out.png [--scale 2|1280x800] [--dpi N] [--style s] [--theme t] [--state s]
   verify     Spec Oracle: <spec> --url U | --html F [--min-fidelity 0.95] [--baseline b.json | --write-baseline] [--strict] [--name-match loose] [--state s] [--chromium path]
   rules      List the lint rules (--json for machine output)
@@ -503,6 +505,48 @@ function run(io: Io, args: Args, cfg: Config): number {
     return diags.some((d) => failsOn(d, failOn)) ? EXIT.diagnostics : EXIT.ok;
   }
 
+  if (cmd === "export") {
+    if (files.length !== 1) throw new UsageError("export takes exactly one file");
+    const to = args.flags.to;
+    if (to !== "a2ui" && to !== "json-render")
+      throw new UsageError("--to must be a2ui|json-render");
+    const file = files[0] as string;
+    const doc = parse(readSource(io, root, file) as string);
+    const a = analyze(doc, { file: rel(file), readFile });
+    const includes = new Map(
+      a.includes.flatMap((i) =>
+        i.path !== undefined && i.doc !== undefined ? [[i.path, i.doc] as const] : [],
+      ),
+    );
+    const out =
+      to === "a2ui"
+        ? exportA2ui(doc, {
+            includes,
+            ...(args.flags.state !== undefined ? { state: args.flags.state } : {}),
+          })
+        : exportJsonRender(doc, { includes });
+    const text =
+      JSON.stringify(
+        to === "a2ui"
+          ? (out as ReturnType<typeof exportA2ui>).messages
+          : {
+              spec: (out as ReturnType<typeof exportJsonRender>).spec,
+              catalog: (out as ReturnType<typeof exportJsonRender>).catalog,
+            },
+        null,
+        2,
+      ) + "\n";
+    if (args.flags.out !== undefined) io.writeFile(posix.resolve(io.cwd, args.flags.out), text);
+    else io.stdout(text);
+    for (const w of out.warnings)
+      io.stderr(`${file}:${w.line} ${w.kind} ${w.construct}: ${w.message}\n`);
+    for (const d of [...doc.diagnostics, ...a.diagnostics])
+      io.stderr(
+        `${file}:${d.span.start.line}:${d.span.start.col} ${d.severity} ${d.code} ${d.message}\n`,
+      );
+    return args.flags.strict && out.warnings.length > 0 ? EXIT.diagnostics : EXIT.ok;
+  }
+
   if (cmd === "fmt") {
     const changed: string[] = [];
     for (const file of files) {
@@ -608,6 +652,7 @@ const COMMANDS = [
   "grammar",
   "sync",
   "preview",
+  "export",
 ];
 
 /** CLI entry. Never throws; returns the process exit code. */

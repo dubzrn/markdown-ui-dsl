@@ -107,6 +107,8 @@
 | T-078 | done | `mdui verify` with `--min-fidelity`, baselines (`--write-baseline`), `--name-match loose`, `--strict`, `--json`, exit contract; CI runs the benchmark in the e2e job. Not run against a third-party app |
 | T-080 | done | post-code verification of `every-input-labelled`, `heading-order`, `landmarks-present`, `help-reachable`, `tap-target` (bounding boxes) with violations mapped to spec lines; fixtures are unit tests plus a real-Chromium test, not an app suite with seeded violations |
 | T-083 | done | 494 fixtures in four suites, `manifest.json` with sha-256, protocol-v1 Python runner, shipped in `@mdui/spec` `files`, CI manifest + runner steps, `docs/CONFORMANCE.md`. The implementation under test is the TS reference; there is no independent second implementation |
+| T-090 | partial | `@mdui/export` `exportA2ui` + `mdui export --to a2ui`; every example validates against the vendored A2UI v1.0 schemas (pinned `102ec1a04975`); warnings for every degraded/dropped/synthesized construct (`docs/EXPORT.md`). Not rendered by an upstream A2UI renderer (manual check outstanding) |
+| T-091 | partial | `exportJsonRender` + `mdui export --to json-render`; every example passes json-render's own `validateSpec` (`@json-render/core@0.21.0`, orphan check on); catalog is this project's own `mdui` catalog. Not rendered in an application (manual check outstanding) |
 
 ### T-001 · Fix example and documentation defects
 `S` · Deps: — · Implements: **QLT-04** · REQ: REQ-QLT-04

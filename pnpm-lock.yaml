@@ -65,6 +65,9 @@ importers:
       '@mdui/core':
         specifier: workspace:*
         version: link:../core
+      '@mdui/export':
+        specifier: workspace:*
+        version: link:../export
       '@mdui/grammar':
         specifier: workspace:*
         version: link:../grammar
@@ -116,6 +119,25 @@ importers:
       '@mdui/tools':
         specifier: workspace:*
         version: link:../tools
+
+  packages/export:
+    dependencies:
+      '@mdui/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@json-render/core':
+        specifier: ^0.21.0
+        version: 0.21.0(zod@4.6.5)
+      ajv:
+        specifier: ^8.17.1
+        version: 8.20.0
+      ajv-formats:
+        specifier: ^3.0.1
+        version: 3.0.1(ajv@8.20.0)
+      zod:
+        specifier: ^4.6.5
+        version: 4.6.5
 
   packages/grammar:
     dependencies:
@@ -521,6 +543,11 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
+  '@json-render/core@0.21.0':
+    resolution: {integrity: sha512-vysEbTjO1y8mEgAsp0tztRyaWCkNsBrG8MhAqbndGK3qmMXjMRdCNtk21+AQRNKdRelFGVAwBgtUNW8tfjQlsw==}
+    peerDependencies:
+      zod: ^4.0.0
+
   '@keyv/bigmap@1.3.1':
     resolution: {integrity: sha512-WbzE9sdmQtKy8vrNPa9BRnwZh5UF4s1KTmSK0KUVLo3eff5BlQNNWDnFOouNpKfPKDnms9xynJjsMYjMaT/aFQ==}
     engines: {node: '>= 18'}
@@ -873,6 +900,14 @@ packages:
     resolution: {integrity: sha512-lGq+9yr1/GuAWaVYIHRjvvySG5/4VfKIvC8EWxStPdcDh/Ka7FG3twP6v4d5BkravUilhIAsG4Qj83t02LWUPQ==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+
+  ajv-formats@3.0.1:
+    resolution: {integrity: sha512-8iUql50EUR+uUcdRQ3HDqa6EVyo3docL8g5WJ3FNcWmu62IbkGUue/pEyLBW8VGKKucTPgqeks4fIU1DA4yowQ==}
+    peerDependencies:
+      ajv: ^8.0.0
+    peerDependenciesMeta:
+      ajv:
+        optional: true
 
   ajv@6.15.0:
     resolution: {integrity: sha512-fgFx7Hfoq60ytK2c7DhnF8jIvzYgOMxfugjLOSMHjLIPgenqa7S7oaagATUq99mV6IYvN2tRmC0wnTYX6iPbMw==}
@@ -1595,6 +1630,9 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
+  zod@4.6.5:
+    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+
 snapshots:
 
   '@cacheable/memory@2.2.0':
@@ -1866,6 +1904,10 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.6.0
+
+  '@json-render/core@0.21.0(zod@4.6.5)':
+    dependencies:
+      zod: 4.6.5
 
   '@keyv/bigmap@1.3.1(keyv@5.6.0)':
     dependencies:
@@ -2143,6 +2185,10 @@ snapshots:
       acorn: 8.18.0
 
   acorn@8.18.0: {}
+
+  ajv-formats@3.0.1(ajv@8.20.0):
+    optionalDependencies:
+      ajv: 8.20.0
 
   ajv@6.15.0:
     dependencies:
@@ -2794,3 +2840,5 @@ snapshots:
   yaml@2.9.1: {}
 
   yocto-queue@0.1.0: {}
+
+  zod@4.6.5: {}

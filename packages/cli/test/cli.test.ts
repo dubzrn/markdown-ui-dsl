@@ -394,7 +394,7 @@ describe("built binary", () => {
       expect(main(["prompt", "missing.ui.md"], m.io)).toBe(EXIT.usage);
     });
     it("writes with --out", () => {
-      const f = { ...files };
+      const f: Record<string, string> = { ...files };
       const m = memIo(f);
       expect(main(["prompt", "--agent", "claude", "--out", "p.md", "a.ui.md"], m.io)).toBe(EXIT.ok);
       expect(f["/proj/p.md" as keyof typeof f]).toMatch(/^<markdown-ui-dsl>/);
@@ -574,5 +574,36 @@ describe("built binary", () => {
       expect(removed.out()).toMatch(/removed since the lock: waive form-fields in pay/);
       expect(removed.out()).toMatch(/W5302/);
     });
+  });
+});
+
+describe("export (T-090, T-091)", () => {
+  const src = "---\ndsl: 2.0\nlang: en\n---\n# Hi\n[ Go ](#go)\n[ CHART: bar data=d ]\n";
+  const files: Record<string, string> = { "/proj/a.ui.md": src };
+  it("writes A2UI messages to stdout and warnings to stderr", () => {
+    const m = memIo(files);
+    expect(main(["export", "a.ui.md", "--to", "a2ui"], m.io)).toBe(EXIT.ok);
+    const msgs = JSON.parse(m.out()) as { version: string }[];
+    expect(msgs[0]).toMatchObject({ version: "v1.0", createSurface: { surfaceId: "surface-1" } });
+    expect(m.err()).toMatch(/a\.ui\.md:\d+ degraded \[ CHART \]/);
+  });
+  it("writes a json-render spec and catalog with --out", () => {
+    const f: Record<string, string> = { ...files };
+    expect(
+      main(["export", "a.ui.md", "--to", "json-render", "--out", "o/a.json"], memIo(f).io),
+    ).toBe(EXIT.ok);
+    const j = JSON.parse(f["/proj/o/a.json"] as string) as {
+      spec: { root: string };
+      catalog: { name: string };
+    };
+    expect(j.spec.root).toMatch(/^e\d+$/);
+    expect(j.catalog.name).toBe("mdui");
+  });
+  it("--strict fails when anything degrades; usage errors exit 2", () => {
+    expect(main(["export", "a.ui.md", "--to", "a2ui", "--strict"], memIo(files).io)).toBe(
+      EXIT.diagnostics,
+    );
+    expect(main(["export", "a.ui.md"], memIo(files).io)).toBe(EXIT.usage);
+    expect(main(["export", "a.ui.md", "--to", "figma"], memIo(files).io)).toBe(EXIT.usage);
   });
 });
