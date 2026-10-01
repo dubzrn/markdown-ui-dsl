@@ -24,8 +24,12 @@ Human-first Markdown wireframe DSL for AI coding agents. **Current state:** spec
 - Read `graphify-out/GRAPH_REPORT.md` only for broad architecture review.
 - After changing code or docs, run `scripts/graph.sh update`. The map excludes `reference/`, `.agents/`, `.claude/` (see `.graphifyignore`).
 
+## Commands
+`pnpm install` · `pnpm check` (typecheck, lint, format, build, test) · `pnpm test` · `pnpm lint` · `pnpm changeset`
+Gates: `python3 scripts/check-examples.py` · `node scripts/check-traceability.ts` · `python3 scripts/check-repo-hygiene.py`
+
 ## Checks before you finish
-`python3 scripts/skills.py verify` (skills identical + hashes) · `python3 scripts/reference-manifest.py --check` (reference paths) · `scripts/graph.sh update` (map current). Tests/lint arrive with T-002/T-003.
+`pnpm check` · the three gates above · `python3 scripts/skills.py verify` · `python3 scripts/reference-manifest.py --check` · `scripts/graph.sh update` (map current). Language changes need an RFC (`docs/rfcs/`); see `CONTRIBUTING.md`.
 
 ## Skills
 Project-local skills live in **`.agents/skills/`** (Agent Skills standard; Codex, Cursor, Gemini CLI, Copilot, …) and an identical copy in **`.claude/skills/`** (Claude Code). Manifest + pins: `.agents/skills-manifest.json`. Treat third-party skills as untrusted until vetted (`docs/SKILLS_INDEX.md` §5).

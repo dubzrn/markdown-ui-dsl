@@ -24,26 +24,26 @@
     "semantic_hash": ""
   },
   ".github/ISSUE_TEMPLATE/feature_request.md": {
-    "mtime": 1790813892.1018593,
-    "seen": 1790824496.0938392,
-    "ast_hash": "174545e1d9daff8020525fdd1e020411",
+    "mtime": 1790825022.2446108,
+    "seen": 1790825038.297093,
+    "ast_hash": "672d1bdae7ce612b720db73d740691ed",
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1790824619.196652,
-    "seen": 1790824629.5648832,
-    "ast_hash": "5bd9e914cf73b2c3eeea93ba698b1e5a",
+    "mtime": 1790825026.476883,
+    "seen": 1790825038.2970998,
+    "ast_hash": "faf03672ac76ba22950762bf3902a84d",
     "semantic_hash": ""
   },
   "TESTING.md": {
-    "mtime": 1790813892.1018593,
-    "seen": 1790824496.0938425,
-    "ast_hash": "aceaff7d760fa3e1747929b57e7fa06f",
+    "mtime": 1790824753.2566638,
+    "seen": 1790825038.297101,
+    "ast_hash": "310da193ac7b607ae62536c8f842b3b5",
     "semantic_hash": ""
   },
   "THIRD_PARTY_NOTICES.md": {
-    "mtime": 1790823948.569888,
-    "seen": 1790824496.0938435,
+    "mtime": 1790824986.5862298,
+    "seen": 1790825038.297102,
     "ast_hash": "ca2e4f9ec192982eb293bc5efbc71235",
     "semantic_hash": ""
   },
@@ -78,21 +78,21 @@
     "semantic_hash": ""
   },
   "examples/action-tracker-detail.ui.md": {
-    "mtime": 1790813892.1018593,
-    "seen": 1790824496.0938501,
-    "ast_hash": "e628411e382bd1c647476779aef09c9f",
+    "mtime": 1790824741.935934,
+    "seen": 1790825038.2971148,
+    "ast_hash": "b920f79529d4515653839321e4b151b6",
     "semantic_hash": ""
   },
   "examples/action-tracker-master.ui.md": {
-    "mtime": 1790813892.1025867,
-    "seen": 1790824496.0938509,
-    "ast_hash": "3131672096d456e381af2308d53c22da",
+    "mtime": 1790824741.9389837,
+    "seen": 1790825038.2971158,
+    "ast_hash": "c71013dd62426e972c429c677a6b2f4a",
     "semantic_hash": ""
   },
   "examples/chat-interface.ui.md": {
-    "mtime": 1790813892.1025867,
-    "seen": 1790824496.0938518,
-    "ast_hash": "8761ebd32f3497fed683a1cb396bd8b9",
+    "mtime": 1790824741.9413083,
+    "seen": 1790825038.297117,
+    "ast_hash": "2685455e4ad2fff9760ff55d71f17926",
     "semantic_hash": ""
   },
   "examples/design-systems/blazor-bootstrap.md": {
@@ -120,9 +120,9 @@
     "semantic_hash": ""
   },
   "examples/mobile-app-layout.ui.md": {
-    "mtime": 1790813892.1028905,
-    "seen": 1790824496.0938568,
-    "ast_hash": "99e868a3e0c905cde4bef33d5ba25d3e",
+    "mtime": 1790824753.2474015,
+    "seen": 1790825038.297122,
+    "ast_hash": "b7afbd8880076e5e4db4e9497c2873b9",
     "semantic_hash": ""
   },
   "examples/responsive-layout.ui.md": {
@@ -150,9 +150,9 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1790824536.8382032,
-    "seen": 1790824629.5648808,
-    "ast_hash": "8cda99a819a68761ac4251644f74fd56",
+    "mtime": 1790825022.2449992,
+    "seen": 1790825038.2970946,
+    "ast_hash": "931d7ffa13fd33a09ae3a20c1bf30b4c",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -165,6 +165,132 @@
     "mtime": 1790824603.2216203,
     "seen": 1790824629.5648909,
     "ast_hash": "b324ad2cb410d8b412bf19f16a0bfe1b",
+    "semantic_hash": ""
+  },
+  ".changeset/config.json": {
+    "mtime": 1790824864.3262227,
+    "seen": 1790825038.297068,
+    "ast_hash": "92963b85d6e5e619050510bd90ae93c4",
+    "semantic_hash": ""
+  },
+  ".prettierrc.json": {
+    "mtime": 1790824864.323311,
+    "seen": 1790825038.2970715,
+    "ast_hash": "49af8c59a24571ad085b02ee046e07ae",
+    "semantic_hash": ""
+  },
+  "eslint.config.js": {
+    "mtime": 1790824912.7222254,
+    "seen": 1790825038.297073,
+    "ast_hash": "737b7c49220210082baa134b9c2c2fb0",
+    "semantic_hash": ""
+  },
+  "package.json": {
+    "mtime": 1790824912.7302253,
+    "seen": 1790825038.2970736,
+    "ast_hash": "92127fbe68124bef9b48dddf642c7705",
+    "semantic_hash": ""
+  },
+  "scripts/check-examples.py": {
+    "mtime": 1790824970.1706283,
+    "seen": 1790825038.2970748,
+    "ast_hash": "e6caf99254e497b241daacffe502017e",
+    "semantic_hash": ""
+  },
+  "scripts/check-repo-hygiene.py": {
+    "mtime": 1790824985.7862298,
+    "seen": 1790825038.2970757,
+    "ast_hash": "29862208846dfaa55a6ebbadc20b7b99",
+    "semantic_hash": ""
+  },
+  "scripts/check-traceability.ts": {
+    "mtime": 1790824958.7662282,
+    "seen": 1790825038.2970765,
+    "ast_hash": "f2bef31e222d24bfb2b3705e5efdfa7a",
+    "semantic_hash": ""
+  },
+  "scripts/lib/traceability.ts": {
+    "mtime": 1790824970.706229,
+    "seen": 1790825038.297081,
+    "ast_hash": "0a769f47b987427c404694be049c7b95",
+    "semantic_hash": ""
+  },
+  "tests/traceability.test.ts": {
+    "mtime": 1790824958.2520273,
+    "seen": 1790825038.2970867,
+    "ast_hash": "bc825d5e6965899bc0054d591019332b",
+    "semantic_hash": ""
+  },
+  "tsconfig.base.json": {
+    "mtime": 1790824884.8841996,
+    "seen": 1790825038.297088,
+    "ast_hash": "6df44d36969db64516cbfa79f90dbdb5",
+    "semantic_hash": ""
+  },
+  "vitest.config.ts": {
+    "mtime": 1790824864.32194,
+    "seen": 1790825038.297089,
+    "ast_hash": "e6eebb0c405113f9e542f29031981b97",
+    "semantic_hash": ""
+  },
+  ".changeset/README.md": {
+    "mtime": 1790824864.327726,
+    "seen": 1790825038.29709,
+    "ast_hash": "a841daa3a538faf77e79aab34ba30dba",
+    "semantic_hash": ""
+  },
+  ".github/workflows/ci.yml": {
+    "mtime": 1790825001.7538023,
+    "seen": 1790825038.2970936,
+    "ast_hash": "4be772967e1a2afc2f2abf0ab67af19f",
+    "semantic_hash": ""
+  },
+  "CHANGELOG.md": {
+    "mtime": 1790825022.2325153,
+    "seen": 1790825038.2970958,
+    "ast_hash": "a089df06f142f59bac37ef55e80ef1ab",
+    "semantic_hash": ""
+  },
+  "CONTRIBUTING.md": {
+    "mtime": 1790825022.2290819,
+    "seen": 1790825038.2970977,
+    "ast_hash": "2ee0bab1114f412f59efd9abc3451f39",
+    "semantic_hash": ""
+  },
+  "docs/adr/ADR-001-parser-strategy.md": {
+    "mtime": 1790824919.3527746,
+    "seen": 1790825038.2971106,
+    "ast_hash": "2f0fbaaac8fd86b25a0440b848ac876c",
+    "semantic_hash": ""
+  },
+  "docs/adr/ADR-002-stack-and-versions.md": {
+    "mtime": 1790824919.3543391,
+    "seen": 1790825038.2971115,
+    "ast_hash": "c1192da2ae6e42a73c3127a853243150",
+    "semantic_hash": ""
+  },
+  "docs/adr/ADR-003-package-boundaries.md": {
+    "mtime": 1790824919.3563206,
+    "seen": 1790825038.2971122,
+    "ast_hash": "e3a8dcfb1f0d3bf7df6d718ced74b173",
+    "semantic_hash": ""
+  },
+  "docs/adr/ADR-004-frontmatter-yaml.md": {
+    "mtime": 1790824919.3587465,
+    "seen": 1790825038.2971132,
+    "ast_hash": "e69fa4b47081b2803f293599feedfbda",
+    "semantic_hash": ""
+  },
+  "docs/rfcs/0000-template.md": {
+    "mtime": 1790825022.230903,
+    "seen": 1790825038.297114,
+    "ast_hash": "9058b243afddc1ece0bb7e45574ce14d",
+    "semantic_hash": ""
+  },
+  "pnpm-workspace.yaml": {
+    "mtime": 1790824864.3187058,
+    "seen": 1790825038.297125,
+    "ast_hash": "15e915330bfbfeab7601d69ae0a8a2ac",
     "semantic_hash": ""
   }
 }

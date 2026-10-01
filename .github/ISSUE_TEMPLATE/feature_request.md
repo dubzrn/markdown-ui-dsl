@@ -7,6 +7,8 @@ assignees: ''
 
 ---
 
+> Changes to DSL syntax or semantics go through the RFC process: see `CONTRIBUTING.md` and `docs/rfcs/0000-template.md`.
+
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 

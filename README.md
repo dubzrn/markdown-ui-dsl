@@ -197,6 +197,8 @@ The v2 program is documented in [`docs/`](docs/):
 - [`reference/`](reference/README.md) — 32 pinned upstream repos (git submodules) for lifting proven code; see [`PLAN.md` §14](docs/PLAN.md#14-reference-library--reference-lift-dont-re-invent). Clone with `--recurse-submodules --shallow-submodules`, or run `scripts/reference.sh init`.
 
 ## Contributing
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for commands, boundaries and the RFC process for language changes.
+
 Contributions and community feedback are highly encouraged! Since this DSL is an evolving standard, your input naturally makes it better.
 
 If you want to contribute:

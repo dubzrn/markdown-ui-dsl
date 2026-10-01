@@ -266,7 +266,7 @@
       "label": "Appendix A \u2014 Feature \u2192 task index",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "appendix a \u2014 feature \u2192 task index",
@@ -278,7 +278,7 @@
       "label": "Conventions",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "conventions",
@@ -290,7 +290,7 @@
       "label": "Phase 0 \u2014 Foundations & hygiene",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "phase 0 \u2014 foundations & hygiene",
@@ -298,11 +298,23 @@
       "source_location": "L32"
     },
     {
+      "id": "docs_tasks_phase_4_sync_verification_and_constraints_the_novel_features",
+      "label": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "phase 4 \u2014 sync, verification and constraints (the novel features)",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L406"
+    },
+    {
       "id": "docs_tasks_phase_5_interop_docs_and_ga_release",
       "label": "Phase 5 \u2014 Interop, docs and GA release",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "phase 5 \u2014 interop, docs and ga release",
@@ -310,23 +322,11 @@
       "source_location": "L505"
     },
     {
-      "id": "docs_tasks_phase_6_2_1_ecosystem",
-      "label": "Phase 6 \u2014 2.1 ecosystem",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "phase 6 \u2014 2.1 ecosystem",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L560"
-    },
-    {
       "id": "docs_tasks_t_001_fix_example_and_documentation_defects",
       "label": "T-001 \u00b7 Fix example and documentation defects",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "t-001 \u00b7 fix example and documentation defects",
@@ -338,7 +338,7 @@
       "label": "T-002 \u00b7 Monorepo scaffold and architecture decision records",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "t-002 \u00b7 monorepo scaffold and architecture decision records",
@@ -350,7 +350,7 @@
       "label": "T-003 \u00b7 Continuous integration",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "t-003 \u00b7 continuous integration",
@@ -362,7 +362,7 @@
       "label": "T-004 \u00b7 Governance and contributor docs",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "t-004 \u00b7 governance and contributor docs",
@@ -374,7 +374,7 @@
       "label": "T-005 \u00b7 Traceability checker",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "t-005 \u00b7 traceability checker",
@@ -382,11 +382,179 @@
       "source_location": "L60"
     },
     {
+      "id": "docs_tasks_t_070_anchor_model",
+      "label": "T-070 \u00b7 Anchor model",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-070 \u00b7 anchor model",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L409"
+    },
+    {
+      "id": "docs_tasks_t_071_code_extraction_adapters_html_tsx",
+      "label": "T-071 \u00b7 Code extraction adapters (HTML, TSX)",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-071 \u00b7 code extraction adapters (html, tsx)",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L415"
+    },
+    {
+      "id": "docs_tasks_t_072_ui_lock_format",
+      "label": "T-072 \u00b7 `.ui.lock` format",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-072 \u00b7 `.ui.lock` format",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L422"
+    },
+    {
+      "id": "docs_tasks_t_073_three_way_classifier",
+      "label": "T-073 \u00b7 Three-way classifier",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-073 \u00b7 three-way classifier",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L428"
+    },
+    {
+      "id": "docs_tasks_t_074_mdui_sync_plan_apply_relink_with_atomic_apply",
+      "label": "T-074 \u00b7 `mdui sync` (plan/apply/relink) with atomic apply",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-074 \u00b7 `mdui sync` (plan/apply/relink) with atomic apply",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L434"
+    },
+    {
+      "id": "docs_tasks_t_075_spec_patcher_and_agent_hand_off_protocol",
+      "label": "T-075 \u00b7 Spec patcher and agent hand-off protocol",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-075 \u00b7 spec patcher and agent hand-off protocol",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L441"
+    },
+    {
+      "id": "docs_tasks_t_076_oracle_ast_expected_accessibility_tree",
+      "label": "T-076 \u00b7 Oracle: AST \u2192 expected accessibility tree",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-076 \u00b7 oracle: ast \u2192 expected accessibility tree",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L447"
+    },
+    {
+      "id": "docs_tasks_t_077_oracle_runner_fidelity_score_and_mutation_benchmark",
+      "label": "T-077 \u00b7 Oracle runner, Fidelity Score and mutation benchmark",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-077 \u00b7 oracle runner, fidelity score and mutation benchmark",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L454"
+    },
+    {
+      "id": "docs_tasks_t_078_oracle_ci_mode_thresholds_and_baselines",
+      "label": "T-078 \u00b7 Oracle CI mode, thresholds and baselines",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-078 \u00b7 oracle ci mode, thresholds and baselines",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L462"
+    },
+    {
+      "id": "docs_tasks_t_079_constraint_schema_evaluator_and_rule_catalogue",
+      "label": "T-079 \u00b7 Constraint schema, evaluator and rule catalogue",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-079 \u00b7 constraint schema, evaluator and rule catalogue",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L468"
+    },
+    {
+      "id": "docs_tasks_t_080_post_code_constraint_verification",
+      "label": "T-080 \u00b7 Post-code constraint verification",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-080 \u00b7 post-code constraint verification",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L475"
+    },
+    {
+      "id": "docs_tasks_t_081_mcp_sync_and_verify_tools",
+      "label": "T-081 \u00b7 MCP sync and verify tools",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-081 \u00b7 mcp sync and verify tools",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L482"
+    },
+    {
+      "id": "docs_tasks_t_082_waivers_and_lock_audit",
+      "label": "T-082 \u00b7 Waivers and lock audit",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-082 \u00b7 waivers and lock audit",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L488"
+    },
+    {
+      "id": "docs_tasks_t_083_conformance_suite_expansion_and_packaging",
+      "label": "T-083 \u00b7 Conformance suite expansion and packaging",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-083 \u00b7 conformance suite expansion and packaging",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L494"
+    },
+    {
       "id": "docs_tasks_t_090_a2ui_exporter",
       "label": "T-090 \u00b7 A2UI exporter",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "t-090 \u00b7 a2ui exporter",
@@ -398,7 +566,7 @@
       "label": "T-091 \u00b7 json-render exporter",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "t-091 \u00b7 json-render exporter",
@@ -410,7 +578,7 @@
       "label": "T-092 \u00b7 Docs site and in-browser playground",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "t-092 \u00b7 docs site and in-browser playground",
@@ -422,7 +590,7 @@
       "label": "T-093 \u00b7 GA hardening",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "t-093 \u00b7 ga hardening",
@@ -434,7 +602,7 @@
       "label": "T-094 \u00b7 Embeddable fence, adapters and SVG renderer",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "t-094 \u00b7 embeddable fence, adapters and svg renderer",
@@ -446,7 +614,7 @@
       "label": "T-095 \u00b7 Token benchmark and stats",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "t-095 \u00b7 token benchmark and stats",
@@ -458,7 +626,7 @@
       "label": "T-098 \u00b7 Release engineering \u2014 v2.0.0",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "t-098 \u00b7 release engineering \u2014 v2.0.0",
@@ -466,143 +634,11 @@
       "source_location": "L550"
     },
     {
-      "id": "docs_tasks_t_100_vs_code_extension_and_language_server",
-      "label": "T-100 \u00b7 VS Code extension and language server",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "t-100 \u00b7 vs code extension and language server",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L563"
-    },
-    {
-      "id": "docs_tasks_t_101_github_action_and_pr_wireframe_diff",
-      "label": "T-101 \u00b7 GitHub Action and PR wireframe diff",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "t-101 \u00b7 github action and pr wireframe diff",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L570"
-    },
-    {
-      "id": "docs_tasks_t_102_figma_importer",
-      "label": "T-102 \u00b7 Figma importer",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "t-102 \u00b7 figma importer",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L576"
-    },
-    {
-      "id": "docs_tasks_t_103_html_importer",
-      "label": "T-103 \u00b7 HTML importer",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "t-103 \u00b7 html importer",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L583"
-    },
-    {
-      "id": "docs_tasks_t_104_adaptive_cards_block_kit_open_json_ui_a2ui_express_exporters",
-      "label": "T-104 \u00b7 Adaptive Cards / Block Kit / Open-JSON-UI / A2UI-Express exporters",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "t-104 \u00b7 adaptive cards / block kit / open-json-ui / a2ui-express exporters",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L589"
-    },
-    {
-      "id": "docs_tasks_t_105_runtime_generative_ui_renderer_react",
-      "label": "T-105 \u00b7 Runtime generative-UI renderer (React)",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "t-105 \u00b7 runtime generative-ui renderer (react)",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L595"
-    },
-    {
-      "id": "docs_tasks_t_106_flutter_oracle_adapter",
-      "label": "T-106 \u00b7 Flutter oracle adapter",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "t-106 \u00b7 flutter oracle adapter",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L602"
-    },
-    {
-      "id": "docs_tasks_t_107_i18n_rtl",
-      "label": "T-107 \u00b7 i18n / RTL",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "t-107 \u00b7 i18n / rtl",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L609"
-    },
-    {
-      "id": "docs_tasks_t_108_dart_and_razor_sync_adapters",
-      "label": "T-108 \u00b7 Dart and Razor sync adapters",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "t-108 \u00b7 dart and razor sync adapters",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L615"
-    },
-    {
-      "id": "docs_tasks_t_110_release_engineering_v2_1",
-      "label": "T-110 \u00b7 Release engineering \u2014 v2.1",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "t-110 \u00b7 release engineering \u2014 v2.1",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L628"
-    },
-    {
-      "id": "docs_tasks_t_111_flow_diagram_rendering_with_embedded_screens",
-      "label": "T-111 \u00b7 Flow-diagram rendering with embedded screens",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "t-111 \u00b7 flow-diagram rendering with embedded screens",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L621"
-    },
-    {
       "id": "docs_tasks_task_breakdown_markdown_ui_dsl_v2_program",
       "label": "Task Breakdown \u2014 Markdown-UI DSL v2 Program",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "task breakdown \u2014 markdown-ui dsl v2 program",
@@ -625,6 +661,90 @@
       "norm_label": "skill.md",
       "source_file": "skills/markdown-ui-dsl/SKILL.md",
       "source_location": "L1"
+    },
+    {
+      "id": "agents",
+      "label": "AGENTS.md",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "README.md",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "agents.md",
+      "source_file": "AGENTS.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "agents_agents_md_markdown_ui_dsl",
+      "label": "AGENTS.md \u2014 markdown-ui-dsl",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "README.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "agents.md \u2014 markdown-ui-dsl",
+      "source_file": "AGENTS.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "agents_checks_before_you_finish",
+      "label": "Checks before you finish",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "README.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "checks before you finish",
+      "source_file": "AGENTS.md",
+      "source_location": "L27"
+    },
+    {
+      "id": "agents_code_map_graphify",
+      "label": "Code map (graphify)",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "README.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "code map (graphify)",
+      "source_file": "AGENTS.md",
+      "source_location": "L21"
+    },
+    {
+      "id": "agents_read_first",
+      "label": "Read first",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "README.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "read first",
+      "source_file": "AGENTS.md",
+      "source_location": "L5"
+    },
+    {
+      "id": "agents_skills",
+      "label": "Skills",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "README.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "skills",
+      "source_file": "AGENTS.md",
+      "source_location": "L30"
+    },
+    {
+      "id": "agents_working_agreements",
+      "label": "Working agreements",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "README.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "working agreements",
+      "source_file": "AGENTS.md",
+      "source_location": "L15"
     },
     {
       "id": "docs_competitive_research",
@@ -660,6 +780,18 @@
       "node_kind": "page",
       "norm_label": "plan.md",
       "source_file": "docs/PLAN.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_skills_index",
+      "label": "SKILLS_INDEX.md",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "README.md",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "skills_index.md",
+      "source_file": "docs/SKILLS_INDEX.md",
       "source_location": "L1"
     },
     {
@@ -975,184 +1107,160 @@
       "source_location": "L395"
     },
     {
-      "id": "docs_tasks_phase_4_sync_verification_and_constraints_the_novel_features",
-      "label": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "id": "docs_skills_index_1_routing_table_which_skill_for_which_work",
+      "label": "1. Routing table \u2014 which skill for which work",
       "_origin": "ast",
       "community": 12,
-      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "community_name": "Agent skills \u2014 index, routing and vetting",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "phase 4 \u2014 sync, verification and constraints (the novel features)",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L406"
+      "norm_label": "1. routing table \u2014 which skill for which work",
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L14"
     },
     {
-      "id": "docs_tasks_t_070_anchor_model",
-      "label": "T-070 \u00b7 Anchor model",
+      "id": "docs_skills_index_2_project_local_skills_32",
+      "label": "2. Project-local skills (32)",
       "_origin": "ast",
       "community": 12,
-      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "community_name": "Agent skills \u2014 index, routing and vetting",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "t-070 \u00b7 anchor model",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L409"
+      "norm_label": "2. project-local skills (32)",
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L35"
     },
     {
-      "id": "docs_tasks_t_071_code_extraction_adapters_html_tsx",
-      "label": "T-071 \u00b7 Code extraction adapters (HTML, TSX)",
+      "id": "docs_skills_index_3_1_vendored_into_the_project_6",
+      "label": "3.1 Vendored into the project (6)",
       "_origin": "ast",
       "community": 12,
-      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "community_name": "Agent skills \u2014 index, routing and vetting",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "t-071 \u00b7 code extraction adapters (html, tsx)",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L415"
+      "norm_label": "3.1 vendored into the project (6)",
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L78"
     },
     {
-      "id": "docs_tasks_t_072_ui_lock_format",
-      "label": "T-072 \u00b7 `.ui.lock` format",
+      "id": "docs_skills_index_3_2_relevant_but_not_vendored",
+      "label": "3.2 Relevant but **not** vendored",
       "_origin": "ast",
       "community": 12,
-      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "community_name": "Agent skills \u2014 index, routing and vetting",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "t-072 \u00b7 `.ui.lock` format",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L422"
+      "norm_label": "3.2 relevant but **not** vendored",
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L89"
     },
     {
-      "id": "docs_tasks_t_073_three_way_classifier",
-      "label": "T-073 \u00b7 Three-way classifier",
+      "id": "docs_skills_index_3_3_proprietary_present_but_not_redistributable",
+      "label": "3.3 Proprietary \u2014 present but not redistributable",
       "_origin": "ast",
       "community": 12,
-      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "community_name": "Agent skills \u2014 index, routing and vetting",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "t-073 \u00b7 three-way classifier",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L428"
+      "norm_label": "3.3 proprietary \u2014 present but not redistributable",
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L112"
     },
     {
-      "id": "docs_tasks_t_074_mdui_sync_plan_apply_relink_with_atomic_apply",
-      "label": "T-074 \u00b7 `mdui sync` (plan/apply/relink) with atomic apply",
+      "id": "docs_skills_index_3_4_not_relevant_to_this_project",
+      "label": "3.4 Not relevant to this project",
       "_origin": "ast",
       "community": 12,
-      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "community_name": "Agent skills \u2014 index, routing and vetting",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "t-074 \u00b7 `mdui sync` (plan/apply/relink) with atomic apply",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L434"
+      "norm_label": "3.4 not relevant to this project",
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L116"
     },
     {
-      "id": "docs_tasks_t_075_spec_patcher_and_agent_hand_off_protocol",
-      "label": "T-075 \u00b7 Spec patcher and agent hand-off protocol",
+      "id": "docs_skills_index_3_index_of_installed_skills_authoring_environment_snapshot_110_skills",
+      "label": "3. Index of installed skills (authoring-environment snapshot, 110 skills)",
       "_origin": "ast",
       "community": 12,
-      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "community_name": "Agent skills \u2014 index, routing and vetting",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "t-075 \u00b7 spec patcher and agent hand-off protocol",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L441"
+      "norm_label": "3. index of installed skills (authoring-environment snapshot, 110 skills)",
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L74"
     },
     {
-      "id": "docs_tasks_t_076_oracle_ast_expected_accessibility_tree",
-      "label": "T-076 \u00b7 Oracle: AST \u2192 expected accessibility tree",
+      "id": "docs_skills_index_4_how_the_25_new_skills_were_found",
+      "label": "4. How the 25 new skills were found",
       "_origin": "ast",
       "community": 12,
-      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "community_name": "Agent skills \u2014 index, routing and vetting",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "t-076 \u00b7 oracle: ast \u2192 expected accessibility tree",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L447"
+      "norm_label": "4. how the 25 new skills were found",
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L125"
     },
     {
-      "id": "docs_tasks_t_077_oracle_runner_fidelity_score_and_mutation_benchmark",
-      "label": "T-077 \u00b7 Oracle runner, Fidelity Score and mutation benchmark",
+      "id": "docs_skills_index_5_vetting_protocol_mandatory_for_any_new_third_party_skill",
+      "label": "5. Vetting protocol (mandatory for any new third-party skill)",
       "_origin": "ast",
       "community": 12,
-      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "community_name": "Agent skills \u2014 index, routing and vetting",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "t-077 \u00b7 oracle runner, fidelity score and mutation benchmark",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L454"
+      "norm_label": "5. vetting protocol (mandatory for any new third-party skill)",
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L142"
     },
     {
-      "id": "docs_tasks_t_078_oracle_ci_mode_thresholds_and_baselines",
-      "label": "T-078 \u00b7 Oracle CI mode, thresholds and baselines",
+      "id": "docs_skills_index_6_adding_updating_removing",
+      "label": "6. Adding, updating, removing",
       "_origin": "ast",
       "community": 12,
-      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "community_name": "Agent skills \u2014 index, routing and vetting",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "t-078 \u00b7 oracle ci mode, thresholds and baselines",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L462"
+      "norm_label": "6. adding, updating, removing",
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L162"
     },
     {
-      "id": "docs_tasks_t_079_constraint_schema_evaluator_and_rule_catalogue",
-      "label": "T-079 \u00b7 Constraint schema, evaluator and rule catalogue",
+      "id": "docs_skills_index_agent_skills_index_routing_and_vetting",
+      "label": "Agent skills \u2014 index, routing and vetting",
       "_origin": "ast",
       "community": 12,
-      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "community_name": "Agent skills \u2014 index, routing and vetting",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "t-079 \u00b7 constraint schema, evaluator and rule catalogue",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L468"
+      "norm_label": "agent skills \u2014 index, routing and vetting",
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L1"
     },
     {
-      "id": "docs_tasks_t_080_post_code_constraint_verification",
-      "label": "T-080 \u00b7 Post-code constraint verification",
+      "id": "docs_skills_index_candidates_deliberately_not_installed",
+      "label": "Candidates deliberately **not** installed",
       "_origin": "ast",
       "community": 12,
-      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "community_name": "Agent skills \u2014 index, routing and vetting",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "t-080 \u00b7 post-code constraint verification",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L475"
+      "norm_label": "candidates deliberately **not** installed",
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L129"
     },
     {
-      "id": "docs_tasks_t_081_mcp_sync_and_verify_tools",
-      "label": "T-081 \u00b7 MCP sync and verify tools",
+      "id": "docs_skills_index_results_for_the_25_6",
+      "label": "Results for the 25 + 6",
       "_origin": "ast",
       "community": 12,
-      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
+      "community_name": "Agent skills \u2014 index, routing and vetting",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "t-081 \u00b7 mcp sync and verify tools",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L482"
-    },
-    {
-      "id": "docs_tasks_t_082_waivers_and_lock_audit",
-      "label": "T-082 \u00b7 Waivers and lock audit",
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "t-082 \u00b7 waivers and lock audit",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L488"
-    },
-    {
-      "id": "docs_tasks_t_083_conformance_suite_expansion_and_packaging",
-      "label": "T-083 \u00b7 Conformance suite expansion and packaging",
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "Phase 4 \u2014 Sync, verification and constraints (the novel features)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "t-083 \u00b7 conformance suite expansion and packaging",
-      "source_file": "docs/TASKS.md",
-      "source_location": "L494"
+      "norm_label": "results for the 25 + 6",
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L155"
     },
     {
       "id": "docs_tasks_phase_2_tooling_and_design_system",
@@ -1983,7 +2091,7 @@
       "node_kind": "heading",
       "norm_label": "10. risks (spec-level; schedule risks are in plan \u00a78)",
       "source_file": "docs/SPEC.md",
-      "source_location": "L413"
+      "source_location": "L417"
     },
     {
       "id": "docs_spec_1_1_what_and_why",
@@ -2127,7 +2235,7 @@
       "node_kind": "heading",
       "norm_label": "5. code style",
       "source_file": "docs/SPEC.md",
-      "source_location": "L252"
+      "source_location": "L256"
     },
     {
       "id": "docs_spec_6_testing_strategy",
@@ -2139,7 +2247,7 @@
       "node_kind": "heading",
       "norm_label": "6. testing strategy",
       "source_file": "docs/SPEC.md",
-      "source_location": "L278"
+      "source_location": "L282"
     },
     {
       "id": "docs_spec_7_boundaries",
@@ -2151,7 +2259,7 @@
       "node_kind": "heading",
       "norm_label": "7. boundaries",
       "source_file": "docs/SPEC.md",
-      "source_location": "L297"
+      "source_location": "L301"
     },
     {
       "id": "docs_spec_8_requirements_ears",
@@ -2163,7 +2271,7 @@
       "node_kind": "heading",
       "norm_label": "8. requirements (ears)",
       "source_file": "docs/SPEC.md",
-      "source_location": "L326"
+      "source_location": "L330"
     },
     {
       "id": "docs_spec_9_success_criteria_release_gates",
@@ -2175,7 +2283,7 @@
       "node_kind": "heading",
       "norm_label": "9. success criteria (release gates)",
       "source_file": "docs/SPEC.md",
-      "source_location": "L399"
+      "source_location": "L403"
     },
     {
       "id": "docs_spec_agent",
@@ -2187,7 +2295,7 @@
       "node_kind": "heading",
       "norm_label": "agent",
       "source_file": "docs/SPEC.md",
-      "source_location": "L369"
+      "source_location": "L373"
     },
     {
       "id": "docs_spec_always",
@@ -2199,7 +2307,7 @@
       "node_kind": "heading",
       "norm_label": "\u2705 always",
       "source_file": "docs/SPEC.md",
-      "source_location": "L299"
+      "source_location": "L303"
     },
     {
       "id": "docs_spec_ask_first",
@@ -2211,7 +2319,7 @@
       "node_kind": "heading",
       "norm_label": "\u26a0\ufe0f ask first",
       "source_file": "docs/SPEC.md",
-      "source_location": "L307"
+      "source_location": "L311"
     },
     {
       "id": "docs_spec_design_system",
@@ -2223,7 +2331,7 @@
       "node_kind": "heading",
       "norm_label": "design system",
       "source_file": "docs/SPEC.md",
-      "source_location": "L361"
+      "source_location": "L365"
     },
     {
       "id": "docs_spec_development_specification_markdown_ui_dsl_v2_program",
@@ -2247,7 +2355,7 @@
       "node_kind": "heading",
       "norm_label": "language",
       "source_file": "docs/SPEC.md",
-      "source_location": "L330"
+      "source_location": "L334"
     },
     {
       "id": "docs_spec_never",
@@ -2259,7 +2367,7 @@
       "node_kind": "heading",
       "norm_label": "\ud83d\udeab never",
       "source_file": "docs/SPEC.md",
-      "source_location": "L315"
+      "source_location": "L319"
     },
     {
       "id": "docs_spec_novel",
@@ -2271,7 +2379,7 @@
       "node_kind": "heading",
       "norm_label": "novel",
       "source_file": "docs/SPEC.md",
-      "source_location": "L385"
+      "source_location": "L389"
     },
     {
       "id": "docs_spec_quality",
@@ -2283,7 +2391,7 @@
       "node_kind": "heading",
       "norm_label": "quality",
       "source_file": "docs/SPEC.md",
-      "source_location": "L377"
+      "source_location": "L381"
     },
     {
       "id": "docs_spec_tooling",
@@ -2295,7 +2403,7 @@
       "node_kind": "heading",
       "norm_label": "tooling",
       "source_file": "docs/SPEC.md",
-      "source_location": "L346"
+      "source_location": "L350"
     },
     {
       "id": "examples_action_tracker_detail_ui",
@@ -2450,6 +2558,219 @@
       "norm_label": "feature_request.md",
       "source_file": ".github/ISSUE_TEMPLATE/feature_request.md",
       "source_location": "L1"
+    },
+    {
+      "id": "docs_tasks_phase_6_2_1_ecosystem",
+      "label": "Phase 6 \u2014 2.1 ecosystem",
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "phase 6 \u2014 2.1 ecosystem",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L560"
+    },
+    {
+      "id": "docs_tasks_t_100_vs_code_extension_and_language_server",
+      "label": "T-100 \u00b7 VS Code extension and language server",
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-100 \u00b7 vs code extension and language server",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L563"
+    },
+    {
+      "id": "docs_tasks_t_101_github_action_and_pr_wireframe_diff",
+      "label": "T-101 \u00b7 GitHub Action and PR wireframe diff",
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-101 \u00b7 github action and pr wireframe diff",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L570"
+    },
+    {
+      "id": "docs_tasks_t_102_figma_importer",
+      "label": "T-102 \u00b7 Figma importer",
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-102 \u00b7 figma importer",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L576"
+    },
+    {
+      "id": "docs_tasks_t_103_html_importer",
+      "label": "T-103 \u00b7 HTML importer",
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-103 \u00b7 html importer",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L583"
+    },
+    {
+      "id": "docs_tasks_t_104_adaptive_cards_block_kit_open_json_ui_a2ui_express_exporters",
+      "label": "T-104 \u00b7 Adaptive Cards / Block Kit / Open-JSON-UI / A2UI-Express exporters",
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-104 \u00b7 adaptive cards / block kit / open-json-ui / a2ui-express exporters",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L589"
+    },
+    {
+      "id": "docs_tasks_t_105_runtime_generative_ui_renderer_react",
+      "label": "T-105 \u00b7 Runtime generative-UI renderer (React)",
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-105 \u00b7 runtime generative-ui renderer (react)",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L595"
+    },
+    {
+      "id": "docs_tasks_t_106_flutter_oracle_adapter",
+      "label": "T-106 \u00b7 Flutter oracle adapter",
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-106 \u00b7 flutter oracle adapter",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L602"
+    },
+    {
+      "id": "docs_tasks_t_107_i18n_rtl",
+      "label": "T-107 \u00b7 i18n / RTL",
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-107 \u00b7 i18n / rtl",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L609"
+    },
+    {
+      "id": "docs_tasks_t_108_dart_and_razor_sync_adapters",
+      "label": "T-108 \u00b7 Dart and Razor sync adapters",
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-108 \u00b7 dart and razor sync adapters",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L615"
+    },
+    {
+      "id": "docs_tasks_t_110_release_engineering_v2_1",
+      "label": "T-110 \u00b7 Release engineering \u2014 v2.1",
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-110 \u00b7 release engineering \u2014 v2.1",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L628"
+    },
+    {
+      "id": "docs_tasks_t_111_flow_diagram_rendering_with_embedded_screens",
+      "label": "T-111 \u00b7 Flow-diagram rendering with embedded screens",
+      "_origin": "ast",
+      "community": 26,
+      "community_name": "Phase 6 \u2014 2.1 ecosystem",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "t-111 \u00b7 flow-diagram rendering with embedded screens",
+      "source_file": "docs/TASKS.md",
+      "source_location": "L621"
+    },
+    {
+      "id": "scripts_graph",
+      "label": "graph.sh",
+      "_origin": "ast",
+      "community": 27,
+      "community_name": "graph.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "graph.sh",
+      "source_file": "scripts/graph.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_graph_g",
+      "label": "g()",
+      "_origin": "ast",
+      "community": 27,
+      "community_name": "graph.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "g()",
+      "source_file": "scripts/graph.sh",
+      "source_location": "L22"
+    },
+    {
+      "id": "scripts_graph_sh__entry",
+      "label": "graph.sh script",
+      "_origin": "ast",
+      "community": 27,
+      "community_name": "graph.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "graph.sh script",
+      "source_file": "scripts/graph.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "claude",
+      "label": "CLAUDE.md",
+      "_origin": "ast",
+      "community": 28,
+      "community_name": "CLAUDE.md",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "claude.md",
+      "source_file": "CLAUDE.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "claude_claude_code_specifics",
+      "label": "Claude Code specifics",
+      "_origin": "ast",
+      "community": 28,
+      "community_name": "CLAUDE.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "claude code specifics",
+      "source_file": "CLAUDE.md",
+      "source_location": "L3"
     },
     {
       "id": "scripts_reference",
@@ -2648,6 +2969,18 @@
       "norm_label": "14. reference library \u2014 `reference/` (lift, don't re-invent)",
       "source_file": "docs/PLAN.md",
       "source_location": "L306"
+    },
+    {
+      "id": "docs_plan_15_agent_skills_and_the_code_map_development_environment",
+      "label": "15. Agent skills and the code map (development environment)",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "Implementation Plan \u2014 Markdown-UI DSL v2 Program",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "15. agent skills and the code map (development environment)",
+      "source_file": "docs/PLAN.md",
+      "source_location": "L418"
     },
     {
       "id": "docs_plan_1_planning_principles",
@@ -3487,7 +3820,7 @@
       "node_kind": "heading",
       "norm_label": "contributing",
       "source_file": "README.md",
-      "source_location": "L198"
+      "source_location": "L199"
     },
     {
       "id": "readme_design_theming",
@@ -3547,7 +3880,7 @@
       "node_kind": "heading",
       "norm_label": "license",
       "source_file": "README.md",
-      "source_location": "L210"
+      "source_location": "L211"
     },
     {
       "id": "readme_markdown_ui_dsl_for_ai_agents",
@@ -4200,6 +4533,18 @@
   ],
   "links": [
     {
+      "source": "scripts_graph_sh__entry",
+      "target": "scripts_graph_g",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "scripts/graph.sh",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
       "source": "scripts_reference_manifest_licence",
       "target": "scripts_reference_manifest_declared",
       "relation": "calls",
@@ -4569,6 +4914,83 @@
       "context": "import",
       "source_file": "scripts/skills.py",
       "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "agents",
+      "target": "agents_agents_md_markdown_ui_dsl",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "agents_agents_md_markdown_ui_dsl",
+      "target": "agents_working_agreements",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "agents_agents_md_markdown_ui_dsl",
+      "target": "agents_code_map_graphify",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "agents_agents_md_markdown_ui_dsl",
+      "target": "agents_checks_before_you_finish",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "agents_agents_md_markdown_ui_dsl",
+      "target": "agents_skills",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "agents_agents_md_markdown_ui_dsl",
+      "target": "agents_read_first",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "claude",
+      "target": "claude_claude_code_specifics",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": "L3",
       "weight": 1.0
     },
     {
@@ -5332,6 +5754,17 @@
     },
     {
       "source": "docs_plan_implementation_plan_markdown_ui_dsl_v2_program",
+      "target": "docs_plan_15_agent_skills_and_the_code_map_development_environment",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/PLAN.md",
+      "source_location": "L418",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_plan_implementation_plan_markdown_ui_dsl_v2_program",
       "target": "docs_plan_3_dependency_graph_phase_level_with_spine",
       "relation": "contains",
       "_origin": "ast",
@@ -5350,6 +5783,149 @@
       "confidence_score": 1.0,
       "source_file": "docs/PLAN.md",
       "source_location": "L88",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_skills_index",
+      "target": "docs_skills_index_agent_skills_index_routing_and_vetting",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_skills_index_3_index_of_installed_skills_authoring_environment_snapshot_110_skills",
+      "target": "docs_skills_index_3_3_proprietary_present_but_not_redistributable",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L112",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_skills_index_3_index_of_installed_skills_authoring_environment_snapshot_110_skills",
+      "target": "docs_skills_index_3_4_not_relevant_to_this_project",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L116",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_skills_index_3_index_of_installed_skills_authoring_environment_snapshot_110_skills",
+      "target": "docs_skills_index_3_1_vendored_into_the_project_6",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_skills_index_3_index_of_installed_skills_authoring_environment_snapshot_110_skills",
+      "target": "docs_skills_index_3_2_relevant_but_not_vendored",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L89",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_skills_index_4_how_the_25_new_skills_were_found",
+      "target": "docs_skills_index_candidates_deliberately_not_installed",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L129",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_skills_index_5_vetting_protocol_mandatory_for_any_new_third_party_skill",
+      "target": "docs_skills_index_results_for_the_25_6",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L155",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_skills_index_agent_skills_index_routing_and_vetting",
+      "target": "docs_skills_index_4_how_the_25_new_skills_were_found",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L125",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_skills_index_agent_skills_index_routing_and_vetting",
+      "target": "docs_skills_index_1_routing_table_which_skill_for_which_work",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_skills_index_agent_skills_index_routing_and_vetting",
+      "target": "docs_skills_index_5_vetting_protocol_mandatory_for_any_new_third_party_skill",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L142",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_skills_index_agent_skills_index_routing_and_vetting",
+      "target": "docs_skills_index_6_adding_updating_removing",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L162",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_skills_index_agent_skills_index_routing_and_vetting",
+      "target": "docs_skills_index_2_project_local_skills_32",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_skills_index_agent_skills_index_routing_and_vetting",
+      "target": "docs_skills_index_3_index_of_installed_skills_authoring_environment_snapshot_110_skills",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SKILLS_INDEX.md",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -5448,7 +6024,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/SPEC.md",
-      "source_location": "L299",
+      "source_location": "L303",
       "weight": 1.0
     },
     {
@@ -5459,7 +6035,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/SPEC.md",
-      "source_location": "L307",
+      "source_location": "L311",
       "weight": 1.0
     },
     {
@@ -5470,7 +6046,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/SPEC.md",
-      "source_location": "L315",
+      "source_location": "L319",
       "weight": 1.0
     },
     {
@@ -5481,7 +6057,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/SPEC.md",
-      "source_location": "L330",
+      "source_location": "L334",
       "weight": 1.0
     },
     {
@@ -5492,7 +6068,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/SPEC.md",
-      "source_location": "L346",
+      "source_location": "L350",
       "weight": 1.0
     },
     {
@@ -5503,7 +6079,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/SPEC.md",
-      "source_location": "L361",
+      "source_location": "L365",
       "weight": 1.0
     },
     {
@@ -5514,7 +6090,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/SPEC.md",
-      "source_location": "L369",
+      "source_location": "L373",
       "weight": 1.0
     },
     {
@@ -5525,7 +6101,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/SPEC.md",
-      "source_location": "L377",
+      "source_location": "L381",
       "weight": 1.0
     },
     {
@@ -5536,7 +6112,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/SPEC.md",
-      "source_location": "L385",
+      "source_location": "L389",
       "weight": 1.0
     },
     {
@@ -5580,7 +6156,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/SPEC.md",
-      "source_location": "L252",
+      "source_location": "L256",
       "weight": 1.0
     },
     {
@@ -5591,7 +6167,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/SPEC.md",
-      "source_location": "L278",
+      "source_location": "L282",
       "weight": 1.0
     },
     {
@@ -5602,7 +6178,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/SPEC.md",
-      "source_location": "L297",
+      "source_location": "L301",
       "weight": 1.0
     },
     {
@@ -5624,7 +6200,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/SPEC.md",
-      "source_location": "L326",
+      "source_location": "L330",
       "weight": 1.0
     },
     {
@@ -5635,7 +6211,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/SPEC.md",
-      "source_location": "L399",
+      "source_location": "L403",
       "weight": 1.0
     },
     {
@@ -5646,7 +6222,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/SPEC.md",
-      "source_location": "L413",
+      "source_location": "L417",
       "weight": 1.0
     },
     {
@@ -7516,7 +8092,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L198",
+      "source_location": "L199",
       "weight": 1.0
     },
     {
@@ -7527,7 +8103,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L210",
+      "source_location": "L211",
       "weight": 1.0
     },
     {
@@ -7594,6 +8170,17 @@
       "confidence_score": 1.0,
       "source_file": "README.md",
       "source_location": "L122",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_graph",
+      "target": "scripts_graph_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "scripts/graph.sh",
+      "source_location": "L1",
       "weight": 1.0
     },
     {
@@ -7872,6 +8459,17 @@
       "weight": 1.0
     },
     {
+      "source": "scripts_graph",
+      "target": "scripts_graph_g",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "scripts/graph.sh",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
       "source": "scripts_reference",
       "target": "scripts_reference_die",
       "relation": "defines",
@@ -8016,6 +8614,17 @@
     },
     {
       "source": "docs_plan",
+      "target": "docs_skills_index",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/PLAN.md",
+      "source_location": "L420",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_plan",
       "target": "docs_spec",
       "relation": "references",
       "_origin": "ast",
@@ -8133,6 +8742,28 @@
       "confidence_score": 1.0,
       "source_file": "README.md",
       "source_location": "L195",
+      "weight": 1.0
+    },
+    {
+      "source": "readme",
+      "target": "agents",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "L196",
+      "weight": 1.0
+    },
+    {
+      "source": "readme",
+      "target": "docs_skills_index",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "L196",
       "weight": 1.0
     },
     {
