@@ -35,6 +35,23 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
 
+  e2e:
+    name: e2e (axe-core on rendered output, Chromium)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm exec playwright-core install --with-deps chromium
+      - run: pnpm test:e2e
+        env:
+          CHROMIUM_PATH: ""
+
   build-node20:
     name: build on Node 20 (consumer floor)
     runs-on: ubuntu-latest

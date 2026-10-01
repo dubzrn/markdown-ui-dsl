@@ -1,0 +1,68 @@
+<main class="mdui mdui-style-none" data-theme="auto" data-bp-sm-layout="stacked" data-bp-sm-gap="compact" data-bp-md-layout="grid-2" data-bp-md-gap="default" data-bp-lg-layout="grid-3" data-bp-lg-gap="spacious">
+<h1>Responsive Layout Example</h1>
+<p>This spec demonstrates <code>@breakpoint</code> responsive directives (Option C).</p>
+<p>Each directive scopes design tokens to a viewport size using the blockquote</p>
+<p>hint syntax already supported by the DSL. Directives are mobile-first and</p>
+<p>additive — <code>@sm</code> sets the base, larger breakpoints layer on top.</p>
+<hr>
+<h2>Page Header</h2>
+<header class="mdui-header" data-bp-sm-layout="stacked" data-bp-sm-gap="compact" data-bp-md-layout="row">
+<p><span class="mdui-img" role="img" aria-label="Brand Logo">Brand Logo</span></p>
+<div class="mdui-tabs" role="tablist"><button type="button" role="tab" aria-selected="true">Products</button><button type="button" role="tab" aria-selected="false" tabindex="-1">Pricing</button><button type="button" role="tab" aria-selected="false" tabindex="-1">About</button></div>
+<p><button type="button" data-action="login">Login</button></p>
+</header>
+<hr>
+<h2>Hero Section</h2>
+<div class="mdui-col" data-bp-sm-padding="compact" data-bp-sm-text="base" data-bp-lg-padding="spacious" data-bp-lg-text="large">
+<h1>Build something great.</h1>
+<p>Responsive design, defined in plain text.</p>
+<div class="mdui-row" data-bp-sm-layout="stacked" data-bp-sm-gap="compact" data-bp-md-layout="row" data-bp-md-gap="default">
+<p><button type="button" data-action="cta">Get Started</button></p>
+<p><button type="button" data-href="/docs">View Docs</button></p>
+</div>
+</div>
+<hr>
+<h2>Product Cards</h2>
+<ul>
+<li>
+<section class="mdui-card" data-bp-sm-padding="compact" data-bp-lg-padding="default">
+<p><span class="mdui-img" role="img" aria-label="Feature Icon A">Feature Icon A</span></p>
+<h3>Fast</h3>
+<p>Optimised for performance at every breakpoint.</p>
+</section></li>
+</ul>
+<ul>
+<li>
+<section class="mdui-card" data-bp-sm-padding="compact" data-bp-lg-padding="default">
+<p><span class="mdui-img" role="img" aria-label="Feature Icon B">Feature Icon B</span></p>
+<h3>Flexible</h3>
+<p>Token-driven layout adapts to any screen size.</p>
+</section></li>
+</ul>
+<ul>
+<li>
+<section class="mdui-card" data-bp-sm-padding="compact" data-bp-lg-padding="default">
+<p><span class="mdui-img" role="img" aria-label="Feature Icon C">Feature Icon C</span></p>
+<h3>Simple</h3>
+<p>Write once in plain Markdown, generate anywhere.</p>
+</section></li>
+</ul>
+<hr>
+<h2>Side-by-Side Content Block</h2>
+<section class="mdui-card" data-bp-sm-layout="stacked" data-bp-sm-padding="compact" data-bp-lg-layout="row" data-bp-lg-padding="default">
+<p><span class="mdui-img" role="img" aria-label="Product Screenshot (rounded)">Product Screenshot (rounded)</span></p>
+<div class="mdui-col">
+<h2>Why Responsive DSL?</h2>
+<p>Design-system tokens map cleanly to Tailwind responsive prefixes,</p>
+<p>Flutter LayoutBuilder constraints, or Bootstrap infix classes —</p>
+<p>depending on your target framework.</p>
+<p><button type="button" data-href="/docs/responsive">Learn More</button></p>
+</div>
+</section>
+<hr>
+<footer class="mdui-footer" data-bp-sm-layout="stacked" data-bp-sm-gap="compact" data-bp-sm-text="small" data-bp-md-layout="row" data-bp-md-gap="default">
+<p>© 2026 Markdown-UI DSL</p>
+<p><button type="button" data-href="https://github.com/MegaByteMark/markdown-ui-dsl">GitHub</button></p>
+<p><button type="button" data-href="/license">License</button></p>
+</footer>
+</main>

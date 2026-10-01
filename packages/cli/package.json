@@ -18,7 +18,8 @@
   ],
   "dependencies": {
     "@mdui/core": "workspace:*",
-    "@mdui/lint": "workspace:*"
+    "@mdui/lint": "workspace:*",
+    "@mdui/render": "workspace:*"
   },
   "scripts": {
     "build": "tsup src/index.ts src/bin.ts --format esm --dts --clean",

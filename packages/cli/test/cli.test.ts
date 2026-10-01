@@ -189,6 +189,30 @@ describe("fmt", () => {
   });
 });
 
+describe("render", () => {
+  it("writes HTML to stdout or --out, honours --style/--state, exits 1 on errors", () => {
+    const src =
+      "---\ndsl: 2.0\n---\n::: REGION r :::\n::: STATE default :::\nA\n--- END ---\n::: STATE empty :::\nB\n--- END ---\n--- END ---\n";
+    const m = memIo({ "/proj/a.ui.md": src });
+    expect(main(["render", "a.ui.md", "--style", "wireframe", "--state", "empty"], m.io)).toBe(
+      EXIT.ok,
+    );
+    expect(m.out()).toContain("mdui-style-wireframe");
+    expect(m.out()).toContain('data-state="empty"');
+    const files: Record<string, string> = { "/proj/a.ui.md": GOOD };
+    expect(main(["render", "a.ui.md", "--out", "out/a.html"], memIo(files).io)).toBe(EXIT.ok);
+    expect(files["/proj/out/a.html"]).toContain("<!doctype html>");
+    expect(main(["render", "a.ui.md", "--style", "neon"], memIo(files).io)).toBe(EXIT.usage);
+    expect(main(["render", "a.ui.md", "--theme", "blue"], memIo(files).io)).toBe(EXIT.usage);
+    expect(
+      main(["render", "a.ui.md", "b.ui.md"], memIo({ ...files, "/proj/b.ui.md": GOOD }).io),
+    ).toBe(EXIT.usage);
+    expect(main(["render", "bad.ui.md"], memIo({ "/proj/bad.ui.md": BAD }).io)).toBe(
+      EXIT.diagnostics,
+    );
+  });
+});
+
 describe("glob and file expansion", () => {
   const files = {
     "/proj/a.ui.md": GOOD,

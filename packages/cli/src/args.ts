@@ -9,12 +9,16 @@ export interface Args {
     config: string | undefined;
     compact: boolean;
     check: boolean;
+    style: string | undefined;
+    state: string | undefined;
+    theme: string | undefined;
+    out: string | undefined;
   };
 }
 
 export class UsageError extends Error {}
 
-const VALUE_FLAGS = ["--fail-on", "--config"];
+const VALUE_FLAGS = ["--fail-on", "--config", "--style", "--state", "--theme", "--out"];
 
 export function parseArgs(argv: string[]): Args {
   const out: Args = {
@@ -28,6 +32,10 @@ export function parseArgs(argv: string[]): Args {
       config: undefined,
       compact: false,
       check: false,
+      style: undefined,
+      state: undefined,
+      theme: undefined,
+      out: undefined,
     },
   };
   const rest: string[] = [];
@@ -49,7 +57,11 @@ export function parseArgs(argv: string[]): Args {
       if (value === undefined || value.startsWith("--"))
         throw new UsageError(`${name} needs a value`);
       if (name === "--fail-on") out.flags.failOn = value;
-      else out.flags.config = value;
+      else if (name === "--config") out.flags.config = value;
+      else if (name === "--style") out.flags.style = value;
+      else if (name === "--state") out.flags.state = value;
+      else if (name === "--theme") out.flags.theme = value;
+      else out.flags.out = value;
     } else if (a.startsWith("-") && a !== "-") throw new UsageError(`unknown option ${a}`);
     else rest.push(a);
   }

@@ -64,6 +64,8 @@
 | T-028 | done | `@mdui/lint`: 6 structural rules, config severities; the four original defective examples fail balanced-blocks with correct spans |
 | **Checkpoint 1** | reached (pending maintainer review of RFC-0001 §7) | grammar, conformance, v1 compat gate, CLI, clean examples |
 | T-034 | done | `format()` + `mdui fmt [--check]`; idempotent and AST-preserving over the corpus and 20k generated docs; self-checking (falls back to source on any non-equivalent line); examples formatted, CI enforces `fmt --check` |
+| T-040 | done | `@mdui/render`: semantic HTML + ARIA, styles sketch/clean/wireframe/none, states, directive data-attrs, URL/attr sanitising; 23 tests; **axe-core dogfood**: 42 runs (7 examples × 3 styles × light/dark) pass in Chromium (`pnpm test:e2e`, CI job `e2e`); found and fixed real dark-theme contrast bugs |
+| T-041 | partial | `mdui render` (stdout/--out, --style/--state/--theme); watch, live reload, toggles, --scale/--dpi pending |
 | T-030 | next | lint engine completion |
 
 ### T-001 · Fix example and documentation defects

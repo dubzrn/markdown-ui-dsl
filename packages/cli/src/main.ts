@@ -1,6 +1,7 @@
 import { posix } from "node:path";
 import { analyze, format, parse, type Diagnostic, type Severity } from "@mdui/core";
 import { lint } from "@mdui/lint";
+import { render } from "@mdui/render";
 import { parseArgs, UsageError, type Args } from "./args.js";
 import { ConfigError, loadConfig, type Config, type FailOn } from "./config.js";
 import { expand } from "./glob.js";
@@ -19,6 +20,7 @@ Commands:
   validate   Parse and analyse; report syntax and semantic diagnostics
   lint       Validate plus the rule catalogue (see mdui.config.json "rules")
   ast        Print the JSON AST of one file
+  render     Render one file to HTML (--style sketch|clean|wireframe|none, --state, --theme, --out)
   fmt        Canonical formatting (rewrites files; --check only reports)
 
 Options:
@@ -112,6 +114,38 @@ function run(io: Io, args: Args, cfg: Config): number {
     return out.diagnostics.some((d) => failsOn(d, failOn)) ? EXIT.diagnostics : EXIT.ok;
   }
 
+  if (cmd === "render") {
+    if (files.length !== 1) throw new UsageError("render takes exactly one file");
+    const style = args.flags.style ?? "clean";
+    if (!["sketch", "clean", "wireframe", "none"].includes(style))
+      throw new UsageError("--style must be sketch|clean|wireframe|none");
+    const theme = args.flags.theme ?? "auto";
+    if (!["auto", "light", "dark"].includes(theme))
+      throw new UsageError("--theme must be auto|light|dark");
+    const file = files[0] as string;
+    const doc = parse(readSource(io, root, file) as string);
+    const a = analyze(doc, { file: rel(file), readFile });
+    const includes = new Map(
+      a.includes.flatMap((i) =>
+        i.path !== undefined && i.doc !== undefined ? [[i.path, i.doc] as const] : [],
+      ),
+    );
+    const html = render(doc, {
+      style: style as "sketch" | "clean" | "wireframe" | "none",
+      theme: theme as "auto" | "light" | "dark",
+      includes,
+      ...(args.flags.state !== undefined ? { state: args.flags.state } : {}),
+    });
+    if (args.flags.out !== undefined) io.writeFile(posix.resolve(io.cwd, args.flags.out), html);
+    else io.stdout(html);
+    const diags = [...doc.diagnostics, ...a.diagnostics];
+    for (const d of diags)
+      io.stderr(
+        `${file}:${d.span.start.line}:${d.span.start.col} ${d.severity} ${d.code} ${d.message}\n`,
+      );
+    return diags.some((d) => failsOn(d, failOn)) ? EXIT.diagnostics : EXIT.ok;
+  }
+
   if (cmd === "fmt") {
     const changed: string[] = [];
     for (const file of files) {
@@ -167,7 +201,7 @@ function run(io: Io, args: Args, cfg: Config): number {
     : EXIT.ok;
 }
 
-const COMMANDS = ["validate", "lint", "ast", "fmt"];
+const COMMANDS = ["validate", "lint", "ast", "fmt", "render"];
 
 /** CLI entry. Never throws; returns the process exit code. */
 export function main(argv: string[], io: Io): number {

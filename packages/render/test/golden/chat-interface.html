@@ -1,0 +1,38 @@
+<main class="mdui mdui-style-none" data-theme="auto">
+<div class="mdui-col">
+<h2>AI Assistant</h2>
+<p>Let&#39;s build something amazing together.</p>
+<hr>
+<div class="mdui-bubble mdui-bubble--user" role="group" aria-label="User message">
+<p>Hi! Can you help me write a python script to reverse a string?</p>
+</div>
+<div class="mdui-bubble mdui-bubble--agent" role="group" aria-label="Agent message">
+<p>Of course! Here is a simple Python script to reverse a string using slicing:</p>
+<pre><code class="language-python">def reverse_string(text):
+    return text[::-1]
+
+print(reverse_string(&quot;Hello, World!&quot;))</code></pre>
+<p>Let me know if you need help with anything else!</p>
+<div class="mdui-row">
+<p><button type="button" data-action="copy">Copy Code</button></p>
+<p><button type="button" data-action="run">Run Code</button></p>
+</div>
+</div>
+<div class="mdui-bubble mdui-bubble--user" role="group" aria-label="User message">
+<p>Awesome, that works. What about using a loop instead?</p>
+</div>
+<div class="mdui-bubble mdui-bubble--agent" role="group" aria-label="Agent message">
+<p>Sure, if you prefer an iterative approach, you can do it like this:</p>
+<pre><code class="language-python">def reverse_string_loop(text):
+    reversed_text = &quot;&quot;
+    for char in text:
+        reversed_text = char + reversed_text
+    return reversed_text</code></pre>
+</div>
+<hr>
+<div class="mdui-row">
+<p><input type="text" placeholder="Message the AI assistant..." aria-label="Message the AI assistant..."></p>
+<p><button type="button" data-action="send">Send</button></p>
+</div>
+</div>
+</main>

@@ -10,6 +10,7 @@
   "scripts": {
     "build": "pnpm -r --workspace-concurrency=1 build",
     "test": "vitest run",
+    "test:e2e": "vitest run --config vitest.e2e.config.ts",
     "typecheck": "pnpm -r typecheck",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -24,8 +25,10 @@
     "@eslint/js": "^10.0.0",
     "@types/node": "^22.20.4",
     "ajv": "^8.20.0",
+    "axe-core": "^4.13.0",
     "eslint": "10.11.0",
     "fast-check": "4.10.2",
+    "playwright-core": "^1.63.0",
     "prettier": "3.9.9",
     "tsup": "8.5.1",
     "typescript": "6.0.3",
