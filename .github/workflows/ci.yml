@@ -1,0 +1,90 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Vitest 5 needs Node >=22.12 (ADR-002); Node 20 is covered by the build job below.
+  check:
+    name: lint · typecheck · test · build (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm format:check
+      - run: pnpm typecheck
+      - run: pnpm build
+      - run: pnpm test
+
+  build-node20:
+    name: build on Node 20 (consumer floor)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+  example-gate:
+    name: example gate (balanced containers)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/check-examples.py
+
+  traceability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/check-traceability.ts
+
+  skills-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/skills.py verify
+      - run: python3 scripts/skills.py validate
+
+  reference-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - run: python3 scripts/check-repo-hygiene.py
+      # Shallow, sparse init keeps this job fast; the full manifest check runs when submodules are present.
+      - name: Initialise reference submodules (shallow)
+        run: git submodule update --init --depth 1 --jobs 8
+      - run: python3 scripts/check-repo-hygiene.py
+      - name: Pins unchanged by this PR
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch --depth 1 origin "${{ github.base_ref }}"
+          if git diff --name-only FETCH_HEAD HEAD | grep -E '^reference/.+/.+' | grep -vE '^reference/(README.md|manifest.json)$' >/dev/null; then
+            echo "::warning::Submodule pins changed — confirm this is intentional (scripts/reference.sh update)."
+          fi
