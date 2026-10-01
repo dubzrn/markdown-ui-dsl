@@ -49,6 +49,18 @@ describe("expected tree (T-076)", () => {
       "contentinfo",
     ]);
   });
+  it("only a page-level HEADER/FOOTER is a landmark; one inside content or mid-page is a section header", () => {
+    expect(exp("::: HEADER :::\n--- END ---\n# T\n::: FOOTER :::\n--- END ---\n")).toEqual([
+      "banner",
+      "heading:T#1",
+      "contentinfo",
+    ]);
+    expect(exp("# T\n::: HEADER :::\n--- END ---\n[ B ](#b)\n")).toEqual([
+      "heading:T#1",
+      "button:B",
+    ]);
+    expect(exp("::: CARD :::\n::: HEADER :::\n--- END ---\n--- END ---\n")).toEqual([]);
+  });
   it("a placeholder is optionally not a name", () => {
     expect(exp("[ text: Phone ]\n", { inputName: "none" })).toEqual(["textbox"]);
   });
@@ -59,8 +71,8 @@ describe("expected tree (T-076)", () => {
     expect(exp(src, { state: "error" })).toEqual(["button:Retry"]);
   });
   it("weights follow the defaults and can be configured", () => {
-    const e = expectedTree(parse(`${H}# T\n[ B ](#b)\nplain\n::: HEADER :::\n--- END ---\n`));
-    expect(e.map((x) => x.weight)).toEqual([2, 3, 1, 2]);
+    const e = expectedTree(parse(`${H}::: HEADER :::\n--- END ---\n# T\n[ B ](#b)\nplain\n`));
+    expect(e.map((x) => x.weight)).toEqual([2, 2, 3, 1]);
     expect(
       expectedTree(parse(`${H}[ B ](#b)\n`), { weights: { interactive: 10 } })[0]?.weight,
     ).toBe(10);
@@ -230,7 +242,7 @@ describe("baselines and CI verdict (T-078)", () => {
 });
 
 describe("post-code constraints (T-080)", () => {
-  const spec = `${H}# Page\n::: HEADER :::\n--- END ---\n[ text: Email ]{: label="Email" }\n[ Save ](#s)\n`;
+  const spec = `${H}::: HEADER :::\n--- END ---\n# Page\n[ text: Email ]{: label="Email" }\n[ Save ](#s)\n`;
   it("labels, heading order, landmarks, help and tap targets are verified and mapped to spec lines", () => {
     const actual = [
       A("textbox", ""),

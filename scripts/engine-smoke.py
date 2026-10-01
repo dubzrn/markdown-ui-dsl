@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Engine smoke test (T-060): do real grammar engines accept the emitted grammar, accept generated documents and refuse broken ones?
 
-  python3 scripts/engine-smoke.py            (needs: pip install lark llguidance tokenizers)
+  python3 scripts/engine-smoke.py            (needs: pip install lark llguidance tokenizers xgrammar)
 
 Engines missing -> that engine is reported SKIPPED (exit 0). Any engine present and failing -> exit 1.
 This checks *acceptance of the grammar by the engine's matcher*. It does not run an LLM, so it does not show that a model
@@ -128,7 +128,38 @@ try:
 except ImportError as e:
     report("llguidance", "SKIPPED", f"pip install llguidance tokenizers ({e})")
 
-# ---- engine 3: llama.cpp (native GBNF, its own parser and matcher) ----
+# ---- engine 3: xgrammar (its own EBNF parser, compiler and matcher) ----
+try:
+    if not wanted("xgrammar"):
+        raise ImportError("not selected")
+    import xgrammar as xgr
+
+    # a byte-level vocabulary (one token per byte + eos): the matcher is exercised through accept_token like a decoder would
+    vocab = [bytes([b]) for b in range(256)] + [b"<eos>"]
+    info = xgr.TokenizerInfo(vocab, xgr.VocabType.RAW, vocab_size=len(vocab), stop_token_ids=[256])
+    compiled = xgr.GrammarCompiler(info).compile_grammar(xgr.Grammar.from_ebnf(gbnf_text))
+
+    def xg_accepts(doc):
+        m = xgr.GrammarMatcher(compiled, terminate_without_stop_token=True)
+        for b in doc.encode("utf-8"):
+            if not m.accept_token(b):
+                return False
+        return m.is_terminated() or m.accept_token(256)
+
+    rej = [d for d in good if not xg_accepts(d)]
+    leaked = [d for d in bad if xg_accepts(d)]
+    report("xgrammar (GBNF)", "PASS" if not rej and not leaked else "FAIL",
+           f"{len(good) - len(rej)}/{len(good)} good accepted, {len(bad) - len(leaked)}/{len(bad)} bad refused")
+    for d in rej[:2]:
+        print("  rejected:", repr(d[:120]))
+    for d in leaked[:2]:
+        print("  accepted bad:", repr(d[:120]))
+except ImportError as e:
+    report("xgrammar", "SKIPPED", f"pip install xgrammar ({e})")
+except Exception as e:  # noqa: BLE001
+    report("xgrammar (GBNF)", "FAIL", f"{type(e).__name__}: {str(e)[:200]}")
+
+# ---- engine 4: llama.cpp (native GBNF, its own parser and matcher) ----
 # Build once:  cmake --build <llama.cpp>/build --target test-gbnf-validator   then   LLAMA_GBNF_VALIDATOR=<path to binary>
 validator = os.environ.get("LLAMA_GBNF_VALIDATOR", "")
 if not wanted("llama.cpp"):

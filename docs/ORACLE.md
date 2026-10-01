@@ -19,7 +19,9 @@ Needs the optional peer dependency `playwright-core` and a Chromium (`--chromium
 | `[x] Agree` / `( ) Pick` / `[on] Dark` / `[v] Size {…}` | `checkbox` / `radio` / `switch` / `combobox` with the label as name |
 | `[ IMG: Logo ]` | `img "Logo"` |
 | `#`..`######` | `heading` with level |
-| `HEADER` / `FOOTER` / `MODAL` | `banner` / `contentinfo` / `dialog` |
+| `HEADER` / `FOOTER` at page level (leading / trailing, top-level) | `banner` / `contentinfo` |
+| `HEADER` / `FOOTER` anywhere else (in a card, mid-page) | none: a section header is not a landmark in HTML |
+| `MODAL` | `dialog` |
 | `\|[ A ]\| B \|` | `tablist` with `tab "A"`, `tab "B"` |
 | list, table | `list`, `table` |
 | plain text line | `text` (weight 1) |
@@ -46,4 +48,4 @@ When the spec declares `constraints:`, these are verified on the live page and r
 The apps are produced by this project's renderer, so they are closer to their specs than hand-written code would be, and the mutations are textual edits of that HTML. The benchmark shows the matcher separates semantic changes from refactors; it is not a measurement on third-party applications. No Flutter/native adapter.
 
 ## What running the Oracle on the renderer found
-Dogfooding the Oracle against `@mdui/render` exposed real defects, now fixed: a toggle's accessible name included its state ("Dark: on"; the state belongs in `aria-checked`), and a top-of-page HEADER or bottom FOOTER was rendered inside `<main>` where it is not a `banner`/`contentinfo` landmark. Known remaining divergence: a spec whose HEADER is not at the top (e.g. `responsive-layout.ui.md`) still renders it inside the page, so that example scores 97.7%.
+Dogfooding the Oracle against `@mdui/render` exposed real defects, now fixed: a toggle's accessible name included its state ("Dark: on"; the state belongs in `aria-checked`), and a top-of-page HEADER or bottom FOOTER was rendered inside `<main>` where it is not a `banner`/`contentinfo` landmark. A spec whose HEADER is mid-page (`responsive-layout.ui.md`) used to score 97.7% because the Oracle expected a banner the page cannot have; the mapping now follows HTML (only a page-level header is a banner), so it scores 100%.

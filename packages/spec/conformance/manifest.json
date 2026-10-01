@@ -1,0 +1,81 @@
+{
+  "version": "0.0.0",
+  "protocol": 1,
+  "grammars": {
+    "v1": "1.0.3",
+    "v2": "2.0 (RFC-0001)"
+  },
+  "fixtures": 494,
+  "files": [
+    {
+      "path": "v1/frontmatter.json",
+      "suite": "frontmatter",
+      "since": "1.0",
+      "fixtures": 57,
+      "sha256": "d19c4c56d6e0e92ea96785f50770ca7513eb7a9afd9826c523e710c416ab8aef"
+    },
+    {
+      "path": "v1/inline.json",
+      "suite": "inline",
+      "since": "1.0",
+      "fixtures": 69,
+      "sha256": "82e56db1bfecb5a8ff196b2da495462850c35c42ce8123c93bd45f63575f0e79"
+    },
+    {
+      "path": "v1/invalid.json",
+      "suite": "block",
+      "since": "1.0",
+      "fixtures": 65,
+      "sha256": "19776cd46a5b08abcd940a745f50eea90662627c0ad6d5bc31c90efe5f01d3cc"
+    },
+    {
+      "path": "v1/valid.json",
+      "suite": "block",
+      "since": "1.0",
+      "fixtures": 87,
+      "sha256": "049dc65e0964537b24a9d227ac2401663a8f8d4165a2d555572540e4d7bb1471"
+    },
+    {
+      "path": "v2/block-invalid.json",
+      "suite": "block",
+      "since": "2.0",
+      "fixtures": 15,
+      "sha256": "194c98b2cee8f9a98f0cafcbc1f7fc7cd3d20b315500ef6b4e517afb784db35e"
+    },
+    {
+      "path": "v2/block-valid.json",
+      "suite": "block",
+      "since": "2.0",
+      "fixtures": 30,
+      "sha256": "1485817f6d1ba63bbafe26235a16fd2f7531b8f6828afd69d1c70722f6bc1d8a"
+    },
+    {
+      "path": "v2/inline.json",
+      "suite": "inline",
+      "since": "2.0",
+      "fixtures": 60,
+      "sha256": "91a859aba525d759aba6bd38e5b95f226e8359ca47d53f1564315b0291700447"
+    },
+    {
+      "path": "v2/invalid.json",
+      "suite": "block",
+      "since": "2.0",
+      "fixtures": 10,
+      "sha256": "9512b6fa265f704d73f3f9cd3889706564cf43d37bc992ec59819d202ad89912"
+    },
+    {
+      "path": "v2/semantic.json",
+      "suite": "semantic",
+      "since": "2.0",
+      "fixtures": 86,
+      "sha256": "303be0c473afce0985c3128d164f1d89e4d56bf84f64be86180ee6cfd15ef47f"
+    },
+    {
+      "path": "v2/valid.json",
+      "suite": "block",
+      "since": "2.0",
+      "fixtures": 15,
+      "sha256": "71f1a3dd9ac163b0b6a859ed132b8a08901cbc67f062beaef9964704d351161a"
+    }
+  ]
+}

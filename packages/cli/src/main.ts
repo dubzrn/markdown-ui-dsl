@@ -25,6 +25,7 @@ import {
 import { defaultCatalog, loadCatalog, loadMap } from "@mdui/catalog";
 import { AST_SCHEMA } from "@mdui/spec";
 import { runSync } from "./sync.js";
+import { auditWaivers, parseLock, specWaivers } from "@mdui/sync";
 import { buildGrammar, toGbnf, toJsonSchema, toLark } from "@mdui/grammar";
 import { render } from "@mdui/render";
 import { parseArgs, UsageError, type Args } from "./args.js";
@@ -51,6 +52,7 @@ Commands:
   coverage   Which requirements do the specs cover? --requirements <file> (Spec Kit, OpenSpec or Kiro style); exit 1 if any is uncovered or unknown
   grammar    Emit a generation grammar: --format lark|gbnf|json-schema [--dsl 1|2.0] [--catalog c.yaml] [--max-depth N] [--tokens a,b] [--data x.y,z]
   sync       Anchored three-way sync: plan|apply|relink|recover <spec> --code <files> [--lock p] [--confirm] [--resolve a=code,b=spec] [--map m.yaml]
+  preview    live preview server: <spec> [--port N]; or <spec> --png out.png [--scale 2|1280x800] [--dpi N] [--style s] [--theme t] [--state s]
   verify     Spec Oracle: <spec> --url U | --html F [--min-fidelity 0.95] [--baseline b.json | --write-baseline] [--strict] [--name-match loose] [--state s] [--chromium path]
   rules      List the lint rules (--json for machine output)
   ast        Print the JSON AST of one file
@@ -95,6 +97,7 @@ interface FileReport {
   file: string;
   diagnostics: Diagnostic[];
   waivers?: { rule: string; reason: string; line: number; suppressed: number }[];
+  lockAudit?: string[];
 }
 
 const view = (d: Diagnostic) => ({
@@ -126,7 +129,7 @@ function report(
         files: reports.map((r) => ({
           file: r.file,
           diagnostics: r.diagnostics.map(view),
-          ...(audit ? { waivers: r.waivers ?? [] } : {}),
+          ...(audit ? { waivers: r.waivers ?? [], lockAudit: r.lockAudit ?? [] } : {}),
         })),
         summary: {
           files: reports.length,
@@ -149,9 +152,34 @@ function report(
         io.stdout(
           `${r.file}:${w.line} waiver ${w.rule} (${w.suppressed} suppressed): ${w.reason}\n`,
         );
+  if (audit)
+    for (const r of reports) for (const a of r.lockAudit ?? []) io.stdout(`${r.file}: ${a}\n`);
   io.stdout(
     `${reports.length} file(s), ${count("error")} error(s), ${count("warn")} warning(s), ${count("info")} info\n`,
   );
+}
+
+/** Waivers that differ from the ones recorded in the `.ui.lock` next to the spec (T-072). Empty when there is no lock. */
+function lockAuditFor(io: Io, file: string, src: string): string[] {
+  const text = io.readFile(posix.resolve(io.cwd, posix.join(posix.dirname(file), ".ui.lock")));
+  if (text === undefined) return [];
+  const lock = parseLock(text).lock;
+  if (lock === undefined) return ["the .ui.lock next to this spec is not valid"];
+  const a = auditWaivers(specWaivers(src, lock), lock.waivers);
+  return [
+    ...a.unrecorded.map(
+      (w) =>
+        `not in the lock: waive ${w.rule} in ${w.anchor ?? "page"} ("${w.reason}"); run mdui sync apply to record it`,
+    ),
+    ...a.removed.map(
+      (w) =>
+        `removed since the lock: waive ${w.rule} in ${w.anchor ?? "page"} ("${w.reason}"); its diagnostic is active again`,
+    ),
+    ...a.changed.map(
+      (c) =>
+        `reason changed: waive ${c.now.rule} in ${c.now.anchor ?? "page"}: "${c.was.reason}" -> "${c.now.reason}"`,
+    ),
+  ];
 }
 
 function readSource(io: Io, root: string, file: string): string | undefined {
@@ -541,6 +569,7 @@ function run(io: Io, args: Args, cfg: Config): number {
       return {
         file,
         diagnostics: [...result.diagnostics, ...unused],
+        lockAudit: args.flags.auditWaivers ? lockAuditFor(io, file, src) : [],
         waivers: result.waivers.map((w) => ({
           rule: w.rule,
           reason: w.reason,
@@ -578,6 +607,7 @@ const COMMANDS = [
   "coverage",
   "grammar",
   "sync",
+  "preview",
 ];
 
 /** CLI entry. Never throws; returns the process exit code. */

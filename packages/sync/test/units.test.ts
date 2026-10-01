@@ -10,6 +10,9 @@ import {
   emptyLock,
   side,
   type Item,
+  specWaivers,
+  auditWaivers,
+  computeApply,
 } from "../src/index.js";
 
 const H = "---\ndsl: 2.0\nlang: en\n---\n";
@@ -201,5 +204,43 @@ describe("code adapters (T-071)", () => {
       expect(() => extractHtml(s, "a")).not.toThrow();
       expect(() => extractTsx(`// ui:anchor x\n${s}`, "a")).not.toThrow();
     }
+  });
+});
+
+describe("waivers in the lock (T-072)", () => {
+  const spec = (w: string) =>
+    `---\ndsl: 2.0\nlang: en\nconstraints:\n  form-fields: 1\n---\n::: CARD :::{: #pay }\n${w}[ text: a ]{: label="a" }\n[ text: b ]{: label="b" }\n--- END ---\n`;
+  const W = '> waive: form-fields reason="two fields needed"\n';
+  const apply = (src: string, lockText?: string) =>
+    computeApply(
+      { specPath: "a.ui.md", specSource: src, lockText, code: [] },
+      { confirm: true, lockPath: ".ui.lock" },
+    );
+  it("extracts rule, reason, line and the anchor of the enclosing unit", () => {
+    expect(specWaivers(spec(W))).toEqual([
+      { rule: "form-fields", reason: "two fields needed", line: 8, anchor: "pay" },
+    ]);
+    expect(specWaivers(`${spec("")}> waive: heading-order reason="top"\n`)[0]?.anchor).toBe("page");
+    expect(specWaivers(spec("> waive: form-fields\n"))).toEqual([]); // no reason: not a recordable waiver
+  });
+  it("apply records waivers in the lock, deterministically", () => {
+    const text = apply(spec(W)).files.find((f) => f.path === ".ui.lock")?.content as string;
+    const lock = parseLock(text).lock;
+    expect(lock?.waivers).toEqual([
+      { anchor: "pay", line: 8, reason: "two fields needed", rule: "form-fields" },
+    ]);
+    expect(apply(spec(W), text).files.find((f) => f.path === ".ui.lock")?.content).toBe(text);
+  });
+  it("audit: new, removed and re-worded waivers", () => {
+    const lock = specWaivers(spec(W));
+    expect(auditWaivers(specWaivers(spec(W)), lock)).toEqual({
+      unrecorded: [],
+      removed: [],
+      changed: [],
+    });
+    expect(auditWaivers([], lock).removed).toHaveLength(1);
+    expect(auditWaivers(lock, []).unrecorded).toHaveLength(1);
+    const edited = specWaivers(spec(W.replace("two fields needed", "legal")));
+    expect(auditWaivers(edited, lock).changed[0]?.now.reason).toBe("legal");
   });
 });

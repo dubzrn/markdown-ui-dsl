@@ -60,8 +60,9 @@ Run `python3 scripts/engine-smoke.py` (needs `pip install lark llguidance tokeni
 | llguidance 1.9.1 (Rust; used by constrained-decoding servers) | Lark | PASS, 25/25 accepted, 7/7 refused | emulated byte-level decoding; broken documents are refused at the first offending byte |
 | llama.cpp (`test-gbnf-validator` built from the source vendored in `llama-cpp-python` 0.3.36) | GBNF | PASS, 25/25 accepted, 7/7 refused | llama.cpp's own parser and matcher |
 | llguidance 1.9.1, GBNF import | GBNF | NOTE, not a failure | llguidance converts GBNF to its lexer-based Lark dialect, which cannot resolve the ambiguity between nested indentation and closers that llama.cpp's scannerless matcher handles; use the Lark grammar with llguidance |
-| xgrammar | not tested | | listed in `reference/verification/`, not installed here |
-| vLLM, SGLang, Outlines, TGI, hosted APIs (OpenAI custom tools, others) | **not verified** | | no access here. Hosted grammar conformance is reported as imperfect, so the rule is "strong constraint, always re-validate with `mdui lint`" |
+| xgrammar (PyPI, current at test time) | GBNF | PASS, 25/25 accepted, 7/7 refused | xgrammar's own EBNF parser, compiler and matcher, driven token by token over a byte-level vocabulary |
+| vLLM, SGLang, TGI, Outlines (the serving layers) | **not verified** | | not installed here (GPU/model weights). These servers delegate constrained decoding to engines such as xgrammar and llguidance, which are tested above, but the server-side integration (grammar passing, tokenizer handling, sampling) was not run |
+| Hosted APIs (OpenAI custom-tool grammars and similar) | **not verified** | | no access here. Hosted grammar conformance is reported as imperfect, so the rule is "strong constraint, always re-validate with `mdui lint`" |
 
 Two interoperability bugs were found by running real engines and fixed: Lark rejects empty terminals (`""`), so the Lark emitter turns epsilon into optional groups; and GBNF only supports a few escapes, so `-` and `^` inside character classes are written as `\x2D` and `\x5E`.
 

@@ -37,7 +37,7 @@ jobs:
           python-version: "3.12"
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
-      - run: pip install lark llguidance tokenizers
+      - run: pip install lark llguidance tokenizers xgrammar
       # llama.cpp's GBNF validator is built manually (see docs/GRAMMAR.md); it is reported as SKIPPED here
       - run: python3 scripts/engine-smoke.py
 
@@ -60,3 +60,20 @@ jobs:
       - run: pip install mcp
       - run: MCP_SDK_DIR=/tmp/mcpjs node scripts/mcp-client-js.mjs
       - run: python3 scripts/mcp-client-py.py
+
+  llm-evals:
+    name: LLM evals (runs only when LLM_BASE_URL is configured)
+    if: ${{ vars.LLM_BASE_URL != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: node scripts/eval-llm.mjs --provider openai --model "${{ vars.LLM_MODEL }}" --base-url "${{ vars.LLM_BASE_URL }}" --arms none,skill,prompt --seeds 1,2,3 --min-valid 0.5 --out evals/results/nightly.json
+        env:
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}

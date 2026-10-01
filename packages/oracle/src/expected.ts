@@ -66,8 +66,30 @@ const plain = (nodes: InlineNode[]): string =>
 
 type Node = BlockNode | ListItemNode;
 
+/**
+ * Which top-level HEADER / FOOTER blocks are page landmarks (banner / contentinfo): the leading headers and trailing
+ * footers of the document, ignoring comments and directives. A HEADER anywhere else is a section header: HTML gives
+ * it no landmark role, so none is expected.
+ */
+function pageLandmarks(body: BlockNode[]): Set<BlockNode> {
+  const skip = (n: BlockNode): boolean => n.kind === "comment" || n.kind === "directive";
+  const set = new Set<BlockNode>();
+  let i = 0;
+  while (i < body.length && (body[i]?.kind === "header" || skip(body[i] as BlockNode))) {
+    if (body[i]?.kind === "header") set.add(body[i] as BlockNode);
+    i++;
+  }
+  let j = body.length - 1;
+  while (j >= i && (body[j]?.kind === "footer" || skip(body[j] as BlockNode))) {
+    if (body[j]?.kind === "footer") set.add(body[j] as BlockNode);
+    j--;
+  }
+  return set;
+}
+
 export function expectedTree(doc: Document, opts: ExpectOptions = {}): Expected[] {
   const w = { ...DEFAULT_WEIGHTS, ...opts.weights };
+  const landmarks = pageLandmarks(doc.body);
   const out: Expected[] = [];
   const add = (role: string, name: string, kind: Kind, line: number, level?: number): void => {
     out.push({
@@ -123,11 +145,11 @@ export function expectedTree(doc: Document, opts: ExpectOptions = {}): Expected[
       const line = (n.span as Span).start.line;
       switch (n.kind) {
         case "header":
-          add("banner", "", "landmark", line);
+          if (landmarks.has(n)) add("banner", "", "landmark", line);
           visit(n.children);
           break;
         case "footer":
-          add("contentinfo", "", "landmark", line);
+          if (landmarks.has(n)) add("contentinfo", "", "landmark", line);
           visit(n.children);
           break;
         case "modal":

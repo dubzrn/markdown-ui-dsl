@@ -22,7 +22,8 @@
     "lint:docs": "node scripts/gen-lint-docs.mjs",
     "lint:docs:check": "node scripts/gen-lint-docs.mjs --check",
     "check": "pnpm schema:check && pnpm build && pnpm lint:docs:check && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test",
-    "parity": "node scripts/grammar-parity.mjs"
+    "parity": "node scripts/grammar-parity.mjs",
+    "conformance": "node scripts/gen-conformance-manifest.mjs --check && python3 packages/spec/conformance/runners/run.py -- node scripts/conformance-harness.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "3.0.3",

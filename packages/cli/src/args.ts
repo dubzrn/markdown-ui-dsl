@@ -41,6 +41,11 @@ export interface Args {
     code: string | undefined;
     lock: string | undefined;
     resolve: string | undefined;
+    port: string | undefined;
+    scale: string | undefined;
+    dpi: string | undefined;
+    png: string | undefined;
+    watch: boolean;
   };
 }
 
@@ -73,6 +78,10 @@ const VALUE_FLAGS = [
   "--baseline",
   "--name-match",
   "--chromium",
+  "--port",
+  "--scale",
+  "--dpi",
+  "--png",
 ];
 
 export function parseArgs(argv: string[]): Args {
@@ -119,6 +128,11 @@ export function parseArgs(argv: string[]): Args {
       code: undefined,
       lock: undefined,
       resolve: undefined,
+      port: undefined,
+      scale: undefined,
+      dpi: undefined,
+      png: undefined,
+      watch: false,
     },
   };
   const rest: string[] = [];
@@ -140,6 +154,7 @@ export function parseArgs(argv: string[]): Args {
     else if (a === "--audit-waivers") out.flags.auditWaivers = true;
     else if (a === "--confirm") out.flags.confirm = true;
     else if (a === "--strict") out.flags.strict = true;
+    else if (a === "--watch") out.flags.watch = true;
     else if (a === "--write-baseline") out.flags.writeBaseline = true;
     else if (VALUE_FLAGS.includes(a) || VALUE_FLAGS.some((f) => a.startsWith(`${f}=`))) {
       const eq = a.indexOf("=");
@@ -172,6 +187,10 @@ export function parseArgs(argv: string[]): Args {
       else if (name === "--baseline") out.flags.baseline = value;
       else if (name === "--name-match") out.flags.nameMatch = value;
       else if (name === "--chromium") out.flags.chromium = value;
+      else if (name === "--port") out.flags.port = value;
+      else if (name === "--scale") out.flags.scale = value;
+      else if (name === "--dpi") out.flags.dpi = value;
+      else if (name === "--png") out.flags.png = value;
       else out.flags.out = value;
     } else if (a.startsWith("-") && a !== "-") throw new UsageError(`unknown option ${a}`);
     else rest.push(a);

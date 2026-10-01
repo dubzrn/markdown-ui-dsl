@@ -99,6 +99,24 @@ importers:
         specifier: workspace:*
         version: link:../spec
 
+  packages/evals:
+    dependencies:
+      '@mdui/catalog':
+        specifier: workspace:*
+        version: link:../catalog
+      '@mdui/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mdui/grammar':
+        specifier: workspace:*
+        version: link:../grammar
+      '@mdui/lint':
+        specifier: workspace:*
+        version: link:../lint
+      '@mdui/tools':
+        specifier: workspace:*
+        version: link:../tools
+
   packages/grammar:
     dependencies:
       '@mdui/catalog':

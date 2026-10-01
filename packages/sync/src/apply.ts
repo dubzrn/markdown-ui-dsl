@@ -9,6 +9,7 @@ import { emptyLock, serializeLock, side, type Lock, type LockUnit } from "./lock
 import { analyse, type PlanInput, type PlanEntry } from "./plan.js";
 import { appendUnit, patchUnit } from "./patch.js";
 import { specUnits } from "./spec.js";
+import { specWaivers } from "./waivers.js";
 
 export type Resolution = "spec" | "code" | "adopt" | "ignore";
 
@@ -165,6 +166,8 @@ export function computeApply(input: PlanInput, opts: ApplyOptions): ApplyResult 
   // the lock describes the final spec text
   lock.spec = { path: input.specPath, hash: hashOf(spec) };
   lock.dsl = lock.dsl || "2.0";
+  // waivers are part of the agreed state: recorded with their reason, line and anchor
+  lock.waivers = specWaivers(spec, lock).sort((a, b) => a.line - b.line);
   const files: FileWrite[] = [];
   if (spec !== src0) files.push({ path: input.specPath, content: spec });
   files.push({ path: opts.lockPath, content: serializeLock(lock) });

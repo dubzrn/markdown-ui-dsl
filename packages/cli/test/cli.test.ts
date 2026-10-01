@@ -556,4 +556,23 @@ describe("built binary", () => {
       expect(f["/proj/.ui.lock" as keyof typeof f]).toContain('"signin"');
     });
   });
+
+  describe("waiver audit against the lock (T-072)", () => {
+    const base =
+      '---\ndsl: 2.0\nlang: en\nconstraints:\n  form-fields: 1\n---\n::: CARD :::{: #pay }\n> waive: form-fields reason="two fields needed"\n[ text: a ]{: label="a" }\n[ text: b ]{: label="b" }\n--- END ---\n';
+    it("reports waivers added or removed since the lock was written", () => {
+      const f: Record<string, string> = { "/proj/a.ui.md": base, "/proj/a.html": "<x>" };
+      // the unit has no code yet (orphan-spec: left alone, exit 1) but the lock, with its waiver, is written
+      main(["sync", "apply", "a.ui.md", "--code", "a.html", "--confirm"], memIo(f).io);
+      expect(f["/proj/.ui.lock"]).toContain('"form-fields"');
+      const clean = memIo(f);
+      main(["lint", "--audit-waivers", "a.ui.md"], clean.io);
+      expect(clean.out()).not.toMatch(/not in the lock|removed since/);
+      f["/proj/a.ui.md"] = base.replace('> waive: form-fields reason="two fields needed"\n', "");
+      const removed = memIo(f);
+      main(["lint", "--audit-waivers", "a.ui.md"], removed.io);
+      expect(removed.out()).toMatch(/removed since the lock: waive form-fields in pay/);
+      expect(removed.out()).toMatch(/W5302/);
+    });
+  });
 });

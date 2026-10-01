@@ -10,6 +10,8 @@ diagnostics), `v1/invalid.json` (must produce exactly the listed diagnostics), v
   "expect": { "outline": "column(card(line),card(line))", "diagnostics": [{ "code": "E1001", "line": 1 }] } }
 ```
 
+> The full runner protocol (four suites, JSON request/answer, `manifest.json`) is in `runners/run.py` and `docs/CONFORMANCE.md`. The summary below covers the `block` suite.
+
 ## Runner protocol
 
 1. Parse `input` (UTF-8, `\n` or `\r\n` line endings).

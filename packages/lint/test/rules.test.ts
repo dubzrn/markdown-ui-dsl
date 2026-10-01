@@ -236,6 +236,20 @@ const fired = (src: string, id: string): string[] => {
   return diags.filter((d) => d.rule === id).map((d) => d.code);
 };
 
+describe("WCAG mapping", () => {
+  const verified = JSON.parse(readFileSync(new URL("wcag.json", import.meta.url), "utf8")) as {
+    criteria: Record<string, unknown>;
+  };
+  it("every criterion a rule maps to was verified against the W3C source (test/wcag.json)", () => {
+    for (const r of ALL_RULES)
+      for (const sc of r.wcag ?? [])
+        expect(Object.keys(verified.criteria), `${r.id} -> ${sc}`).toContain(sc);
+  });
+  it("criteria are not mapped twice in one rule and none is mapped by a rule that cannot fire", () => {
+    for (const r of ALL_RULES) expect(new Set(r.wcag ?? []).size).toBe((r.wcag ?? []).length);
+  });
+});
+
 describe("rule catalogue", () => {
   it("has at least 30 rules with unique ids and documented codes", () => {
     expect(ALL_RULES.length).toBeGreaterThanOrEqual(30);

@@ -1,0 +1,28 @@
+{
+  "name": "@mdui/evals",
+  "version": "0.0.0",
+  "description": "LLM evaluation harness for Markdown UI DSL: tool-agnostic deterministic scoring, provider adapters, constrained-decoding arms.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@mdui/catalog": "workspace:*",
+    "@mdui/core": "workspace:*",
+    "@mdui/grammar": "workspace:*",
+    "@mdui/lint": "workspace:*",
+    "@mdui/tools": "workspace:*"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json"
+  }
+}

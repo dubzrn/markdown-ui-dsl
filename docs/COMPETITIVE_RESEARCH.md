@@ -445,7 +445,7 @@ Access date for all entries: **2026-10-01**. Status codes are defined in [§2.4]
 | S108 | T1 | C | 10 Usability Heuristics Applied to Complex Applications (NN/g) | https://www.nngroup.com/articles/usability-heuristics-complex-applications/ |  |
 | S109 | T1 | V≈ | promptfoo — Command line | https://www.promptfoo.dev/docs/usage/command-line/ | via S136 |
 | S110 | T2 | C | Master the 17 AG-UI Event Types (CopilotKit) | https://www.copilotkit.ai/blog/master-the-17-ag-ui-event-types-for-building-agents-the-right-way | event count (17) differs from repo README (~16) [S124] |
-| S111 | T1 | U | Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents? (arXiv 2602.11988) — *read pp. 1-9 (T-053): context files do not significantly improve success, raise cost ~20%; overviews unhelpful; see ADR-006* | https://arxiv.org/pdf/2602.11988 | read (main text) |
+| S111 | T1 | U | Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents? (arXiv 2602.11988) — *read in full incl. appendices (T-053): context files do not significantly improve success, raise cost ~20%; overviews unhelpful; helpful only where documentation is absent; see ADR-006* | https://arxiv.org/pdf/2602.11988 | read (full) |
 | S112 | T1 | V | A2UI protocol v1.0 (`a2ui_protocol.md`, raw) | https://raw.githubusercontent.com/google/A2UI/main/specification/v1_0/docs/a2ui_protocol.md |  |
 | S113 | T1 | V | A2UI specification directory (v0_8, v0_9, v0_9_1, v1_0, inference_formats) | https://github.com/google/A2UI/tree/main/specification | Spec README: "candidate for becoming stable" |
 | S114 | T1 | V | A2UI Express grammar (`Express.g4`, raw) | https://raw.githubusercontent.com/google/A2UI/main/specification/inference_formats/express/Express.g4 |  |

@@ -4,6 +4,7 @@ import { dirname } from "node:path";
 import { main, EXIT } from "./main.js";
 import { parseArgs, UsageError } from "./args.js";
 import { runVerify } from "./verify.js";
+import { runPreview } from "./preview.js";
 import type { Io } from "./io.js";
 
 // `mdui … | head` closes the pipe early: that is not an error.
@@ -46,6 +47,13 @@ const io: Io = {
 if (process.argv[2] === "verify") {
   try {
     process.exitCode = await runVerify(io, parseArgs(process.argv.slice(2)));
+  } catch (e) {
+    process.stderr.write(`mdui: ${e instanceof Error ? e.message : String(e)}\n`);
+    process.exitCode = e instanceof UsageError ? EXIT.usage : EXIT.internal;
+  }
+} else if (process.argv[2] === "preview") {
+  try {
+    process.exitCode = await runPreview(io, parseArgs(process.argv.slice(2)));
   } catch (e) {
     process.stderr.write(`mdui: ${e instanceof Error ? e.message : String(e)}\n`);
     process.exitCode = e instanceof UsageError ? EXIT.usage : EXIT.internal;

@@ -99,6 +99,8 @@ jobs:
       - run: node packages/cli/dist/bin.js fmt --check examples bench/sp4
       - run: node packages/cli/dist/bin.js tokens lint examples/design-systems/*.md --fail-on warn
       - run: node scripts/eval-nov04.mjs --check
+      - run: node scripts/gen-conformance-manifest.mjs --check
+      - run: python3 packages/spec/conformance/runners/run.py -- node scripts/conformance-harness.mjs
       - run: python3 scripts/check-examples.py # independent balance check (kept as a cross-check of the parser)
 
   traceability:

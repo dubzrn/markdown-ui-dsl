@@ -12,7 +12,10 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "grammar",
+    "schema",
+    "conformance"
   ],
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean",

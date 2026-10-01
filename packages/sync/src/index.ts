@@ -9,3 +9,4 @@ export * from "./plan.js";
 export * from "./patch.js";
 export * from "./apply.js";
 export * from "./write.js";
+export * from "./waivers.js";
