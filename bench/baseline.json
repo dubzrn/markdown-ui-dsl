@@ -7,19 +7,19 @@
   },
   "results": {
     "lines": 1019,
-    "parse1000": 3.18,
-    "format1000": 7.1,
-    "lint1000": 1.55,
-    "render1000": 3.76,
-    "streamChunk": 0.55,
-    "streamChunkMedian": 0.08,
-    "streamChunkMax": 2.92
+    "parse1000": 1.9,
+    "format1000": 6.31,
+    "lint1000": 1.73,
+    "render1000": 2.58,
+    "streamChunk": 0.48,
+    "streamChunkMedian": 0.1,
+    "streamChunkMax": 2.81
   },
   "budgetsMs": {
-    "parse1000": 50,
-    "format1000": 150,
-    "lint1000": 150,
-    "render1000": 150,
-    "streamChunk": 5
+    "parse1000": 15,
+    "format1000": 50,
+    "lint1000": 25,
+    "render1000": 25,
+    "streamChunk": 2
   }
 }

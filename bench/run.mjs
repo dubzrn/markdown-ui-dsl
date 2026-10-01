@@ -7,12 +7,13 @@ import { StreamParser, format, parse } from "../packages/core/dist/index.js";
 import { lint } from "../packages/lint/dist/index.js";
 import { render } from "../packages/render/dist/index.js";
 
+// Tuned from the reference run (bench/baseline.json): ~6x headroom so shared CI runners do not flake.
 const BUDGETS_MS = {
-  parse1000: 50,
-  format1000: 150,
-  lint1000: 150,
-  render1000: 150,
-  streamChunk: 5,
+  parse1000: 15,
+  format1000: 50,
+  lint1000: 25,
+  render1000: 25,
+  streamChunk: 2,
 };
 
 const dir = new URL("../examples/", import.meta.url);
