@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { ALL_RULES, applyFixes, fixSource, lint } from "../src/index.js";
+import { ALL_RULES, applyFixes, fixSource, lint, lintDesignSystem } from "../src/index.js";
 
 const H = "---\ndsl: 2.0\nlang: en\n---\n";
+const DS = (body: string): string => `---\n${body}\n---\n`;
 const FILES: Record<string, string> = {
   "p.ui.md": "---\ndsl: 2.0\ntype: partial\n---\nx\n",
   "login.ui.md": `${H}[ Go ](#go)\n`,
@@ -121,13 +122,38 @@ const CASES: Record<string, Case> = {
     bad: "::: MODAL :::\nHello\n--- END ---\n",
     good: "::: MODAL :::\n## Confirm\n--- END ---\n",
   },
+  "broken-ref": {
+    bad: DS('colors:\n  primary: red\n  a: "{colors.zz}"'),
+    good: DS('colors:\n  primary: red\n  a: "{colors.primary}"'),
+  },
+  "contrast-ratio": {
+    bad: DS(
+      'colors:\n  primary: "#ffff00"\n  t: "#ffffff"\ncomponents:\n  b:\n    backgroundColor: "{colors.primary}"\n    textColor: "{colors.t}"',
+    ),
+    good: DS(
+      'colors:\n  primary: "#000000"\n  t: "#ffffff"\ncomponents:\n  b:\n    backgroundColor: "{colors.primary}"\n    textColor: "{colors.t}"',
+    ),
+  },
+  "orphaned-token": {
+    bad: DS(
+      'colors:\n  primary: red\n  unused: blue\ncomponents:\n  b:\n    textColor: "{colors.primary}"',
+    ),
+    good: DS('colors:\n  primary: red\ncomponents:\n  b:\n    textColor: "{colors.primary}"'),
+  },
+  "unknown-breakpoint": {
+    bad: DS("colors:\n  primary: red\nmdui:\n  breakpoints:\n    tablet: 700px"),
+    good: DS("colors:\n  primary: red\nmdui:\n  breakpoints:\n    sm: 640px"),
+  },
+  "missing-primary": { bad: DS("colors:\n  secondary: red"), good: DS("colors:\n  primary: red") },
   "document-language": { bad: "---\ndsl: 2.0\n---\nx\n", good: `${H}x\n` },
 };
 
-const fired = (src: string, id: string): string[] =>
-  lint(src, opts)
-    .diagnostics.filter((d) => d.rule === id)
-    .map((d) => d.code);
+const fired = (src: string, id: string): string[] => {
+  const rule = ALL_RULES.find((r) => r.id === id);
+  const diags =
+    rule?.category === "tokens" ? lintDesignSystem(src).diagnostics : lint(src, opts).diagnostics;
+  return diags.filter((d) => d.rule === id).map((d) => d.code);
+};
 
 describe("rule catalogue", () => {
   it("has at least 30 rules with unique ids and documented codes", () => {

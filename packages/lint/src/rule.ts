@@ -1,4 +1,5 @@
 import type { AnalyzeResult, Diagnostic, Document, Severity, Span, TextEdit } from "@mdui/core";
+import type { DesignSystem } from "@mdui/tokens";
 
 export interface RuleContext {
   /** The source text that was linted (LF-normalised offsets match `doc` spans). */
@@ -8,6 +9,8 @@ export interface RuleContext {
   analysis: AnalyzeResult;
   /** Every diagnostic the parser and analyser produced. */
   diagnostics: Diagnostic[];
+  /** Present when linting a design-system file (`lintDesignSystem`); token rules are no-ops without it. */
+  designSystem?: DesignSystem;
 }
 
 export interface Finding {

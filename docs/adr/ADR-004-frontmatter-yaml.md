@@ -18,3 +18,9 @@ untrusted-input path (agents emit this text); deterministic diagnostics with lin
 Only **integers** are numbers; decimals stay strings. A JS number loses the trailing zero of `2.0`, and `dsl: 2.0` is a version
 string (found by the first fixture run). Duplicate keys are `E1103`, a malformed or unknown `dsl:` is `E1104`, unknown keys
 are `W1204`, anything outside the subset is `E1102`. Mappings inside list items and nested flow collections are outside the subset.
+
+## Addendum (T-037) — design systems use full YAML, safely
+
+`@mdui/tokens` parses DESIGN.md front matter with the `yaml` package (pinned), core schema only, `uniqueKeys` on, and
+`maxAliasCount: 50` at conversion (a billion-laughs alias bomb becomes diagnostic E4101, in well under a second — tested).
+This is the only place full YAML is used; `.ui.md` frontmatter stays on the strict subset.

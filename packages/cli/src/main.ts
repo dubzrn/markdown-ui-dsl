@@ -1,6 +1,16 @@
 import { posix } from "node:path";
 import { analyze, format, parse, type Diagnostic, type Severity } from "@mdui/core";
-import { ALL_RULES, fixSource, lint } from "@mdui/lint";
+import { ALL_RULES, fixSource, lint, lintDesignSystem } from "@mdui/lint";
+import {
+  diffTokens,
+  formatTokenDiff,
+  loadDesignSystem,
+  toCssVars,
+  toDtcg,
+  toTailwind3,
+  toTailwind4,
+  validateDtcg,
+} from "@mdui/tokens";
 import { diffDocuments, formatDiff, migrate } from "@mdui/tools";
 import { render } from "@mdui/render";
 import { parseArgs, UsageError, type Args } from "./args.js";
@@ -22,6 +32,7 @@ Commands:
   lint       Validate plus the rule catalogue (see mdui.config.json "rules"); --fix applies safe fixes
   diff       Semantic diff of two files (exit 1 on regressions)
   migrate    v1 → 2.0 (dry run by default; --write applies, --force overrides manual-review items)
+  tokens     Design systems: tokens lint|export|diff <DESIGN.md…> (export: --to dtcg|tailwind3|tailwind4|css)
   rules      List the lint rules (--json for machine output)
   ast        Print the JSON AST of one file
   render     Render one file to HTML (--style sketch|clean|wireframe|none, --state, --theme, --out)
@@ -32,6 +43,7 @@ Options:
   --fail-on <level>  error (default) | warn | info | none
   --config <path>    Config file (default: ./mdui.config.json)
   --compact          ast: single-line JSON
+  --to <format>      tokens export: dtcg | tailwind3 | tailwind4 | css
   --write            migrate: write the migrated files
   --force            migrate: write even when manual-review items remain
   --fix              lint: apply fixes in place (overlapping fixes are skipped)
@@ -120,9 +132,68 @@ function listRules(io: Io, json: boolean): number {
   return EXIT.ok;
 }
 
+function runTokens(io: Io, args: Args, cfg: Config): number {
+  const [sub, ...rest] = args.positional;
+  const failOn = (args.flags.failOn ?? cfg.failOn) as FailOn;
+  if (sub === undefined || !["lint", "export", "diff"].includes(sub))
+    throw new UsageError("tokens needs a subcommand: lint | export | diff");
+  const { files, missing } = expand(io, rest);
+  if (rest.length === 0) throw new UsageError(`tokens ${sub}: no input files`);
+  if (missing.length > 0) throw new UsageError(`no such file: ${missing.join(", ")}`);
+  const read = (f: string): string => io.readFile(posix.resolve(io.cwd, f)) as string;
+
+  if (sub === "lint") {
+    const reports = files.map((file) => ({
+      file,
+      diagnostics: lintDesignSystem(read(file), { config: { rules: cfg.rules } }).diagnostics,
+    }));
+    report(io, "tokens lint", reports, args.flags.json);
+    return reports.some((r) => r.diagnostics.some((d) => failsOn(d, failOn)))
+      ? EXIT.diagnostics
+      : EXIT.ok;
+  }
+  if (sub === "export") {
+    if (files.length !== 1) throw new UsageError("tokens export takes exactly one file");
+    const to = args.flags.to ?? "dtcg";
+    if (!["dtcg", "tailwind3", "tailwind4", "css"].includes(to))
+      throw new UsageError("--to must be dtcg|tailwind3|tailwind4|css");
+    const ds = loadDesignSystem(read(files[0] as string));
+    let text: string;
+    let warnings: string[];
+    if (to === "dtcg") {
+      const r = toDtcg(ds);
+      const problems = validateDtcg(r.file);
+      warnings = [...r.report.warnings, ...problems.map((p) => `invalid DTCG: ${p}`)];
+      text = JSON.stringify(r.file, null, 2) + "\n";
+    } else if (to === "tailwind3") {
+      const r = toTailwind3(ds);
+      warnings = r.report.warnings;
+      text = JSON.stringify(r.config, null, 2) + "\n";
+    } else {
+      const r = to === "tailwind4" ? toTailwind4(ds) : toCssVars(ds);
+      warnings = r.report.warnings;
+      text = r.css;
+    }
+    if (args.flags.out !== undefined) io.writeFile(posix.resolve(io.cwd, args.flags.out), text);
+    else io.stdout(text);
+    for (const w of warnings) io.stderr(`warning: ${w}\n`);
+    return EXIT.ok;
+  }
+  if (files.length !== 2) throw new UsageError("tokens diff takes exactly two files");
+  const d = diffTokens(
+    loadDesignSystem(read(files[0] as string)),
+    loadDesignSystem(read(files[1] as string)),
+  );
+  if (args.flags.json)
+    io.stdout(JSON.stringify({ tool: "mdui", version: 1, command: "tokens diff", ...d }) + "\n");
+  else io.stdout(formatTokenDiff(d));
+  return d.regressions.length > 0 ? EXIT.diagnostics : EXIT.ok;
+}
+
 function run(io: Io, args: Args, cfg: Config): number {
   const cmd = args.command as string;
   if (cmd === "rules") return listRules(io, args.flags.json);
+  if (cmd === "tokens") return runTokens(io, args, cfg);
   const root = posix.resolve(io.cwd, cfg.root);
   const failOn = (args.flags.failOn ?? cfg.failOn) as FailOn;
   if (!["error", "warn", "info", "none"].includes(failOn))
@@ -317,7 +388,7 @@ function run(io: Io, args: Args, cfg: Config): number {
     : EXIT.ok;
 }
 
-const COMMANDS = ["validate", "lint", "ast", "fmt", "render", "rules", "diff", "migrate"];
+const COMMANDS = ["validate", "lint", "ast", "fmt", "render", "rules", "diff", "migrate", "tokens"];
 
 /** CLI entry. Never throws; returns the process exit code. */
 export function main(argv: string[], io: Io): number {

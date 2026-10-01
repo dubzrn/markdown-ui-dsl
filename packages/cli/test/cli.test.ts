@@ -263,6 +263,43 @@ describe("diff and migrate", () => {
   });
 });
 
+describe("tokens", () => {
+  const DS = `---\nname: T\ncolors:\n  primary: "#ffff00"\n  ink: "#ffffff"\n  dead: "{colors.nope}"\ncomponents:\n  btn:\n    backgroundColor: "{colors.primary}"\n    textColor: "{colors.ink}"\n---\n`;
+  const GOOD = `---\nname: T\ncolors:\n  primary: "#000000"\n  ink: "#ffffff"\ncomponents:\n  btn:\n    backgroundColor: "{colors.primary}"\n    textColor: "{colors.ink}"\n---\n`;
+  it("lint reports token rules and exits 1 on errors", () => {
+    const m = memIo({ "/proj/DESIGN.md": DS, "/proj/OK.md": GOOD });
+    expect(main(["tokens", "lint", "DESIGN.md"], m.io)).toBe(EXIT.diagnostics);
+    expect(m.out()).toContain("[broken-ref]");
+    expect(m.out()).toContain("[contrast-ratio]");
+    expect(main(["tokens", "lint", "OK.md"], memIo({ "/proj/OK.md": GOOD }).io)).toBe(EXIT.ok);
+  });
+  it("export writes DTCG / tailwind / css and validates DTCG", () => {
+    const files = { "/proj/OK.md": GOOD };
+    const d = memIo(files);
+    expect(main(["tokens", "export", "OK.md", "--to", "dtcg"], d.io)).toBe(EXIT.ok);
+    expect(JSON.parse(d.out())).toMatchObject({
+      colors: { primary: { $value: { hex: "#000000" } } },
+    });
+    const t4 = memIo(files);
+    main(["tokens", "export", "OK.md", "--to", "tailwind4"], t4.io);
+    expect(t4.out()).toContain("--color-primary: #000000;");
+    const out: Record<string, string> = { ...files };
+    expect(
+      main(["tokens", "export", "OK.md", "--to", "css", "--out", "t.css"], memIo(out).io),
+    ).toBe(EXIT.ok);
+    expect(out["/proj/t.css"]).toContain(":root {");
+    expect(main(["tokens", "export", "OK.md", "--to", "yaml"], memIo(files).io)).toBe(EXIT.usage);
+  });
+  it("diff exits 1 when a change breaks contrast", () => {
+    const worse = GOOD.replace('"#000000"', '"#eeeeee"');
+    const m = memIo({ "/proj/a.md": GOOD, "/proj/b.md": worse });
+    expect(main(["tokens", "diff", "a.md", "b.md"], m.io)).toBe(EXIT.diagnostics);
+    expect(m.out()).toContain("REGRESSION: contrast newly fails AA");
+    expect(main(["tokens"], memIo({}).io)).toBe(EXIT.usage);
+    expect(main(["tokens", "wat", "a.md"], memIo({ "/proj/a.md": GOOD }).io)).toBe(EXIT.usage);
+  });
+});
+
 describe("render", () => {
   it("writes HTML to stdout or --out, honours --style/--state, exits 1 on errors", () => {
     const src =

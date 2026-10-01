@@ -75,7 +75,11 @@
 | **lint rule count** | 35 (≥ 30 asserted by test); token rules (T-039) will add 5 | |
 | T-035 | done* | `diffDocuments`/`mdui diff`: added/removed/changed/moved (within and across containers), `#id` identity, regressions (removed required element, newly failing a11y rule), JSON schema documented; *token deltas arrive with T-039 |
 | T-036 | done | `migrate`/`mdui migrate`: bump + 2 unambiguous idiom conversions, meaning-change items listed and blocking, shipped examples migrate with AST preserved |
-| T-037 | next | design-system loader |
+| T-037 | done | `@mdui/tokens` `loadDesignSystem`: DESIGN.md (alpha) via `yaml` (aliases bounded, pinned 2.9.1) + legacy prose; the three shipped design systems and upstream sample DESIGN.md files load; version mismatch = W4101; token paths → source lines; `mdui:` extension (breakpoints) |
+| T-038 | done | reference resolution with cycle detection; exporters DTCG 2025.10 (own structural validator; upstream's Terrazzo conformance is skipped upstream), Tailwind v3 JSON, Tailwind v4 `@theme`, CSS vars; round trip preserves `{refs}`; golden outputs. Style Dictionary bridge not needed (native DTCG) |
+| T-039 | done | broken-ref, contrast-ratio (published WCAG vectors), orphaned-token, unknown-breakpoint, missing-primary + token diff with regressions; `mdui tokens lint|export|diff`; **40 lint rules** asserted ≥ 30 by test |
+| **Checkpoint 2** | reached | formatter, diff, preview, streaming, tokens, ≥ 30 lint rules, perf budgets |
+| T-050 | next | component catalog schema and loader |
 
 ### T-001 · Fix example and documentation defects
 `S` · Deps: — · Implements: **QLT-04** · REQ: REQ-QLT-04

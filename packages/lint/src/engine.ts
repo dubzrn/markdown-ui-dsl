@@ -13,9 +13,16 @@ import type { LintConfig, Rule, RuleContext } from "./rule.js";
 import { a11yRules } from "./rules/a11y.js";
 import { semanticRules } from "./rules/semantic.js";
 import { structuralRules } from "./rules/structural.js";
+import { tokenRules } from "./rules/tokens.js";
+import { loadDesignSystem, type DesignSystem } from "@mdui/tokens";
 import { lastLine } from "./util.js";
 
-export const ALL_RULES: Rule[] = [...structuralRules, ...semanticRules, ...a11yRules];
+export const ALL_RULES: Rule[] = [
+  ...structuralRules,
+  ...semanticRules,
+  ...a11yRules,
+  ...tokenRules,
+];
 
 export interface LintResult {
   doc: Document;
@@ -167,4 +174,56 @@ export function fixSource(source: string, opts: Parameters<typeof lint>[1] = {})
     if (!progressed) break;
   }
   return { text, applied, rejected };
+}
+
+export interface DesignSystemLint {
+  designSystem: DesignSystem;
+  diagnostics: Diagnostic[];
+}
+
+/** Lint a design-system file (DESIGN.md or legacy prose): load diagnostics plus the token rules. */
+export function lintDesignSystem(
+  source: string,
+  opts: { config?: LintConfig } = {},
+): DesignSystemLint {
+  const ds = loadDesignSystem(source);
+  const text = source.replace(/\r\n/g, "\n");
+  const doc = parse(text);
+  const lineStarts: number[] = [0];
+  for (let i = 0; i < text.length; i++) if (text[i] === "\n") lineStarts.push(i + 1);
+  const at = (line: number) => {
+    const p = { line, col: 1, offset: lineStarts[line - 1] ?? 0 };
+    return { start: p, end: p };
+  };
+  const out: Diagnostic[] = [];
+  for (const d of ds.diagnostics)
+    out.push({
+      code: d.code,
+      severity: d.severity,
+      message: d.message,
+      span: at(d.line),
+      rule: "design-system-load",
+    });
+  const ctx: RuleContext = {
+    source,
+    doc: { ...doc, lineStarts },
+    analysis: { diagnostics: [], includes: [], actions: Object.create(null) as never },
+    diagnostics: [],
+    designSystem: ds,
+  };
+  for (const rule of tokenRules) {
+    const setting = opts.config?.rules?.[rule.id] ?? rule.defaultSeverity;
+    if (setting === "off") continue;
+    rule.check(ctx, (f) =>
+      out.push({
+        code: f.code,
+        severity: setting as Severity,
+        message: f.message,
+        span: f.span,
+        rule: rule.id,
+      }),
+    );
+  }
+  out.sort((a, b) => a.span.start.line - b.span.start.line || a.code.localeCompare(b.code));
+  return { designSystem: ds, diagnostics: out };
 }

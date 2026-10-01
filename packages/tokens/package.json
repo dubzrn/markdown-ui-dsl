@@ -1,7 +1,7 @@
 {
-  "name": "@mdui/lint",
+  "name": "@mdui/tokens",
   "version": "0.0.0",
-  "description": "Lint engine and rule catalogue for Markdown UI DSL documents.",
+  "description": "Design-system loader (DESIGN.md + legacy prose), token references, exporters and contrast checks.",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -15,8 +15,7 @@
     "dist"
   ],
   "dependencies": {
-    "@mdui/core": "workspace:*",
-    "@mdui/tokens": "workspace:*"
+    "yaml": "2.9.1"
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean",

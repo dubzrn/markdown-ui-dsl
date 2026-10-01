@@ -16,12 +16,13 @@ export interface Args {
     state: string | undefined;
     theme: string | undefined;
     out: string | undefined;
+    to: string | undefined;
   };
 }
 
 export class UsageError extends Error {}
 
-const VALUE_FLAGS = ["--fail-on", "--config", "--style", "--state", "--theme", "--out"];
+const VALUE_FLAGS = ["--fail-on", "--config", "--style", "--state", "--theme", "--out", "--to"];
 
 export function parseArgs(argv: string[]): Args {
   const out: Args = {
@@ -42,6 +43,7 @@ export function parseArgs(argv: string[]): Args {
       state: undefined,
       theme: undefined,
       out: undefined,
+      to: undefined,
     },
   };
   const rest: string[] = [];
@@ -70,6 +72,7 @@ export function parseArgs(argv: string[]): Args {
       else if (name === "--style") out.flags.style = value;
       else if (name === "--state") out.flags.state = value;
       else if (name === "--theme") out.flags.theme = value;
+      else if (name === "--to") out.flags.to = value;
       else out.flags.out = value;
     } else if (a.startsWith("-") && a !== "-") throw new UsageError(`unknown option ${a}`);
     else rest.push(a);

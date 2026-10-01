@@ -20,6 +20,7 @@
     "@mdui/core": "workspace:*",
     "@mdui/lint": "workspace:*",
     "@mdui/render": "workspace:*",
+    "@mdui/tokens": "workspace:*",
     "@mdui/tools": "workspace:*"
   },
   "scripts": {
