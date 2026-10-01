@@ -1,0 +1,8 @@
+# graphify ignore: vendored and third-party material is not "our codebase"
+reference/
+.agents/
+.claude/
+THIRD_PARTY_LICENSES/
+graphify-out/
+node_modules/
+.git/

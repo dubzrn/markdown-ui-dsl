@@ -233,6 +233,10 @@ markdown-ui-dsl/
 │   └── vscode/                    # extension + LSP (TLS-09, 2.1)
 ├── evals/                         # promptfoo configs, datasets, rubrics (QLT-02, T-061, T-063)
 ├── docs/                          # this program's docs, rfcs/, site/ (QLT-05)
+├── AGENTS.md · CLAUDE.md          # agent entry points (read-first table, rules, graph usage)
+├── .agents/skills/ · .claude/skills/   # 32 pinned, vetted agent skills (identical copies); manifest in .agents/skills-manifest.json
+├── docs/SKILLS_INDEX.md           # skill routing table, installed-skill inventory, vetting protocol
+├── graphify-out/                  # LLM-free code+docs knowledge graph (scripts/graph.sh update)
 ├── reference/                     # QLT-06: 32 pinned upstream repos as submodules — READ-ONLY study/lift material (not built, linted or tested)
 ├── scripts/                       # reference.sh (init/find/lift/status), reference-manifest.py, check-traceability.ts
 ├── THIRD_PARTY_NOTICES.md         # provenance log appended by `reference.sh lift`

@@ -52,7 +52,7 @@
 
 ### T-004 · Governance and contributor docs
 `S` · Deps: — · Implements: **QLT-05**, **AGT-01** (contributor `AGENTS.md`) · REQ: —
-- **Do:** `CONTRIBUTING.md`, RFC process + `docs/rfcs/0000-template.md`, `CHANGELOG.md`, versioning policy (toolchain semver; DSL version = `dsl:` key), contributor `AGENTS.md` (commands, boundaries from SPEC §7), update `.github/ISSUE_TEMPLATE/feature_request.md` to point at the RFC process.
+- **Do:** *(root `AGENTS.md` and `CLAUDE.md` already exist — extend them)* `CONTRIBUTING.md`, RFC process + `docs/rfcs/0000-template.md`, `CHANGELOG.md`, versioning policy (toolchain semver; DSL version = `dsl:` key), contributor `AGENTS.md` (commands, boundaries from SPEC §7), update `.github/ISSUE_TEMPLATE/feature_request.md` to point at the RFC process.
 - **Done when:** a new contributor can find commands, boundaries and RFC process from `README` in ≤ 2 clicks; template renders.
 - **Verify:** maintainer review; link check.
 - **Reference (lift/study, see `reference/README.md`):** `reference/dsl/wireloom`, `reference/sdd/spec-kit`, `reference/sdd/agentskills`, `reference/sdd/agents-md`
@@ -70,7 +70,7 @@
 
 ### T-006 · Reference-library hygiene and CI guards
 `S` · Deps: T-002, T-003 · Implements: **QLT-06** · REQ: REQ-QLT-06
-- **Do:** exclude `reference/**` from ESLint, Prettier, Vitest, `tsc` project references, coverage, knip/dependency checks, Changesets and the traceability script; CI job `reference-check` running `python3 scripts/reference-manifest.py --check`, a guard that fails if `packages/**` imports from `reference/**`, a check that every `THIRD_PARTY_NOTICES.md` destination exists, and `git submodule status` shows no unintended pin changes; document `git clone --recurse-submodules --shallow-submodules` and the `scripts/reference.sh init <group>` flow in `CONTRIBUTING.md`.
+- **Do:** exclude `reference/**`, `.agents/**`, `.claude/**` and `graphify-out/**` from ESLint, Prettier, Vitest, `tsc` project references, coverage, knip/dependency checks, Changesets and the traceability script; add CI job `skills-check` (`python3 scripts/skills.py verify` + `validate`) and a graph-freshness warning; CI job `reference-check` running `python3 scripts/reference-manifest.py --check`, a guard that fails if `packages/**` imports from `reference/**`, a check that every `THIRD_PARTY_NOTICES.md` destination exists, and `git submodule status` shows no unintended pin changes; document `git clone --recurse-submodules --shallow-submodules` and the `scripts/reference.sh init <group>` flow in `CONTRIBUTING.md`.
 - **Done when:** the guards fail on three seeded violations (an import from `reference/`, a missing notices destination, a manifest path that no longer exists) and pass on the clean tree; builds/tests/lint are unaffected by an initialised `reference/` (timings recorded).
 - **Verify:** CI run + seeded-violation branch.
 - **Reference (lift/study, see `reference/README.md`):** `scripts/reference.sh`, `scripts/reference-manifest.py`, `reference/manifest.json`

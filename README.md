@@ -193,6 +193,7 @@ The v2 program is documented in [`docs/`](docs/):
 - [`COMPETITIVE_RESEARCH.md`](docs/COMPETITIVE_RESEARCH.md) — survey of comparable systems (with sources) and the gaps found in this project.
 - [`FEATURE_ADDITIONS.md`](docs/FEATURE_ADDITIONS.md) — the locked-in feature list, including four novel features.
 - [`SPEC.md`](docs/SPEC.md) · [`PLAN.md`](docs/PLAN.md) · [`TASKS.md`](docs/TASKS.md) — development specification, implementation plan and task breakdown.
+- [`AGENTS.md`](AGENTS.md) · [`docs/SKILLS_INDEX.md`](docs/SKILLS_INDEX.md) — agent entry points and 32 vetted project-local skills (`.agents/skills/`, `.claude/skills/`); `scripts/graph.sh update` builds a local code+docs map in `graphify-out/`.
 - [`reference/`](reference/README.md) — 32 pinned upstream repos (git submodules) for lifting proven code; see [`PLAN.md` §14](docs/PLAN.md#14-reference-library--reference-lift-dont-re-invent). Clone with `--recurse-submodules --shallow-submodules`, or run `scripts/reference.sh init`.
 
 ## Contributing

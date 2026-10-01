@@ -1,0 +1,353 @@
+{
+  "_comment": "Pinned manifest for .agents/skills and .claude/skills (identical copies). Managed by scripts/skills.py. Third-party skills are untrusted until vetted; see docs/SKILLS_INDEX.md.",
+  "generated": "2026-10-01",
+  "skills": [
+    {
+      "name": "spec-driven-development",
+      "tier": "github",
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "skills/spec-driven-development",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Write the spec before code — the method this repo's docs follow; use for every v2 RFC and feature.",
+      "tree_sha256": "9339fa902b2d616be0b409186304fb3e3e0334c2bcf0d00c583f35f00534f2b4"
+    },
+    {
+      "name": "planning-and-task-breakdown",
+      "tier": "github",
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "skills/planning-and-task-breakdown",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Ordered, verifiable tasks with acceptance criteria — matches docs/TASKS.md conventions.",
+      "tree_sha256": "34768342dbf3b84e2440fc8dd11fed23f099c605fdfd7edf57317ec9159ce82d"
+    },
+    {
+      "name": "incremental-implementation",
+      "tier": "github",
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "skills/incremental-implementation",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Thin vertical slices; pairs with PLAN.md phases and the one-task-one-PR rule.",
+      "tree_sha256": "037857b2d81c5e709cccafa850d8a394f3d6441407cd77bf9c18548847a9dab5"
+    },
+    {
+      "name": "test-driven-development",
+      "tier": "github",
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "skills/test-driven-development",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Red-green-refactor; conformance fixtures and property tests (SPEC §6).",
+      "tree_sha256": "882558e001a33e968d1b48328457c97f2af34fd793777015157e906973e03715"
+    },
+    {
+      "name": "code-review-and-quality",
+      "tier": "github",
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "skills/code-review-and-quality",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Multi-axis review before merge; used with the code-review built-in.",
+      "tree_sha256": "76e85d3922a799e05dd45c69db04407cc3dc19aa43ea4b9e998efb4426b1a71e"
+    },
+    {
+      "name": "code-simplification",
+      "tier": "github",
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "skills/code-simplification",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Refactor for clarity without behaviour change; \"improve upstream code when lifting\".",
+      "tree_sha256": "a6d4aba8358a46634487e1c4b612cd021a41f3227fbe0b131270e2ebaaea8440"
+    },
+    {
+      "name": "constraint-driven-development",
+      "tier": "github",
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "skills/constraint-driven-development",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Written quality bar that agents may not quietly lower (zero-dep core, determinism, a11y).",
+      "tree_sha256": "00b63591124750af803ea657dfb2d0b6e81003a414a7f306969a66cddbcefcc2"
+    },
+    {
+      "name": "context-engineering",
+      "tier": "github",
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "skills/context-engineering",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Keep agent context lean — fits Agent Skills progressive disclosure (≤500-line SKILL.md).",
+      "tree_sha256": "0ce9bdcfee0821e72dee2aa44e0599bc28487f36e2b7f2b6ef5c14699f490450"
+    },
+    {
+      "name": "documentation-and-adrs",
+      "tier": "github",
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "skills/documentation-and-adrs",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "ADRs for the decisions listed in T-002 (parser strategy, YAML subset, stack).",
+      "tree_sha256": "cc6700698ab202afce8ac9a98ab4e691887ddd28bc9fedafb9640e111d9fdc08"
+    },
+    {
+      "name": "api-and-interface-design",
+      "tier": "github",
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "skills/api-and-interface-design",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Stable CLI/AST/package interfaces (@mdui/*) and diagnostics contracts.",
+      "tree_sha256": "b2fa57f7326e3b17ce2a902e9f0e6ab7d581502411e4b063f68bf193690f901e"
+    },
+    {
+      "name": "source-driven-development",
+      "tier": "github",
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "skills/source-driven-development",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Ground decisions in official docs — the verification culture of COMPETITIVE_RESEARCH §2.4; includes prompt-injection guidance for fetched content.",
+      "tree_sha256": "fb7c9eaabb0e3254d0e945dbbd2dd766c0eb3ed96de8b76a6763d1a5968bee68"
+    },
+    {
+      "name": "security-and-hardening",
+      "tier": "github",
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "skills/security-and-hardening",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Path sandboxing, URL schemes, injection (AGT-04, SPEC §7).",
+      "tree_sha256": "b5ec48fcf5ff50c72c444942a37d8f5ccfcce6b8f3d01ab9df8bd7cda7707298"
+    },
+    {
+      "name": "git-workflow-and-versioning",
+      "tier": "github",
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "skills/git-workflow-and-versioning",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Trunk-based, small commits, versioning; submodule-heavy repo hygiene.",
+      "tree_sha256": "ecb9743ef86c45d117033f78b64f71bfe631d5a8e8e7198b7ac083fd91af7062"
+    },
+    {
+      "name": "using-agent-skills",
+      "tier": "github",
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "skills/using-agent-skills",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Entry-point skill: how to discover and invoke the others.",
+      "tree_sha256": "523a64a4b18bb74d76570339d91cd687f9a7be6f9826b9015e0a1f3d7b76dce2"
+    },
+    {
+      "name": "doubt-driven-development",
+      "tier": "github",
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "skills/doubt-driven-development",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Fresh-context adversarial review of non-trivial decisions — counters over-claiming (novelty claims, estimates).",
+      "tree_sha256": "939cf884cb25b7669e00fa92502b8bb5d9fabcddba050e96c691e380168c6c7f"
+    },
+    {
+      "name": "verification-before-completion",
+      "tier": "github",
+      "source_repo": "obra/superpowers",
+      "source_path": "skills/verification-before-completion",
+      "commit": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "No \"done\" claims without evidence — mirrors the repo's Done-when/Verify discipline.",
+      "tree_sha256": "d8a53168f152b6163bd3447f7d4c20b6b4cddf6bd907f9aa5856b514c032db0e"
+    },
+    {
+      "name": "systematic-debugging",
+      "tier": "github",
+      "source_repo": "obra/superpowers",
+      "source_path": "skills/systematic-debugging",
+      "commit": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Root-cause process for parser/grammar parity failures and flaky oracle tests.",
+      "tree_sha256": "37fd06e80f296251caf4eb3554ab8771d7cf14ba382efcf812d8f3247d64dcbe"
+    },
+    {
+      "name": "dispatching-parallel-agents",
+      "tier": "github",
+      "source_repo": "obra/superpowers",
+      "source_path": "skills/dispatching-parallel-agents",
+      "commit": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "PLAN §6 parallel streams: independent tasks to independent agents.",
+      "tree_sha256": "1acb899b23c2bdb5af5961e7b97ba43fb2a5593822db755747ef3d5db9f825a4"
+    },
+    {
+      "name": "using-git-worktrees",
+      "tier": "github",
+      "source_repo": "obra/superpowers",
+      "source_path": "skills/using-git-worktrees",
+      "commit": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Isolated workspaces for parallel task PRs.",
+      "tree_sha256": "98dc7da4ead1fe3c523c7ac314082f1f85114ad5e6ec39d4426b4a7f76ed9d0c"
+    },
+    {
+      "name": "receiving-code-review",
+      "tier": "github",
+      "source_repo": "obra/superpowers",
+      "source_path": "skills/receiving-code-review",
+      "commit": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Evaluate review feedback technically before applying (PLAN driving-to-green rules).",
+      "tree_sha256": "e5dd23be2d93f751c8b28d647c4b139754aedfe75648cd8e1100e47f5da0c3c5"
+    },
+    {
+      "name": "requesting-code-review",
+      "tier": "github",
+      "source_repo": "obra/superpowers",
+      "source_path": "skills/requesting-code-review",
+      "commit": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Structured review requests per task PR.",
+      "tree_sha256": "e70a585c7a129907ca7f9fa8775866c4aae969f707c8da6d81178d5b5931d52f"
+    },
+    {
+      "name": "writing-skills",
+      "tier": "github",
+      "source_repo": "obra/superpowers",
+      "source_path": "skills/writing-skills",
+      "commit": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Authoring and testing skills (T-053 skill restructure). Note: SKILL.md is long (>500 lines) — read selectively.",
+      "tree_sha256": "eebe835f35a2a858371e468a190dca99a5e8dc025e9156ff2cef0e5b622eda47"
+    },
+    {
+      "name": "property-testing",
+      "tier": "github",
+      "source_repo": "nyxandro/property-testing-skill",
+      "source_path": "property-testing",
+      "commit": "786d52b3211e3ccbd7fe8727e1d9ae9b9bad16de",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "fast-check properties: fmt idempotence, streaming≡batch, grammar parity (SPEC §6).",
+      "tree_sha256": "78dee152ba6582adfc6e37c227b8e689cb491d168f3ba8b74d11c81deffbf24f"
+    },
+    {
+      "name": "a11y-playwright-testing",
+      "tier": "github",
+      "source_repo": "fugazi/test-automation-skills-agents",
+      "source_path": "skills/a11y-playwright-testing",
+      "commit": "2777b1c43ce47fecb1a2f2ca46cf01a5a020d191",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "Playwright + axe a11y/ARIA tests — Oracle (NOV-02) and preview a11y gates.",
+      "tree_sha256": "da6de0ed7c510c87c00d8017071f9a7134696de8aca9c342f1f5b1d22e238e59"
+    },
+    {
+      "name": "webapp-testing",
+      "tier": "github",
+      "source_repo": "anthropics/skills",
+      "source_path": "skills/webapp-testing",
+      "commit": "8a1541c4a3ffa5a20a5a91de0dcf3f0bab1d1ef4",
+      "license": "Apache-2.0 (webapp-testing/LICENSE.txt)",
+      "vetted": "2026-10-01",
+      "why": "Playwright driver patterns + with_server.py helper for T-041/T-077 e2e.",
+      "tree_sha256": "abfaf4cc6cf572346e22fed42dc0cfaacd2f64c5d9667f44a94b02ea0d3b1342"
+    },
+    {
+      "name": "skill-creator",
+      "tier": "installed",
+      "source_path": "/root/.claude/skills/synced/96f5f68c-dcd1-4522-a1cb-76978c8af92c_4e562759-8cac-48c1-ad32-7e9cc4c15e27/skill-creator",
+      "license": "Apache-2.0 (LICENSE.txt)",
+      "vetted": "2026-10-01",
+      "why": "Create/evaluate skills; used for T-053 and the project skill evals.",
+      "tree_sha256": "f029d92ad66472099d47902d52ace33e94727c4673f6b07884b47b5110ec8e4b"
+    },
+    {
+      "name": "mcp-builder",
+      "tier": "installed",
+      "source_path": "/root/.claude/skills/synced/96f5f68c-dcd1-4522-a1cb-76978c8af92c_4e562759-8cac-48c1-ad32-7e9cc4c15e27/mcp-builder",
+      "license": "Apache-2.0 (LICENSE.txt)",
+      "vetted": "2026-10-01",
+      "why": "Build/evaluate MCP servers — T-062/T-081.",
+      "tree_sha256": "6799e671b3c45029c174412f7e2683afba2314c1edac1560d3913e6b42aa8f4b"
+    },
+    {
+      "name": "frontend-design",
+      "tier": "installed",
+      "source_path": "/mnt/skills/public/frontend-design",
+      "license": "Apache-2.0 (LICENSE.txt)",
+      "vetted": "2026-10-01",
+      "why": "Distinctive UI guidance for the preview renderer and docs site (T-040, T-092).",
+      "tree_sha256": "7e9c2af00fd5b3144f49ce6fb1b16037b392ab9c2f049423b0b6114d99381ba2"
+    },
+    {
+      "name": "accessibility",
+      "tier": "installed",
+      "source_path": "/root/.claude/skills/synced/96f5f68c-dcd1-4522-a1cb-76978c8af92c_4e562759-8cac-48c1-ad32-7e9cc4c15e27/accessibility",
+      "license": "MIT (frontmatter)",
+      "vetted": "2026-10-01",
+      "why": "WCAG 2.2 audit knowledge for QLT-03 rules and preview chrome.",
+      "tree_sha256": "6188598d7534dc07cafe5ccb121f71667ae12d5aca62bbd1531f0762109a23b6"
+    },
+    {
+      "name": "web-quality-audit",
+      "tier": "installed",
+      "source_path": "/root/.claude/skills/synced/96f5f68c-dcd1-4522-a1cb-76978c8af92c_4e562759-8cac-48c1-ad32-7e9cc4c15e27/web-quality-audit",
+      "license": "MIT (frontmatter)",
+      "vetted": "2026-10-01",
+      "why": "Lighthouse-style audit workflow for docs site/playground (T-092).",
+      "tree_sha256": "806f512c76ac89cd1460929ecfd3933143e4c6bfd21fcb3ac69769be70cc3fb0"
+    },
+    {
+      "name": "best-practices",
+      "tier": "installed",
+      "source_path": "/root/.claude/skills/synced/96f5f68c-dcd1-4522-a1cb-76978c8af92c_4e562759-8cac-48c1-ad32-7e9cc4c15e27/best-practices",
+      "license": "MIT (frontmatter)",
+      "vetted": "2026-10-01",
+      "why": "Web security/compat/code-quality checklist for docs site and renderer.",
+      "tree_sha256": "e78c6658bf329ef5ced63f8b6d5ac8939dc770f0340c066756802c000c7b9cb8"
+    },
+    {
+      "name": "markdown-ui-dsl",
+      "tier": "project",
+      "source_path": "skills/markdown-ui-dsl",
+      "license": "MIT",
+      "vetted": "2026-10-01",
+      "why": "This project's own skill (source of truth: skills/markdown-ui-dsl).",
+      "tree_sha256": "9420fd415c54985818fbd3ad1812122fc552edd859c8bfd45d78e73e3f527e8e"
+    }
+  ],
+  "shared_references": [
+    {
+      "source_repo": "addyosmani/agent-skills",
+      "source_path": "references",
+      "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "note": "Shared checklists referenced as ../../references/* by the addyosmani skills"
+    }
+  ]
+}

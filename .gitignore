@@ -416,3 +416,10 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# local tooling / caches
+.tools/
+.venv*/
+graphify-out/cache/
+__pycache__/
+*.pyc

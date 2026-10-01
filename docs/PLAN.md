@@ -414,3 +414,21 @@ Each task in [`TASKS.md`](TASKS.md) also carries its own *Reference* line.
 - **mermaid-js/mermaid** — Large; only the fence-rendering integration pattern matters — see dsl/mdx and dsl/wiremark adapters.
 - **BuilderIO/mitosis** — Large; codegen idea only (T-094+ not planned).
 - **Non-GitHub / closed systems** — PlantUML Salt (plantuml.com — captured as PDF in the research task), Balsamiq, Figma/Stitch/Claude Design, OpenAI ChatKit/Apps SDK: no source repository to vendor.
+
+## 15. Agent skills and the code map (development environment)
+
+Not product scope — infrastructure so contributors and coding agents start productive. Full detail: [`SKILLS_INDEX.md`](SKILLS_INDEX.md).
+
+| Piece | Path | Notes |
+|---|---|---|
+| Project-local skills (**32**) | `.agents/skills/` (cross-agent standard) and identical `.claude/skills/` (Claude Code) | 25 vetted from GitHub (addyosmani/agent-skills, obra/superpowers, anthropics/skills, nyxandro, fugazi) + 6 from the installed set + our own `markdown-ui-dsl`; pinned with commit, licence and tree hash in `.agents/skills-manifest.json`; shared checklists in `.agents/references/` |
+| Skill manager | `scripts/skills.py` (`install`, `verify`, `validate`, `audit`, `sync`) | Stdlib only; `install` refuses a source whose hash differs from the pin; all 32 pass the official `skills-ref validate` |
+| Routing table | `docs/SKILLS_INDEX.md` §1 | Which skill for RFCs, planning, TDD, a11y Oracle, MCP, skill restructure, sync, PRs, parallel streams |
+| Installed-skill inventory | `docs/SKILLS_INDEX.md` §3 | 110 skills indexed; 6 vendored, 16 relevant-but-not-vendored (licence/timing), 13 proprietary, rest irrelevant |
+| Agent entry points | `AGENTS.md`, `CLAUDE.md` | Read-first table, working agreements, graph rules (T-004 extends them) |
+| Code map | `graphify-out/` (`graph.json`, `graph.html`, `GRAPH_REPORT.md`, `manifest.json`), built by `scripts/graph.sh update` | `graphifyy` pinned at 0.9.73 (Apache-2.0, installed into the ignored `.tools/graphify-venv`); tree-sitter AST for code + structural extraction for Markdown; **no LLM, no network after install**; `.graphifyignore` excludes `reference/`, `.agents/`, `.claude/` |
+
+**Honest limits.** (1) The map is *structural*: it links headings, links and code-span mentions; the optional LLM-based semantic pass for doc-to-doc relationships was **not** run (no API key; run `/graphify --update` in an assistant later). (2) graphify's optional `PreToolUse` hooks are deliberately **not** installed (third-party code on every tool call; machine-specific paths). (3) Third-party skills remain untrusted code — bundled scripts are never executed by installation. (4) `reference/` is excluded from the map to keep it about *our* code; a separate graph can be built per reference repo with `graphify merge-graphs` if needed.
+
+**CI (T-006):** `skills-check` (`skills.py verify` + `validate`), and a freshness warning when `graphify-out/` was built from an older commit than `HEAD`.
+
