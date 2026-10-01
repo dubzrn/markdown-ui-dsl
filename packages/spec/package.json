@@ -9,7 +9,11 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    }
+    },
+    "./grammar/*": "./grammar/*",
+    "./schema/*": "./schema/*",
+    "./conformance/*": "./conformance/*",
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",

@@ -1,4 +1,4 @@
-import { ALLOWED_SCHEMES, schemeOf } from "@mdui/lint";
+import { ALLOWED_URL_SCHEMES, schemeOf } from "@mdui/core";
 
 export type TargetKind = "url" | "fragment" | "route" | "unsafe";
 /**
@@ -10,5 +10,5 @@ export function classifyTarget(raw: string): TargetKind {
   if (raw.trim().startsWith("#")) return "fragment";
   const scheme = schemeOf(raw);
   if (scheme === undefined) return "route";
-  return ALLOWED_SCHEMES.includes(scheme) ? "url" : "unsafe";
+  return ALLOWED_URL_SCHEMES.includes(scheme) ? "url" : "unsafe";
 }

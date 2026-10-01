@@ -231,3 +231,18 @@ describe("safeUrl reads the scheme the way a browser does (review finding)", () 
     expect(() => safeUrl("&#x110000;&#99999999999;javascript:x")).not.toThrow();
   });
 });
+
+describe("input type is derived once (review finding)", () => {
+  it("renders a single type attribute, so password fields are masked", () => {
+    const h = render(
+      parse(
+        "---\ndsl: 2.0\n---\n[ text: Password ]{: type=password }\n[ text: Mail ]{: type=email }\n[ text: X ]{: type=file }\n",
+      ),
+    );
+    expect(h).toContain('type="password"');
+    expect(h).toContain('type="email"');
+    expect(h).not.toContain('type="file"');
+    for (const tag of h.match(/<input[^>]*>/g) ?? [])
+      expect((tag.match(/ type=/g) ?? []).length).toBe(1);
+  });
+});

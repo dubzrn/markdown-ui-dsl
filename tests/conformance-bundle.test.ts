@@ -92,3 +92,13 @@ describe("conformance bundle (T-083)", () => {
     },
   );
 });
+
+describe("shipped spec assets resolve through the package exports (review finding)", () => {
+  it("grammar, schema and conformance subpaths are exported", () => {
+    const pkg = JSON.parse(readFileSync(join(root, "packages/spec/package.json"), "utf8")) as {
+      exports: Record<string, unknown>;
+    };
+    for (const k of ["./grammar/*", "./schema/*", "./conformance/*"])
+      expect(pkg.exports, k).toHaveProperty([k]);
+  });
+});

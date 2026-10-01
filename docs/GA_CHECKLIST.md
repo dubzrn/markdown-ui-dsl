@@ -18,7 +18,7 @@ Honest status per checkpoint item, with evidence. **Met** = measured in this rep
 | A2UI v1.0 / json-render exports validate against pinned schemas | Met | schemas vendored at `102ec1a04975`; `validateSpec` from `@json-render/core@0.21.0`; not rendered by upstream renderers |
 | Docs site + playground "live" | Partial | built, link-checked, axe-clean, e2e-tested; **not deployed** (publishing needs your go-ahead) |
 | Every diagnostic code documented | Met | 84 pages, enforced by `build-site.mjs --check` |
-| Security review | Met (author review) | `docs/SECURITY_REVIEW.md`; 10 findings fixed; no independent audit |
+| Security review | Met (author review) | `docs/SECURITY_REVIEW.md`; 11 findings fixed; no independent audit |
 | Novelty re-check; source re-verification of every C/U entry | **Open** | needs web access the build sandbox does not have |
 | `mdui` fence via remark and markdown-it | Met | tested with the real libraries |
 | Generated SVG verified in a GitHub README | **Open** | no sandbox repository / cannot view github.com rendering |

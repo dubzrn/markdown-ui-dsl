@@ -8,7 +8,7 @@ user's machine, and its output may be pasted to an agent or shared.
 
 ## Findings (all fixed in this revision)
 
-F8–F10 were reported by the Copilot review of this PR and verified before fixing.
+F8–F11 were reported by the Copilot review of this PR and verified before fixing.
 
 | # | Severity | Finding | Fix | Test |
 |---|---|---|---|---|
@@ -21,6 +21,7 @@ F8–F10 were reported by the Copilot review of this PR and verified before fixi
 | F8 | High | `render()`'s `safeUrl` did not strip control characters before reading the scheme, so `java\tscript:alert(1)` was emitted as an `href` that browsers read as `javascript:`. | scheme policy moved to `@mdui/core` (`schemeOf`, `normaliseTarget`), shared by render, lint and the exporters | `render.test.ts` (8 spellings) |
 | F9 | Medium | A numeric entity beyond U+10FFFF (`&#x110000;`) made `String.fromCodePoint` throw, crashing lint and both exporters on one malformed target. | code point validated before decoding | `safety.test.ts`, `render.test.ts` |
 | F10 | High | The MCP stdio server used `readline`, which buffers a whole line before the 8 MB cap is checked, so the cap did not bound memory. | own framing: a line is dropped as soon as it passes the cap | `server.test.ts` (10 MB without a newline, then a normal request) |
+| F11 | High | `[ text: x ]{: type=password }` rendered two `type` attributes; HTML keeps the first, so the password field was unmasked. | native type derived once from an allow-list (`text email password number url tel search`), generic pass skips `type` | `render.test.ts` |
 | F7 | Low (a11y) | Preview chrome had no `h1`/`main`, an invalid `role`, and 24 px target-size failures. | restructured | axe in preview e2e |
 
 ## Checked, no finding

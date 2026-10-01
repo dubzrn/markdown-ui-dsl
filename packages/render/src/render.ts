@@ -29,6 +29,9 @@ interface Ctx {
   depth: number;
 }
 
+/** Input types a spec may ask for; anything else renders as plain text. */
+const INPUT_TYPES = new Set(["text", "email", "password", "number", "url", "tel", "search"]);
+
 function attrString(
   a: Attrs | undefined,
   base: {
@@ -146,7 +149,10 @@ function inlineNode(n: InlineNode, ctx: Ctx): string {
         typeof label === "string"
           ? ""
           : ` aria-label="${esc(n.placeholder === "" ? "Text input" : n.placeholder)}"`;
-      return `<input type="text" placeholder="${esc(n.placeholder)}"${aria}${attrString(n.attrs)}>`;
+      // the native type is derived once (a second `type` attribute would be ignored by HTML, leaving a password field unmasked)
+      const t = n.attrs?.props["type"];
+      const type = typeof t === "string" && INPUT_TYPES.has(t) ? t : "text";
+      return `<input type="${type}" placeholder="${esc(n.placeholder)}"${aria}${attrString(n.attrs, { skip: ["type"] })}>`;
     }
     case "image": {
       const alt = n.attrs?.props["alt"];
