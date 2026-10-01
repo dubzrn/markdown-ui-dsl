@@ -8,6 +8,8 @@ user's machine, and its output may be pasted to an agent or shared.
 
 ## Findings (all fixed in this revision)
 
+F8–F10 were reported by the Copilot review of this PR and verified before fixing.
+
 | # | Severity | Finding | Fix | Test |
 |---|---|---|---|---|
 | F1 | High | `render`, `export`, `svg`, `lint`, `ast` and the preview read `[[ USE: … ]]` includes and data files through **symlinks**: a link inside the project to `~/.ssh/…` put the target's text into the output. Reproduced before the fix. | `readConfined` / `realWithin` resolve real paths and refuse anything outside the real project root (`Io.realpath`) | `cli.test.ts` "symlinks cannot lead outside the project"; preview e2e |
@@ -16,6 +18,9 @@ user's machine, and its output may be pasted to an agent or shared.
 | F4 | Medium | Preview server accepted any `Host`, so a page on another origin could read it by DNS rebinding. | `Host` must be `127.0.0.1:<port>` or `localhost:<port>`, else 403 | preview e2e |
 | F5 | Medium | Exporters passed `javascript:`, `data:`, `file:` and obfuscated variants through as `openUrl`/`navigate`/`href` values, for the host application to act on. | `classifyTarget` uses the lint scheme policy (entity, %-escape, control and zero-width decoding); unsafe targets are dropped with a warning | `a2ui.test.ts` (8 hostile spellings, both formats) |
 | F6 | Low | Nightly workflow interpolated `vars.*` into a shell command. | passed through `env` | n/a |
+| F8 | High | `render()`'s `safeUrl` did not strip control characters before reading the scheme, so `java\tscript:alert(1)` was emitted as an `href` that browsers read as `javascript:`. | scheme policy moved to `@mdui/core` (`schemeOf`, `normaliseTarget`), shared by render, lint and the exporters | `render.test.ts` (8 spellings) |
+| F9 | Medium | A numeric entity beyond U+10FFFF (`&#x110000;`) made `String.fromCodePoint` throw, crashing lint and both exporters on one malformed target. | code point validated before decoding | `safety.test.ts`, `render.test.ts` |
+| F10 | High | The MCP stdio server used `readline`, which buffers a whole line before the 8 MB cap is checked, so the cap did not bound memory. | own framing: a line is dropped as soon as it passes the cap | `server.test.ts` (10 MB without a newline, then a normal request) |
 | F7 | Low (a11y) | Preview chrome had no `h1`/`main`, an invalid `role`, and 24 px target-size failures. | restructured | axe in preview e2e |
 
 ## Checked, no finding

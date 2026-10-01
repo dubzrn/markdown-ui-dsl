@@ -83,3 +83,12 @@ describe("safety rules (T-055)", () => {
     expect(BAD_TARGETS.length + HOSTILE_TEXT.length).toBeGreaterThanOrEqual(20);
   });
 });
+
+describe("out-of-range numeric entities do not crash the linter (review finding)", () => {
+  it("reports instead of throwing", () => {
+    const src =
+      "---\ndsl: 2.0\n---\n[ Go ](&#x110000;javascript:x)\n[ Go ](&#99999999999999;ja&#x76;ascript:x)\n";
+    expect(() => lint(src)).not.toThrow();
+    expect(lint(src).diagnostics.some((d) => d.code === "E7002")).toBe(true);
+  });
+});

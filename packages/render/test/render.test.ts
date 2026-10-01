@@ -209,3 +209,25 @@ describe("golden HTML structure for the shipped examples (styling excluded)", ()
     });
   }
 });
+
+describe("safeUrl reads the scheme the way a browser does (review finding)", () => {
+  for (const bad of [
+    "java\tscript:alert(1)",
+    "java\nscript:alert(1)",
+    "jav&#x61;script:alert(1)",
+    "java&Tab;script:alert(1)",
+    "​javascript:alert(1)",
+    "%6Aavascript:alert(1)",
+    "data:text/html,x",
+    "vbscript:x",
+  ])
+    it(`neutralises ${JSON.stringify(bad)}`, () => {
+      expect(safeUrl(bad)).toBe("#");
+      expect(render(parse(`[x](${bad})\n`))).not.toMatch(/href="[^"]*(java|vbs|data:)/i);
+    });
+  it("keeps safe targets and never throws on out-of-range entities", () => {
+    expect(safeUrl("https://x.test/a")).toBe("https://x.test/a");
+    expect(safeUrl("/route")).toBe("/route");
+    expect(() => safeUrl("&#x110000;&#99999999999;javascript:x")).not.toThrow();
+  });
+});

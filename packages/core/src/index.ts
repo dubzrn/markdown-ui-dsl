@@ -31,6 +31,7 @@ export type {
 export { extractFlow, analyzeFlow } from "./flow.js";
 export type { Flow, FlowScreen, FlowTransition, FlowAnalysis } from "./flow.js";
 export { resolveInRoot, dirname } from "./paths.js";
+export { ALLOWED_URL_SCHEMES, normaliseTarget, schemeOf } from "./urls.js";
 export { walkBlocks, walkInline, inlinesOf, childrenOf } from "./walk.js";
 export { format, equivalent, renderUnchecked } from "./format.js";
 export type { FormatResult } from "./format.js";

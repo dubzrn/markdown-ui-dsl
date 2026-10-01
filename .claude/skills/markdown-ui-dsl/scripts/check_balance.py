@@ -7,8 +7,11 @@ Skips fenced code and HTML comments. Heuristic: it only counts openers/closers.
 import re
 import sys
 
-OPEN = re.compile(r"^\s*(?:[-*+]\s+|\d+\.\s+)?(?::::?\s+\w[\w ]*\s+:::|\|\|\|\s+\w+\s+\|\|\||===\s+\w+\s+===)\s*$")
-CLOSE = re.compile(r"^\s*--- END(?: \w+)? ---\s*$")
+# Openers: `::: NAME args :::` (named blocks, DSL 2.0 arguments allowed), `||| COLUMN |||`, `=== ROW ===`, each optionally
+# followed by a DSL 2.0 attribute list `{: #id .class key=value }`.
+ATTRS = r"(?:\s*\{:[^}]*\})?"
+OPEN = re.compile(r"^\s*(?:[-*+]\s+|\d+\.\s+)?(?::::\s+\S.*?\s+:::|\|\|\|\s+\w+\s+\|\|\||===\s+\w+\s+===)" + ATTRS + r"\s*$")
+CLOSE = re.compile(r"^\s*--- END(?: [\w-]+)? ---\s*$")  # typed closers (`--- END GRID ---`) are DSL 2.0
 
 
 def check(path: str) -> int:

@@ -293,3 +293,31 @@ describe.skipIf(!existsSync(bin))("stdio process", () => {
     expect(lines[1]?.result["structuredContent"]).toMatchObject({ ok: true });
   });
 });
+
+describe("stdio framing (review finding)", () => {
+  const bin = new URL("../dist/bin.js", import.meta.url).pathname;
+  it.skipIf(!existsSync(bin))(
+    "refuses an oversized line as soon as it passes the cap, then keeps serving",
+    async () => {
+      const child = spawn("node", [bin], { stdio: ["pipe", "pipe", "ignore"] });
+      const lines: string[] = [];
+      let buf = "";
+      child.stdout.on("data", (d: Buffer) => {
+        buf += d.toString();
+        let i;
+        while ((i = buf.indexOf("\n")) >= 0) {
+          lines.push(buf.slice(0, i));
+          buf = buf.slice(i + 1);
+        }
+      });
+      const chunk = "x".repeat(1_000_000);
+      for (let i = 0; i < 10; i++) child.stdin.write(chunk); // 10 MB with no newline
+      child.stdin.write("\n");
+      child.stdin.write(JSON.stringify({ jsonrpc: "2.0", id: 7, method: "ping" }) + "\n");
+      await new Promise((ok) => setTimeout(ok, 800));
+      child.kill();
+      expect(lines.filter((l) => l.includes("Request too large"))).toHaveLength(1);
+      expect(lines.some((l) => l.includes('"id":7'))).toBe(true);
+    },
+  );
+});

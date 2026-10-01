@@ -338,7 +338,7 @@
       "license": "MIT",
       "vetted": "2026-10-01",
       "why": "This project's own skill (source of truth: skills/markdown-ui-dsl).",
-      "tree_sha256": "9c74b885693bc67264ae897463db70bcf32ef0c9d064ebe290f515997213bd79"
+      "tree_sha256": "cc0d1c2bcbd0bd9f3f8a5b4257e6e17323e50bcf83ddcd6614f17809b08918a3"
     }
   ],
   "shared_references": [
