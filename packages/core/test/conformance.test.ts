@@ -14,12 +14,16 @@ const load = (f: string): Fixture[] =>
 const schema = JSON.parse(readFileSync(new URL("fixture.schema.json", dir), "utf8")) as object;
 const valid = load("v1/valid.json");
 const invalid = load("v1/invalid.json");
+const valid2 = load("v2/valid.json");
+const invalid2 = load("v2/invalid.json");
 
 describe("corpus shape", () => {
   const validate = new Ajv2020().compile(schema);
   it("validates against its own schema", () => {
     expect(validate(valid), JSON.stringify(validate.errors)).toBe(true);
     expect(validate(invalid), JSON.stringify(validate.errors)).toBe(true);
+    expect(validate(valid2), JSON.stringify(validate.errors)).toBe(true);
+    expect(validate(invalid2), JSON.stringify(validate.errors)).toBe(true);
   });
   it("meets the size floor and has unique ids", () => {
     expect(valid.length).toBeGreaterThanOrEqual(60);
@@ -36,6 +40,8 @@ describe("corpus shape", () => {
 describe.each([
   ["valid", valid],
   ["invalid", invalid],
+  ["v2 valid", valid2],
+  ["v2 invalid", invalid2],
 ] as const)("conformance v1 %s", (_name, fixtures) => {
   it.each(fixtures.map((f) => [f.id, f] as const))("%s", (_id, f) => {
     const doc = parse(f.input);

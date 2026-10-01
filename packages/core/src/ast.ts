@@ -35,7 +35,9 @@ export interface HintNode extends Base {
 }
 export interface DirectiveNode extends Base {
   kind: "directive";
-  breakpoint: "sm" | "md" | "lg" | "xl";
+  breakpoint?: "sm" | "md" | "lg" | "xl";
+  /** Environment tokens (`dark`, `touch`, …); only recognised when the document declares `dsl: 2.0`. */
+  env: string[];
   tokens: { name: string; value: string }[];
 }
 export interface CommentNode extends Base {

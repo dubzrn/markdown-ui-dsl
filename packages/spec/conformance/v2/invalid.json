@@ -1,0 +1,144 @@
+[
+  {
+    "id": "v1-explicit-env-is-hint",
+    "input": "---\ndsl: 1.0\n---\n> @dark surface: inverted\n",
+    "expect": {
+      "outline": "frontmatter,hint",
+      "diagnostics": [
+        {
+          "code": "W1201",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0",
+    "notes": "env directives are 2.0-only"
+  },
+  {
+    "id": "v1-implicit-env-is-hint",
+    "input": "> @touch a: b\n",
+    "expect": {
+      "outline": "hint",
+      "diagnostics": [
+        {
+          "code": "W1201",
+          "line": 1
+        }
+      ]
+    },
+    "since": "2.0",
+    "notes": "no frontmatter ⇒ 1.x"
+  },
+  {
+    "id": "v2-unknown-env",
+    "input": "---\ndsl: 2.0\n---\n> @dim a: b\n",
+    "expect": {
+      "outline": "frontmatter,hint",
+      "diagnostics": [
+        {
+          "code": "W1201",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "v2-unknown-with-known",
+    "input": "---\ndsl: 2.0\n---\n> @dark @dim a: b\n",
+    "expect": {
+      "outline": "frontmatter,hint",
+      "diagnostics": [
+        {
+          "code": "W1201",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "v2-two-breakpoints",
+    "input": "---\ndsl: 2.0\n---\n> @sm @md a: b\n",
+    "expect": {
+      "outline": "frontmatter,hint",
+      "diagnostics": [
+        {
+          "code": "W1203",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "v2-env-no-pairs",
+    "input": "---\ndsl: 2.0\n---\n> @dark\n",
+    "expect": {
+      "outline": "frontmatter,hint",
+      "diagnostics": [
+        {
+          "code": "W1203",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "v2-env-missing-value",
+    "input": "---\ndsl: 2.0\n---\n> @dark a:\n",
+    "expect": {
+      "outline": "frontmatter,hint",
+      "diagnostics": [
+        {
+          "code": "W1203",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "v2-env-bad-pair",
+    "input": "---\ndsl: 2.0\n---\n> @dark a: b, broken\n",
+    "expect": {
+      "outline": "frontmatter,hint",
+      "diagnostics": [
+        {
+          "code": "W1203",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "v2-unknown-breakpoint-xs",
+    "input": "---\ndsl: 2.0\n---\n> @xs a: b\n",
+    "expect": {
+      "outline": "frontmatter,hint",
+      "diagnostics": [
+        {
+          "code": "W1201",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "v2-orphan-end-still-reported",
+    "input": "---\ndsl: 2.0\n---\n--- END ---\n",
+    "expect": {
+      "outline": "frontmatter",
+      "diagnostics": [
+        {
+          "code": "E1002",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  }
+]

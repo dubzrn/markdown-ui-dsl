@@ -1,5 +1,6 @@
 import type {
   BlockNode,
+  DirectiveNode,
   ContainerKind,
   ContainerNode,
   Document,
@@ -31,7 +32,16 @@ const TABLE_ROW_RE = /^\s*\|(?!\[)/;
 const TABLE_SEP_RE = /^\s*\|(\s*:?-+:?\s*\|?)+\s*$/;
 const TABS_RE = /^\s*\|\[.*\|\s*$/;
 const FENCE_RE = /^\s*```(.*)$/;
-const DIRECTIVE_RE = /^\s*>\s*@([A-Za-z0-9-]+)\b\s*(.*)$/;
+const DIRECTIVE_RE = /^\s*>\s*((?:@[A-Za-z0-9-]+(?:\s+|$))+)(.*)$/;
+const ENV_TOKENS = [
+  "dark",
+  "light",
+  "print",
+  "reduced-motion",
+  "contrast-more",
+  "touch",
+  "hover",
+] as const;
 const PAIR_RE = /^([A-Za-z][\w-]*)\s*:\s*(\S.*)$/;
 
 interface Line {
@@ -100,6 +110,7 @@ export function parse(source: string): Document {
   const stack: Frame[] = [];
   let frontmatter: FrontmatterNode | undefined;
   let meta: FrontmatterData = {};
+  let dslMajor: "1" | "2.0" = "1";
   let i = 0;
 
   const sink = (): BlockNode[] => {
@@ -153,6 +164,7 @@ export function parse(source: string): Document {
       i = close + 1;
       const fm = parseFrontmatter(frontmatter.raw);
       meta = fm.data;
+      dslMajor = dslVersion(meta);
       for (const issue of fm.issues) {
         // raw line 1 is the line after the opening fence (source line 2)
         const src = lines[issue.line] as Line | undefined;
@@ -292,22 +304,32 @@ export function parse(source: string): Document {
       const text = trimmed.replace(/^>\s?/, "");
       const dm = DIRECTIVE_RE.exec(t);
       if (dm !== null) {
-        const bp = dm[1] as string;
-        if (!(BREAKPOINTS as readonly string[]).includes(bp)) {
+        // Leading `@token`s: one optional breakpoint plus (DSL 2.0 only) environment tokens, in any order (RFC-0001 §3d).
+        const lead = (dm[1] as string)
+          .trim()
+          .split(/\s+/)
+          .map((x) => x.slice(1));
+        const isBp = (x: string): boolean => (BREAKPOINTS as readonly string[]).includes(x);
+        const isEnv = (x: string): boolean =>
+          dslMajor === "2.0" && (ENV_TOKENS as readonly string[]).includes(x);
+        const bps = lead.filter(isBp);
+        if (!lead.every((x) => isBp(x) || isEnv(x))) {
           diagnostics.push(makeDiagnostic("W1201", lineSpan(l)));
         } else {
           const parts = (dm[2] as string).split(",").map((p) => p.trim());
           const pairs = parts.map((p) => PAIR_RE.exec(p));
-          if (parts.length > 0 && pairs.every((p) => p !== null)) {
-            sink().push({
+          if (bps.length <= 1 && parts.length > 0 && pairs.every((p) => p !== null)) {
+            const node: DirectiveNode = {
               kind: "directive",
-              breakpoint: bp as (typeof BREAKPOINTS)[number],
+              env: lead.filter((x) => !isBp(x)),
               tokens: pairs.map((p) => ({
                 name: (p as RegExpExecArray)[1] as string,
                 value: (p as RegExpExecArray)[2] as string,
               })),
               span: lineSpan(l),
-            });
+            };
+            if (bps[0] !== undefined) node.breakpoint = bps[0] as (typeof BREAKPOINTS)[number];
+            sink().push(node);
             continue;
           }
           diagnostics.push(makeDiagnostic("W1203", lineSpan(l)));

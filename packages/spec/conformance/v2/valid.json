@@ -1,0 +1,137 @@
+[
+  {
+    "id": "env-dark",
+    "input": "---\ndsl: 2.0\n---\n> @dark surface: inverted\n",
+    "expect": {
+      "outline": "frontmatter,directive",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "env-light",
+    "input": "---\ndsl: 2.0\n---\n> @light surface: inverted\n",
+    "expect": {
+      "outline": "frontmatter,directive",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "env-print",
+    "input": "---\ndsl: 2.0\n---\n> @print surface: inverted\n",
+    "expect": {
+      "outline": "frontmatter,directive",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "env-reduced-motion",
+    "input": "---\ndsl: 2.0\n---\n> @reduced-motion surface: inverted\n",
+    "expect": {
+      "outline": "frontmatter,directive",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "env-contrast-more",
+    "input": "---\ndsl: 2.0\n---\n> @contrast-more surface: inverted\n",
+    "expect": {
+      "outline": "frontmatter,directive",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "env-touch",
+    "input": "---\ndsl: 2.0\n---\n> @touch surface: inverted\n",
+    "expect": {
+      "outline": "frontmatter,directive",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "env-hover",
+    "input": "---\ndsl: 2.0\n---\n> @hover surface: inverted\n",
+    "expect": {
+      "outline": "frontmatter,directive",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "env-with-breakpoint",
+    "input": "---\ndsl: 2.0\n---\n> @md @dark surface: inverted\n",
+    "expect": {
+      "outline": "frontmatter,directive",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "env-breakpoint-after",
+    "input": "---\ndsl: 2.0\n---\n> @dark @md surface: inverted\n",
+    "expect": {
+      "outline": "frontmatter,directive",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "env-two",
+    "input": "---\ndsl: 2.0\n---\n> @dark @touch hit-area: large\n",
+    "expect": {
+      "outline": "frontmatter,directive",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "env-multi-pairs",
+    "input": "---\ndsl: 2.0\n---\n> @print a: b, c: d\n",
+    "expect": {
+      "outline": "frontmatter,directive",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "env-in-card",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::\n> @dark surface: inverted\n--- END ---\n",
+    "expect": {
+      "outline": "frontmatter,card(directive)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "breakpoint-still-works",
+    "input": "---\ndsl: 2.0\n---\n> @sm padding: tight\n",
+    "expect": {
+      "outline": "frontmatter,directive",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "plain-hint-unchanged",
+    "input": "---\ndsl: 2.0\n---\n> align right\n",
+    "expect": {
+      "outline": "frontmatter,hint",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "v2-lang-key-ok",
+    "input": "---\ndsl: 2.0\nlang: en\ndir: ltr\n---\nx\n",
+    "expect": {
+      "outline": "frontmatter,line",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  }
+]

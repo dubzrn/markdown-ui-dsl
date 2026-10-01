@@ -38,7 +38,7 @@
 |---|---|---|
 | T-001 | done | examples balanced (`scripts/check-examples.py`) |
 | T-002 | done | `pnpm check` green; lint rejects `node:` imports in core (ADR-003) |
-| T-003 | done* | `.github/workflows/ci.yml` written; *first CI run and red-on-unbalanced demo pending |
+| T-003 | done* | CI green on `ed0a63a` (7/7 jobs); *red-on-unbalanced demo on a scratch branch still pending (needs permission to push a second branch) |
 | T-004 | done | CONTRIBUTING, RFC template, CHANGELOG |
 | T-005 | done | `node scripts/check-traceability.ts` (48/55/84), unit tests |
 | T-006 | done | `scripts/check-repo-hygiene.py`, seeded violations demonstrated |
@@ -51,7 +51,8 @@
 | SP-4 | partial | baseline vs A2UI (-85.8% tokens, o200k); re-run after 2.0 syntax; json-render & OpenUI Lang pending (`docs/spikes/SP-4-token-cost.md`) |
 | T-012 | done | `docs/rfcs/0001-dsl-2.0-syntax.md`, `v2.ebnf`; maintainer read of §7 pending |
 | T-017 | done | `frontmatter.ts`; 57 fixtures; decimals-stay-strings decision (ADR-004 addendum) |
-| T-018 | next | directive parser (env directives, dsl:2.0-gated) |
+| T-018 | done | env directives gated on `dsl: 2.0`; 25 v2 fixtures; responsive-layout directive snapshot |
+| T-019 | next | AST types + JSON Schema |
 
 ### T-001 · Fix example and documentation defects
 `S` · Deps: — · Implements: **QLT-04** · REQ: REQ-QLT-04
