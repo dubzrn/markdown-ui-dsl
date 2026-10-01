@@ -24,6 +24,7 @@ import {
 } from "@mdui/tools";
 import { defaultCatalog, loadCatalog, loadMap } from "@mdui/catalog";
 import { AST_SCHEMA } from "@mdui/spec";
+import { runSync } from "./sync.js";
 import { buildGrammar, toGbnf, toJsonSchema, toLark } from "@mdui/grammar";
 import { render } from "@mdui/render";
 import { parseArgs, UsageError, type Args } from "./args.js";
@@ -49,6 +50,7 @@ Commands:
   prompt     Compose an agent prompt from your specs, catalog and tokens (--agent, --catalog, --map, --design, --all)
   coverage   Which requirements do the specs cover? --requirements <file> (Spec Kit, OpenSpec or Kiro style); exit 1 if any is uncovered or unknown
   grammar    Emit a generation grammar: --format lark|gbnf|json-schema [--dsl 1|2.0] [--catalog c.yaml] [--max-depth N] [--tokens a,b] [--data x.y,z]
+  sync       Anchored three-way sync: plan|apply|relink|recover <spec> --code <files> [--lock p] [--confirm] [--resolve a=code,b=spec] [--map m.yaml]
   rules      List the lint rules (--json for machine output)
   ast        Print the JSON AST of one file
   render     Render one file to HTML (--style sketch|clean|wireframe|none, --state, --theme, --out)
@@ -348,6 +350,7 @@ function runGrammar(io: Io, args: Args): number {
 function run(io: Io, args: Args, cfg: Config): number {
   const cmd = args.command as string;
   if (cmd === "grammar") return runGrammar(io, args);
+  if (cmd === "sync") return runSync(io, args, posix.resolve(io.cwd, cfg.root));
   if (cmd === "coverage") return runCoverage(io, args);
   if (cmd === "prompt") return runPrompt(io, args);
   if (cmd === "rules") return listRules(io, args.flags.json);
@@ -573,6 +576,7 @@ const COMMANDS = [
   "prompt",
   "coverage",
   "grammar",
+  "sync",
 ];
 
 /** CLI entry. Never throws; returns the process exit code. */

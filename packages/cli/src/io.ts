@@ -9,4 +9,6 @@ export interface Io {
   readDir: (absPath: string) => { name: string; isDir: boolean }[] | undefined;
   /** Write a file (used by `fmt --write`, `migrate --write`). */
   writeFile: (absPath: string, text: string) => void;
+  /** Delete a file (used for the sync journal). */
+  removeFile: (absPath: string) => void;
 }

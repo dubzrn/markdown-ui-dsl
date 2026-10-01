@@ -25,6 +25,7 @@ function memIo(files: Record<string, string>, cwd = "/proj") {
       return names.size === 0 ? undefined : [...names].map(([name, isDir]) => ({ name, isDir }));
     },
     writeFile: (p, t) => void (files[p] = t),
+    removeFile: (p) => void Reflect.deleteProperty(files, p),
   };
   return { io, out: () => out.join(""), err: () => err.join("") };
 }
@@ -495,6 +496,64 @@ describe("built binary", () => {
     it("rejects a malformed constraints config", () => {
       const m = memIo({ "/proj/mdui.config.json": '{"constraints": 5}', "/proj/a.ui.md": "x\n" });
       expect(main(["lint", "a.ui.md"], m.io)).toBe(EXIT.usage);
+    });
+  });
+
+  describe("sync (T-074)", () => {
+    const spec =
+      "---\ndsl: 2.0\nlang: en\n---\n::: CARD :::{: #login }\n## Sign in\n[ Go ](#go)\n--- END ---\n";
+    const html = '<section data-mdui-anchor="login"><h2>Sign in</h2><button>Go</button></section>';
+    const files = () => ({ "/proj/a.ui.md": spec, "/proj/a.html": html });
+    it("plan is read-only; apply needs --confirm; then everything is clean", () => {
+      const f = files();
+      const m = memIo(f);
+      expect(main(["sync", "plan", "a.ui.md", "--code", "a.html"], m.io)).toBe(EXIT.ok);
+      expect(m.out()).toMatch(/login\s+converged/);
+      expect(f["/proj/.ui.lock" as keyof typeof f]).toBeUndefined();
+      expect(main(["sync", "apply", "a.ui.md", "--code", "a.html"], m.io)).toBe(EXIT.usage);
+      expect(main(["sync", "apply", "a.ui.md", "--code", "a.html", "--confirm"], m.io)).toBe(
+        EXIT.ok,
+      );
+      expect(f["/proj/.ui.lock" as keyof typeof f]).toMatch(/"version": 1/);
+      const again = memIo(f);
+      expect(main(["sync", "plan", "--check", "a.ui.md", "--code", "a.html"], again.io)).toBe(
+        EXIT.ok,
+      );
+      expect(again.out()).toMatch(/login\s+clean/);
+    });
+    it("--check exits 1 on drift, and --json carries the plan", () => {
+      const f = files();
+      main(["sync", "apply", "a.ui.md", "--code", "a.html", "--confirm"], memIo(f).io);
+      f["/proj/a.html"] = html.replace("Go", "Proceed");
+      const m = memIo(f);
+      expect(main(["sync", "plan", "--check", "--json", "a.ui.md", "--code", "a.html"], m.io)).toBe(
+        EXIT.diagnostics,
+      );
+      expect(JSON.parse(m.out()).entries[0]).toMatchObject({
+        anchor: "login",
+        class: "code-ahead",
+      });
+    });
+    it("apply patches the spec from code-ahead changes", () => {
+      const f = files();
+      main(["sync", "apply", "a.ui.md", "--code", "a.html", "--confirm"], memIo(f).io);
+      f["/proj/a.html"] = html.replace("Go", "Proceed");
+      expect(main(["sync", "apply", "a.ui.md", "--code", "a.html", "--confirm"], memIo(f).io)).toBe(
+        EXIT.ok,
+      );
+      expect(f["/proj/a.ui.md"]).toContain("[ Proceed ]");
+    });
+    it("rejects a missing subcommand, spec or --code", () => {
+      const m = memIo(files());
+      expect(main(["sync"], m.io)).toBe(EXIT.usage);
+      expect(main(["sync", "plan", "nope.ui.md", "--code", "a.html"], m.io)).toBe(EXIT.usage);
+      expect(main(["sync", "plan", "a.ui.md"], m.io)).toBe(EXIT.usage);
+    });
+    it("relink renames an anchor in the lock", () => {
+      const f = files();
+      main(["sync", "apply", "a.ui.md", "--code", "a.html", "--confirm"], memIo(f).io);
+      expect(main(["sync", "relink", "login", "signin"], memIo(f).io)).toBe(EXIT.ok);
+      expect(f["/proj/.ui.lock" as keyof typeof f]).toContain('"signin"');
     });
   });
 });

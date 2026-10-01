@@ -77,6 +77,9 @@ importers:
       '@mdui/spec':
         specifier: workspace:*
         version: link:../spec
+      '@mdui/sync':
+        specifier: workspace:*
+        version: link:../sync
       '@mdui/tokens':
         specifier: workspace:*
         version: link:../tokens
@@ -148,6 +151,12 @@ importers:
         version: link:../core
 
   packages/spec: {}
+
+  packages/sync:
+    dependencies:
+      '@mdui/core':
+        specifier: workspace:*
+        version: link:../core
 
   packages/tokens:
     dependencies:

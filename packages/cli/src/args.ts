@@ -29,6 +29,10 @@ export interface Args {
     data: string | undefined;
     all: boolean;
     auditWaivers: boolean;
+    confirm: boolean;
+    code: string | undefined;
+    lock: string | undefined;
+    resolve: string | undefined;
   };
 }
 
@@ -52,6 +56,9 @@ const VALUE_FLAGS = [
   "--max-depth",
   "--tokens",
   "--data",
+  "--code",
+  "--lock",
+  "--resolve",
 ];
 
 export function parseArgs(argv: string[]): Args {
@@ -86,6 +93,10 @@ export function parseArgs(argv: string[]): Args {
       data: undefined,
       all: false,
       auditWaivers: false,
+      confirm: false,
+      code: undefined,
+      lock: undefined,
+      resolve: undefined,
     },
   };
   const rest: string[] = [];
@@ -105,6 +116,7 @@ export function parseArgs(argv: string[]): Args {
     else if (a === "--force") out.flags.force = true;
     else if (a === "--all") out.flags.all = true;
     else if (a === "--audit-waivers") out.flags.auditWaivers = true;
+    else if (a === "--confirm") out.flags.confirm = true;
     else if (VALUE_FLAGS.includes(a) || VALUE_FLAGS.some((f) => a.startsWith(`${f}=`))) {
       const eq = a.indexOf("=");
       const name = eq === -1 ? a : a.slice(0, eq);
@@ -127,6 +139,9 @@ export function parseArgs(argv: string[]): Args {
       else if (name === "--max-depth") out.flags.maxDepth = value;
       else if (name === "--tokens") out.flags.tokens = value;
       else if (name === "--data") out.flags.data = value;
+      else if (name === "--code") out.flags.code = value;
+      else if (name === "--lock") out.flags.lock = value;
+      else if (name === "--resolve") out.flags.resolve = value;
       else out.flags.out = value;
     } else if (a.startsWith("-") && a !== "-") throw new UsageError(`unknown option ${a}`);
     else rest.push(a);

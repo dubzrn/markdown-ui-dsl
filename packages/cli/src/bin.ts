@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { main } from "./main.js";
 import type { Io } from "./io.js";
@@ -37,6 +37,7 @@ const io: Io = {
     mkdirSync(dirname(p), { recursive: true });
     writeFileSync(p, text);
   },
+  removeFile: (p) => rmSync(p, { force: true }),
 };
 
 process.exitCode = main(process.argv.slice(2), io);
