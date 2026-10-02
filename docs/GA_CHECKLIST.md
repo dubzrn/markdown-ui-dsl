@@ -37,8 +37,8 @@ Honest status per checkpoint item, with evidence. **Met** = measured in this rep
 | Preview update ≤ 500 ms | Met | median 58 ms, max 64 ms over 10 edits |
 | Preview chrome passes axe | Met | e2e, light and dark |
 | WCAG criterion mapping | Partial | number, title and level checked against the W3C source commit `71c891a`; normative wording not compared |
-| RFC-0001 §7 (readability review and simplifications) maintainer read | **Open** | needs a human; §6 (compatibility) is the other section that affects existing users |
+| RFC-0001 §7 (readability review and simplifications) maintainer read | Met | approved by the repository owner, 2026-10-02 (reported in the working session) |
 
 ## What needs you
 
-Run `scripts/eval-llm.mjs` against a model (T-061/T-063), approve publishing and the licence decision (T-098), sign off RFC-0001 §7, try the MCP server in Claude Desktop / Cursor / VS Code, and view a generated SVG in a GitHub README. Re-verifying the research sources needs network access to the sources.
+Run `scripts/eval-llm.mjs` against a model (T-061/T-063), approve publishing and the licence decision (T-098), try the MCP server in Claude Desktop / Cursor / VS Code, and view a generated SVG in a GitHub README. Re-verifying the research sources needs network access to the sources.
