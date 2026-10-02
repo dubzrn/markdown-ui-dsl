@@ -124,6 +124,12 @@ for (const m of panel) {
 process.stderr.write("\n");
 
 const cells = summarise(results);
+// Provider errors are counted in the table; say what they were (a bad key, a wrong model alias, an unreachable host) once each.
+const errs = new Map();
+for (const r of results)
+  if (r.error !== undefined)
+    errs.set(String(r.error).slice(0, 300), (errs.get(String(r.error).slice(0, 300)) ?? 0) + 1);
+for (const [msg, n] of errs) console.error(`provider error (x${n}): ${msg}`);
 const out = opt("out");
 if (out) {
   mkdirSync(dirname(out), { recursive: true });
