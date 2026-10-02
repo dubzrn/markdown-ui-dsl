@@ -56,4 +56,4 @@ def reverse_string_loop(text):
 [ Send ](#send)
 --- END ---
 
-||| COLUMN |||
+--- END ---

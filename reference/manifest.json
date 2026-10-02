@@ -1,0 +1,516 @@
+{
+  "_comment": "Static metadata for reference/ repos. Pinned commits, dates, licences and sizes are computed by scripts/reference-manifest.py from the checked-out submodules. Edit this file, then run: python3 scripts/reference-manifest.py",
+  "repos": [
+    {
+      "path": "dsl/markdoc",
+      "repo": "markdoc/markdoc",
+      "role": "Markdown superset with typed tags, AST, formatter, validation.",
+      "lift": [
+        "src/tokenizer + src/parser.ts (block/inline tokenising patterns)",
+        "src/formatter.ts (canonical formatter)",
+        "src/schema.ts + validator (typed schema, severity model)",
+        "src/ast, src/transformer.ts (AST→output pipeline)"
+      ],
+      "tasks": [
+        "T-015",
+        "T-016",
+        "T-019",
+        "T-030",
+        "T-034"
+      ]
+    },
+    {
+      "path": "dsl/mdocui",
+      "repo": "mdocui/mdocui",
+      "role": "Streaming generative-UI over Markdoc tags; registry + prompt generation.",
+      "lift": [
+        "packages/core (streaming tokenizer/parser, component registry, generatePrompt)",
+        "packages/react (renderer + error boundaries)",
+        "packages/cli",
+        "SKILL.md (agent-skill example)"
+      ],
+      "tasks": [
+        "T-042",
+        "T-050",
+        "T-054",
+        "T-053",
+        "T-105"
+      ]
+    },
+    {
+      "path": "dsl/wiremd",
+      "repo": "akonan/wiremd",
+      "role": "Closest Markdown wireframe DSL: parser, 7 style renderers, CLI, editor integrations.",
+      "lift": [
+        "src/parser (Markdown→AST) and tests/",
+        "src/renderer (7 visual styles; sketch/clean/wireframe)",
+        "src/cli + bin (watch/live-reload)",
+        "vscode-extension/, figma-plugin/, skills/"
+      ],
+      "tasks": [
+        "T-015",
+        "T-016",
+        "T-027",
+        "T-040",
+        "T-041",
+        "T-100",
+        "T-102"
+      ]
+    },
+    {
+      "path": "dsl/wiremark",
+      "repo": "Blackburn-Labs/wiremark",
+      "role": "Indentation wireframe DSL embeddable in Markdown; SVG renderer; named-frame flows.",
+      "lift": [
+        "packages/core (parser, layout engine, SVG renderer)",
+        "packages/cli",
+        "host adapters pattern (remark/markdown-it/Obsidian) — see docs/",
+        "AGENTS.md (agent guidance)"
+      ],
+      "tasks": [
+        "T-094",
+        "T-111",
+        "T-025",
+        "T-053"
+      ]
+    },
+    {
+      "path": "dsl/wireloom",
+      "repo": "StardockCorp/Wireloom",
+      "role": "Zero-dependency indent DSL → SVG wireframes that display in GitHub/Obsidian/Notion.",
+      "lift": [
+        "src/parser + src/renderer (SVG, zero-dep)",
+        "INTEGRATION.md (embedding guide)",
+        "AGENTS.md + skill file (agent packaging)",
+        "test/ (fixture style)"
+      ],
+      "tasks": [
+        "T-094",
+        "T-053",
+        "T-004"
+      ]
+    },
+    {
+      "path": "dsl/asciiwire",
+      "repo": "iwabuchi404/ASCIIwire",
+      "role": "Heading-based wireframe DSL → ASCII art; CLI + VS Code scaffolding (early-stage).",
+      "lift": [
+        "packages/core (ASCII layout renderer)",
+        "packages/cli",
+        "packages/vscode",
+        "README mentions an MCP server — locate before relying on it"
+      ],
+      "tasks": [
+        "T-062",
+        "T-100"
+      ]
+    },
+    {
+      "path": "dsl/markdown-ui",
+      "repo": "BlueprintLabIO/markdown-ui",
+      "role": "Fenced `markdown-ui-widget` DSL; chart/quiz widgets; React/Svelte/Vue renderers.",
+      "lift": [
+        "packages/@markdown-ui (mdui-lang parser, marked extension)",
+        "chart/slider/quiz widget renderers",
+        "demo-page/"
+      ],
+      "tasks": [
+        "T-021",
+        "T-094"
+      ]
+    },
+    {
+      "path": "dsl/openui",
+      "repo": "thesysdev/openui",
+      "role": "OpenUI Lang: compact streaming-first UI DSL; token benchmarks; multi-framework runtimes.",
+      "lift": [
+        "packages/lang-core (language core/parser)",
+        "packages/react-lang, vue-lang, svelte-lang, angular-lang",
+        "packages/a2ui (A2UI bridge)",
+        "benchmarks/ (token-count methodology — template for TLS-12)",
+        "packages/devtools, openui-cli"
+      ],
+      "tasks": [
+        "T-042",
+        "T-095",
+        "T-090",
+        "T-105",
+        "SP-4"
+      ]
+    },
+    {
+      "path": "dsl/mdx",
+      "repo": "mdx-js/mdx",
+      "role": "Markdown+JSX compile pipeline; remark/rehype integration reference.",
+      "lift": [
+        "packages/remark-mdx (remark plugin patterns)",
+        "packages/loader, rollup, esbuild (bundler integration)",
+        "docs/ (embedding conventions)"
+      ],
+      "tasks": [
+        "T-094"
+      ]
+    },
+    {
+      "path": "protocols/a2ui",
+      "repo": "google/A2UI",
+      "role": "A2UI protocol v1.0 spec, Express DSL grammar, conformance suite, eval harness, renderers.",
+      "lift": [
+        "specification/v1_0 (message set, JSON Schemas) → exporter target",
+        "specification/inference_formats/express/Express.g4 (compact UI DSL grammar)",
+        "conformance/ (language-neutral conformance suite design → QLT-01)",
+        "eval/ (a2ui_eval, datasets, baselines → QLT-02 harness design)",
+        "catalogs/, renderers/, samples/, typescript/"
+      ],
+      "tasks": [
+        "T-090",
+        "T-058",
+        "T-013",
+        "T-083",
+        "T-063",
+        "T-095",
+        "T-105"
+      ]
+    },
+    {
+      "path": "protocols/genui",
+      "repo": "flutter/genui",
+      "role": "Flutter GenUI SDK: catalog items, A2UI connector, JSON-schema builder.",
+      "lift": [
+        "packages/genui (catalog items, surface controller)",
+        "packages/genui_a2a (A2UI connector)",
+        "packages/json_schema_builder (validation)"
+      ],
+      "tasks": [
+        "T-050",
+        "T-090",
+        "T-106"
+      ]
+    },
+    {
+      "path": "protocols/json-render",
+      "repo": "vercel-labs/json-render",
+      "role": "Catalog→Spec→Registry generative UI; SpecStream; prompt generation; MCP; devtools.",
+      "lift": [
+        "packages/core (catalog, spec, SpecStream compiler, prompt())",
+        "packages/codegen, packages/mcp, packages/directives",
+        "packages/devtools* (inspector UX)",
+        "skills/ and AGENTS.md (agent packaging)"
+      ],
+      "tasks": [
+        "T-042",
+        "T-050",
+        "T-054",
+        "T-062",
+        "T-091",
+        "T-105"
+      ]
+    },
+    {
+      "path": "protocols/ext-apps",
+      "repo": "modelcontextprotocol/ext-apps",
+      "role": "MCP Apps spec 2026-01-26 and SDK (app-bridge, CSP/sandbox, host context).",
+      "lift": [
+        "specification/2026-01-26/apps.mdx (normative text)",
+        "src/app-bridge.ts, src/app.ts (host/app protocol)",
+        "docs/ and examples/ (sandbox proxy pattern)"
+      ],
+      "tasks": [
+        "T-105",
+        "T-055"
+      ]
+    },
+    {
+      "path": "protocols/mcp-ui",
+      "repo": "idosal/mcp-ui",
+      "role": "MCP-UI SDKs (TS/Ruby/Python); UIResource types; now implements MCP Apps.",
+      "lift": [
+        "sdks/ (server/client patterns, three languages)",
+        "docs/",
+        "examples/"
+      ],
+      "tasks": [
+        "T-062",
+        "T-105"
+      ]
+    },
+    {
+      "path": "protocols/remote-dom",
+      "repo": "Shopify/remote-dom",
+      "role": "Sandboxed remote rendering with custom elements; Web Worker polyfill.",
+      "lift": [
+        "packages/core (RemoteElement, mutation sync)",
+        "packages/polyfill (minimal DOM for workers)",
+        "packages/react, preact, signals"
+      ],
+      "tasks": [
+        "T-105"
+      ]
+    },
+    {
+      "path": "protocols/ag-ui",
+      "repo": "ag-ui-protocol/ag-ui",
+      "role": "AG-UI event protocol: events, shared state, integrations.",
+      "lift": [
+        "docs/ (event + state concepts)",
+        "integrations/ and middlewares/ (adapter patterns)",
+        "apps/ (dojo examples)"
+      ],
+      "tasks": [
+        "T-105"
+      ]
+    },
+    {
+      "path": "protocols/tambo",
+      "repo": "tambo-ai/tambo",
+      "role": "React generative-UI SDK: Zod-registered components; generative vs interactable.",
+      "lift": [
+        "packages/react-ui-base, ui-registry (component registry patterns)",
+        "packages/core, client (streaming props)",
+        "devdocs/ and AGENTS.md"
+      ],
+      "tasks": [
+        "T-050",
+        "T-105"
+      ]
+    },
+    {
+      "path": "protocols/hashbrown",
+      "repo": "liveloveapp/hashbrown",
+      "role": "Skillet schema language; streaming JSON parser; React/Angular generative UI.",
+      "lift": [
+        "packages/core (Skillet schemas, streaming JSON parser)",
+        "packages/react, angular (UI kits)",
+        "provider adapters (anthropic, openai, google, ollama)"
+      ],
+      "tasks": [
+        "T-042",
+        "T-050"
+      ]
+    },
+    {
+      "path": "tokens/design-md",
+      "repo": "google-labs-code/design.md",
+      "role": "DESIGN.md spec + CLI (lint 11 rules, diff, export Tailwind/DTCG).",
+      "lift": [
+        "packages/cli (lint rules, diff, export implementations)",
+        "docs/spec.md (normative token/section spec)",
+        "examples/"
+      ],
+      "tasks": [
+        "T-037",
+        "T-038",
+        "T-039",
+        "T-035"
+      ]
+    },
+    {
+      "path": "tokens/dtcg",
+      "repo": "design-tokens/community-group",
+      "role": "W3C DTCG token format: schemas, technical reports, test suite.",
+      "lift": [
+        "schemas/ (JSON Schemas for validation)",
+        "test-suite/ (conformance model → QLT-01)",
+        "technical-reports/ (format, color, resolver)"
+      ],
+      "tasks": [
+        "T-038",
+        "T-083"
+      ]
+    },
+    {
+      "path": "tokens/style-dictionary",
+      "repo": "style-dictionary/style-dictionary",
+      "role": "Token transform/format pipeline. CONFIRM DTCG support before relying on it.",
+      "lift": [
+        "lib/ (transforms, formats, resolution)",
+        "__tests__/ (golden-style tests)",
+        "docs/"
+      ],
+      "tasks": [
+        "T-038"
+      ]
+    },
+    {
+      "path": "tokens/code-connect",
+      "repo": "figma/code-connect",
+      "role": "Design↔code component mapping via template files (React/Compose/SwiftUI/HTML).",
+      "lift": [
+        "cli/ and react/ (mapping extraction)",
+        "compose/, swiftui/ (non-web mappings)",
+        "docs/"
+      ],
+      "tasks": [
+        "T-052"
+      ]
+    },
+    {
+      "path": "sdd/spec-kit",
+      "repo": "github/spec-kit",
+      "role": "SDD toolkit: constitution/specify/plan/tasks, extensions, presets, bundles.",
+      "lift": [
+        "templates/ (constitution/checklist templates) and templates/commands (specify/plan/tasks prompts)",
+        "spec-driven.md (method write-up)",
+        "extensions/, bundles/, presets/, integrations/ (packaging per agent)",
+        "src/specify_cli"
+      ],
+      "tasks": [
+        "T-056",
+        "T-004"
+      ]
+    },
+    {
+      "path": "sdd/openspec",
+      "repo": "Fission-AI/OpenSpec",
+      "role": "Delta-spec SDD: specs/changes, ADDED/MODIFIED/REMOVED, archive.",
+      "lift": [
+        "src/core (delta parsing/merging)",
+        "src/commands, src/cli",
+        "openspec/ (the project's own specs — dogfood example)"
+      ],
+      "tasks": [
+        "T-035",
+        "T-056"
+      ]
+    },
+    {
+      "path": "sdd/kiro",
+      "repo": "kirodotdev/Kiro",
+      "role": "Kiro specs/steering/hooks docs and examples (property-based correctness).",
+      "lift": [
+        "docs/ (spec, steering, hooks conventions)",
+        "specs/ and .kiro/ (example specs)"
+      ],
+      "tasks": [
+        "T-056"
+      ]
+    },
+    {
+      "path": "sdd/agentskills",
+      "repo": "agentskills/agentskills",
+      "role": "Agent Skills specification and `skills-ref` validator.",
+      "lift": [
+        "skills-ref/ (validator implementation → scripts/ in our skill)",
+        "docs/specification.mdx (limits: ≤500 lines, name ≤64, description ≤1,024)"
+      ],
+      "tasks": [
+        "T-053",
+        "T-004"
+      ]
+    },
+    {
+      "path": "sdd/agents-md",
+      "repo": "agentsmd/agents.md",
+      "role": "AGENTS.md format and site.",
+      "lift": [
+        "README.md and AGENTS.md (format by example)"
+      ],
+      "tasks": [
+        "T-004",
+        "T-053"
+      ]
+    },
+    {
+      "path": "verification/llguidance",
+      "repo": "guidance-ai/llguidance",
+      "role": "Fast CFG/JSON-schema constrained decoding; Lark-like grammar syntax.",
+      "lift": [
+        "docs/ (grammar syntax — target for our Lark emitter)",
+        "parser/ (earley/lexer design)",
+        "json_schema_test_suite/ (test approach)",
+        "python/ (bindings for the T-060 engine smoke test)"
+      ],
+      "tasks": [
+        "T-058",
+        "T-059",
+        "T-060",
+        "T-061"
+      ]
+    },
+    {
+      "path": "verification/xgrammar",
+      "repo": "mlc-ai/xgrammar",
+      "role": "CFG/regex/JSON constrained decoding; default in vLLM/SGLang/TensorRT-LLM/MLC.",
+      "lift": [
+        "docs/ (EBNF dialect)",
+        "python/ + examples/ (integration for T-060 smoke tests)",
+        "cpp/ (pushdown-automaton reference)"
+      ],
+      "tasks": [
+        "T-060",
+        "T-061"
+      ]
+    },
+    {
+      "path": "verification/axe-core",
+      "repo": "dequelabs/axe-core",
+      "role": "Accessibility rules engine (WCAG 2.0–2.2); target-size and name rules.",
+      "lift": [
+        "lib/rules + lib/checks (rule/check definitions to mirror in our lint)",
+        "lib/commons (accessible-name, role, target-size helpers)",
+        "locales/ (message conventions)"
+      ],
+      "tasks": [
+        "T-032",
+        "T-077",
+        "T-080"
+      ]
+    },
+    {
+      "path": "verification/playwright",
+      "repo": "microsoft/playwright",
+      "role": "ARIA snapshot engine. SPARSE checkout (docs/src, packages/injected/src, packages/isomorphic).",
+      "lift": [
+        "packages/injected/src/ariaSnapshot.ts (accessibility-tree generation + template matching)",
+        "packages/injected/src/roleUtils.ts (role + accessible-name computation — core of the Oracle's expectations)",
+        "packages/isomorphic/ariaSnapshot.ts + packages/isomorphic/ariaSnapshotRenderer.ts (template parse/render)",
+        "docs/src/aria-snapshots.md (semantics: order-sensitive, partial matching)"
+      ],
+      "tasks": [
+        "T-076",
+        "T-077",
+        "T-080"
+      ],
+      "sparse": true
+    },
+    {
+      "path": "verification/promptfoo",
+      "repo": "promptfoo/promptfoo",
+      "role": "LLM eval runner: assertions, providers, CI action. Now OpenAI-owned — keep our harness runner-agnostic.",
+      "lift": [
+        "src/assertions (assertion types: is-json, javascript, similar, llm-rubric)",
+        "src/providers (provider adapter patterns)",
+        "code-scan-action/ and CI examples"
+      ],
+      "tasks": [
+        "T-063"
+      ]
+    }
+  ],
+  "excluded": [
+    {
+      "name": "microsoft/AdaptiveCards",
+      "why": "Large multi-platform repo; only templating/schema ideas needed — consult docs/README via URL; add with sparse checkout if schema lifting is required."
+    },
+    {
+      "name": "penpot/penpot",
+      "why": "Very large (Clojure/CLJS); MPL-2.0 copyleft. MCP/design-token behaviour is documented externally."
+    },
+    {
+      "name": "storybookjs/storybook",
+      "why": "Very large monorepo; only docs/ai/manifests are relevant (standalone MCP repo is archived). Add sparse if needed."
+    },
+    {
+      "name": "mermaid-js/mermaid",
+      "why": "Large; only the fence-rendering integration pattern matters — see dsl/mdx and dsl/wiremark adapters."
+    },
+    {
+      "name": "BuilderIO/mitosis",
+      "why": "Large; codegen idea only (T-094+ not planned)."
+    },
+    {
+      "name": "Non-GitHub / closed systems",
+      "why": "PlantUML Salt (plantuml.com — captured as PDF in the research task), Balsamiq, Figma/Stitch/Claude Design, OpenAI ChatKit/Apps SDK: no source repository to vendor."
+    }
+  ]
+}

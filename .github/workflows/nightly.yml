@@ -1,0 +1,82 @@
+name: nightly
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  grammar-parity:
+    name: grammar parity fuzz (100k strings per DSL version)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: node scripts/grammar-parity.mjs --n 100000 --rec 100
+
+  engine-smoke:
+    name: grammar engines (Lark, llguidance)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pip install lark llguidance tokenizers xgrammar
+      # llama.cpp's GBNF validator is built manually (see docs/GRAMMAR.md); it is reported as SKIPPED here
+      - run: python3 scripts/engine-smoke.py
+
+  mcp-clients:
+    name: MCP server against the official TypeScript and Python clients
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: mkdir -p /tmp/mcpjs && cd /tmp/mcpjs && npm init -y && npm i @modelcontextprotocol/sdk
+      - run: pip install mcp
+      - run: MCP_SDK_DIR=/tmp/mcpjs node scripts/mcp-client-js.mjs
+      - run: python3 scripts/mcp-client-py.py
+
+  llm-evals:
+    name: LLM evals (runs only when LLM_BASE_URL is configured)
+    if: ${{ vars.LLM_BASE_URL != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      # values reach the shell through env, never by interpolation into the script text
+      - run: node scripts/eval-llm.mjs --provider openai --model "$LLM_MODEL" --base-url "$LLM_BASE_URL" --arms none,skill,prompt --seeds 1,2,3 --min-valid 0.5 --out evals/results/nightly.json
+        env:
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_MODEL: ${{ vars.LLM_MODEL }}
+          LLM_BASE_URL: ${{ vars.LLM_BASE_URL }}

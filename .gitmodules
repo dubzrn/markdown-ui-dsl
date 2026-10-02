@@ -1,0 +1,128 @@
+[submodule "reference/dsl/markdoc"]
+	path = reference/dsl/markdoc
+	url = https://github.com/markdoc/markdoc.git
+	shallow = true
+[submodule "reference/dsl/mdocui"]
+	path = reference/dsl/mdocui
+	url = https://github.com/mdocui/mdocui.git
+	shallow = true
+[submodule "reference/dsl/wiremd"]
+	path = reference/dsl/wiremd
+	url = https://github.com/akonan/wiremd.git
+	shallow = true
+[submodule "reference/dsl/wiremark"]
+	path = reference/dsl/wiremark
+	url = https://github.com/Blackburn-Labs/wiremark.git
+	shallow = true
+[submodule "reference/dsl/wireloom"]
+	path = reference/dsl/wireloom
+	url = https://github.com/StardockCorp/Wireloom.git
+	shallow = true
+[submodule "reference/dsl/asciiwire"]
+	path = reference/dsl/asciiwire
+	url = https://github.com/iwabuchi404/ASCIIwire.git
+	shallow = true
+[submodule "reference/dsl/markdown-ui"]
+	path = reference/dsl/markdown-ui
+	url = https://github.com/BlueprintLabIO/markdown-ui.git
+	shallow = true
+[submodule "reference/dsl/openui"]
+	path = reference/dsl/openui
+	url = https://github.com/thesysdev/openui.git
+	shallow = true
+[submodule "reference/dsl/mdx"]
+	path = reference/dsl/mdx
+	url = https://github.com/mdx-js/mdx.git
+	shallow = true
+[submodule "reference/protocols/a2ui"]
+	path = reference/protocols/a2ui
+	url = https://github.com/google/A2UI.git
+	shallow = true
+[submodule "reference/protocols/genui"]
+	path = reference/protocols/genui
+	url = https://github.com/flutter/genui.git
+	shallow = true
+[submodule "reference/protocols/json-render"]
+	path = reference/protocols/json-render
+	url = https://github.com/vercel-labs/json-render.git
+	shallow = true
+[submodule "reference/protocols/ext-apps"]
+	path = reference/protocols/ext-apps
+	url = https://github.com/modelcontextprotocol/ext-apps.git
+	shallow = true
+[submodule "reference/protocols/mcp-ui"]
+	path = reference/protocols/mcp-ui
+	url = https://github.com/idosal/mcp-ui.git
+	shallow = true
+[submodule "reference/protocols/remote-dom"]
+	path = reference/protocols/remote-dom
+	url = https://github.com/Shopify/remote-dom.git
+	shallow = true
+[submodule "reference/protocols/ag-ui"]
+	path = reference/protocols/ag-ui
+	url = https://github.com/ag-ui-protocol/ag-ui.git
+	shallow = true
+[submodule "reference/protocols/tambo"]
+	path = reference/protocols/tambo
+	url = https://github.com/tambo-ai/tambo.git
+	shallow = true
+[submodule "reference/protocols/hashbrown"]
+	path = reference/protocols/hashbrown
+	url = https://github.com/liveloveapp/hashbrown.git
+	shallow = true
+[submodule "reference/tokens/design-md"]
+	path = reference/tokens/design-md
+	url = https://github.com/google-labs-code/design.md.git
+	shallow = true
+[submodule "reference/tokens/dtcg"]
+	path = reference/tokens/dtcg
+	url = https://github.com/design-tokens/community-group.git
+	shallow = true
+[submodule "reference/tokens/style-dictionary"]
+	path = reference/tokens/style-dictionary
+	url = https://github.com/style-dictionary/style-dictionary.git
+	shallow = true
+[submodule "reference/tokens/code-connect"]
+	path = reference/tokens/code-connect
+	url = https://github.com/figma/code-connect.git
+	shallow = true
+[submodule "reference/sdd/spec-kit"]
+	path = reference/sdd/spec-kit
+	url = https://github.com/github/spec-kit.git
+	shallow = true
+[submodule "reference/sdd/openspec"]
+	path = reference/sdd/openspec
+	url = https://github.com/Fission-AI/OpenSpec.git
+	shallow = true
+[submodule "reference/sdd/kiro"]
+	path = reference/sdd/kiro
+	url = https://github.com/kirodotdev/Kiro.git
+	shallow = true
+[submodule "reference/sdd/agentskills"]
+	path = reference/sdd/agentskills
+	url = https://github.com/agentskills/agentskills.git
+	shallow = true
+[submodule "reference/sdd/agents-md"]
+	path = reference/sdd/agents-md
+	url = https://github.com/agentsmd/agents.md.git
+	shallow = true
+[submodule "reference/verification/llguidance"]
+	path = reference/verification/llguidance
+	url = https://github.com/guidance-ai/llguidance.git
+	shallow = true
+[submodule "reference/verification/xgrammar"]
+	path = reference/verification/xgrammar
+	url = https://github.com/mlc-ai/xgrammar.git
+	shallow = true
+[submodule "reference/verification/axe-core"]
+	path = reference/verification/axe-core
+	url = https://github.com/dequelabs/axe-core.git
+	shallow = true
+[submodule "reference/verification/promptfoo"]
+	path = reference/verification/promptfoo
+	url = https://github.com/promptfoo/promptfoo.git
+	shallow = true
+[submodule "reference/verification/playwright"]
+	path = reference/verification/playwright
+	url = https://github.com/microsoft/playwright.git
+	shallow = true

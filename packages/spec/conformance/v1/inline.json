@@ -1,0 +1,1058 @@
+[
+  {
+    "id": "text-plain",
+    "input": "Hello world",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "Hello world"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "text-empty",
+    "input": "",
+    "expect": {
+      "inline": []
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "text-trims",
+    "input": "  hi  ",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "hi"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "text-unicode",
+    "input": "héllo 😀",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "héllo 😀"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "d1-button",
+    "input": "[ Submit ](#submit)",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "Submit",
+          "action": "#submit"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D1"
+  },
+  {
+    "id": "d1-button-asymmetric-left",
+    "input": "[ Submit](#s)",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "Submit",
+          "action": "#s"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D1: any padding ⇒ button"
+  },
+  {
+    "id": "d1-button-asymmetric-right",
+    "input": "[Submit ](#s)",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "Submit",
+          "action": "#s"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D1"
+  },
+  {
+    "id": "d1-link",
+    "input": "[Docs](https://example.com/a)",
+    "expect": {
+      "inline": [
+        {
+          "kind": "link",
+          "label": "Docs",
+          "target": "https://example.com/a"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D1"
+  },
+  {
+    "id": "d1-link-in-text",
+    "input": "see [Docs](/d) now",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "see "
+        },
+        {
+          "kind": "link",
+          "label": "Docs",
+          "target": "/d"
+        },
+        {
+          "kind": "text",
+          "value": " now"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D1"
+  },
+  {
+    "id": "d2-bare-button",
+    "input": "[ Cancel ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "Cancel"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D2"
+  },
+  {
+    "id": "d2-bare-tight-is-text",
+    "input": "[Cancel]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "[Cancel]"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D2: unpadded bare brackets stay text"
+  },
+  {
+    "id": "d2-empty-brackets",
+    "input": "[]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "[]"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D2"
+  },
+  {
+    "id": "d2-spaces-only",
+    "input": "[  ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "[  ]"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D2"
+  },
+  {
+    "id": "d2-wrong-case-text-prefix",
+    "input": "[ Text: x ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "Text: x"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D2: prefixes are case-sensitive"
+  },
+  {
+    "id": "d2-wrong-case-img-prefix",
+    "input": "[ img: x ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "img: x"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D2"
+  },
+  {
+    "id": "button-two-in-line",
+    "input": "[ A ](#a) [ B ](#b)",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "A",
+          "action": "#a"
+        },
+        {
+          "kind": "text",
+          "value": " "
+        },
+        {
+          "kind": "button",
+          "label": "B",
+          "action": "#b"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "button-no-closing-paren",
+    "input": "[ A ](#a",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "A"
+        },
+        {
+          "kind": "text",
+          "value": "(#a"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "unterminated target: button without action, then text"
+  },
+  {
+    "id": "button-empty-target",
+    "input": "[ A ]()",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "A",
+          "action": ""
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "empty target is kept"
+  },
+  {
+    "id": "input",
+    "input": "[ text: Enter email... ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "input",
+          "placeholder": "Enter email..."
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "input-empty",
+    "input": "[ text: ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "input",
+          "placeholder": ""
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "input-tight",
+    "input": "[text: x]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "input",
+          "placeholder": "x"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "input-colon-inside",
+    "input": "[ text: a: b ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "input",
+          "placeholder": "a: b"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "image",
+    "input": "[ IMG: User Avatar ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "image",
+          "description": "User Avatar"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "image-parens",
+    "input": "[ IMG: Logo (small, inverted) ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "image",
+          "description": "Logo (small, inverted)"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "badge",
+    "input": "(( Admin ))",
+    "expect": {
+      "inline": [
+        {
+          "kind": "badge",
+          "label": "Admin"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "badge-in-text",
+    "input": "User (( Pro ))!",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "User "
+        },
+        {
+          "kind": "badge",
+          "label": "Pro"
+        },
+        {
+          "kind": "text",
+          "value": "!"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "badge-empty",
+    "input": "(( ))",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "(( ))"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "badge-unterminated",
+    "input": "(( Admin",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "(( Admin"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "d5-checkbox-off",
+    "input": "[ ] Remember me",
+    "expect": {
+      "inline": [
+        {
+          "kind": "checkbox",
+          "checked": false,
+          "label": "Remember me"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D5"
+  },
+  {
+    "id": "d5-checkbox-on",
+    "input": "[x] Remember me",
+    "expect": {
+      "inline": [
+        {
+          "kind": "checkbox",
+          "checked": true,
+          "label": "Remember me"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D5"
+  },
+  {
+    "id": "d5-checkbox-capital",
+    "input": "[X] Agree",
+    "expect": {
+      "inline": [
+        {
+          "kind": "checkbox",
+          "checked": true,
+          "label": "Agree"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D5"
+  },
+  {
+    "id": "d5-checkbox-padded-is-button",
+    "input": "[ x ] Remember me",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "x"
+        },
+        {
+          "kind": "text",
+          "value": " Remember me"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D5"
+  },
+  {
+    "id": "d5-checkbox-no-label",
+    "input": "[x]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "[x]"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D5"
+  },
+  {
+    "id": "d5-checkbox-mid-line-is-text",
+    "input": "a [x] b",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "a [x] b"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D5: widgets only at line start"
+  },
+  {
+    "id": "radio-off",
+    "input": "( ) Option A",
+    "expect": {
+      "inline": [
+        {
+          "kind": "radio",
+          "checked": false,
+          "label": "Option A"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "radio-on",
+    "input": "(x) Option A",
+    "expect": {
+      "inline": [
+        {
+          "kind": "radio",
+          "checked": true,
+          "label": "Option A"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "radio-mid-line-text",
+    "input": "pick (x) one",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "pick (x) one"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "toggle-on",
+    "input": "[on] Two-Factor",
+    "expect": {
+      "inline": [
+        {
+          "kind": "toggle",
+          "on": true,
+          "label": "Two-Factor"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "toggle-off",
+    "input": "[off] Email me",
+    "expect": {
+      "inline": [
+        {
+          "kind": "toggle",
+          "on": false,
+          "label": "Email me"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "toggle-no-label",
+    "input": "[on]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "[on]"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "dropdown-plain",
+    "input": "[v] Role",
+    "expect": {
+      "inline": [
+        {
+          "kind": "dropdown",
+          "label": "Role"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "dropdown-options",
+    "input": "[v] Role {Admin, Editor, Viewer}",
+    "expect": {
+      "inline": [
+        {
+          "kind": "dropdown",
+          "label": "Role",
+          "options": ["Admin", "Editor", "Viewer"]
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "dropdown-dynamic",
+    "input": "[v] Assignee {dynamic: users}",
+    "expect": {
+      "inline": [
+        {
+          "kind": "dropdown",
+          "label": "Assignee",
+          "dynamic": "users"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "dropdown-empty-options",
+    "input": "[v] X {}",
+    "expect": {
+      "inline": [
+        {
+          "kind": "dropdown",
+          "label": "X",
+          "options": []
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "dropdown-comma-not-escapable",
+    "input": "[v] X {a\\, b, c}",
+    "expect": {
+      "inline": [
+        {
+          "kind": "dropdown",
+          "label": "X",
+          "options": ["a\\", "b", "c"]
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "comma is not in the escape set (D7); option text cannot contain a comma in 1.x"
+  },
+  {
+    "id": "strong",
+    "input": "**bold**",
+    "expect": {
+      "inline": [
+        {
+          "kind": "strong",
+          "children": [
+            {
+              "kind": "text",
+              "value": "bold"
+            }
+          ]
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "em-star",
+    "input": "*it*",
+    "expect": {
+      "inline": [
+        {
+          "kind": "em",
+          "children": [
+            {
+              "kind": "text",
+              "value": "it"
+            }
+          ]
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "em-underscore",
+    "input": "_it_",
+    "expect": {
+      "inline": [
+        {
+          "kind": "em",
+          "children": [
+            {
+              "kind": "text",
+              "value": "it"
+            }
+          ]
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "em-snake-case-is-text",
+    "input": "snake_case_name",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "snake_case_name"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "strong-with-button",
+    "input": "**Go [ Now ]**",
+    "expect": {
+      "inline": [
+        {
+          "kind": "strong",
+          "children": [
+            {
+              "kind": "text",
+              "value": "Go "
+            },
+            {
+              "kind": "button",
+              "label": "Now"
+            }
+          ]
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "strong-unterminated",
+    "input": "**oops",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "**oops"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "em-space-after-open-is-text",
+    "input": "* x*",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "* x*"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D6"
+  },
+  {
+    "id": "emphasis-does-not-nest",
+    "input": "**a *b* c**",
+    "expect": {
+      "inline": [
+        {
+          "kind": "strong",
+          "children": [
+            {
+              "kind": "text",
+              "value": "a *b* c"
+            }
+          ]
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "emphasis never nests; inner stars stay literal"
+  },
+  {
+    "id": "code-binds-tighter-than-em",
+    "input": "*`*`*",
+    "expect": {
+      "inline": [
+        {
+          "kind": "em",
+          "children": [
+            {
+              "kind": "code",
+              "value": "*"
+            }
+          ]
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "code spans are skipped when looking for closers"
+  },
+  {
+    "id": "d8-code-span",
+    "input": "`[ Go ](#x)`",
+    "expect": {
+      "inline": [
+        {
+          "kind": "code",
+          "value": "[ Go ](#x)"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D8"
+  },
+  {
+    "id": "d8-code-in-text",
+    "input": "use `a*b*c` here",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "use "
+        },
+        {
+          "kind": "code",
+          "value": "a*b*c"
+        },
+        {
+          "kind": "text",
+          "value": " here"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D8"
+  },
+  {
+    "id": "d8-unterminated-backtick",
+    "input": "a ` b",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "a ` b"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D8"
+  },
+  {
+    "id": "d7-escaped-bracket",
+    "input": "\\[ not a button \\]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "[ not a button ]"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D7"
+  },
+  {
+    "id": "d7-escaped-star",
+    "input": "\\*x\\*",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "*x*"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D7"
+  },
+  {
+    "id": "d7-escaped-backslash",
+    "input": "a\\\\b",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "a\\b"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D7"
+  },
+  {
+    "id": "d7-backslash-before-letter-literal",
+    "input": "a\\nb",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "a\\nb"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D7: only the escape set is special"
+  },
+  {
+    "id": "d7-escaped-pipe",
+    "input": "a\\|b",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "a|b"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D7"
+  },
+  {
+    "id": "d7-trailing-backslash",
+    "input": "a\\",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "a\\"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D7"
+  },
+  {
+    "id": "d7-escaped-close-bracket-in-label",
+    "input": "[ a\\]b ](#x)",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "a]b",
+          "action": "#x"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D7"
+  },
+  {
+    "id": "d7-escape-in-target",
+    "input": "[ A ](a\\)b)",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "A",
+          "action": "a)b"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D7"
+  },
+  {
+    "id": "d7-escaped-opener-then-real",
+    "input": "\\[x] [ Go ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "[x] "
+        },
+        {
+          "kind": "button",
+          "label": "Go"
+        }
+      ]
+    },
+    "since": "1.0",
+    "notes": "D7"
+  },
+  {
+    "id": "mixed-form-line",
+    "input": "[ text: Name ] [ Save ](#s)",
+    "expect": {
+      "inline": [
+        {
+          "kind": "input",
+          "placeholder": "Name"
+        },
+        {
+          "kind": "text",
+          "value": " "
+        },
+        {
+          "kind": "button",
+          "label": "Save",
+          "action": "#s"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "mixed-table-cell",
+    "input": "(( Open )) [ View ](/a/1)",
+    "expect": {
+      "inline": [
+        {
+          "kind": "badge",
+          "label": "Open"
+        },
+        {
+          "kind": "text",
+          "value": " "
+        },
+        {
+          "kind": "button",
+          "label": "View",
+          "action": "/a/1"
+        }
+      ]
+    },
+    "since": "1.0"
+  },
+  {
+    "id": "mixed-text-and-code",
+    "input": "Press [ OK ] or `Esc`",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "Press "
+        },
+        {
+          "kind": "button",
+          "label": "OK"
+        },
+        {
+          "kind": "text",
+          "value": " or "
+        },
+        {
+          "kind": "code",
+          "value": "Esc"
+        }
+      ]
+    },
+    "since": "1.0"
+  }
+]

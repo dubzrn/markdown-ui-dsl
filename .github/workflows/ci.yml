@@ -1,0 +1,142 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Vitest 5 needs Node >=22.12 (ADR-002); Node 20 is covered by the build job below.
+  check:
+    name: lint · typecheck · test · build (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm schema:check
+      - run: pnpm lint
+      - run: pnpm format:check
+      - run: pnpm build # core's typecheck needs @mdui/spec's built types
+      - run: pnpm lint:docs:check
+      - run: pnpm typecheck
+      - run: pnpm test
+
+  e2e:
+    name: e2e (axe-core on rendered output, Chromium)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm exec playwright-core install --with-deps chromium
+      - run: pnpm test:e2e
+        env:
+          CHROMIUM_PATH: ""
+      - run: node scripts/eval-nov02.mjs --check
+        env:
+          CHROMIUM_PATH: ""
+
+  bench:
+    name: performance budgets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm bench --check
+
+  build-node20:
+    name: build on Node 20 (consumer floor)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+  example-gate:
+    name: example gate (mdui lint)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: node packages/cli/dist/bin.js lint examples bench/sp4 --fail-on warn
+      - run: node packages/cli/dist/bin.js fmt --check examples bench/sp4
+      - run: node packages/cli/dist/bin.js tokens lint examples/design-systems/*.md --fail-on warn
+      - run: node scripts/eval-nov04.mjs --check
+      - run: node scripts/eval-tokens.mjs --check
+      - run: node scripts/gen-embed-docs.mjs --check
+      - run: node scripts/build-site.mjs --check
+      - run: node scripts/gen-conformance-manifest.mjs --check
+      - run: python3 packages/spec/conformance/runners/run.py -- node scripts/conformance-harness.mjs
+      - run: python3 scripts/check-examples.py # independent balance check (kept as a cross-check of the parser)
+
+  traceability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/check-traceability.ts
+
+  skills-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/skills.py verify
+      - run: python3 scripts/skills.py validate
+
+  reference-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - run: python3 scripts/check-repo-hygiene.py
+      # Shallow, sparse init keeps this job fast; the full manifest check runs when submodules are present.
+      - name: Initialise reference submodules (shallow)
+        run: git submodule update --init --depth 1 --jobs 8
+      - run: python3 scripts/check-repo-hygiene.py
+      - name: Pins unchanged by this PR
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch --depth 1 origin "${{ github.base_ref }}"
+          if git diff --name-only FETCH_HEAD HEAD | grep -E '^reference/.+/.+' | grep -vE '^reference/(README.md|manifest.json)$' >/dev/null; then
+            echo "::warning::Submodule pins changed — confirm this is intentional (scripts/reference.sh update)."
+          fi

@@ -1,0 +1,244 @@
+[
+  {
+    "breakpoint": "sm",
+    "env": [],
+    "tokens": [
+      {
+        "name": "layout",
+        "value": "stacked"
+      },
+      {
+        "name": "gap",
+        "value": "compact"
+      }
+    ]
+  },
+  {
+    "breakpoint": "md",
+    "env": [],
+    "tokens": [
+      {
+        "name": "layout",
+        "value": "row"
+      }
+    ]
+  },
+  {
+    "breakpoint": "sm",
+    "env": [],
+    "tokens": [
+      {
+        "name": "padding",
+        "value": "compact"
+      },
+      {
+        "name": "text",
+        "value": "base"
+      }
+    ]
+  },
+  {
+    "breakpoint": "lg",
+    "env": [],
+    "tokens": [
+      {
+        "name": "padding",
+        "value": "spacious"
+      },
+      {
+        "name": "text",
+        "value": "large"
+      }
+    ]
+  },
+  {
+    "breakpoint": "sm",
+    "env": [],
+    "tokens": [
+      {
+        "name": "layout",
+        "value": "stacked"
+      },
+      {
+        "name": "gap",
+        "value": "compact"
+      }
+    ]
+  },
+  {
+    "breakpoint": "md",
+    "env": [],
+    "tokens": [
+      {
+        "name": "layout",
+        "value": "row"
+      },
+      {
+        "name": "gap",
+        "value": "default"
+      }
+    ]
+  },
+  {
+    "breakpoint": "sm",
+    "env": [],
+    "tokens": [
+      {
+        "name": "layout",
+        "value": "stacked"
+      },
+      {
+        "name": "gap",
+        "value": "compact"
+      }
+    ]
+  },
+  {
+    "breakpoint": "md",
+    "env": [],
+    "tokens": [
+      {
+        "name": "layout",
+        "value": "grid-2"
+      },
+      {
+        "name": "gap",
+        "value": "default"
+      }
+    ]
+  },
+  {
+    "breakpoint": "lg",
+    "env": [],
+    "tokens": [
+      {
+        "name": "layout",
+        "value": "grid-3"
+      },
+      {
+        "name": "gap",
+        "value": "spacious"
+      }
+    ]
+  },
+  {
+    "breakpoint": "sm",
+    "env": [],
+    "tokens": [
+      {
+        "name": "padding",
+        "value": "compact"
+      }
+    ]
+  },
+  {
+    "breakpoint": "lg",
+    "env": [],
+    "tokens": [
+      {
+        "name": "padding",
+        "value": "default"
+      }
+    ]
+  },
+  {
+    "breakpoint": "sm",
+    "env": [],
+    "tokens": [
+      {
+        "name": "padding",
+        "value": "compact"
+      }
+    ]
+  },
+  {
+    "breakpoint": "lg",
+    "env": [],
+    "tokens": [
+      {
+        "name": "padding",
+        "value": "default"
+      }
+    ]
+  },
+  {
+    "breakpoint": "sm",
+    "env": [],
+    "tokens": [
+      {
+        "name": "padding",
+        "value": "compact"
+      }
+    ]
+  },
+  {
+    "breakpoint": "lg",
+    "env": [],
+    "tokens": [
+      {
+        "name": "padding",
+        "value": "default"
+      }
+    ]
+  },
+  {
+    "breakpoint": "sm",
+    "env": [],
+    "tokens": [
+      {
+        "name": "layout",
+        "value": "stacked"
+      },
+      {
+        "name": "padding",
+        "value": "compact"
+      }
+    ]
+  },
+  {
+    "breakpoint": "lg",
+    "env": [],
+    "tokens": [
+      {
+        "name": "layout",
+        "value": "row"
+      },
+      {
+        "name": "padding",
+        "value": "default"
+      }
+    ]
+  },
+  {
+    "breakpoint": "sm",
+    "env": [],
+    "tokens": [
+      {
+        "name": "layout",
+        "value": "stacked"
+      },
+      {
+        "name": "gap",
+        "value": "compact"
+      },
+      {
+        "name": "text",
+        "value": "small"
+      }
+    ]
+  },
+  {
+    "breakpoint": "md",
+    "env": [],
+    "tokens": [
+      {
+        "name": "layout",
+        "value": "row"
+      },
+      {
+        "name": "gap",
+        "value": "default"
+      }
+    ]
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "name": "@mdui/lint",
+  "version": "0.0.0",
+  "description": "Lint engine and rule catalogue for Markdown UI DSL documents.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@mdui/core": "workspace:*",
+    "@mdui/tokens": "workspace:*",
+    "@mdui/catalog": "workspace:*"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json"
+  }
+}

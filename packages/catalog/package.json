@@ -1,0 +1,25 @@
+{
+  "name": "@mdui/catalog",
+  "version": "0.0.0",
+  "description": "Component catalog (built-in primitives + project components) and component map for Markdown UI DSL.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@mdui/core": "workspace:*",
+    "yaml": "2.9.1"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json"
+  }
+}

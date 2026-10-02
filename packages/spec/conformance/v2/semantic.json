@@ -1,0 +1,1130 @@
+[
+  {
+    "id": "id-unique-ok",
+    "input": "---\ndsl: 2.0\n---\n[ A ]{: #a }\n[ B ]{: #b }\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "id-duplicate-inline",
+    "input": "---\ndsl: 2.0\n---\n[ A ]{: #a }\n[ B ]{: #a }\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2001",
+          "line": 5
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "id-duplicate-container-inline",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::{: #x }\n--- END ---\n[ B ]{: #x }\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2001",
+          "line": 6
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "id-duplicate-containers",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::{: #x }\n--- END ---\n::: CARD :::{: #x }\n--- END ---\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2001",
+          "line": 6
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "id-duplicate-in-table",
+    "input": "---\ndsl: 2.0\n---\n| A |\n| - |\n| [ x ]{: #z } |\n[ y ]{: #z }\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2001",
+          "line": 7
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "region-ok",
+    "input": "---\ndsl: 2.0\n---\n::: REGION users :::\n::: STATE default :::\nx\n--- END STATE ---\n::: STATE loading :::\n[ SKELETON: rows=3 ]\n--- END STATE ---\n--- END REGION ---\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "region-no-default",
+    "input": "---\ndsl: 2.0\n---\n::: REGION users :::\n::: STATE loading :::\n--- END STATE ---\n--- END REGION ---\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "W3201",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "region-no-states-ok",
+    "input": "---\ndsl: 2.0\n---\n::: REGION users :::\nx\n--- END REGION ---\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "region-no-name",
+    "input": "---\ndsl: 2.0\n---\n::: REGION :::\n--- END REGION ---\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E1303",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "region-bad-name",
+    "input": "---\ndsl: 2.0\n---\n::: REGION 9bad :::\n--- END REGION ---\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E1303",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "state-outside-region",
+    "input": "---\ndsl: 2.0\n---\n::: STATE default :::\n--- END STATE ---\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E1303",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "state-in-card",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::\n::: STATE default :::\n--- END STATE ---\n--- END CARD ---\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E1303",
+          "line": 5
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "state-bad-name",
+    "input": "---\ndsl: 2.0\n---\n::: REGION r :::\n::: STATE Default :::\n--- END STATE ---\n--- END REGION ---\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "W3201",
+          "line": 4
+        },
+        {
+          "code": "E1303",
+          "line": 5
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "state-duplicate",
+    "input": "---\ndsl: 2.0\n---\n::: REGION r :::\n::: STATE default :::\n--- END STATE ---\n::: STATE default :::\n--- END STATE ---\n--- END REGION ---\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E1303",
+          "line": 7
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "state-custom-names-ok",
+    "input": "---\ndsl: 2.0\n---\n::: REGION r :::\n::: STATE default :::\n--- END STATE ---\n::: STATE read-only :::\n--- END STATE ---\n--- END REGION ---\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "region-nested-in-card-ok",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::\n::: REGION r :::\n::: STATE default :::\n--- END STATE ---\n--- END REGION ---\n--- END CARD ---\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-ok",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\nHello {{ user.name }}\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-unknown-root",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n{{ nope }}\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2101",
+          "line": 10
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-unknown-leaf",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n{{ user.email }}\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2101",
+          "line": 10
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-through-leaf",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n{{ user.name.first }}\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2101",
+          "line": 10
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-index-ok",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n{{ items[0] }}\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-index-on-object",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n{{ user[0] }}\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2101",
+          "line": 10
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-no-data-declared-skips",
+    "input": "---\ndsl: 2.0\n---\n{{ anything.goes }}\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-in-heading",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n# {{ user.name }}\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-in-heading-bad",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n# {{ user.nick }}\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2101",
+          "line": 10
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-in-table-cell",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n| N |\n| - |\n| {{ user.name }} |\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-in-table-cell-bad",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n| N |\n| - |\n| {{ user.zip }} |\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2101",
+          "line": 12
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-in-button-label",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n[ Hi {{ user.name }} ]\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-in-button-label-bad",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n[ Hi {{ user.nick }} ]\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2101",
+          "line": 10
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-in-attr-value",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n[ Go ]{: label=\"{{ user.name }}\" }\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-expression-in-label",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n[ Hi {{ upper(user.name) }} ]\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2102",
+          "line": 10
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-props-outside-partial",
+    "input": "---\ndsl: 2.0\n---\n{{ props.x }}\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2101",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-props-in-partial-ok",
+    "input": "---\ndsl: 2.0\ntype: partial\n---\n{{ props.x }}\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "each-ok",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n::: EACH t in items :::\n{{ t }}\n--- END EACH ---\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "each-alias-fields-any",
+    "input": "---\ndsl: 2.0\ndata: ./d.json\n---\n::: EACH t in items :::\n{{ t.title }}\n--- END EACH ---\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0",
+    "files": {
+      "d.json": "{\"items\":[{\"title\":\"x\"}]}"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "each-alias-bad-field",
+    "input": "---\ndsl: 2.0\ndata: ./d.json\n---\n::: EACH t in items :::\n{{ t.nope }}\n--- END EACH ---\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2101",
+          "line": 6
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "d.json": "{\"items\":[{\"title\":\"x\"}]}"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "each-alias-out-of-scope",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n::: EACH t in items :::\n--- END EACH ---\n{{ t }}\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2101",
+          "line": 12
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "each-unknown-list",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n::: EACH t in nothing :::\n--- END EACH ---\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2101",
+          "line": 10
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "each-not-a-list",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n::: EACH t in user :::\n--- END EACH ---\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E1303",
+          "line": 10
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "each-malformed",
+    "input": "---\ndsl: 2.0\n---\n::: EACH items :::\n--- END EACH ---\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E1303",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "each-nested-aliases",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n::: EACH a in items :::\n::: EACH b in items :::\n{{ a }}{{ b }}\n--- END EACH ---\n--- END EACH ---\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "if-ok",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n::: IF user.admin :::\nx\n--- END IF ---\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "if-negated-ok",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n::: IF !user.admin :::\nx\n--- END IF ---\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "if-unknown",
+    "input": "---\ndsl: 2.0\ndata:\n  user:\n    name: Ann\n    admin: true\n  items:\n    - a\n---\n::: IF user.root :::\n--- END IF ---\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2101",
+          "line": 10
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "if-malformed",
+    "input": "---\ndsl: 2.0\n---\n::: IF a b :::\n--- END IF ---\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E1303",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "if-empty",
+    "input": "---\ndsl: 2.0\n---\n::: IF :::\n--- END IF ---\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E1303",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "data-file-ok",
+    "input": "---\ndsl: 2.0\ndata: ./d.json\n---\n{{ user.name }}\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0",
+    "files": {
+      "d.json": "{\"user\":{\"name\":\"x\"}}"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "data-file-bad-path",
+    "input": "---\ndsl: 2.0\ndata: ./d.json\n---\n{{ user.nope }}\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2101",
+          "line": 5
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "d.json": "{\"user\":{\"name\":\"x\"}}"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "data-file-missing",
+    "input": "---\ndsl: 2.0\ndata: ./missing.json\n---\nx\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2305",
+          "line": 3
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {},
+    "file": "main.ui.md"
+  },
+  {
+    "id": "data-file-invalid-json",
+    "input": "---\ndsl: 2.0\ndata: ./d.json\n---\nx\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2305",
+          "line": 3
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "d.json": "{nope"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "data-file-escape",
+    "input": "---\ndsl: 2.0\ndata: ../secret.json\n---\nx\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2301",
+          "line": 3
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "../secret.json": "{}"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "data-json-schema",
+    "input": "---\ndsl: 2.0\ndata: ./s.json\n---\n{{ user.name }}\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0",
+    "files": {
+      "s.json": "{\"type\":\"object\",\"properties\":{\"user\":{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"}}}}}"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "data-json-schema-bad",
+    "input": "---\ndsl: 2.0\ndata: ./s.json\n---\n{{ user.age }}\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2101",
+          "line": 5
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "s.json": "{\"type\":\"object\",\"properties\":{\"user\":{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"}}}}}"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "action-known",
+    "input": "---\ndsl: 2.0\nactions:\n  login:\n    intent: Authenticate\n  remove:\n    destructive: true\n---\n[ Go ](#login)\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "action-unknown",
+    "input": "---\ndsl: 2.0\nactions:\n  login:\n    intent: Authenticate\n  remove:\n    destructive: true\n---\n[ Go ](#logout)\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2501",
+          "line": 9
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "action-no-registry-no-check",
+    "input": "---\ndsl: 2.0\n---\n[ Go ](#whatever)\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "action-non-hash-target-ignored",
+    "input": "---\ndsl: 2.0\nactions:\n  login:\n    intent: Authenticate\n  remove:\n    destructive: true\n---\n[ Go ](/path)\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "action-bad-entry",
+    "input": "---\ndsl: 2.0\nactions:\n  login: yes\n---\nx\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2502",
+          "line": 3
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "action-bad-destructive",
+    "input": "---\ndsl: 2.0\nactions:\n  login:\n    destructive: maybe\n---\nx\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2502",
+          "line": 3
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "action-bad-registry-type",
+    "input": "---\ndsl: 2.0\nactions: [a, b]\n---\nx\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2502",
+          "line": 3
+        }
+      ]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "action-link-not-checked",
+    "input": "---\ndsl: 2.0\nactions:\n  login:\n    intent: Authenticate\n  remove:\n    destructive: true\n---\n[Docs](#login-docs)\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "use-ok",
+    "input": "---\ndsl: 2.0\n---\n[[ USE: ./nav.ui.md ]]\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0",
+    "files": {
+      "nav.ui.md": "---\ndsl: 2.0\ntype: partial\n---\nnav\n"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "use-props-ok",
+    "input": "---\ndsl: 2.0\n---\n[[ USE: ./nav.ui.md ]]{: items=\"a,b\" }\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0",
+    "files": {
+      "nav.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n{{ props.items }}\n"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "use-missing",
+    "input": "---\ndsl: 2.0\n---\n[[ USE: ./nope.ui.md ]]\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2304",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {},
+    "file": "main.ui.md"
+  },
+  {
+    "id": "use-not-partial",
+    "input": "---\ndsl: 2.0\n---\n[[ USE: ./nav.ui.md ]]\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2304",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "nav.ui.md": "---\ndsl: 2.0\n---\nx\n"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "use-escape",
+    "input": "---\ndsl: 2.0\n---\n[[ USE: ../outside.ui.md ]]\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2301",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "../outside.ui.md": "---\ndsl: 2.0\ntype: partial\n---\nx\n"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "use-absolute",
+    "input": "---\ndsl: 2.0\n---\n[[ USE: /etc/passwd ]]\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2301",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "/etc/passwd": "x"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "use-backslash",
+    "input": "---\ndsl: 2.0\n---\n[[ USE: ..\\\\x ]]\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2301",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {},
+    "file": "main.ui.md"
+  },
+  {
+    "id": "use-escape-never-read",
+    "input": "---\ndsl: 2.0\n---\n[[ USE: ../outside.ui.md ]]\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2301",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "../outside.ui.md": "---\ndsl: 2.0\ntype: partial\n---\nx\n"
+    },
+    "file": "main.ui.md",
+    "notes": "the runner's readFile records reads; ../ must never be read"
+  },
+  {
+    "id": "use-self-cycle",
+    "input": "---\ndsl: 2.0\n---\n[[ USE: ./main.ui.md ]]\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2302",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "main.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./main.ui.md ]]\n"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "use-two-cycle",
+    "input": "---\ndsl: 2.0\n---\n[[ USE: ./a.ui.md ]]\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2302",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "a.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./b.ui.md ]]\n",
+      "b.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./a.ui.md ]]\n"
+    },
+    "file": "main.ui.md",
+    "notes": "the cycle is found inside the partials and surfaced at the include line"
+  },
+  {
+    "id": "use-subdir-relative",
+    "input": "---\ndsl: 2.0\n---\n[[ USE: ./p/nav.ui.md ]]\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0",
+    "files": {
+      "p/nav.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./foot.ui.md ]]\n",
+      "p/foot.ui.md": "---\ndsl: 2.0\ntype: partial\n---\nx\n"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "use-nested-ok-three-deep",
+    "input": "---\ndsl: 2.0\n---\n[[ USE: ./a.ui.md ]]\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0",
+    "files": {
+      "a.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./b.ui.md ]]\n",
+      "b.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./c.ui.md ]]\n",
+      "c.ui.md": "---\ndsl: 2.0\ntype: partial\n---\nx\n"
+    },
+    "file": "main.ui.md"
+  },
+  {
+    "id": "use-depth-limit-surfaced-at-include",
+    "input": "---\ndsl: 2.0\n---\n[[ USE: ./p0.ui.md ]]\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2303",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "p0.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./p1.ui.md ]]\n",
+      "p1.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./p2.ui.md ]]\n",
+      "p2.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./p3.ui.md ]]\n",
+      "p3.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./p4.ui.md ]]\n",
+      "p4.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./p5.ui.md ]]\n",
+      "p5.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./p6.ui.md ]]\n",
+      "p6.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./p7.ui.md ]]\n",
+      "p7.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./p8.ui.md ]]\n",
+      "p8.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./p9.ui.md ]]\n",
+      "p9.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./p10.ui.md ]]\n",
+      "p10.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./p11.ui.md ]]\n",
+      "p11.ui.md": "---\ndsl: 2.0\ntype: partial\n---\n[[ USE: ./p12.ui.md ]]\n",
+      "p12.ui.md": "---\ndsl: 2.0\ntype: partial\n---\nx\n"
+    },
+    "file": "main.ui.md",
+    "notes": "depth > 8 is detected inside the chain and surfaced at the include line"
+  },
+  {
+    "id": "flow-ok",
+    "input": "---\ndsl: 2.0\ntype: flow\nstart: login\n---\n## Screens\n| id | file | terminal |\n| --- | --- | --- |\n| login | ./login.ui.md | |\n| home | ./home.ui.md | |\n| done | ./done.ui.md | yes |\n## Transitions\n- login #login -> home\n- home #finish -> done\n- home #back -> login\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0",
+    "files": {
+      "login.ui.md": "---\ndsl: 2.0\n---\n[ Sign in ](#login)\n[ Forgot ](#forgot)\n",
+      "home.ui.md": "---\ndsl: 2.0\n---\n[ Back ](#back)\n[ Finish ](#finish)\n",
+      "done.ui.md": "---\ndsl: 2.0\n---\nDone\n"
+    },
+    "file": "flow.ui.md"
+  },
+  {
+    "id": "flow-unknown-screen-in-transition",
+    "input": "---\ndsl: 2.0\ntype: flow\nstart: login\n---\n## Screens\n| id | file | terminal |\n| --- | --- | --- |\n| login | ./login.ui.md | |\n| home | ./home.ui.md | |\n| done | ./done.ui.md | yes |\n## Transitions\n- login #login -> nowhere\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2402",
+          "line": 13
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "login.ui.md": "---\ndsl: 2.0\n---\n[ Sign in ](#login)\n[ Forgot ](#forgot)\n",
+      "home.ui.md": "---\ndsl: 2.0\n---\n[ Back ](#back)\n[ Finish ](#finish)\n",
+      "done.ui.md": "---\ndsl: 2.0\n---\nDone\n"
+    },
+    "file": "flow.ui.md"
+  },
+  {
+    "id": "flow-unknown-source-screen",
+    "input": "---\ndsl: 2.0\ntype: flow\nstart: login\n---\n## Screens\n| id | file | terminal |\n| --- | --- | --- |\n| login | ./login.ui.md | |\n| home | ./home.ui.md | |\n| done | ./done.ui.md | yes |\n## Transitions\n- ghost #x -> home\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2402",
+          "line": 13
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "login.ui.md": "---\ndsl: 2.0\n---\n[ Sign in ](#login)\n[ Forgot ](#forgot)\n",
+      "home.ui.md": "---\ndsl: 2.0\n---\n[ Back ](#back)\n[ Finish ](#finish)\n",
+      "done.ui.md": "---\ndsl: 2.0\n---\nDone\n"
+    },
+    "file": "flow.ui.md"
+  },
+  {
+    "id": "flow-unknown-start",
+    "input": "---\ndsl: 2.0\ntype: flow\nstart: nope\n---\n## Screens\n| id | file | terminal |\n| --- | --- | --- |\n| login | ./login.ui.md | |\n| home | ./home.ui.md | |\n| done | ./done.ui.md | yes |\n## Transitions\n- login #login -> home\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2402",
+          "line": 4
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "login.ui.md": "---\ndsl: 2.0\n---\n[ Sign in ](#login)\n[ Forgot ](#forgot)\n",
+      "home.ui.md": "---\ndsl: 2.0\n---\n[ Back ](#back)\n[ Finish ](#finish)\n",
+      "done.ui.md": "---\ndsl: 2.0\n---\nDone\n"
+    },
+    "file": "flow.ui.md"
+  },
+  {
+    "id": "flow-action-not-on-screen",
+    "input": "---\ndsl: 2.0\ntype: flow\nstart: login\n---\n## Screens\n| id | file | terminal |\n| --- | --- | --- |\n| login | ./login.ui.md | |\n| home | ./home.ui.md | |\n| done | ./done.ui.md | yes |\n## Transitions\n- login #missing -> home\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2401",
+          "line": 13
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "login.ui.md": "---\ndsl: 2.0\n---\n[ Sign in ](#login)\n[ Forgot ](#forgot)\n",
+      "home.ui.md": "---\ndsl: 2.0\n---\n[ Back ](#back)\n[ Finish ](#finish)\n",
+      "done.ui.md": "---\ndsl: 2.0\n---\nDone\n"
+    },
+    "file": "flow.ui.md"
+  },
+  {
+    "id": "flow-malformed-transition",
+    "input": "---\ndsl: 2.0\ntype: flow\nstart: login\n---\n## Screens\n| id | file | terminal |\n| --- | --- | --- |\n| login | ./login.ui.md | |\n| home | ./home.ui.md | |\n| done | ./done.ui.md | yes |\n## Transitions\n- login goes to home\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2403",
+          "line": 13
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "login.ui.md": "---\ndsl: 2.0\n---\n[ Sign in ](#login)\n[ Forgot ](#forgot)\n",
+      "home.ui.md": "---\ndsl: 2.0\n---\n[ Back ](#back)\n[ Finish ](#finish)\n",
+      "done.ui.md": "---\ndsl: 2.0\n---\nDone\n"
+    },
+    "file": "flow.ui.md"
+  },
+  {
+    "id": "flow-screens-table-missing-columns",
+    "input": "---\ndsl: 2.0\ntype: flow\nstart: a\n---\n## Screens\n| name |\n| --- |\n| a |\n## Transitions\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2402",
+          "line": 4
+        },
+        {
+          "code": "E2403",
+          "line": 7
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {},
+    "file": "flow.ui.md"
+  },
+  {
+    "id": "flow-duplicate-screen-id",
+    "input": "---\ndsl: 2.0\ntype: flow\nstart: a\n---\n## Screens\n| id | file |\n| --- | --- |\n| a | ./a.ui.md |\n| a | ./a.ui.md |\n## Transitions\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2001",
+          "line": 10
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {
+      "a.ui.md": "---\ndsl: 2.0\n---\nx\n"
+    },
+    "file": "flow.ui.md"
+  },
+  {
+    "id": "flow-screen-file-missing",
+    "input": "---\ndsl: 2.0\ntype: flow\nstart: a\n---\n## Screens\n| id | file |\n| --- | --- |\n| a | ./gone.ui.md |\n## Transitions\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2304",
+          "line": 9
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {},
+    "file": "flow.ui.md"
+  },
+  {
+    "id": "flow-screen-file-escape",
+    "input": "---\ndsl: 2.0\ntype: flow\nstart: a\n---\n## Screens\n| id | file |\n| --- | --- |\n| a | ../gone.ui.md |\n## Transitions\n",
+    "expect": {
+      "diagnostics": [
+        {
+          "code": "E2301",
+          "line": 9
+        }
+      ]
+    },
+    "since": "2.0",
+    "files": {},
+    "file": "flow.ui.md"
+  },
+  {
+    "id": "flow-registry-action-counts",
+    "input": "---\ndsl: 2.0\ntype: flow\nstart: a\n---\n## Screens\n| id | file |\n| --- | --- |\n| a | ./a.ui.md |\n| b | ./b.ui.md |\n## Transitions\n- a #go -> b\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0",
+    "files": {
+      "a.ui.md": "---\ndsl: 2.0\nactions:\n  go:\n    intent: x\n---\nx\n",
+      "b.ui.md": "---\ndsl: 2.0\n---\nx\n"
+    },
+    "file": "flow.ui.md"
+  },
+  {
+    "id": "flow-when-clause",
+    "input": "---\ndsl: 2.0\ntype: flow\nstart: a\n---\n## Screens\n| id | file |\n| --- | --- |\n| a | ./a.ui.md |\n| b | ./b.ui.md |\n## Transitions\n- a #go -> b [when: credentials valid]\n",
+    "expect": {
+      "diagnostics": []
+    },
+    "since": "2.0",
+    "files": {
+      "a.ui.md": "---\ndsl: 2.0\n---\n[ Go ](#go)\n",
+      "b.ui.md": "---\ndsl: 2.0\n---\nx\n"
+    },
+    "file": "flow.ui.md"
+  }
+]

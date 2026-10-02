@@ -1,0 +1,16 @@
+reference/
+.agents/
+.claude/
+graphify-out/
+THIRD_PARTY_LICENSES/
+examples/
+skills/
+docs/
+*.md
+dist/
+pnpm-lock.yaml
+.tools/
+packages/spec/schema/ast.schema.json
+packages/*/test/golden/
+docs/LINT_RULES.md
+evals/tokens/results.json

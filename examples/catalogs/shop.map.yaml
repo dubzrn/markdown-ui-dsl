@@ -1,0 +1,20 @@
+framework: react
+components:
+  button:
+    component: Button
+    import: "@/components/ui/button"
+    props: {}
+  ProductCard:
+    component: ProductCard
+    import: "@/components/shop/product-card"
+    props:
+      title: title
+      price: price
+      currency: currency
+      featured: featured
+  Rating:
+    component: StarRating
+    import: "@/components/shop/star-rating"
+    props:
+      value: value
+      max: max

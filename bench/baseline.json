@@ -1,0 +1,25 @@
+{
+  "machine": {
+    "node": "v22.22.0",
+    "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+    "cores": 4,
+    "platform": "linux x64"
+  },
+  "results": {
+    "lines": 1019,
+    "parse1000": 1.9,
+    "format1000": 6.31,
+    "lint1000": 1.73,
+    "render1000": 2.58,
+    "streamChunk": 0.48,
+    "streamChunkMedian": 0.1,
+    "streamChunkMax": 2.81
+  },
+  "budgetsMs": {
+    "parse1000": 15,
+    "format1000": 50,
+    "lint1000": 25,
+    "render1000": 25,
+    "streamChunk": 2
+  }
+}

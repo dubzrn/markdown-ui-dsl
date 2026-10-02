@@ -34,6 +34,7 @@ additive — `@sm` sets the base, larger breakpoints layer on top.
 > @sm padding: compact, text: base
 > @lg padding: spacious, text: large
 
+<!-- mdui-disable single-h1 -->
 # Build something great.
 Responsive design, defined in plain text.
 

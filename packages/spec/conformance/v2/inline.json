@@ -1,0 +1,1122 @@
+[
+  {
+    "id": "attr-button",
+    "input": "[ Delete ](#delete){: destructive }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "Delete",
+          "action": "#delete",
+          "attrs": {
+            "classes": [],
+            "props": {
+              "destructive": true
+            }
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attr-input",
+    "input": "[ text: Email ]{: #email type=email required label=\"Email\" }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "input",
+          "placeholder": "Email",
+          "attrs": {
+            "classes": [],
+            "props": {
+              "type": "email",
+              "required": true,
+              "label": "Email"
+            },
+            "id": "email"
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attr-classes",
+    "input": "[ Go ]{: .primary .wide }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "Go",
+          "attrs": {
+            "classes": ["primary", "wide"],
+            "props": {}
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attr-link",
+    "input": "[Docs](/d){: #docs }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "link",
+          "label": "Docs",
+          "target": "/d",
+          "attrs": {
+            "classes": [],
+            "props": {},
+            "id": "docs"
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attr-image",
+    "input": "[ IMG: Logo ]{: alt=\"Company logo\" }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "image",
+          "description": "Logo",
+          "attrs": {
+            "classes": [],
+            "props": {
+              "alt": "Company logo"
+            }
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attr-badge",
+    "input": "(( Admin )){: .warn }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "badge",
+          "label": "Admin",
+          "attrs": {
+            "classes": ["warn"],
+            "props": {}
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attr-checkbox-line",
+    "input": "[x] Remember me{: #remember }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "checkbox",
+          "checked": true,
+          "label": "Remember me",
+          "attrs": {
+            "classes": [],
+            "props": {},
+            "id": "remember"
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attr-toggle-line",
+    "input": "[on] Dark mode{: .switch }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "toggle",
+          "on": true,
+          "label": "Dark mode",
+          "attrs": {
+            "classes": ["switch"],
+            "props": {}
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attr-dropdown-line",
+    "input": "[v] Role {Admin, Editor}{: #role }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "dropdown",
+          "label": "Role",
+          "options": ["Admin", "Editor"],
+          "attrs": {
+            "classes": [],
+            "props": {},
+            "id": "role"
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attr-dropdown-options-not-attrs",
+    "input": "[v] Role {Admin, Editor}",
+    "expect": {
+      "inline": [
+        {
+          "kind": "dropdown",
+          "label": "Role",
+          "options": ["Admin", "Editor"]
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attr-dropdown-colon-brace-is-attrs",
+    "input": "[v] Role {:a}",
+    "expect": {
+      "inline": [
+        {
+          "kind": "dropdown",
+          "label": "Role",
+          "attrs": {
+            "classes": [],
+            "props": {
+              "a": true
+            }
+          }
+        }
+      ],
+      "issues": ["W1301"]
+    },
+    "since": "2.0",
+    "notes": "`{:` followed by a letter is an attribute list (RFC-0001 §3a); an option list cannot start with a colon"
+  },
+  {
+    "id": "attr-two-lists-last-wins-literal",
+    "input": "[ Go ]{: #a }{: #b }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "Go",
+          "attrs": {
+            "classes": [],
+            "props": {},
+            "id": "a"
+          }
+        },
+        {
+          "kind": "text",
+          "value": "{: #b }"
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0",
+    "notes": "only one attribute list per component"
+  },
+  {
+    "id": "attr-data-key-ok",
+    "input": "[ Go ]{: data-test=go }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "Go",
+          "attrs": {
+            "classes": [],
+            "props": {
+              "data-test": "go"
+            }
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attr-unknown-key",
+    "input": "[ Go ]{: colour=red }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "Go",
+          "attrs": {
+            "classes": [],
+            "props": {
+              "colour": "red"
+            }
+          }
+        }
+      ],
+      "issues": ["W1301"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attr-bad-number",
+    "input": "[ text: x ]{: maxlength=abc }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "input",
+          "placeholder": "x",
+          "attrs": {
+            "classes": [],
+            "props": {
+              "maxlength": "abc"
+            }
+          }
+        }
+      ],
+      "issues": ["E1301"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attr-after-text-is-text",
+    "input": "hello {: #a }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "hello {: #a }"
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-slider",
+    "input": "[ SLIDER: 0..100 step=5 value=40 ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "slider",
+          "raw": "0..100 step=5 value=40",
+          "args": {
+            "positional": ["0..100"],
+            "named": {
+              "step": "5",
+              "value": "40"
+            }
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-slider-bad-range",
+    "input": "[ SLIDER: 100..0 ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "slider",
+          "raw": "100..0",
+          "args": {
+            "positional": ["100..0"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": ["E1301"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-slider-no-range",
+    "input": "[ SLIDER: abc ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "slider",
+          "raw": "abc",
+          "args": {
+            "positional": ["abc"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": ["E1301"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-date",
+    "input": "[ DATE: 2026-03-15 ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "date",
+          "raw": "2026-03-15",
+          "args": {
+            "positional": ["2026-03-15"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-date-range",
+    "input": "[ DATE: range ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "date",
+          "raw": "range",
+          "args": {
+            "positional": ["range"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-date-bad",
+    "input": "[ DATE: tomorrow ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "date",
+          "raw": "tomorrow",
+          "args": {
+            "positional": ["tomorrow"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": ["E1301"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-file",
+    "input": "[ FILE: Upload CV (pdf, docx) ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "file",
+          "raw": "Upload CV (pdf, docx)",
+          "args": {
+            "positional": ["Upload", "CV", "(pdf,", "docx)"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-progress",
+    "input": "[ PROGRESS: 75% ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "progress",
+          "raw": "75%",
+          "args": {
+            "positional": ["75%"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-progress-over",
+    "input": "[ PROGRESS: 150% ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "progress",
+          "raw": "150%",
+          "args": {
+            "positional": ["150%"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": ["E1301"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-chart",
+    "input": "[ CHART: line \"Revenue by month\" data=revenue ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "chart",
+          "raw": "line \"Revenue by month\" data=revenue",
+          "args": {
+            "positional": ["line", "Revenue by month"],
+            "named": {
+              "data": "revenue"
+            }
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-chart-missing-data",
+    "input": "[ CHART: bar ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "chart",
+          "raw": "bar",
+          "args": {
+            "positional": ["bar"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": ["E1301"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-chart-bad-type",
+    "input": "[ CHART: donut data=x ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "chart",
+          "raw": "donut data=x",
+          "args": {
+            "positional": ["donut"],
+            "named": {
+              "data": "x"
+            }
+          }
+        }
+      ],
+      "issues": ["E1301"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-stat",
+    "input": "[ STAT: \"Active users\" 1,204 (+4%) ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "stat",
+          "raw": "\"Active users\" 1,204 (+4%)",
+          "args": {
+            "positional": ["Active users", "1,204", "(+4%)"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-stat-too-short",
+    "input": "[ STAT: lonely ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "stat",
+          "raw": "lonely",
+          "args": {
+            "positional": ["lonely"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": ["E1301"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-skeleton",
+    "input": "[ SKELETON: rows=5 ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "skeleton",
+          "raw": "rows=5",
+          "args": {
+            "positional": [],
+            "named": {
+              "rows": "5"
+            }
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-skeleton-bad",
+    "input": "[ SKELETON: rows=x ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "skeleton",
+          "raw": "rows=x",
+          "args": {
+            "positional": [],
+            "named": {
+              "rows": "x"
+            }
+          }
+        }
+      ],
+      "issues": ["E1301"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-avatar",
+    "input": "[ AVATAR: Jane Doe (large) ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "avatar",
+          "raw": "Jane Doe (large)",
+          "args": {
+            "positional": ["Jane", "Doe", "(large)"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-icon",
+    "input": "[ ICON: bell ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "icon",
+          "raw": "bell",
+          "args": {
+            "positional": ["bell"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-icon-bad",
+    "input": "[ ICON: Big Bell ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "icon",
+          "raw": "Big Bell",
+          "args": {
+            "positional": ["Big", "Bell"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": ["E1301"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-crumbs",
+    "input": "[ CRUMBS: Home > Settings > *Profile* ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "crumbs",
+          "raw": "Home > Settings > *Profile*",
+          "args": {
+            "positional": ["Home", ">", "Settings", ">", "*Profile*"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-pager",
+    "input": "[ PAGER: 3/10 ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "pager",
+          "raw": "3/10",
+          "args": {
+            "positional": ["3/10"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-pager-bad",
+    "input": "[ PAGER: 11/10 ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "pager",
+          "raw": "11/10",
+          "args": {
+            "positional": ["11/10"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": ["E1301"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-stepper",
+    "input": "[ STEPPER: Account > *Profile* > Plan ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "stepper",
+          "raw": "Account > *Profile* > Plan",
+          "args": {
+            "positional": ["Account", ">", "*Profile*", ">", "Plan"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-stepper-single",
+    "input": "[ STEPPER: One ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "stepper",
+          "raw": "One",
+          "args": {
+            "positional": ["One"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": ["E1301"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-menubar",
+    "input": "[ MENUBAR: File | Edit | View ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "menubar",
+          "raw": "File | Edit | View",
+          "args": {
+            "positional": ["File", "|", "Edit", "|", "View"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-with-attrs",
+    "input": "[ PROGRESS: 40% ]{: #upload }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "widget",
+          "widget": "progress",
+          "raw": "40%",
+          "args": {
+            "positional": ["40%"],
+            "named": {}
+          },
+          "attrs": {
+            "classes": [],
+            "props": {},
+            "id": "upload"
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-unknown",
+    "input": "[ FOO: bar ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "component",
+          "name": "FOO",
+          "raw": "bar",
+          "args": {
+            "positional": ["bar"],
+            "named": {}
+          }
+        }
+      ],
+      "issues": ["E1302"]
+    },
+    "since": "2.0",
+    "notes": "unknown upper-case kind is kept as a custom component (a catalog may define it); E1302 stands unless one does"
+  },
+  {
+    "id": "w-lowercase-not-widget",
+    "input": "[ slider: 0..100 ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "slider: 0..100"
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0",
+    "notes": "kinds are upper-case"
+  },
+  {
+    "id": "w-img-still-image",
+    "input": "[ IMG: Logo ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "image",
+          "description": "Logo"
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "w-in-text",
+    "input": "Loading [ PROGRESS: 10% ] now",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "Loading "
+        },
+        {
+          "kind": "widget",
+          "widget": "progress",
+          "raw": "10%",
+          "args": {
+            "positional": ["10%"],
+            "named": {}
+          }
+        },
+        {
+          "kind": "text",
+          "value": " now"
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-simple",
+    "input": "Hello {{ user.name }}!",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "Hello "
+        },
+        {
+          "kind": "binding",
+          "path": "user.name"
+        },
+        {
+          "kind": "text",
+          "value": "!"
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-tight",
+    "input": "{{x}}",
+    "expect": {
+      "inline": [
+        {
+          "kind": "binding",
+          "path": "x"
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-index",
+    "input": "{{ items[0].title }}",
+    "expect": {
+      "inline": [
+        {
+          "kind": "binding",
+          "path": "items[0].title"
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-two",
+    "input": "{{ a }} and {{ b.c }}",
+    "expect": {
+      "inline": [
+        {
+          "kind": "binding",
+          "path": "a"
+        },
+        {
+          "kind": "text",
+          "value": " and "
+        },
+        {
+          "kind": "binding",
+          "path": "b.c"
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-call-rejected",
+    "input": "{{ upper(name) }}",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "{{ upper(name) }}"
+        }
+      ],
+      "issues": ["E2102"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-operator-rejected",
+    "input": "{{ a + b }}",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "{{ a + b }}"
+        }
+      ],
+      "issues": ["E2102"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-empty-rejected",
+    "input": "{{ }}",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "{{ }}"
+        }
+      ],
+      "issues": ["E2102"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-ternary-rejected",
+    "input": "{{ a ? b : c }}",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "{{ a ? b : c }}"
+        }
+      ],
+      "issues": ["E2102"]
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-escaped-literal",
+    "input": "\\{\\{ x \\}\\}",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "{{ x }}"
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-unterminated",
+    "input": "{{ x",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "{{ x"
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bind-in-button-label",
+    "input": "[ Hi {{ name }} ]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "button",
+          "label": "Hi {{ name }}"
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0",
+    "notes": "bindings inside component labels are resolved by the data pass, not the inline tokenizer"
+  },
+  {
+    "id": "use-basic",
+    "input": "[[ USE: ./partials/nav.ui.md ]]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "use",
+          "path": "./partials/nav.ui.md"
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "use-props",
+    "input": "[[ USE: ./nav.ui.md ]]{: items=\"Home,Pricing\" }",
+    "expect": {
+      "inline": [
+        {
+          "kind": "use",
+          "path": "./nav.ui.md",
+          "attrs": {
+            "classes": [],
+            "props": {
+              "items": "Home,Pricing"
+            }
+          }
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0",
+    "notes": "include props are free-form: no W1301"
+  },
+  {
+    "id": "use-not-use",
+    "input": "[[ OTHER: x ]]",
+    "expect": {
+      "inline": [
+        {
+          "kind": "text",
+          "value": "[[ OTHER: x ]]"
+        }
+      ],
+      "issues": []
+    },
+    "since": "2.0",
+    "notes": "a double-bracket that is not USE stays literal"
+  }
+]

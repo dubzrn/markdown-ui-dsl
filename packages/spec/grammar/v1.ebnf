@@ -1,0 +1,98 @@
+(* Markdown UI DSL 1.0.3 — normative grammar (T-010, LNG-01)
+ *
+ * Notation: ISO-style EBNF.  "x" literal · [x] optional · {x} zero or more · (a|b) group · (* c *) comment
+ * Line-oriented: a document is a sequence of lines; productions marked LINE match one whole line (without the newline).
+ * SP = one or more spaces/tabs; OWS = optional SP.  Indentation is insignificant except that a list item's continuation
+ * lines are indented to the item's content column.  The parser is the reference implementation; this grammar documents
+ * exactly what it accepts without error.  Ambiguities are listed in docs/ambiguities-v1.md and resolved by T-011.
+ *)
+
+document        = [ frontmatter ] , { block } ;
+
+(* ---- frontmatter ---- *)
+frontmatter     = fm_fence , { fm_line } , fm_fence ;            (* only when the very first line is "---" *)
+fm_fence        = "---" , OWS ;                                   (* LINE *)
+fm_line         = ? any line except fm_fence ? ;                  (* strict YAML subset, ADR-004 *)
+
+(* ---- blocks ---- *)
+block           = container | surface | divider | hint | comment | list | table | code_fence
+                | heading | tabs_line | blank | paragraph_line ;
+
+container       = column | row ;
+column          = "||| COLUMN |||" , { block } , end_marker ;     (* openers are LINEs *)
+row             = "=== ROW ===" , { block } , end_marker ;
+surface         = card | modal | header | footer | bubble ;
+card            = "::: CARD :::"  , { block } , end_marker ;
+modal           = "::: MODAL :::" , { block } , end_marker ;
+header          = "::: HEADER :::" , { block } , end_marker ;
+footer          = "::: FOOTER :::" , { block } , end_marker ;
+bubble          = ( "::: BUBBLE USER :::" | "::: BUBBLE AGENT :::" ) , { block } , end_marker ;
+end_marker      = "--- END ---" ;                                  (* LINE; closes the innermost open container/surface *)
+
+divider         = "***" ;                                          (* LINE; also "* * *"? no — exactly three asterisks *)
+hint            = "> " , text ;                                    (* LINE; see responsive_directive *)
+responsive_directive
+                = "> @" , breakpoint , SP , token_pair , { OWS , "," , OWS , token_pair } ;
+breakpoint      = "sm" | "md" | "lg" | "xl" ;
+token_pair      = token_name , OWS , ":" , OWS , token_value ;
+token_name      = letter , { letter | digit | "-" | "_" } ;
+token_value     = ? any characters except "," and end of line ? ;
+comment         = "<!--" , { ? any character ? } , "-->" ;         (* may span lines; ignored by agents *)
+heading         = ( "#" | "##" | "###" | "####" | "#####" | "######" ) , SP , inline_text ;
+code_fence      = "```" , [ info ] , EOL , { ? any line ? } , "```" ;   (* contents are literal *)
+blank           = OWS ;
+paragraph_line  = inline_text ;
+
+(* ---- lists ---- *)
+list            = list_item , { list_item } ;
+list_item       = indent , ( "-" | "*" | digit , { digit } , "." ) , SP , item_content ;
+item_content    = container_opener , { block } , end_marker       (* nested layout block, continuation lines indented *)
+                | inline_text ;
+container_opener= "||| COLUMN |||" | "=== ROW ===" | "::: CARD :::" | "::: MODAL :::" | "::: HEADER :::"
+                | "::: FOOTER :::" | "::: BUBBLE USER :::" | "::: BUBBLE AGENT :::" ;
+
+(* ---- tables ---- *)
+table           = table_row , table_sep , { table_row } ;
+table_row       = "|" , cell , { "|" , cell } , [ "|" ] ;          (* LINE *)
+table_sep       = "|" , OWS , sep_cell , { "|" , OWS , sep_cell } , [ "|" ] ;
+sep_cell        = [ ":" ] , "-" , { "-" } , [ ":" ] , OWS ;
+cell            = inline_text ;
+
+(* ---- tabs ---- *)
+tabs_line       = "|" , tab_active , { "|" , tab_item } , "|" ;   (* LINE; distinguished from a table by the "|[ x ]|" opener *)
+tab_active      = "[" , OWS , tab_label , OWS , "]" ;
+tab_item        = OWS , tab_label , OWS ;
+tab_label       = ? one or more characters excluding "|" and "]" ? ;
+
+(* ---- inline components ---- *)
+inline_text     = { inline_item | char } ;
+inline_item     = button | text_input | image | badge | checkbox | radio | toggle | dropdown | link | emphasis | code_span ;
+
+button          = "[" , OWS , label , OWS , "]" , "(" , target , ")"
+                | "[" , OWS , label , OWS , "]" ;                  (* a bare "[ Text ]" is a button without an action *)
+link            = "[" , label , "]" , "(" , target , ")" ;          (* identical shape to button; see ambiguity A-01 *)
+text_input      = "[" , OWS , "text:" , OWS , [ placeholder ] , OWS , "]" ;
+image           = "[" , OWS , "IMG:" , OWS , description , OWS , "]" ;
+badge           = "((" , OWS , label , OWS , "))" ;
+checkbox        = ( "[ ]" | "[x]" | "[X]" ) , SP , label ;
+radio           = ( "( )" | "(x)" | "(X)" ) , SP , label ;
+toggle          = ( "[on]" | "[off]" ) , SP , label ;
+dropdown        = "[v]" , SP , label , [ OWS , "{" , options , "}" ] ;
+options         = "dynamic:" , OWS , identifier | option , { OWS , "," , OWS , option } ;
+option          = ? one or more characters excluding "," and "}" ? ;
+emphasis        = "**" , inline_text , "**" | "*" , inline_text , "*" | "_" , inline_text , "_" ;
+code_span       = "`" , ? any characters except "`" ? , "`" ;       (* contents are literal *)
+
+label           = ? one or more characters, no unescaped "]" or ")" ? ;
+target          = ? one or more characters, no unescaped ")" ? ;
+placeholder     = ? zero or more characters, no unescaped "]" ? ;
+description     = ? one or more characters, no unescaped "]" ? ;
+identifier      = letter , { letter | digit | "_" | "-" } ;
+
+(* ---- lexical ---- *)
+text            = { ? any character except EOL ? } ;
+letter          = ? [A-Za-z] ? ;
+digit           = ? [0-9] ? ;
+OWS             = { " " | "\t" } ;
+SP              = ( " " | "\t" ) , OWS ;
+EOL             = "\n" | "\r\n" ;

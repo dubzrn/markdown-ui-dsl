@@ -1,0 +1,28 @@
+{
+  "name": "@mdui/spec",
+  "version": "0.0.0",
+  "description": "Normative Markdown UI DSL specification artifacts (grammar, version constants, diagnostic catalogue).",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./grammar/*": "./grammar/*",
+    "./schema/*": "./schema/*",
+    "./conformance/*": "./conformance/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "grammar",
+    "schema",
+    "conformance"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}

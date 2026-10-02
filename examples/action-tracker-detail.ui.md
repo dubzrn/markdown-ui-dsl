@@ -51,4 +51,4 @@ component: src/app/actions/[id]/page.tsx
 --- END ---
 --- END ---
 
-||| COLUMN |||
+--- END ---

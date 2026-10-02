@@ -1,0 +1,16 @@
+framework: flutter
+components:
+  ProductCard:
+    component: ProductCard
+    import: "package:shop/widgets/product_card.dart"
+    props:
+      title: title
+      price: price
+      currency: currency
+      featured: featured
+  Rating:
+    component: RatingBar
+    import: "package:shop/widgets/rating_bar.dart"
+    props:
+      value: value
+      max: maxRating

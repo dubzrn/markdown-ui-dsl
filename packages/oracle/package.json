@@ -1,0 +1,35 @@
+{
+  "name": "@mdui/oracle",
+  "version": "0.0.0",
+  "description": "Spec Oracle: compile a .ui.md to its expected accessibility tree and score a live page against it (Fidelity Score).",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@mdui/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "playwright-core": ">=1.49"
+  },
+  "peerDependenciesMeta": {
+    "playwright-core": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.63.0"
+  }
+}

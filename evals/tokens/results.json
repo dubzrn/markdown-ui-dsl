@@ -1,0 +1,517 @@
+{
+  "tokenizers": [
+    "o200k_base",
+    "cl100k_base",
+    "claude-legacy"
+  ],
+  "rows": [
+    {
+      "scenario": "simple-table",
+      "group": "openui",
+      "formats": {
+        "mdui": {
+          "o200k_base": 122,
+          "cl100k_base": 120,
+          "claude-legacy": 128
+        },
+        "a2ui-json": {
+          "o200k_base": 610,
+          "cl100k_base": 611,
+          "claude-legacy": 637
+        },
+        "json-render": {
+          "o200k_base": 233,
+          "cl100k_base": 227,
+          "claude-legacy": 239
+        },
+        "openui-lang": {
+          "o200k_base": 148,
+          "cl100k_base": 149,
+          "claude-legacy": 149
+        },
+        "yaml": {
+          "o200k_base": 317,
+          "cl100k_base": 317,
+          "claude-legacy": 274
+        },
+        "vercel-jsonl": {
+          "o200k_base": 340,
+          "cl100k_base": 332,
+          "claude-legacy": 361
+        },
+        "thesys-c1": {
+          "o200k_base": 322,
+          "cl100k_base": 323,
+          "claude-legacy": 319
+        }
+      },
+      "exportWarnings": {
+        "a2ui": 2,
+        "jsonRender": 0
+      }
+    },
+    {
+      "scenario": "chart-with-data",
+      "group": "openui",
+      "formats": {
+        "mdui": {
+          "o200k_base": 163,
+          "cl100k_base": 166,
+          "claude-legacy": 176
+        },
+        "a2ui-json": {
+          "o200k_base": 331,
+          "cl100k_base": 330,
+          "claude-legacy": 338
+        },
+        "json-render": {
+          "o200k_base": 426,
+          "cl100k_base": 421,
+          "claude-legacy": 423
+        },
+        "openui-lang": {
+          "o200k_base": 231,
+          "cl100k_base": 232,
+          "claude-legacy": 233
+        },
+        "yaml": {
+          "o200k_base": 465,
+          "cl100k_base": 465,
+          "claude-legacy": 403
+        },
+        "vercel-jsonl": {
+          "o200k_base": 520,
+          "cl100k_base": 505,
+          "claude-legacy": 542
+        },
+        "thesys-c1": {
+          "o200k_base": 498,
+          "cl100k_base": 499,
+          "claude-legacy": 491
+        }
+      },
+      "exportWarnings": {
+        "a2ui": 5,
+        "jsonRender": 2
+      }
+    },
+    {
+      "scenario": "contact-form",
+      "group": "openui",
+      "formats": {
+        "mdui": {
+          "o200k_base": 136,
+          "cl100k_base": 136,
+          "claude-legacy": 154
+        },
+        "a2ui-json": {
+          "o200k_base": 386,
+          "cl100k_base": 381,
+          "claude-legacy": 400
+        },
+        "json-render": {
+          "o200k_base": 436,
+          "cl100k_base": 426,
+          "claude-legacy": 431
+        },
+        "openui-lang": {
+          "o200k_base": 294,
+          "cl100k_base": 287,
+          "claude-legacy": 306
+        },
+        "yaml": {
+          "o200k_base": 763,
+          "cl100k_base": 753,
+          "claude-legacy": 678
+        },
+        "vercel-jsonl": {
+          "o200k_base": 893,
+          "cl100k_base": 860,
+          "claude-legacy": 947
+        },
+        "thesys-c1": {
+          "o200k_base": 824,
+          "cl100k_base": 817,
+          "claude-legacy": 826
+        }
+      },
+      "exportWarnings": {
+        "a2ui": 1,
+        "jsonRender": 0
+      }
+    },
+    {
+      "scenario": "dashboard",
+      "group": "openui",
+      "formats": {
+        "mdui": {
+          "o200k_base": 768,
+          "cl100k_base": 776,
+          "claude-legacy": 782
+        },
+        "a2ui-json": {
+          "o200k_base": 1658,
+          "cl100k_base": 1661,
+          "claude-legacy": 1706
+        },
+        "json-render": {
+          "o200k_base": 1183,
+          "cl100k_base": 1175,
+          "claude-legacy": 1188
+        },
+        "openui-lang": {
+          "o200k_base": 1226,
+          "cl100k_base": 1232,
+          "claude-legacy": 1209
+        },
+        "yaml": {
+          "o200k_base": 2129,
+          "cl100k_base": 2131,
+          "claude-legacy": 1828
+        },
+        "vercel-jsonl": {
+          "o200k_base": 2247,
+          "cl100k_base": 2192,
+          "claude-legacy": 2369
+        },
+        "thesys-c1": {
+          "o200k_base": 2182,
+          "cl100k_base": 2186,
+          "claude-legacy": 2126
+        }
+      },
+      "exportWarnings": {
+        "a2ui": 13,
+        "jsonRender": 3
+      }
+    },
+    {
+      "scenario": "pricing-page",
+      "group": "openui",
+      "formats": {
+        "mdui": {
+          "o200k_base": 766,
+          "cl100k_base": 780,
+          "claude-legacy": 881
+        },
+        "a2ui-json": {
+          "o200k_base": 3531,
+          "cl100k_base": 3549,
+          "claude-legacy": 3646
+        },
+        "json-render": {
+          "o200k_base": 2400,
+          "cl100k_base": 2373,
+          "claude-legacy": 2440
+        },
+        "openui-lang": {
+          "o200k_base": 1195,
+          "cl100k_base": 1217,
+          "claude-legacy": 1312
+        },
+        "yaml": {
+          "o200k_base": 2231,
+          "cl100k_base": 2247,
+          "claude-legacy": 2053
+        },
+        "vercel-jsonl": {
+          "o200k_base": 2487,
+          "cl100k_base": 2437,
+          "claude-legacy": 2680
+        },
+        "thesys-c1": {
+          "o200k_base": 2285,
+          "cl100k_base": 2298,
+          "claude-legacy": 2346
+        }
+      },
+      "exportWarnings": {
+        "a2ui": 16,
+        "jsonRender": 3
+      }
+    },
+    {
+      "scenario": "settings-panel",
+      "group": "openui",
+      "formats": {
+        "mdui": {
+          "o200k_base": 246,
+          "cl100k_base": 249,
+          "claude-legacy": 296
+        },
+        "a2ui-json": {
+          "o200k_base": 870,
+          "cl100k_base": 862,
+          "claude-legacy": 890
+        },
+        "json-render": {
+          "o200k_base": 878,
+          "cl100k_base": 866,
+          "claude-legacy": 881
+        },
+        "openui-lang": {
+          "o200k_base": 540,
+          "cl100k_base": 534,
+          "claude-legacy": 588
+        },
+        "yaml": {
+          "o200k_base": 1078,
+          "cl100k_base": 1076,
+          "claude-legacy": 985
+        },
+        "vercel-jsonl": {
+          "o200k_base": 1244,
+          "cl100k_base": 1209,
+          "claude-legacy": 1326
+        },
+        "thesys-c1": {
+          "o200k_base": 1195,
+          "cl100k_base": 1191,
+          "claude-legacy": 1211
+        }
+      },
+      "exportWarnings": {
+        "a2ui": 10,
+        "jsonRender": 1
+      }
+    },
+    {
+      "scenario": "e-commerce-product",
+      "group": "openui",
+      "formats": {
+        "mdui": {
+          "o200k_base": 491,
+          "cl100k_base": 509,
+          "claude-legacy": 575
+        },
+        "a2ui-json": {
+          "o200k_base": 1762,
+          "cl100k_base": 1776,
+          "claude-legacy": 1831
+        },
+        "json-render": {
+          "o200k_base": 1474,
+          "cl100k_base": 1475,
+          "claude-legacy": 1502
+        },
+        "openui-lang": {
+          "o200k_base": 1166,
+          "cl100k_base": 1172,
+          "claude-legacy": 1262
+        },
+        "yaml": {
+          "o200k_base": 2146,
+          "cl100k_base": 2158,
+          "claude-legacy": 2002
+        },
+        "vercel-jsonl": {
+          "o200k_base": 2449,
+          "cl100k_base": 2399,
+          "claude-legacy": 2622
+        },
+        "thesys-c1": {
+          "o200k_base": 2344,
+          "cl100k_base": 2356,
+          "claude-legacy": 2396
+        }
+      },
+      "exportWarnings": {
+        "a2ui": 20,
+        "jsonRender": 0
+      }
+    },
+    {
+      "scenario": "action-tracker-detail",
+      "group": "examples",
+      "formats": {
+        "mdui": {
+          "o200k_base": 255,
+          "cl100k_base": 261,
+          "claude-legacy": 313
+        },
+        "a2ui-json": {
+          "o200k_base": 832,
+          "cl100k_base": 822,
+          "claude-legacy": 852
+        },
+        "json-render": {
+          "o200k_base": 942,
+          "cl100k_base": 923,
+          "claude-legacy": 941
+        }
+      },
+      "exportWarnings": {
+        "a2ui": 3,
+        "jsonRender": 0
+      }
+    },
+    {
+      "scenario": "action-tracker-master",
+      "group": "examples",
+      "formats": {
+        "mdui": {
+          "o200k_base": 285,
+          "cl100k_base": 287,
+          "claude-legacy": 312
+        },
+        "a2ui-json": {
+          "o200k_base": 961,
+          "cl100k_base": 958,
+          "claude-legacy": 993
+        },
+        "json-render": {
+          "o200k_base": 568,
+          "cl100k_base": 556,
+          "claude-legacy": 569
+        }
+      },
+      "exportWarnings": {
+        "a2ui": 2,
+        "jsonRender": 0
+      }
+    },
+    {
+      "scenario": "chat-interface",
+      "group": "examples",
+      "formats": {
+        "mdui": {
+          "o200k_base": 275,
+          "cl100k_base": 282,
+          "claude-legacy": 338
+        },
+        "a2ui-json": {
+          "o200k_base": 705,
+          "cl100k_base": 702,
+          "claude-legacy": 731
+        },
+        "json-render": {
+          "o200k_base": 833,
+          "cl100k_base": 817,
+          "claude-legacy": 844
+        }
+      },
+      "exportWarnings": {
+        "a2ui": 5,
+        "jsonRender": 4
+      }
+    },
+    {
+      "scenario": "login-form",
+      "group": "examples",
+      "formats": {
+        "mdui": {
+          "o200k_base": 113,
+          "cl100k_base": 117,
+          "claude-legacy": 147
+        },
+        "a2ui-json": {
+          "o200k_base": 404,
+          "cl100k_base": 401,
+          "claude-legacy": 413
+        },
+        "json-render": {
+          "o200k_base": 535,
+          "cl100k_base": 525,
+          "claude-legacy": 536
+        }
+      },
+      "exportWarnings": {
+        "a2ui": 1,
+        "jsonRender": 0
+      }
+    },
+    {
+      "scenario": "mobile-app-layout",
+      "group": "examples",
+      "formats": {
+        "mdui": {
+          "o200k_base": 200,
+          "cl100k_base": 204,
+          "claude-legacy": 257
+        },
+        "a2ui-json": {
+          "o200k_base": 865,
+          "cl100k_base": 856,
+          "claude-legacy": 884
+        },
+        "json-render": {
+          "o200k_base": 949,
+          "cl100k_base": 928,
+          "claude-legacy": 956
+        }
+      },
+      "exportWarnings": {
+        "a2ui": 8,
+        "jsonRender": 0
+      }
+    },
+    {
+      "scenario": "responsive-layout",
+      "group": "examples",
+      "formats": {
+        "mdui": {
+          "o200k_base": 604,
+          "cl100k_base": 607,
+          "claude-legacy": 701
+        },
+        "a2ui-json": {
+          "o200k_base": 1538,
+          "cl100k_base": 1531,
+          "claude-legacy": 1597
+        },
+        "json-render": {
+          "o200k_base": 1544,
+          "cl100k_base": 1522,
+          "claude-legacy": 1564
+        }
+      },
+      "exportWarnings": {
+        "a2ui": 37,
+        "jsonRender": 19
+      }
+    },
+    {
+      "scenario": "user-profile",
+      "group": "examples",
+      "formats": {
+        "mdui": {
+          "o200k_base": 226,
+          "cl100k_base": 231,
+          "claude-legacy": 278
+        },
+        "a2ui-json": {
+          "o200k_base": 1013,
+          "cl100k_base": 1010,
+          "claude-legacy": 1040
+        },
+        "json-render": {
+          "o200k_base": 1008,
+          "cl100k_base": 992,
+          "claude-legacy": 1009
+        }
+      },
+      "exportWarnings": {
+        "a2ui": 8,
+        "jsonRender": 0
+      }
+    }
+  ],
+  "upstreamCheck": {
+    "oui": {
+      "ours": 4800,
+      "upstream": 4800
+    },
+    "yaml": {
+      "ours": 9129,
+      "upstream": 9122
+    },
+    "vercel": {
+      "ours": 10180,
+      "upstream": 10180
+    },
+    "c1": {
+      "ours": 9650,
+      "upstream": 9948
+    }
+  }
+}

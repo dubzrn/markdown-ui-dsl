@@ -1,0 +1,272 @@
+[
+  {
+    "id": "typed-closer-column",
+    "input": "---\ndsl: 2.0\n---\n||| COLUMN |||\nx\n--- END COLUMN ---\n",
+    "expect": {
+      "outline": "frontmatter,column(line)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "typed-closer-row",
+    "input": "---\ndsl: 2.0\n---\n=== ROW ===\nx\n--- END ROW ---\n",
+    "expect": {
+      "outline": "frontmatter,row(line)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "typed-closer-card",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::\nx\n--- END CARD ---\n",
+    "expect": {
+      "outline": "frontmatter,card(line)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "typed-closer-modal",
+    "input": "---\ndsl: 2.0\n---\n::: MODAL :::\nx\n--- END MODAL ---\n",
+    "expect": {
+      "outline": "frontmatter,modal(line)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "typed-closer-header",
+    "input": "---\ndsl: 2.0\n---\n::: HEADER :::\nx\n--- END HEADER ---\n",
+    "expect": {
+      "outline": "frontmatter,header(line)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "typed-closer-footer",
+    "input": "---\ndsl: 2.0\n---\n::: FOOTER :::\nx\n--- END FOOTER ---\n",
+    "expect": {
+      "outline": "frontmatter,footer(line)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "typed-closer-bubble-user",
+    "input": "---\ndsl: 2.0\n---\n::: BUBBLE USER :::\nhi\n--- END BUBBLE ---\n",
+    "expect": {
+      "outline": "frontmatter,bubble-user(line)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "typed-closer-bubble-agent",
+    "input": "---\ndsl: 2.0\n---\n::: BUBBLE AGENT :::\nhi\n--- END BUBBLE ---\n",
+    "expect": {
+      "outline": "frontmatter,bubble-agent(line)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "generic-closer-still-works",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::\nx\n--- END ---\n",
+    "expect": {
+      "outline": "frontmatter,card(line)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "typed-closers-nested",
+    "input": "---\ndsl: 2.0\n---\n||| COLUMN |||\n::: CARD :::\n--- END CARD ---\n--- END COLUMN ---\n",
+    "expect": {
+      "outline": "frontmatter,column(card())",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "typed-closer-mixed-with-generic",
+    "input": "---\ndsl: 2.0\n---\n||| COLUMN |||\n::: CARD :::\n--- END ---\n--- END COLUMN ---\n",
+    "expect": {
+      "outline": "frontmatter,column(card())",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "typed-closer-in-list-item",
+    "input": "---\ndsl: 2.0\n---\n- ::: CARD :::\n  x\n  --- END CARD ---\n",
+    "expect": {
+      "outline": "frontmatter,list(item(card(line)))",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attrs-on-card",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::{: #login-card .elevated }\n--- END CARD ---\n",
+    "expect": {
+      "outline": "frontmatter,card()",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attrs-on-column",
+    "input": "---\ndsl: 2.0\n---\n||| COLUMN |||{: #main .stack }\n--- END ---\n",
+    "expect": {
+      "outline": "frontmatter,column()",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attrs-in-list-item-card",
+    "input": "---\ndsl: 2.0\n---\n- ::: CARD :::{: #a }\n  --- END ---\n",
+    "expect": {
+      "outline": "frontmatter,list(item(card()))",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "attrs-reserved-ok",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::{: role=region label=\"Sign in\" }\n--- END ---\n",
+    "expect": {
+      "outline": "frontmatter,card()",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "named-grid",
+    "input": "---\ndsl: 2.0\n---\n::: GRID cols=3 :::\n--- END GRID ---\n",
+    "expect": {
+      "outline": "frontmatter,grid()",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "named-accordion-panel",
+    "input": "---\ndsl: 2.0\n---\n::: ACCORDION :::\n::: PANEL \"Title\" open :::\nx\n--- END PANEL ---\n--- END ACCORDION ---\n",
+    "expect": {
+      "outline": "frontmatter,accordion(panel(line))",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "named-drawer",
+    "input": "---\ndsl: 2.0\n---\n::: DRAWER side=right :::\n--- END DRAWER ---\n",
+    "expect": {
+      "outline": "frontmatter,drawer()",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "named-toast",
+    "input": "---\ndsl: 2.0\n---\n::: TOAST kind=success :::\nSaved\n--- END TOAST ---\n",
+    "expect": {
+      "outline": "frontmatter,toast(line)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "named-tooltip",
+    "input": "---\ndsl: 2.0\n---\n::: TOOLTIP for=#save :::\nSave it\n--- END TOOLTIP ---\n",
+    "expect": {
+      "outline": "frontmatter,tooltip(line)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "named-callout",
+    "input": "---\ndsl: 2.0\n---\n::: CALLOUT info :::\nNote\n--- END CALLOUT ---\n",
+    "expect": {
+      "outline": "frontmatter,callout(line)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "named-empty",
+    "input": "---\ndsl: 2.0\n---\n::: EMPTY :::\nNothing here\n--- END EMPTY ---\n",
+    "expect": {
+      "outline": "frontmatter,empty(line)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "named-tree",
+    "input": "---\ndsl: 2.0\n---\n::: TREE :::\n- World\n  - America\n--- END TREE ---\n",
+    "expect": {
+      "outline": "frontmatter,tree(list(item(list(item))))",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "named-group",
+    "input": "---\ndsl: 2.0\n---\n::: GROUP \"My group box\" :::\n[ text: a ]\n--- END GROUP ---\n",
+    "expect": {
+      "outline": "frontmatter,group(line)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "named-with-attrs",
+    "input": "---\ndsl: 2.0\n---\n::: GRID cols=2 :::{: #g }\n--- END GRID ---\n",
+    "expect": {
+      "outline": "frontmatter,grid()",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "labelled-divider",
+    "input": "---\ndsl: 2.0\n---\n*** Section title ***\n",
+    "expect": {
+      "outline": "frontmatter,divider",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bare-divider-unchanged",
+    "input": "---\ndsl: 2.0\n---\n***\n",
+    "expect": {
+      "outline": "frontmatter,divider",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "bold-italic-not-labelled",
+    "input": "---\ndsl: 2.0\n---\n***bold italic***\n",
+    "expect": {
+      "outline": "frontmatter,line",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  },
+  {
+    "id": "labelled-divider-in-card",
+    "input": "---\ndsl: 2.0\n---\n::: CARD :::\n*** Details ***\n--- END ---\n",
+    "expect": {
+      "outline": "frontmatter,card(divider)",
+      "diagnostics": []
+    },
+    "since": "2.0"
+  }
+]

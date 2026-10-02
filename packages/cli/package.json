@@ -1,0 +1,45 @@
+{
+  "name": "@mdui/cli",
+  "version": "0.0.0",
+  "description": "mdui command line: validate, lint, ast (and more) for Markdown UI DSL files.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "mdui": "./dist/bin.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@mdui/catalog": "workspace:*",
+    "@mdui/core": "workspace:*",
+    "@mdui/grammar": "workspace:*",
+    "@mdui/lint": "workspace:*",
+    "@mdui/oracle": "workspace:*",
+    "@mdui/render": "workspace:*",
+    "@mdui/spec": "workspace:*",
+    "@mdui/sync": "workspace:*",
+    "@mdui/tokens": "workspace:*",
+    "@mdui/tools": "workspace:*",
+    "@mdui/export": "workspace:*",
+    "@mdui/embed": "workspace:*"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts src/bin.ts --format esm --dts --clean",
+    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json"
+  },
+  "peerDependencies": {
+    "playwright-core": ">=1.49"
+  },
+  "peerDependenciesMeta": {
+    "playwright-core": {
+      "optional": true
+    }
+  }
+}

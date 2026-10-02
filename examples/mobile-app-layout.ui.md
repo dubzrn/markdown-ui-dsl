@@ -20,7 +20,7 @@ Here is a summary of your activity today.
 
 ::: CARD :::
 ### Daily Goal
-[ text: 75% complete (progress bar) ]
+**75% complete**
 ***
 [ View Full Stats ](/stats)
 --- END ---
@@ -32,7 +32,7 @@ Here is a summary of your activity today.
 - Grocery Store ($64.20)
 --- END ---
 
-||| COLUMN |||
+--- END ---
 
 ::: FOOTER :::
 === ROW ===

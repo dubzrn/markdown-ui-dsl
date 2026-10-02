@@ -1,0 +1,26 @@
+# Project catalog: custom components on top of the built-in primitives.
+version: 1
+allow: [MAPVIEW]
+components:
+  ProductCard:
+    kind: widget
+    trust: project
+    description: Product tile with image, title and price.
+    props:
+      title: { type: string, required: true, positional: 0 }
+      price: { type: number, required: true }
+      currency: { type: enum, values: [USD, EUR, GBP] }
+      featured: { type: boolean }
+  Rating:
+    trust: project
+    props:
+      value: { type: number, required: true, positional: 0 }
+      max: { type: number }
+  MapView:
+    trust: third-party
+    description: Map from a third-party package.
+    props:
+      center: { type: string, required: true, positional: 0 }
+  Carousel:
+    trust: third-party
+    kind: container

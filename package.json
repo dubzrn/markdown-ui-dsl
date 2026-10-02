@@ -1,0 +1,46 @@
+{
+  "name": "markdown-ui-dsl-monorepo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "build": "pnpm -r --workspace-concurrency=1 build",
+    "test": "vitest run",
+    "test:e2e": "vitest run --config vitest.e2e.config.ts",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "changeset": "changeset",
+    "mdui": "node packages/cli/dist/bin.js",
+    "bench": "node bench/run.mjs",
+    "schema:check": "node scripts/gen-ast-schema.mjs --check",
+    "lint:docs": "node scripts/gen-lint-docs.mjs",
+    "lint:docs:check": "node scripts/gen-lint-docs.mjs --check",
+    "check": "pnpm schema:check && pnpm build && pnpm lint:docs:check && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test",
+    "parity": "node scripts/grammar-parity.mjs",
+    "conformance": "node scripts/gen-conformance-manifest.mjs --check && python3 packages/spec/conformance/runners/run.py -- node scripts/conformance-harness.mjs"
+  },
+  "devDependencies": {
+    "@anthropic-ai/tokenizer": "^0.0.4",
+    "@changesets/cli": "3.0.3",
+    "@eslint/js": "^10.0.0",
+    "@types/node": "^22.20.4",
+    "ajv": "^8.20.0",
+    "axe-core": "^4.13.0",
+    "eslint": "10.11.0",
+    "fast-check": "4.10.2",
+    "gpt-tokenizer": "^4.0.0",
+    "markdown-it": "^15.0.2",
+    "playwright-core": "^1.63.0",
+    "prettier": "3.9.9",
+    "tsup": "8.5.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.0",
+    "vitest": "5.0.3"
+  }
+}

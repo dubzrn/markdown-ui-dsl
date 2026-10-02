@@ -1,0 +1,16 @@
+framework: blazor
+components:
+  ProductCard:
+    component: ProductCard
+    import: "Shop.Components.ProductCard"
+    props:
+      title: Title
+      price: Price
+      currency: Currency
+      featured: Featured
+  Rating:
+    component: StarRating
+    import: "Shop.Components.StarRating"
+    props:
+      value: Value
+      max: Max
