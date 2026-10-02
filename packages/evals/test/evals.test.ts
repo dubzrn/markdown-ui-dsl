@@ -24,6 +24,23 @@ import { REFERENCE } from "./reference.js";
 
 const task = (id: string) => ALL_TASKS.find((t) => t.id === id) as (typeof ALL_TASKS)[number];
 
+describe("extractDsl with reasoning models", () => {
+  const draft = "```markdown\n::: CARD :::\n# Draft\n```";
+  const final = "```markdown\n::: CARD :::\n# Final\n--- END ---\n```";
+  it("drops everything before the last </think> and takes the last DSL block", () => {
+    const answer = `thinking... ${draft}\n</think>\n${draft}\nWait, fixing it.\n${final}`;
+    expect(extractDsl(answer)).toContain("# Final");
+    expect(extractDsl(answer)).not.toContain("# Draft");
+  });
+  it("pick: first reproduces the baseline scorer", () => {
+    expect(extractDsl(`${draft}\n${final}`, { pick: "first" })).toContain("# Draft");
+    expect(extractDsl(`${draft}\n${final}`)).toContain("# Final");
+  });
+  it("answers without fences or reasoning are returned whole", () => {
+    expect(extractDsl("::: CARD :::\n--- END ---")).toBe("::: CARD :::\n--- END ---");
+  });
+});
+
 describe("task set (T-063)", () => {
   it("has at least 30 generation prompts, sync scenarios and injection prompts, with unique ids", () => {
     expect(GENERATION.length).toBeGreaterThanOrEqual(30);

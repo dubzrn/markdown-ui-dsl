@@ -12,8 +12,8 @@ Honest status per checkpoint item, with evidence. **Met** = measured in this rep
 | NOV-04 ≥ 12 rules, recall ≥ 95%, 0 FP, ≥ 4 post-code | Met | 14 rules, 31/31, 0/15 FP (`evals/NOV-04.md`) |
 | ≥ 250 conformance fixtures; third-language runner | Partial | 494 fixtures, Python runner (`docs/CONFORMANCE.md`); the implementation under test is the TS reference, no independent second implementation |
 | NOV-03 benchmark with measured baseline | **Open** | harness built (`docs/EVALS.md`); **no model run**, so no constrained-vs-unconstrained result |
-| Eval harness on ≥ 3 agents; v1 nesting-error baseline (B-03) | **Open** | needs model access (`evals/BASELINE.md` is a NOT RUN stub) |
-| Skill works with no tooling (eval-checked) | **Open** | needs a model run |
+| Eval harness on ≥ 3 agents; v1 nesting-error baseline (B-03) | Partial | **two** models measured (`gemma-4-26b-a4b-it`, `ornith-1.5:9b`; `docs/EVALS.md`); needs a third. B-03 is **not testable unaided**: unaided answers contain no blocks at all. Given the skill or prompt, 25-79% of generate answers have unbalanced blocks |
+| Skill works with no tooling (eval-checked) | **Not met (measured, two models)** | with the skill, generate tasks pass 22% (gemma) and 31% (ornith) and only 34-38% parse cleanly; the skill raises content pass rate and does not make these models write balanced documents. A language/skill simplification (closers) and the NOV-03 grammar are the candidate fixes, both unmeasured |
 | MCP verified with ≥ 2 clients | Partial | official SDK clients in JS and Python; Claude Desktop, Cursor, VS Code **not** run by hand |
 | A2UI v1.0 / json-render exports validate against pinned schemas | Met | schemas vendored at `102ec1a04975`; `validateSpec` from `@json-render/core@0.21.0`; not rendered by upstream renderers |
 | Docs site + playground "live" | Partial | built, link-checked, axe-clean, e2e-tested; **not deployed** (publishing needs your go-ahead) |

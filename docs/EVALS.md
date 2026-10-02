@@ -42,3 +42,32 @@ node scripts/eval-llm.mjs --provider llamacpp --label m --arms none,none+grammar
 node scripts/eval-llm.mjs ... --min-pass 0.8 --min-valid 0.9
 ```
 `.github/workflows/nightly.yml` has an `llm-evals` job that runs only when `LLM_BASE_URL` is configured as a repository variable (it is not, so it is skipped), with Promptfoo-style tool-agnosticism: the assertions are `mdui lint`, so any runner can replace `scripts/eval-llm.mjs`.
+
+## First measurements (2026-10-02)
+
+Two models, 50 tasks x 3 seeds x 3 arms, temperature 0, no provider errors: `gemma-4-26b-a4b-it` through LiteLLM (`evals/BASELINE.md`) and `ornith-1.5:9b` through Ollama (`--num-ctx 8192`). Raw answers: `evals/results/`. Re-scored per task kind with `scripts/eval-rescore.mjs`: `evals/RESCORE-2026-10-02.md`.
+
+**Read the per-kind rows, not the headline.** The 50 tasks are 32 *generate* (write a screen), 8 *sync* and 10 *inject*. Sync and inject are easy and pad the overall pass rate; generation is what the DSL is for. Numbers below are distinct answers only, last-block scorer.
+
+| Model | Arm | Generate pass | Generate parses cleanly | Generate with nesting errors | Overall pass |
+|---|---|--:|--:|--:|--:|
+| gemma-4-26b-a4b-it | none | 4% (n=55) | 98% | 0% | 19% |
+| | skill | 22% (n=58) | 34% | 66% | 39% |
+| | prompt | 18% (n=33) | 21% | 79% | 40% |
+| ornith-1.5:9b | none | 3% (n=32) | 97% | 0% | 24% |
+| | skill | 31% (n=32) | 38% | 63% | 50% |
+| | prompt | 59% (n=32) | 75% | 25% | 68% |
+
+What it shows:
+
+* **Unaided, neither model can write these screens** (1 pass of 32 generate tasks each). Unaided answers contain **no block opener at all** in any of the 32 generate tasks (checked), so their 0% nesting errors and 97% "valid" are vacuous: there are no blocks to unbalance. The B-03 hypothesis (models nest badly when unaided) is therefore *not testable* in the unaided arm, not refuted. Their failures are mostly invented primitives (E1302).
+* **Given the skill or the prompt, the models attempt blocks and get the closers wrong**: 63-79% of generate answers have an unclosed block (E1001) or an orphan closer (E1002), and the dominant code is E1001 (about 45 per arm). Examples in the raw answers: invented closers such as `=== END --- ===` and `::: END --- :::` (mixing the three opener styles with `--- END ---`), nested ROWs left open, a closer line for a block that was never opened.
+* **The generated prompt (`mdui prompt`) is not uniformly better than the skill**: best arm for ornith (59% generate pass, 25% nesting errors), worst for gemma (18%, 79%). With two models, that is a model-dependent effect, not a finding about the prompt.
+* **The skill's content gain costs 37x the input tokens** (2,858 vs 78) for the first model. Both context arms leave most generation answers unparseable.
+* This is the failure a generation grammar (NOV-03) targets, and it is also a design signal for the language: three opener styles plus a generic closer is easy to get wrong. Neither is measured yet. A constrained run needs the model on `llama-server`.
+
+Method corrections found while reading the raw answers:
+
+* **Seeds do not add samples at temperature 0**: all 150 (task, arm) cells of ornith have identical answers across the three seeds, and 94 of 150 for gemma. The effective n per arm is 50 tasks (ornith) or about 69 distinct answers (gemma), so the intervals in the generated tables are too narrow. Use `eval-rescore.mjs` ("distinct answers only").
+* **Reasoning leakage**: `ornith-1.5:9b` writes its thinking (`</think>`) into the answer and sometimes writes a draft, says "wait", and writes a corrected document. The baseline scorer took the *first* fenced block, which penalised the self-corrected final one and counted the reasoning as part of the answer ("DSL only" 74% unaided). The scorer now drops text up to the last `</think>` and takes the last DSL block (`pick: "last"`); `--pick first` reproduces the original numbers (checked: it matches the as-run tables for both models). Pass rates move by a few points; the conclusions above hold under both.
+* One model per arm family, one task set, this project's scoring, 2 of the 3 models the plan asks for.

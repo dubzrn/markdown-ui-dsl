@@ -3,18 +3,23 @@ import type { Catalog } from "@vrillabs/mdui-catalog";
 import { lint } from "@vrillabs/mdui-lint";
 import type { Task } from "./tasks.js";
 
-/** The DSL part of a model answer: the first fenced block that looks like DSL, else the whole answer. */
-export function extractDsl(answer: string): string {
-  const fences = [...answer.matchAll(/```[a-zA-Z0-9_-]*\n([\s\S]*?)```/g)].map(
-    (m) => m[1] as string,
-  );
-  const looksDsl = (t: string): boolean => /(:::|\|\|\| |=== |\[ |^#{1,6} |^---\n)/m.test(t);
-  const hit = fences.find(looksDsl);
+/**
+ * The DSL part of a model answer. Reasoning models leak their thinking into the text, and some write a draft, say "wait", and
+ * write a corrected document: so everything up to the last `</think>` is dropped, and **the last** fenced block that looks like
+ * DSL is taken (the one the model meant as its answer). `pick: "first"` reproduces the scorer used for the 2026-10-02 baseline.
+ */
+export function extractDsl(answer: string, opts: { pick?: "first" | "last" } = {}): string {
+  const t = answer.lastIndexOf("</think>");
+  const text = opts.pick === "first" || t < 0 ? answer : answer.slice(t + "</think>".length);
+  const fences = [...text.matchAll(/```[a-zA-Z0-9_-]*\n([\s\S]*?)```/g)].map((m) => m[1] as string);
+  const looksDsl = (x: string): boolean => /(:::|\|\|\| |=== |\[ |^#{1,6} |^---\n)/m.test(x);
+  const hits = fences.filter(looksDsl);
+  const hit = opts.pick === "first" ? hits[0] : hits[hits.length - 1];
   if (hit !== undefined) return hit;
   // an unterminated fence (the model ran out of tokens)
-  const open = /```[a-zA-Z0-9_-]*\n([\s\S]*)$/.exec(answer);
+  const open = /```[a-zA-Z0-9_-]*\n([\s\S]*)$/.exec(text);
   if (open !== null && looksDsl(open[1] as string)) return open[1] as string;
-  return answer;
+  return text;
 }
 
 /** Code or markup in a framework: the answer should be DSL only. */
@@ -48,8 +53,12 @@ export interface Score {
   failed: string[];
 }
 
-export function scoreAnswer(task: Task, answer: string, opts: { catalog?: Catalog } = {}): Score {
-  const dsl = extractDsl(answer);
+export function scoreAnswer(
+  task: Task,
+  answer: string,
+  opts: { catalog?: Catalog; pick?: "first" | "last" } = {},
+): Score {
+  const dsl = extractDsl(answer, opts.pick !== undefined ? { pick: opts.pick } : {});
   const r = lint(dsl, opts.catalog !== undefined ? { catalog: opts.catalog } : {});
   const errs = r.diagnostics.filter((d) => d.severity === "error");
   const nesting = errs.filter((d) => ["E1001", "E1002", "E1004"].includes(d.code)).length;
