@@ -241,6 +241,13 @@ describe("provider adapters (no network: injected fetch)", () => {
     );
     expect(p.supportsGrammar).toBe(false);
   });
+  it("ollama: sends num_ctx only when asked (the default window can cut a long system prompt)", async () => {
+    const seen: { url?: string; body?: Record<string, unknown> } = {};
+    await ollama("m", { fetch: fake({ response: "x" }, seen), numCtx: 8192 }).generate(req);
+    expect(seen.body?.["options"]).toMatchObject({ num_ctx: 8192 });
+    await ollama("m", { fetch: fake({ response: "x" }, seen) }).generate(req);
+    expect(seen.body?.["options"]).not.toHaveProperty("num_ctx");
+  });
   it("llama.cpp: /completion with the grammar", async () => {
     const seen: { url?: string; body?: Record<string, unknown> } = {};
     const p = llamacpp({

@@ -7,7 +7,7 @@
 //
 // Options: --provider ollama|llamacpp|openai|mock  --model M (repeat or comma list: a panel)  --base-url U  --api-key K (or $LLM_API_KEY)
 //          --arms none,skill,prompt,<arm>+grammar  --tasks all|generate|sync|inject|id,id  --seeds 1,2,3  --temperature 0
-//          --max-tokens 1500  --catalog catalog.yaml  --out evals/results/<name>.json  --min-pass 0.8  --min-valid 0.9
+//          --max-tokens 1500  --num-ctx 8192 (ollama)  --catalog catalog.yaml  --out evals/results/<name>.json  --min-pass 0.8  --min-valid 0.9
 //          --baseline (write evals/BASELINE.md)  --nov03 (write evals/NOV-03.md)  --replay file  --record file
 // Exit codes: 0 ok, 1 below a --min-* threshold, 2 usage error. Raw answers are stored so every number can be re-scored.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -81,7 +81,10 @@ const catalog = opt("catalog")
 const makeProvider = (model) => {
   const base = opt("base-url");
   if (providerName === "ollama")
-    return ollama(model ?? die("--model is required for ollama"), base ? { baseUrl: base } : {});
+    return ollama(model ?? die("--model is required for ollama"), {
+      ...(base ? { baseUrl: base } : {}),
+      numCtx: Number(opt("num-ctx", "8192")),
+    });
   if (providerName === "llamacpp")
     return llamacpp({ ...(base ? { baseUrl: base } : {}), label: model ?? opt("label", "server") });
   if (providerName === "openai")
