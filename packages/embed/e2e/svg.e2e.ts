@@ -1,6 +1,6 @@
 // T-094: generated SVGs parse with a real XML parser and load as images, in both colour schemes. Needs Chromium: `pnpm test:e2e`.
 import { existsSync, readFileSync, readdirSync } from "node:fs";
-import { parse } from "@mdui/core";
+import { parse } from "@vrillabs/mdui-core";
 import { chromium, type Browser } from "playwright-core";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { renderSvg } from "../src/index.js";

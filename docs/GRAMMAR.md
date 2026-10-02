@@ -1,6 +1,6 @@
 # Generation grammars (NOV-03)
 
-`@mdui/grammar` turns the language, the component catalog, the directive tokens and the data model into a grammar a constrained-decoding engine can enforce while a model writes a `.ui.md` file. `mdui grammar` emits it as **Lark**, **GBNF** or a catalog-specialised **JSON Schema** of the AST.
+`@vrillabs/mdui-grammar` turns the language, the component catalog, the directive tokens and the data model into a grammar a constrained-decoding engine can enforce while a model writes a `.ui.md` file. `mdui grammar` emits it as **Lark**, **GBNF** or a catalog-specialised **JSON Schema** of the AST.
 
 ```bash
 mdui grammar --format lark  --catalog shop.catalog.yaml --max-depth 4 > ui.lark
@@ -33,7 +33,7 @@ A context-free grammar cannot express these; run `mdui lint` on the output as al
 
 ## Parity with the reference parser
 
-`node scripts/grammar-parity.mjs` (nightly in CI, 100,000 strings per DSL version): every generated string parses with **zero errors** under `@mdui/core`, and a sample is accepted by the Earley recogniser. Local result for this revision: 2 × 100,000 strings, 0 problems.
+`node scripts/grammar-parity.mjs` (nightly in CI, 100,000 strings per DSL version): every generated string parses with **zero errors** under `@vrillabs/mdui-core`, and a sample is accepted by the Earley recogniser. Local result for this revision: 2 × 100,000 strings, 0 problems.
 
 | Check | Result |
 |---|---|

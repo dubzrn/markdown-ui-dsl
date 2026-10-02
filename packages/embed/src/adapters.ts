@@ -1,5 +1,5 @@
 /**
- * Adapters for markdown-it, remark and rehype. They are structural: no markdown library is imported, so `@mdui/embed`
+ * Adapters for markdown-it, remark and rehype. They are structural: no markdown library is imported, so `@vrillabs/mdui-embed`
  * adds no dependency and works with any version whose node shapes match.
  */
 import { renderFence, type RenderFenceOptions } from "./fence.js";

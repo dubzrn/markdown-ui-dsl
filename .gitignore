@@ -430,3 +430,5 @@ dist/
 *.whl
 evals/results/
 site-dist/
+packages/*/LICENSE
+packages/*/NOTICE

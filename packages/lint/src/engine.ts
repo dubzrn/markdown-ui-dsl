@@ -7,9 +7,9 @@ import {
   type Diagnostic,
   type Document,
   type Severity,
-} from "@mdui/core";
+} from "@vrillabs/mdui-core";
 import { applyFixes, type FixSourceResult } from "./fix.js";
-import type { Catalog } from "@mdui/catalog";
+import type { Catalog } from "@vrillabs/mdui-catalog";
 import type { LintConfig, Rule, RuleContext } from "./rule.js";
 import { a11yRules } from "./rules/a11y.js";
 import { semanticRules } from "./rules/semantic.js";
@@ -19,7 +19,7 @@ import { catalogRules } from "./rules/catalog.js";
 import { safetyRules } from "./rules/safety.js";
 import { constraintRules } from "./rules/constraints.js";
 import { tokenRules } from "./rules/tokens.js";
-import { loadDesignSystem, type DesignSystem } from "@mdui/tokens";
+import { loadDesignSystem, type DesignSystem } from "@vrillabs/mdui-tokens";
 import { lastLine } from "./util.js";
 
 export const ALL_RULES: Rule[] = [

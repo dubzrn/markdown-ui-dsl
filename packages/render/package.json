@@ -1,8 +1,8 @@
 {
-  "name": "@mdui/render",
-  "version": "0.0.0",
+  "name": "@vrillabs/mdui-render",
+  "version": "0.1.0",
   "description": "Renders Markdown UI DSL documents to semantic, accessible HTML wireframes.",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "type": "module",
   "sideEffects": false,
   "exports": {
@@ -12,13 +12,32 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "dependencies": {
-    "@mdui/core": "workspace:*"
+    "@vrillabs/mdui-core": "workspace:*"
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean",
-    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json && tsc -p e2e/tsconfig.json"
+    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json && tsc -p e2e/tsconfig.json",
+    "prepack": "node ../../scripts/copy-license.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dubzrn/markdown-ui-dsl.git",
+    "directory": "packages/render"
+  },
+  "homepage": "https://github.com/dubzrn/markdown-ui-dsl#readme",
+  "bugs": {
+    "url": "https://github.com/dubzrn/markdown-ui-dsl/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=20.19"
   }
 }

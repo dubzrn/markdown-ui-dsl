@@ -1,5 +1,5 @@
 {
-  "version": "0.0.0",
+  "version": "0.1.0",
   "protocol": 1,
   "grammars": {
     "v1": "1.0.3",

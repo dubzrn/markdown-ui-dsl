@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { validateSpec } from "@json-render/core";
 import { describe, expect, it } from "vitest";
-import { parse } from "@mdui/core";
+import { parse } from "@vrillabs/mdui-core";
 import { exportJsonRender, type JsonRenderResult } from "../src/index.js";
 
 const H = "---\ndsl: 2.0\nlang: en\n---\n";

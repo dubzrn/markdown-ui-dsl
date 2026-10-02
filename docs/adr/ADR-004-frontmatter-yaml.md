@@ -6,7 +6,7 @@ Status: Accepted · Date: 2026-10-01 · Implements: T-002
 
 `core` ships a small **strict YAML-subset** parser for frontmatter (scalars, lists, one-level-deep maps, quoted strings,
 no anchors/aliases/tags/merge keys, no multi-document). Anything outside the subset is a diagnostic, not a silent parse.
-Full YAML (`yaml` package) is permitted only in `@mdui/tools` and `@mdui/tokens` (design-token files).
+Full YAML (`yaml` package) is permitted only in `@vrillabs/mdui-tools` and `@vrillabs/mdui-tokens` (design-token files).
 
 ## Why
 
@@ -21,6 +21,6 @@ are `W1204`, anything outside the subset is `E1102`. Mappings inside list items 
 
 ## Addendum (T-037) — design systems use full YAML, safely
 
-`@mdui/tokens` parses DESIGN.md front matter with the `yaml` package (pinned), core schema only, `uniqueKeys` on, and
+`@vrillabs/mdui-tokens` parses DESIGN.md front matter with the `yaml` package (pinned), core schema only, `uniqueKeys` on, and
 `maxAliasCount: 50` at conversion (a billion-laughs alias bomb becomes diagnostic E4101, in well under a second — tested).
 This is the only place full YAML is used; `.ui.md` frontmatter stays on the strict subset.

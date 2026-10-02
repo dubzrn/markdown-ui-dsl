@@ -1,5 +1,5 @@
 // Generates packages/spec/conformance/manifest.json: the versioned, hashed index of the conformance bundle (T-083).
-// `--check` fails when the committed file is stale. The bundle version is the @mdui/spec version plus the grammar versions it matches.
+// `--check` fails when the committed file is stale. The bundle version is the @vrillabs/mdui-spec version plus the grammar versions it matches.
 import { createHash } from "node:crypto";
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 

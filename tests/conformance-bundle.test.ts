@@ -32,7 +32,7 @@ describe("conformance bundle (T-083)", () => {
       expect((JSON.parse(text) as unknown[]).length, f.path).toBe(f.fixtures);
     }
   });
-  it("is versioned with @mdui/spec and shipped in its package files", () => {
+  it("is versioned with @vrillabs/mdui-spec and shipped in its package files", () => {
     const pkg = JSON.parse(readFileSync(join(root, "packages/spec/package.json"), "utf8")) as {
       version: string;
       files: string[];

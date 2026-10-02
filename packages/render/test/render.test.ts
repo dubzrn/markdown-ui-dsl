@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync } from "node:fs";
-import { analyze, parse } from "@mdui/core";
+import { analyze, parse } from "@vrillabs/mdui-core";
 import { describe, expect, it } from "vitest";
 import { render, safeUrl } from "../src/index.js";
 

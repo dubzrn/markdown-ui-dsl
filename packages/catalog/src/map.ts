@@ -1,5 +1,5 @@
 /** Component map (T-052): `mdui.map.yaml` — which code component implements each primitive / catalog item. */
-import { dict } from "@mdui/core";
+import { dict } from "@vrillabs/mdui-core";
 import { parseDocument } from "yaml";
 import type { Catalog } from "./model.js";
 

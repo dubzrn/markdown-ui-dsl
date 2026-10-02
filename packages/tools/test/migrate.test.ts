@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync } from "node:fs";
-import { equivalent, parse } from "@mdui/core";
+import { equivalent, parse } from "@vrillabs/mdui-core";
 import { describe, expect, it } from "vitest";
 import { migrate } from "../src/index.js";
 

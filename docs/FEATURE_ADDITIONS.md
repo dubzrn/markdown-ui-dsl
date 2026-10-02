@@ -5,7 +5,7 @@
 | **Status** | 🔒 **LOCKED — scope baseline v1.2** (rev. 3, 2026-10-01: +QLT-06 reference library; rev. 2: +1 feature, 1 promoted, 6 amended after source verification — see [§10](#10-change-log-rev-2)). Changes only through the [change-control process](#8-change-control). |
 | **Derived from** | [`COMPETITIVE_RESEARCH.md`](COMPETITIVE_RESEARCH.md) rev. 2 (every feature cites its gap `G#` and sources `S##` there; source status codes V/V≈/C/U are defined in its §2.4) |
 | **Implemented by** | [`SPEC.md`](SPEC.md) → [`PLAN.md`](PLAN.md) → [`TASKS.md`](TASKS.md) |
-| **Baseline** | `markdown-ui-dsl` v1.0.3 · **Target** DSL `2.0` + toolchain `@mdui/*` 2.0 |
+| **Baseline** | `markdown-ui-dsl` v1.0.3 · **Target** DSL `2.0` + toolchain `@vrillabs/mdui-*` 2.0 |
 | **Totals** | **48 features** — 13 Language · 13 Tooling · 6 Design-system · 6 Agent · 6 Quality · **4 Novel** |
 
 ---
@@ -62,14 +62,14 @@
 
 | ID | Feature — what is locked | Pri | Rel | Gap / evidence |
 |---|---|:-:|:-:|---|
-| **TLS-01** | **Reference parser → JSON AST + JSON Schema.** Typed AST with source spans, versioned schema; published as `@mdui/core` and `@mdui/spec`. | M | α | G2; [S01][S06][S08] |
+| **TLS-01** | **Reference parser → JSON AST + JSON Schema.** Typed AST with source spans, versioned schema; published as `@vrillabs/mdui-core` and `@vrillabs/mdui-spec`. | M | α | G2; [S01][S06][S08] |
 | **TLS-02** | **`mdui` CLI.** Commands: `validate`, `lint`, `fmt`, `ast`, `render`, `export`, `diff`, `migrate`, `prompt`, `grammar`, `sync`, `verify`, `stats`; `--json` output and stable exit codes. | M | α | G3; [S54][S01] |
 | **TLS-03** | **Lint engine + rule catalog.** Rule API, severities (error/warn/info), config file, inline `<!-- mdui-disable rule -->`; ≥ 30 rules across structure, a11y, tokens, catalog, flows. | M | α | G3; [S09][S54] |
 | **TLS-04** | **Canonical formatter.** `mdui fmt` — idempotent, comment-preserving, stable attribute ordering. | S | β | G3 |
 | **TLS-05** | **Semantic diff.** `mdui diff a b` reports added/removed/moved/changed nodes and token deltas; non-zero exit on regressions. | S | β | G3; [S54][S86] |
 | **TLS-06** | **HTML preview.** Static render + `--watch` live-reload server; styles `sketch`, `clean`, `wireframe`, `none`; viewport/dark/state toggles; **rev. 2: `--scale`/`--dpi` zoom and a handwritten-sketch option (Salt parity)**. | S | β | G4, G28; [S01][S51][S12] |
 | **TLS-07** | **Streaming incremental parser.** Chunk-fed parser emitting partial AST; guarantee: streamed result equals batch result. | S | β | G5; [S06][S38][S27] |
-| **TLS-08** | **MCP server `@mdui/mcp`.** Tools: `parse`, `validate`, `lint`, `fmt`, `diff`, `render`, `prompt`, `catalog`, `sync_plan`, `verify`. | S | GA | G16; [S65][S72][S69] |
+| **TLS-08** | **MCP server `@vrillabs/mdui-mcp`.** Tools: `parse`, `validate`, `lint`, `fmt`, `diff`, `render`, `prompt`, `catalog`, `sync_plan`, `verify`. | S | GA | G16; [S65][S72][S69] |
 | **TLS-09** | **VS Code extension + language server.** TextMate grammar, diagnostics from lint, preview pane, quick-fixes. | S | 2.1 | G4; [S01][S51] |
 | **TLS-10** | **GitHub Action.** Runs validate/lint/verify; posts a **wireframe diff** comment on PRs that touch `.ui.md`. | S | 2.1 | G4; [S73][S17] |
 | **TLS-11** | **Importers.** Figma → DSL (via Figma MCP) and HTML → DSL (best effort, lossy by design, always flagged). | C | 2.1 | G25; [S65][S70] |
@@ -330,7 +330,7 @@ Driven by the verification pass in [`COMPETITIVE_RESEARCH.md` §2.4](COMPETITIVE
 | OpenUI Lang: compact streaming DSL, −52.8% tokens vs JSON [S115] | Measure ourselves (TLS-12, spike SP-4); stay human-first; streaming parser (TLS-07); possible compact profile decided on data |
 | A2UI v1.0 + Express text DSL [S112][S114] | Pin exporters to v1.0; Express exporter (Could); position mdui as the *human-authored source* that compiles to both |
 | Wiremark / Wireloom: fence + SVG in GitHub/Obsidian [S117][S116] | TLS-13 (fence, plugins, SVG) → TLS-10 PR wireframe diffs |
-| Wireloom: skill + AGENTS.md; zero-dep core [S116] | AGT-01; zero-dependency `@mdui/core` already mandated |
+| Wireloom: skill + AGENTS.md; zero-dep core [S116] | AGT-01; zero-dependency `@vrillabs/mdui-core` already mandated |
 | Salt: breadth of widgets and screens-in-flow [S12] | LNG-04 additions; flow-diagram render (2.1); real token theming where Salt's is partial |
 | Claude Design / Superdesign / Onlook: agent-native design→code loops [S146][S147][S157] | Vendor-neutral, diffable spec + verification (NOV-01/02) — the part a closed canvas does not provide |
 | Tooling churn: promptfoo → OpenAI; Storybook MCP moved; AI SDK RSC paused [S136][S130][S50] | Tool-agnostic harness; adapters behind pinned interfaces; no dependency on archived packages |

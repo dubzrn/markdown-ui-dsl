@@ -1,6 +1,6 @@
 /** The ```` ```mdui ```` fence: info-string options and rendering. */
-import { analyze, parse, walkBlocks, type Document } from "@mdui/core";
-import { render, stylesheet } from "@mdui/render";
+import { analyze, parse, walkBlocks, type Document } from "@vrillabs/mdui-core";
+import { render, stylesheet } from "@vrillabs/mdui-render";
 import { escapeXml, renderSvg, type SvgStyle } from "./svg.js";
 
 export interface FenceOptions {
@@ -8,7 +8,7 @@ export interface FenceOptions {
   theme: "auto" | "light" | "dark";
   state?: string;
   width?: number;
-  /** `svg` (self-contained, default) or `html` (semantic markup from @mdui/render, with its stylesheet). */
+  /** `svg` (self-contained, default) or `html` (semantic markup from @vrillabs/mdui-render, with its stylesheet). */
   output: "svg" | "html";
 }
 export interface FenceInfo {

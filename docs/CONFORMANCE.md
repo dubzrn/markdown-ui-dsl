@@ -1,6 +1,6 @@
 # Claiming conformance
 
-Any implementation of the Markdown UI DSL (a parser in Rust, Python, Go, ...) can test itself against the language-neutral **conformance bundle** shipped in `@mdui/spec` (`conformance/`): **494 fixtures** in four suites, versioned with the package and the grammars (`manifest.json` lists every file with its fixture count and SHA-256).
+Any implementation of the Markdown UI DSL (a parser in Rust, Python, Go, ...) can test itself against the language-neutral **conformance bundle** shipped in `@vrillabs/mdui-spec` (`conformance/`): **494 fixtures** in four suites, versioned with the package and the grammars (`manifest.json` lists every file with its fixture count and SHA-256).
 
 | Suite | What your implementation must produce | Fixtures |
 |---|---|---|
@@ -18,7 +18,7 @@ Fixtures from `v1/` must also pass in 2.0 mode only where the file says so; `sin
 
 ## What you may claim
 - **"Passes the Markdown UI DSL conformance bundle X.Y.Z"**, with the number printed by the runner. Say which suites if it is not all four.
-- The bundle is a regression and interoperability check, not a proof of equivalence: it fixes behaviour on 494 inputs, and the grammar (`@mdui/spec/grammar`) and the decision record (`docs/adr/ADR-005-v1-ambiguity-decisions.md`) remain the normative text where the fixtures are silent.
+- The bundle is a regression and interoperability check, not a proof of equivalence: it fixes behaviour on 494 inputs, and the grammar (`@vrillabs/mdui-spec/grammar`) and the decision record (`docs/adr/ADR-005-v1-ambiguity-decisions.md`) remain the normative text where the fixtures are silent.
 - Diagnostic *messages* are not compared, only codes and lines.
 
 ## What is tested here

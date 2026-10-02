@@ -8,8 +8,8 @@ import {
   walkInline,
   type Diagnostic,
   type Severity,
-} from "@mdui/core";
-import { ALL_RULES, fixSource, lint, lintDesignSystem } from "@mdui/lint";
+} from "@vrillabs/mdui-core";
+import { ALL_RULES, fixSource, lint, lintDesignSystem } from "@vrillabs/mdui-lint";
 import {
   diffTokens,
   formatTokenDiff,
@@ -19,7 +19,7 @@ import {
   toTailwind3,
   toTailwind4,
   validateDtcg,
-} from "@mdui/tokens";
+} from "@vrillabs/mdui-tokens";
 import {
   AGENTS,
   composePrompt,
@@ -30,22 +30,22 @@ import {
   formatDiff,
   migrate,
   type Agent,
-} from "@mdui/tools";
-import { defaultCatalog, loadCatalog, loadMap } from "@mdui/catalog";
-import { AST_SCHEMA } from "@mdui/spec";
+} from "@vrillabs/mdui-tools";
+import { defaultCatalog, loadCatalog, loadMap } from "@vrillabs/mdui-catalog";
+import { AST_SCHEMA } from "@vrillabs/mdui-spec";
 import { runSync } from "./sync.js";
-import { auditWaivers, parseLock, specWaivers } from "@mdui/sync";
-import { buildGrammar, toGbnf, toJsonSchema, toLark } from "@mdui/grammar";
-import { render } from "@mdui/render";
-import { exportA2ui, exportJsonRender } from "@mdui/export";
-import { embedMarkdown, renderSvg } from "@mdui/embed";
+import { auditWaivers, parseLock, specWaivers } from "@vrillabs/mdui-sync";
+import { buildGrammar, toGbnf, toJsonSchema, toLark } from "@vrillabs/mdui-grammar";
+import { render } from "@vrillabs/mdui-render";
+import { exportA2ui, exportJsonRender } from "@vrillabs/mdui-export";
+import { embedMarkdown, renderSvg } from "@vrillabs/mdui-embed";
 import { readConfined } from "./confine.js";
 import { parseArgs, UsageError, type Args } from "./args.js";
 import { ConfigError, loadConfig, type Config, type FailOn } from "./config.js";
 import { expand } from "./glob.js";
 import type { Io } from "./io.js";
 
-export const VERSION = "0.0.0";
+export const VERSION = "0.1.0";
 
 /** Exit-code contract (SPEC §3): 0 ok · 1 diagnostics at/above --fail-on · 2 usage/config error · 3 internal error. */
 export const EXIT = { ok: 0, diagnostics: 1, usage: 2, internal: 3 } as const;

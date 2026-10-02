@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { PROTOCOL_VERSIONS, TOOLS, handle, handleLine } from "../src/index.js";
+import { PROTOCOL_VERSIONS, SERVER_INFO, TOOLS, handle, handleLine } from "../src/index.js";
 
 const call = (name: string, args: unknown, id = 1) =>
   handle({ jsonrpc: "2.0", id, method: "tools/call", params: { name, arguments: args } }) as {
@@ -320,4 +320,16 @@ describe("stdio framing (review finding)", () => {
       expect(lines.some((l) => l.includes('"id":7'))).toBe(true);
     },
   );
+});
+
+describe("server version (T-098)", () => {
+  it("reports the version in its package.json", async () => {
+    const { readFileSync } = await import("node:fs");
+    const v = (
+      JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as {
+        version: string;
+      }
+    ).version;
+    expect(SERVER_INFO.version).toBe(v);
+  });
 });

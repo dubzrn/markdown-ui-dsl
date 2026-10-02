@@ -9,8 +9,8 @@
  * Profiles: `generate` (default) is the strict, emitted grammar; `recognize` is a superset (free frontmatter) used to
  * test that real documents are accepted.
  */
-import type { Catalog, ComponentSpec, PropSpec } from "@mdui/catalog";
-import { defaultCatalog } from "@mdui/catalog";
+import type { Catalog, ComponentSpec, PropSpec } from "@vrillabs/mdui-catalog";
+import { defaultCatalog } from "@vrillabs/mdui-catalog";
 import {
   EPS,
   alt,

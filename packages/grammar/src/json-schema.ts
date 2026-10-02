@@ -1,4 +1,4 @@
-import type { Catalog } from "@mdui/catalog";
+import type { Catalog } from "@vrillabs/mdui-catalog";
 
 type Json = { [k: string]: unknown };
 

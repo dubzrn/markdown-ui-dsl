@@ -1,6 +1,6 @@
 /** Deterministic scoring (T-063): assertions are `parse`/`lint` invocations plus the task's regexes. No LLM judge. */
-import type { Catalog } from "@mdui/catalog";
-import { lint } from "@mdui/lint";
+import type { Catalog } from "@vrillabs/mdui-catalog";
+import { lint } from "@vrillabs/mdui-lint";
 import type { Task } from "./tasks.js";
 
 /** The DSL part of a model answer: the first fenced block that looks like DSL, else the whole answer. */

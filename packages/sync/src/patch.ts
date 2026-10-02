@@ -1,5 +1,5 @@
 /** Spec patcher (T-075): turn a spec unit into the code unit's items with minimal line edits. */
-import { parse, printInline, type InlineNode } from "@mdui/core";
+import { parse, printInline, type InlineNode } from "@vrillabs/mdui-core";
 import type { ItemOp } from "./classify.js";
 import { norm, type Item } from "./fingerprint.js";
 import { specUnits } from "./spec.js";

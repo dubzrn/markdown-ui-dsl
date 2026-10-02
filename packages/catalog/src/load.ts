@@ -1,4 +1,4 @@
-import { dict } from "@mdui/core";
+import { dict } from "@vrillabs/mdui-core";
 import { parseDocument } from "yaml";
 import {
   defaultCatalog,

@@ -15,7 +15,7 @@ import {
   type ListItemNode,
   type Span,
   type YamlValue,
-} from "@mdui/core";
+} from "@vrillabs/mdui-core";
 import type { Finding, Rule, RuleContext } from "../rule.js";
 
 export interface Value {

@@ -5,7 +5,7 @@ import {
   checkPrimary,
   checkRefs,
   type TokenFinding,
-} from "@mdui/tokens";
+} from "@vrillabs/mdui-tokens";
 import type { Finding, Rule, RuleContext } from "../rule.js";
 
 function tokenRule(

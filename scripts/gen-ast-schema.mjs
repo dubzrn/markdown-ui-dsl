@@ -231,7 +231,7 @@ const schema = {
   $id: `https://github.com/dubzrn/markdown-ui-dsl/schema/ast-${DSL_SCHEMA_VERSION}.schema.json`,
   title: `Markdown UI DSL document AST (DSL ${DSL_SCHEMA_VERSION})`,
   description:
-    "JSON form of @mdui/core's Document. The $id encodes the DSL version; breaking changes bump it (see packages/spec/schema/README.md).",
+    "JSON form of @vrillabs/mdui-core's Document. The $id encodes the DSL version; breaking changes bump it (see packages/spec/schema/README.md).",
   type: "object",
   required: ["meta", "dsl", "body", "diagnostics", "lineStarts"],
   additionalProperties: false,

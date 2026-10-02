@@ -1,8 +1,8 @@
 {
-  "name": "@mdui/embed",
-  "version": "0.0.0",
+  "name": "@vrillabs/mdui-embed",
+  "version": "0.1.0",
   "description": "Embed Markdown UI DSL wireframes in documents: self-contained SVG renderer and markdown-it / remark / rehype adapters.",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "type": "module",
   "sideEffects": false,
   "exports": {
@@ -12,15 +12,18 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "dependencies": {
-    "@mdui/core": "workspace:*",
-    "@mdui/render": "workspace:*"
+    "@vrillabs/mdui-core": "workspace:*",
+    "@vrillabs/mdui-render": "workspace:*"
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean",
-    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json"
+    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json",
+    "prepack": "node ../../scripts/copy-license.mjs"
   },
   "devDependencies": {
     "@types/markdown-it": "^14.2.0",
@@ -30,5 +33,21 @@
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
     "unified": "^11.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dubzrn/markdown-ui-dsl.git",
+    "directory": "packages/embed"
+  },
+  "homepage": "https://github.com/dubzrn/markdown-ui-dsl#readme",
+  "bugs": {
+    "url": "https://github.com/dubzrn/markdown-ui-dsl/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=20.19"
   }
 }

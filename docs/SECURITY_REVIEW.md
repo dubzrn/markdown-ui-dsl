@@ -18,7 +18,7 @@ F8–F11 were reported by the Copilot review of this PR and verified before fixi
 | F4 | Medium | Preview server accepted any `Host`, so a page on another origin could read it by DNS rebinding. | `Host` must be `127.0.0.1:<port>` or `localhost:<port>`, else 403 | preview e2e |
 | F5 | Medium | Exporters passed `javascript:`, `data:`, `file:` and obfuscated variants through as `openUrl`/`navigate`/`href` values, for the host application to act on. | `classifyTarget` uses the lint scheme policy (entity, %-escape, control and zero-width decoding); unsafe targets are dropped with a warning | `a2ui.test.ts` (8 hostile spellings, both formats) |
 | F6 | Low | Nightly workflow interpolated `vars.*` into a shell command. | passed through `env` | n/a |
-| F8 | High | `render()`'s `safeUrl` did not strip control characters before reading the scheme, so `java\tscript:alert(1)` was emitted as an `href` that browsers read as `javascript:`. | scheme policy moved to `@mdui/core` (`schemeOf`, `normaliseTarget`), shared by render, lint and the exporters | `render.test.ts` (8 spellings) |
+| F8 | High | `render()`'s `safeUrl` did not strip control characters before reading the scheme, so `java\tscript:alert(1)` was emitted as an `href` that browsers read as `javascript:`. | scheme policy moved to `@vrillabs/mdui-core` (`schemeOf`, `normaliseTarget`), shared by render, lint and the exporters | `render.test.ts` (8 spellings) |
 | F9 | Medium | A numeric entity beyond U+10FFFF (`&#x110000;`) made `String.fromCodePoint` throw, crashing lint and both exporters on one malformed target. | code point validated before decoding | `safety.test.ts`, `render.test.ts` |
 | F10 | High | The MCP stdio server used `readline`, which buffers a whole line before the 8 MB cap is checked, so the cap did not bound memory. | own framing: a line is dropped as soon as it passes the cap | `server.test.ts` (10 MB without a newline, then a normal request) |
 | F11 | High | `[ text: x ]{: type=password }` rendered two `type` attributes; HTML keeps the first, so the password field was unmasked. | native type derived once from an allow-list (`text email password number url tel search`), generic pass skips `type` | `render.test.ts` |
@@ -28,7 +28,7 @@ F8–F11 were reported by the Copilot review of this PR and verified before fixi
 
 * **MCP server**: tools take text, never paths; it reads and writes no files; `mdui_sync_apply` returns file contents for the caller to write and refuses without `confirm`.
 * **Sync writer**: root-confined (lexical and, now, real path), journaled, rolls back on failure, never trusts a journal path outside the root.
-* **Output escaping**: HTML (`@mdui/render`), SVG (`@mdui/embed`) and the site escape all text and attribute values; hostile fixtures (`</text><script>`, quotes, entities) are tested. SVG output contains no scripts, `href`, `foreignObject`, images or `url()`.
+* **Output escaping**: HTML (`@vrillabs/mdui-render`), SVG (`@vrillabs/mdui-embed`) and the site escape all text and attribute values; hostile fixtures (`</text><script>`, quotes, entities) are tested. SVG output contains no scripts, `href`, `foreignObject`, images or `url()`.
 * **Playground**: renders in a `sandbox=""` iframe (no scripts); every value inserted with `innerHTML` is escaped; makes no network requests (asserted in e2e).
 * **Site**: markdown-it with `html: false`; no external scripts.
 * **Template-style injection in exports**: `${…}` in text is escaped (`\${`) for A2UI `formatString` and json-render `$template` (tested).

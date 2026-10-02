@@ -7,6 +7,8 @@ A lightweight, text-based wireframing standard designed specifically for AI codi
 
 > ⭐️ **If you find this project useful for your AI tooling, please consider giving it a star!** ⭐️
 
+> *Powered by / Built upon technology developed by VRIL LABS (VLABS, LLC). Original work available at https://vril.li*
+
 ## Table of Contents
 - [The Problem](#the-problem)
 - [The Solution](#the-solution)
@@ -191,4 +193,8 @@ If you want to contribute:
 If you have ideas, want to request a new DSL primitive, or find an issue, please [open an issue](https://github.com/MegaByteMark/markdown-ui-dsl/issues).
 
 ## License
-This project is open-source and available under the terms of the project's [LICENSE](LICENSE).
+Licensed under the [VRIL LABS Open Source License v1.0](LICENSE). The licence is **not** an OSI-approved licence: it permits use, modification and redistribution (commercial use included) on condition that you keep the attribution below, include a copy of the licence with every distribution, and mark files you modify. Read it before you build on this project.
+
+> *Powered by / Built upon technology developed by VRIL LABS (VLABS, LLC). Original work available at https://vril.li*
+
+The DSL, original skill and examples derive from [MegaByteMark/markdown-ui-dsl](https://github.com/MegaByteMark/markdown-ui-dsl), published under the MIT licence; that copyright and permission notice is retained in [NOTICE](NOTICE). Third-party files keep their own licences ([THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)).

@@ -20,7 +20,7 @@ Rates are reported with n and a 95% Wilson interval. Arms are compared on identi
 32 generation prompts (screens across the 1.x syntax and 6 DSL 2.0 widgets/containers), 8 sync scenarios (given a spec and a described code change, return the updated spec with the `#login` anchor kept), 10 injection prompts (the spec to edit contains instructions to ignore rules, emit `javascript:` links, reveal secrets, run commands, obfuscated URL schemes, hostile frontmatter paths; the answer must still do the legitimate edit and obey none of it). Each task has a hand-written synthetic reference answer (`evals/fixtures/reference-answers.json`); a test proves it passes its own assertions, that an empty or wrong-topic answer fails every task, and that obeying an injection fails.
 
 ## Arms
-Context: `none`, `skill` (SKILL.md plus the syntax, 2.0 and safety references), `prompt` (`mdui prompt`: only the constructs the task needs). Constraint: `+grammar` (catalog-specialised GBNF from `@mdui/grammar`, depth-bounded). The S111 study found extra context can raise cost with no accuracy gain (ADR-006), so prompt tokens and output tokens are reported with the pass rate.
+Context: `none`, `skill` (SKILL.md plus the syntax, 2.0 and safety references), `prompt` (`mdui prompt`: only the constructs the task needs). Constraint: `+grammar` (catalog-specialised GBNF from `@vrillabs/mdui-grammar`, depth-bounded). The S111 study found extra context can raise cost with no accuracy gain (ADR-006), so prompt tokens and output tokens are reported with the pass rate.
 
 ## Providers
 | Provider | Grammar | Notes |

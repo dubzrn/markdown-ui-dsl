@@ -8,7 +8,7 @@ import {
   toTailwind3,
   toTailwind4,
   validateDtcg,
-} from "@mdui/tokens";
+} from "@vrillabs/mdui-tokens";
 
 const dir = new URL("../../../examples/design-systems/", import.meta.url);
 const NEW = ["react-shadcn", "swiftui", "compose", "vue-nuxt", "angular-material", "lit"];

@@ -1,5 +1,11 @@
-import { nearest, validateUse, levenshtein, type Catalog, type UseIssue } from "@mdui/catalog";
-import { BLOCK_KINDS, walkBlocks, type InlineNode, type Span } from "@mdui/core";
+import {
+  nearest,
+  validateUse,
+  levenshtein,
+  type Catalog,
+  type UseIssue,
+} from "@vrillabs/mdui-catalog";
+import { BLOCK_KINDS, walkBlocks, type InlineNode, type Span } from "@vrillabs/mdui-core";
 import type { Finding, Rule, RuleContext } from "../rule.js";
 import { eachInline } from "../util.js";
 

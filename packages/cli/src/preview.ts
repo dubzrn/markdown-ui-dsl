@@ -13,8 +13,8 @@ import {
   type FSWatcher,
 } from "node:fs";
 import { dirname, isAbsolute, relative, resolve } from "node:path";
-import { analyze, parse } from "@mdui/core";
-import { render } from "@mdui/render";
+import { analyze, parse } from "@vrillabs/mdui-core";
+import { render } from "@vrillabs/mdui-render";
 import { UsageError, type Args } from "./args.js";
 import type { Io } from "./io.js";
 

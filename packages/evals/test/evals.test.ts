@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { loadCatalog } from "@mdui/catalog";
+import { loadCatalog } from "@vrillabs/mdui-catalog";
 import {
   ALL_TASKS,
   GENERATION,

@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { loadCatalog } from "@mdui/catalog";
+import { loadCatalog } from "@vrillabs/mdui-catalog";
 import { ALL_RULES, applyFixes, fixSource, lint, lintDesignSystem } from "../src/index.js";
 
 const H = "---\ndsl: 2.0\nlang: en\n---\n";

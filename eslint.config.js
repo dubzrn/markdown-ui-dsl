@@ -31,7 +31,7 @@ const banned = (extra = []) => ({
       patterns: [
         { group: NODE_BUILTINS, message: "ADR-003: core/spec must not use Node APIs." },
         {
-          group: ["@mdui/*", ...extra],
+          group: ["@vrillabs/mdui-*", ...extra],
           message: "ADR-003: this package may not import that @mdui package.",
         },
       ],
@@ -100,8 +100,8 @@ export default tseslint.config(
           patterns: [
             { group: NODE_BUILTINS, message: "ADR-003: core must not use Node APIs." },
             {
-              group: ["@mdui/*", "!@mdui/spec"],
-              message: "ADR-003: core may only import @mdui/spec.",
+              group: ["@vrillabs/mdui-*", "!@vrillabs/mdui-spec"],
+              message: "ADR-003: core may only import @vrillabs/mdui-spec.",
             },
           ],
         },

@@ -1,0 +1,83 @@
+# Publishes the @vrillabs/mdui-* packages to npm with provenance (T-098).
+# Follows GitHub's "Publishing Node.js packages" guide and npm's provenance requirements:
+#   - setup-node with registry-url writes an .npmrc that reads NODE_AUTH_TOKEN
+#   - `id-token: write` lets npm attach a provenance statement to each package
+#   - scoped public packages need `--access public`
+# Trigger: publishing a GitHub release (tag vX.Y.Z must equal the package version), or run it by hand. A manual run is a dry run
+# unless you untick "dry_run".
+name: Publish
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: build, test and pack everything but do not publish"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: build, verify and publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write # npm provenance
+    env:
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - run: pnpm install --frozen-lockfile
+
+      # Everything CI runs on a pull request must pass on the exact commit that is published.
+      - run: pnpm check
+      - run: node scripts/gen-conformance-manifest.mjs --check
+      - run: node scripts/build-site.mjs --check
+      - run: node scripts/clean-room-install.mjs
+
+      - name: Release tag must match the package version
+        if: github.event_name == 'release'
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          version="$(node -p "require('./packages/core/package.json').version")"
+          if [ "$TAG" != "v$version" ]; then
+            echo "release tag $TAG does not match package version v$version" >&2
+            exit 1
+          fi
+
+      - name: Choose the dist-tag
+        id: tag
+        run: |
+          version="$(node -p "require('./packages/core/package.json').version")"
+          case "$version" in
+            *-*) echo "tag=next" >> "$GITHUB_OUTPUT" ;;
+            *) echo "tag=latest" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+      - name: Packages that would be published
+        run: pnpm -r publish --dry-run --no-git-checks --access public --tag "${{ steps.tag.outputs.tag }}"
+
+      - name: Publish to npm
+        if: env.DRY_RUN != 'true'
+        # pnpm rewrites workspace:* to the real versions, skips private packages and versions already on the registry
+        run: pnpm -r publish --no-git-checks --access public --tag "${{ steps.tag.outputs.tag }}"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_REGISTRY_TOKEN }}
+          # pnpm hands the tarball to `npm publish`, which reads this (and each package's publishConfig.provenance)
+          NPM_CONFIG_PROVENANCE: "true"

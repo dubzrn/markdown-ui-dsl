@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { lint } from "@mdui/lint";
+import { lint } from "@vrillabs/mdui-lint";
 import { coverage, declaredRequirements, extractRequirements } from "../src/index.js";
 
 const root = new URL("../../../examples/sdd/", import.meta.url);

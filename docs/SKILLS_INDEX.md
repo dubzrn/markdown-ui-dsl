@@ -45,7 +45,7 @@
 | `constraint-driven-development` | github | addyosmani/agent-skills | MIT | `2686b620fc` | Written quality bar that agents may not quietly lower (zero-dep core, determinism, a11y). |
 | `context-engineering` | github | addyosmani/agent-skills | MIT | `2686b620fc` | Keep agent context lean — fits Agent Skills progressive disclosure (≤500-line SKILL.md). |
 | `documentation-and-adrs` | github | addyosmani/agent-skills | MIT | `2686b620fc` | ADRs for the decisions listed in T-002 (parser strategy, YAML subset, stack). |
-| `api-and-interface-design` | github | addyosmani/agent-skills | MIT | `2686b620fc` | Stable CLI/AST/package interfaces (@mdui/*) and diagnostics contracts. |
+| `api-and-interface-design` | github | addyosmani/agent-skills | MIT | `2686b620fc` | Stable CLI/AST/package interfaces (@vrillabs/mdui-*) and diagnostics contracts. |
 | `source-driven-development` | github | addyosmani/agent-skills | MIT | `2686b620fc` | Ground decisions in official docs — the verification culture of COMPETITIVE_RESEARCH §2.4; includes prompt-injection guidance for fetched content. |
 | `security-and-hardening` | github | addyosmani/agent-skills | MIT | `2686b620fc` | Path sandboxing, URL schemes, injection (AGT-04, SPEC §7). |
 | `git-workflow-and-versioning` | github | addyosmani/agent-skills | MIT | `2686b620fc` | Trunk-based, small commits, versioning; submodule-heavy repo hygiene. |

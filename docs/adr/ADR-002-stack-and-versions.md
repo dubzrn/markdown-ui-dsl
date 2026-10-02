@@ -1,6 +1,6 @@
 # ADR-002 — Stack and pinned versions
 
-Status: Accepted · Date: 2026-10-01 · Implements: T-002 · Assumption A2 (names `mdui` / `@mdui/*`) stands until the maintainer answers SPEC §0.
+Status: Accepted · Date: 2026-10-01 · Implements: T-002 · Assumption A2 (names `mdui` / `@vrillabs/mdui-*`) stands until the maintainer answers SPEC §0.
 
 ## Decision
 

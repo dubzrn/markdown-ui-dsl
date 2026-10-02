@@ -1,8 +1,8 @@
 # Embedding wireframes (T-094)
 
-`@mdui/embed` turns a `mdui` code fence into a self-contained SVG (or semantic HTML) and ships adapters for
-markdown-it, remark and rehype. It depends only on `@mdui/core` and `@mdui/render`; no markdown library is imported
-(the adapters are structural), so `@mdui/core` stays dependency-free.
+`@vrillabs/mdui-embed` turns a `mdui` code fence into a self-contained SVG (or semantic HTML) and ships adapters for
+markdown-it, remark and rehype. It depends only on `@vrillabs/mdui-core` and `@vrillabs/mdui-render`; no markdown library is imported
+(the adapters are structural), so `@vrillabs/mdui-core` stays dependency-free.
 
 ![Login form, clean style](img/login-form-clean.svg)
 ![Login form, sketch style](img/login-form-sketch.svg)
@@ -38,13 +38,13 @@ style's wobble is seeded from each shape's geometry. The login example is about 
 
 Limits you should know about: layout uses **estimated text metrics** (a picture of the wireframe, not a browser), rows and
 grids use equal-width columns, items in a row are not stretched to equal heights, and there is no per-element
-interactivity. For exact layout use `@mdui/render` (`output=html`).
+interactivity. For exact layout use `@vrillabs/mdui-render` (`output=html`).
 
 ## Adapters
 
 ```ts
 import MarkdownIt from "markdown-it";
-import { markdownItMdui, remarkMdui, rehypeMdui } from "@mdui/embed";
+import { markdownItMdui, remarkMdui, rehypeMdui } from "@vrillabs/mdui-embed";
 
 new MarkdownIt().use(markdownItMdui).render(md);
 

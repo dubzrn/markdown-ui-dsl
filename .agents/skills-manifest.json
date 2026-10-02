@@ -109,7 +109,7 @@
       "commit": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
       "license": "MIT",
       "vetted": "2026-10-01",
-      "why": "Stable CLI/AST/package interfaces (@mdui/*) and diagnostics contracts.",
+      "why": "Stable CLI/AST/package interfaces (@vrillabs/mdui-*) and diagnostics contracts.",
       "tree_sha256": "b2fa57f7326e3b17ce2a902e9f0e6ab7d581502411e4b063f68bf193690f901e"
     },
     {
@@ -338,7 +338,7 @@
       "license": "MIT",
       "vetted": "2026-10-01",
       "why": "This project's own skill (source of truth: skills/markdown-ui-dsl).",
-      "tree_sha256": "cc0d1c2bcbd0bd9f3f8a5b4257e6e17323e50bcf83ddcd6614f17809b08918a3"
+      "tree_sha256": "f20a2dde1f5284b7370afef836adac1869e7a5b6e70539fb22cbd72b1dbf2816"
     }
   ],
   "shared_references": [

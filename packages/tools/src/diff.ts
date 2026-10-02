@@ -1,7 +1,7 @@
 /** Semantic diff of two Markdown UI documents (T-035): added / removed / changed / moved elements, with regressions. */
-import { lint } from "@mdui/lint";
-import type { Attrs, BlockNode, Document, InlineNode, ListItemNode } from "@mdui/core";
-import { childrenOf } from "@mdui/core";
+import { lint } from "@vrillabs/mdui-lint";
+import type { Attrs, BlockNode, Document, InlineNode, ListItemNode } from "@vrillabs/mdui-core";
+import { childrenOf } from "@vrillabs/mdui-core";
 
 interface Item {
   /** `kind` plus a short human label, e.g. `button "Save"`. */

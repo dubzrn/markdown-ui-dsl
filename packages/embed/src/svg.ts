@@ -2,9 +2,9 @@
  * SVG renderer (T-094a). Lays a document out in a fixed-width column and emits a self-contained SVG: real `<text>`
  * (no outlined glyphs, no external fonts or images), `<title>`/`<desc>`, one small `<style>` block, deterministic output.
  * The layout model is deliberately simple (estimated text metrics, equal-width rows and grids): it is a picture of the
- * wireframe, not a browser. Use `@mdui/render` when exact layout matters.
+ * wireframe, not a browser. Use `@vrillabs/mdui-render` when exact layout matters.
  */
-import { walkBlocks, type BlockNode, type Document, type InlineNode } from "@mdui/core";
+import { walkBlocks, type BlockNode, type Document, type InlineNode } from "@vrillabs/mdui-core";
 
 export type SvgStyle = "wireframe" | "clean" | "sketch";
 export interface SvgOptions {

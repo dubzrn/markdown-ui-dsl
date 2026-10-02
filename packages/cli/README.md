@@ -1,4 +1,4 @@
-# @mdui/cli
+# @vrillabs/mdui-cli
 
 ```
 mdui validate <files|dirs|globs…>   parse + analyse

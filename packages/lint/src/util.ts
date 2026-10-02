@@ -7,7 +7,7 @@ import {
   type InlineNode,
   type ListItemNode,
   type Span,
-} from "@mdui/core";
+} from "@vrillabs/mdui-core";
 
 export type AnyBlock = BlockNode | ListItemNode;
 

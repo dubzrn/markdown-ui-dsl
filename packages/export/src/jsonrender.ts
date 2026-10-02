@@ -4,7 +4,7 @@
  * `catalog` it assumes (component names with prop shapes, plus the action names it uses). Output is validated in tests
  * with json-render's own `validateSpec` (@json-render/core 0.21.0). Constructs without a counterpart are reported.
  */
-import type { BlockNode, Document, InlineNode } from "@mdui/core";
+import type { BlockNode, Document, InlineNode } from "@vrillabs/mdui-core";
 import { toPointer } from "./a2ui.js";
 import { classifyTarget } from "./targets.js";
 import type { ExportWarning, WarningKind } from "./warnings.js";

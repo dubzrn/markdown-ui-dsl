@@ -23,8 +23,9 @@ Honest status per checkpoint item, with evidence. **Met** = measured in this rep
 | `mdui` fence via remark and markdown-it | Met | tested with the real libraries |
 | Generated SVG verified in a GitHub README | **Open** | no sandbox repository / cannot view github.com rendering |
 | Token benchmark, all scenarios, raw counts | Met | `evals/TOKENS.md`; A2UI Express not measured; mdui files authored by this project |
-| Clean-room install of CLI, MCP, skill | **Open** | nothing is published |
-| Migration guide; licence decision (A3) | **Open** | `mdui migrate` exists; no guide page and no recorded licence decision |
+| Clean-room install of CLI, MCP, skill | Partial | `scripts/clean-room-install.mjs` packs every package, installs the tarballs into an empty directory with npm and runs `mdui` and `mdui-mcp` (passes; also a gate in the publish workflow). Install **from the registry** is untested until the first publish; the skill is not part of an npm package |
+| Migration guide; licence decision (A3) | Met | `docs/MIGRATION.md`; `docs/adr/ADR-007-licence-and-package-names.md` (VRIL LABS Open Source License v1.0, upstream MIT notice kept in `NOTICE`) |
+| Publish workflow | Partial | `.github/workflows/publish.yml` and `docs/RELEASING.md`; **never run** (needs the owner's token and a GitHub run). Run it as a dry run first |
 | Full traceability pass | Met | 48 features · 55 requirements · 84 tasks · 0 problems |
 | Known limitations documented | Partial | per document (`docs/*.md` "Limits"/"Not verified" sections); no single page |
 
@@ -36,7 +37,7 @@ Honest status per checkpoint item, with evidence. **Met** = measured in this rep
 | Preview update ≤ 500 ms | Met | median 58 ms, max 64 ms over 10 edits |
 | Preview chrome passes axe | Met | e2e, light and dark |
 | WCAG criterion mapping | Partial | number, title and level checked against the W3C source commit `71c891a`; normative wording not compared |
-| RFC-0001 §7 maintainer read | **Open** | needs a human |
+| RFC-0001 §7 (readability review and simplifications) maintainer read | **Open** | needs a human; §6 (compatibility) is the other section that affects existing users |
 
 ## What needs you
 

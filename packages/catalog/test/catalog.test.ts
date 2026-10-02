@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { BLOCK_KINDS, WIDGET_KINDS } from "@mdui/core";
+import { BLOCK_KINDS, WIDGET_KINDS } from "@vrillabs/mdui-core";
 import { describe, expect, it } from "vitest";
 import {
   BUILTIN_NAMES,
