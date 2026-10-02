@@ -1,12 +1,13 @@
 # Baseline: how models write the DSL today (B-03 hypothesis)
 
-**Status: NOT RUN. No measurement exists yet.** The harness is built and tested (`docs/EVALS.md`), but no language model was reachable from the build environment (the sandbox has no network route to Ollama or any model API), so this file has no numbers on purpose. It is overwritten by a real run.
+Run on 2026-10-02 with openai:gemma-4-26b-a4b-it; 50 tasks x 3 seed(s) x 3 arm(s), temperature 0.
 
-B-03 hypothesises that models make block-nesting errors (unclosed blocks, orphan closers) when writing v1 DSL. To measure it on your machine:
+B-03 hypothesised that models make block-nesting errors when writing v1 without help. "Nesting errors" below is the share of answers with an unclosed block, orphan closer or mismatched typed closer. Rates carry their sample size; intervals are 95% Wilson.
 
-```bash
-node scripts/eval-llm.mjs --provider ollama --model <model> --arms none,skill,prompt --seeds 1,2,3 \
-  --out evals/results/baseline.json --baseline
-```
+| Model | Arm | n | Pass | Pass 95% CI | Valid | Nesting errors | DSL only | Mean prompt tok | Mean output tok | Provider errors |
+|---|---|---|---|---|---|---|---|---|---|---|
+| openai:gemma-4-26b-a4b-it | none | 150 | 26% | 20-34% | 97% | 0% | 99% | 78 | 133 | 0 |
+| openai:gemma-4-26b-a4b-it | skill | 150 | 43% | 35-51% | 55% | 44% | 99% | 2858 | 125 | 0 |
+| openai:gemma-4-26b-a4b-it | prompt | 150 | 38% | 31-46% | 49% | 51% | 100% | 829 | 136 | 0 |
 
-That writes this file with the nesting-error rate per arm, the sample size and a 95% interval. Until then, nothing here should be quoted.
+Raw answers: re-score with `--replay`. Not a benchmark of the models in general: one task set, this project's own scoring.
