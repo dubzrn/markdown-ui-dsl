@@ -5,8 +5,9 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = new URL("..", import.meta.url).pathname;
+const root = fileURLToPath(new URL("..", import.meta.url));
 const pack = mkdtempSync(join(tmpdir(), "mdui-pack-"));
 const dir = mkdtempSync(join(tmpdir(), "mdui-clean-"));
 const problems = [];

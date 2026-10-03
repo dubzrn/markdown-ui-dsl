@@ -36,6 +36,11 @@ describe("extractDsl with reasoning models", () => {
     expect(extractDsl(`${draft}\n${final}`, { pick: "first" })).toContain("# Draft");
     expect(extractDsl(`${draft}\n${final}`)).toContain("# Final");
   });
+  it("prefers an unfinished final fence over a completed draft", () => {
+    const open = "```markdown\n::: CARD :::\n# Final";
+    expect(extractDsl(`${draft}\n${open}`)).toContain("# Final");
+    expect(extractDsl(`${draft}\n${open}`, { pick: "first" })).toContain("# Draft");
+  });
   it("answers without fences or reasoning are returned whole", () => {
     expect(extractDsl("::: CARD :::\n--- END ---")).toBe("::: CARD :::\n--- END ---");
   });

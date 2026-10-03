@@ -3,6 +3,7 @@
 // only picks up files inside the package directory. Run from a package directory; the copies are git-ignored.
 import { copyFileSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = new URL("..", import.meta.url).pathname;
+const root = fileURLToPath(new URL("..", import.meta.url));
 for (const f of ["LICENSE", "NOTICE"]) copyFileSync(join(root, f), join(process.cwd(), f));

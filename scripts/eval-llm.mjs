@@ -147,6 +147,7 @@ if (out) {
         seeds,
         temperature,
         tasks: tasks.map((t) => t.id),
+        ...(catalog ? { catalog } : {}),
         results,
       },
       null,

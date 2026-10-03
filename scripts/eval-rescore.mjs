@@ -23,7 +23,13 @@ const ci = (k, n) => {
 
 const scored = run.results
   .filter((r) => r.error === undefined)
-  .map((r) => ({ ...r, s: scoreAnswer(tasks.get(r.taskId), r.answer, { pick }) }));
+  .map((r) => ({
+    ...r,
+    s: scoreAnswer(tasks.get(r.taskId), r.answer, {
+      pick,
+      ...(run.catalog ? { catalog: run.catalog } : {}),
+    }),
+  }));
 console.log(
   `${file}: ${run.models.join(", ")}; extraction: ${pick} fenced block; ${scored.length} answers\n`,
 );
@@ -46,7 +52,7 @@ table("### As run (every seed counted)", scored);
 // seeds that produced the identical answer to an earlier seed add no information
 const seen = new Set();
 const distinct = scored.filter((r) => {
-  const key = `${r.arm}|${r.taskId}|${r.answer}`;
+  const key = `${r.provider}|${r.arm}|${r.taskId}|${r.answer}`;
   return seen.has(key) ? false : (seen.add(key), true);
 });
 table(`### Distinct answers only (${distinct.length} of ${scored.length})`, distinct);

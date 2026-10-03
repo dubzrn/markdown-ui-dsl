@@ -11,15 +11,14 @@ import type { Task } from "./tasks.js";
 export function extractDsl(answer: string, opts: { pick?: "first" | "last" } = {}): string {
   const t = answer.lastIndexOf("</think>");
   const text = opts.pick === "first" || t < 0 ? answer : answer.slice(t + "</think>".length);
-  const fences = [...text.matchAll(/```[a-zA-Z0-9_-]*\n([\s\S]*?)```/g)].map((m) => m[1] as string);
+  // a fence closed by ``` or, when the model ran out of tokens, by the end of the text
+  const fences = [...text.matchAll(/```[a-zA-Z0-9_-]*\n([\s\S]*?)(?:```|$)/g)].map(
+    (m) => m[1] as string,
+  );
   const looksDsl = (x: string): boolean => /(:::|\|\|\| |=== |\[ |^#{1,6} |^---\n)/m.test(x);
   const hits = fences.filter(looksDsl);
   const hit = opts.pick === "first" ? hits[0] : hits[hits.length - 1];
-  if (hit !== undefined) return hit;
-  // an unterminated fence (the model ran out of tokens)
-  const open = /```[a-zA-Z0-9_-]*\n([\s\S]*)$/.exec(text);
-  if (open !== null && looksDsl(open[1] as string)) return open[1] as string;
-  return text;
+  return hit ?? text;
 }
 
 /** Code or markup in a framework: the answer should be DSL only. */

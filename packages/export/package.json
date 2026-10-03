@@ -13,7 +13,6 @@
   },
   "files": [
     "dist",
-    "schemas",
     "LICENSE",
     "NOTICE"
   ],
