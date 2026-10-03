@@ -4,7 +4,7 @@ Status: Accepted · Date: 2026-10-01 · Implements: T-002 · Refs: SPEC §4
 
 ## Decision
 
-`@mdui/core` uses a **hand-written, line-oriented parser** with a normative EBNF in `@mdui/spec`.
+`@vrillabs/mdui-core` uses a **hand-written, line-oriented parser** with a normative EBNF in `@vrillabs/mdui-spec`.
 A Lark grammar is **generated** from the EBNF and parity-tested against the parser (T-0xx grammar pack);
 the parser remains the reference implementation.
 

@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { parse } from "@mdui/core";
+import { parse } from "@vrillabs/mdui-core";
 import { chromium } from "playwright-core";
 import {
   expectedTree,

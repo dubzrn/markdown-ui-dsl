@@ -31,7 +31,7 @@ jobs:
       - run: pnpm schema:check
       - run: pnpm lint
       - run: pnpm format:check
-      - run: pnpm build # core's typecheck needs @mdui/spec's built types
+      - run: pnpm build # core's typecheck needs @vrillabs/mdui-spec's built types
       - run: pnpm lint:docs:check
       - run: pnpm typecheck
       - run: pnpm test

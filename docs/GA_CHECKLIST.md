@@ -12,8 +12,8 @@ Honest status per checkpoint item, with evidence. **Met** = measured in this rep
 | NOV-04 ≥ 12 rules, recall ≥ 95%, 0 FP, ≥ 4 post-code | Met | 14 rules, 31/31, 0/15 FP (`evals/NOV-04.md`) |
 | ≥ 250 conformance fixtures; third-language runner | Partial | 494 fixtures, Python runner (`docs/CONFORMANCE.md`); the implementation under test is the TS reference, no independent second implementation |
 | NOV-03 benchmark with measured baseline | **Open** | harness built (`docs/EVALS.md`); **no model run**, so no constrained-vs-unconstrained result |
-| Eval harness on ≥ 3 agents; v1 nesting-error baseline (B-03) | **Open** | needs model access (`evals/BASELINE.md` is a NOT RUN stub) |
-| Skill works with no tooling (eval-checked) | **Open** | needs a model run |
+| Eval harness on ≥ 3 agents; v1 nesting-error baseline (B-03) | Partial | **two** models measured (`gemma-4-26b-a4b-it`, `ornith-1.5:9b`; `docs/EVALS.md`); needs a third. B-03 is **not testable unaided**: unaided answers contain no blocks at all. Given the skill or prompt, 25-79% of generate answers have unbalanced blocks |
+| Skill works with no tooling (eval-checked) | **Not met (measured, two models)** | with the skill, generate tasks pass 22% (gemma) and 31% (ornith) and only 34-38% parse cleanly; the skill raises content pass rate and does not make these models write balanced documents. A language/skill simplification (closers) and the NOV-03 grammar are the candidate fixes, both unmeasured |
 | MCP verified with ≥ 2 clients | Partial | official SDK clients in JS and Python; Claude Desktop, Cursor, VS Code **not** run by hand |
 | A2UI v1.0 / json-render exports validate against pinned schemas | Met | schemas vendored at `102ec1a04975`; `validateSpec` from `@json-render/core@0.21.0`; not rendered by upstream renderers |
 | Docs site + playground "live" | Partial | built, link-checked, axe-clean, e2e-tested; **not deployed** (publishing needs your go-ahead) |
@@ -23,8 +23,9 @@ Honest status per checkpoint item, with evidence. **Met** = measured in this rep
 | `mdui` fence via remark and markdown-it | Met | tested with the real libraries |
 | Generated SVG verified in a GitHub README | **Open** | no sandbox repository / cannot view github.com rendering |
 | Token benchmark, all scenarios, raw counts | Met | `evals/TOKENS.md`; A2UI Express not measured; mdui files authored by this project |
-| Clean-room install of CLI, MCP, skill | **Open** | nothing is published |
-| Migration guide; licence decision (A3) | **Open** | `mdui migrate` exists; no guide page and no recorded licence decision |
+| Clean-room install of CLI, MCP, skill | Partial | `scripts/clean-room-install.mjs` packs every package, installs the tarballs into an empty directory with npm and runs `mdui` and `mdui-mcp` (passes; also a gate in the publish workflow). Install **from the registry** is untested until the first publish; the skill is not part of an npm package |
+| Migration guide; licence decision (A3) | Met | `docs/MIGRATION.md`; `docs/adr/ADR-007-licence-and-package-names.md` (VRIL LABS Open Source License v1.0, upstream MIT notice kept in `NOTICE`) |
+| Publish workflow | Partial | `.github/workflows/publish.yml` and `docs/RELEASING.md`; **never run** (needs the owner's token and a GitHub run). Run it as a dry run first |
 | Full traceability pass | Met | 48 features · 55 requirements · 84 tasks · 0 problems |
 | Known limitations documented | Partial | per document (`docs/*.md` "Limits"/"Not verified" sections); no single page |
 
@@ -36,8 +37,8 @@ Honest status per checkpoint item, with evidence. **Met** = measured in this rep
 | Preview update ≤ 500 ms | Met | median 58 ms, max 64 ms over 10 edits |
 | Preview chrome passes axe | Met | e2e, light and dark |
 | WCAG criterion mapping | Partial | number, title and level checked against the W3C source commit `71c891a`; normative wording not compared |
-| RFC-0001 §7 maintainer read | **Open** | needs a human |
+| RFC-0001 §7 (readability review and simplifications) maintainer read | Met | approved by the repository owner, 2026-10-02 (reported in the working session) |
 
 ## What needs you
 
-Run `scripts/eval-llm.mjs` against a model (T-061/T-063), approve publishing and the licence decision (T-098), sign off RFC-0001 §7, try the MCP server in Claude Desktop / Cursor / VS Code, and view a generated SVG in a GitHub README. Re-verifying the research sources needs network access to the sources.
+Run `scripts/eval-llm.mjs` against a model (T-061/T-063), approve publishing and the licence decision (T-098), try the MCP server in Claude Desktop / Cursor / VS Code, and view a generated SVG in a GitHub README. Re-verifying the research sources needs network access to the sources.

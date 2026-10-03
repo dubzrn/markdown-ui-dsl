@@ -1,4 +1,4 @@
-import type { Diagnostic } from "@mdui/core";
+import type { Diagnostic } from "@vrillabs/mdui-core";
 
 export interface FixResult {
   text: string;

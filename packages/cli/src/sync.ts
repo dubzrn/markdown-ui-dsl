@@ -1,5 +1,5 @@
 import { posix } from "node:path";
-import { loadMap } from "@mdui/catalog";
+import { loadMap } from "@vrillabs/mdui-catalog";
 import {
   analyse,
   computeApply,
@@ -12,7 +12,7 @@ import {
   type Fs,
   type Resolution,
   type Role,
-} from "@mdui/sync";
+} from "@vrillabs/mdui-sync";
 import { UsageError, type Args } from "./args.js";
 import { EXIT } from "./main.js";
 import { expand } from "./glob.js";

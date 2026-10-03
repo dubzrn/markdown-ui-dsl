@@ -18,8 +18,8 @@ Node ≥ 22.12 to run tests (Vitest 5), Node ≥ 20.19 to consume published pack
 3. Run `pnpm check` and the script gates above; attach the evidence to the PR.
 4. Add a changeset (`pnpm changeset`) for any user-visible change.
 
-Boundaries (always / ask first / never) are in [`docs/SPEC.md` §7](docs/SPEC.md) and `AGENTS.md`. In short: `@mdui/core` and
-`@mdui/spec` stay zero-dependency and free of Node APIs (ADR-003, lint-enforced); `reference/` is read-only.
+Boundaries (always / ask first / never) are in [`docs/SPEC.md` §7](docs/SPEC.md) and `AGENTS.md`. In short: `@vrillabs/mdui-core` and
+`@vrillabs/mdui-spec` stay zero-dependency and free of Node APIs (ADR-003, lint-enforced); `reference/` is read-only.
 
 ## Changing the language: RFCs
 

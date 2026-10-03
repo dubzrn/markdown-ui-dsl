@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { parse } from "@mdui/core";
+import { parse } from "@vrillabs/mdui-core";
 import { buildGrammar, generator, recognizer, toGbnf, toLark, type Grammar } from "../src/index.js";
 
 const conf = new URL("../../spec/conformance/", import.meta.url);

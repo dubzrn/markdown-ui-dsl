@@ -1,5 +1,5 @@
 /** Component catalog (T-050): which components exist, their props and how far they are trusted. */
-import { WIDGET_KINDS, dict } from "@mdui/core";
+import { WIDGET_KINDS, dict } from "@vrillabs/mdui-core";
 
 export type Trust = "core" | "project" | "third-party";
 export type PropType = "string" | "number" | "boolean" | "enum" | "path";

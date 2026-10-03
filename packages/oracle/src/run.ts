@@ -1,5 +1,5 @@
 /** Playwright driver (T-077a): optional peer dependency, loaded lazily. */
-import { parse } from "@mdui/core";
+import { parse } from "@vrillabs/mdui-core";
 import { expectedTree, type ExpectOptions } from "./expected.js";
 import { match, type MatchOptions, type Report } from "./match.js";
 import { parseAriaSnapshot, type Actual } from "./snapshot.js";

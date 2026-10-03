@@ -3,7 +3,7 @@
 `mdui export <spec> --to a2ui|json-render [--state s] [--out file] [--strict]` writes JSON to stdout (or `--out`) and
 prints one line per construct that did not map one-to-one to stderr (`file:line kind construct: message`).
 `--strict` turns any warning into exit 1. Programmatic use: `exportA2ui(doc, opts)` and `exportJsonRender(doc, opts)`
-from `@mdui/export` (depends only on `@mdui/core`; the schema validators are dev dependencies).
+from `@vrillabs/mdui-export` (depends only on `@vrillabs/mdui-core`; the schema validators are dev dependencies).
 
 Warning kinds: **degraded** (nearest equivalent used), **dropped** (nothing exported), **synthesized** (the exporter
 had to invent something the DSL does not say, such as an empty image URL). Comments and `> hint:` lines are author

@@ -1,4 +1,4 @@
-import { walkBlocks, type Diagnostic, type TextEdit } from "@mdui/core";
+import { walkBlocks, type Diagnostic, type TextEdit } from "@vrillabs/mdui-core";
 import type { Finding, Rule, RuleContext } from "../rule.js";
 import { isContainer } from "../util.js";
 

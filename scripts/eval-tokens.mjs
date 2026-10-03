@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // T-095 token benchmark. Counts tokens of the same UI scenarios in mdui, A2UI v1.0 JSON, json-render JSON (both produced by
-// @mdui/export), and the upstream OpenUI Lang / YAML / Vercel JSON-Render / Thesys C1 samples. Writes evals/TOKENS.md and
+// @vrillabs/mdui-export), and the upstream OpenUI Lang / YAML / Vercel JSON-Render / Thesys C1 samples. Writes evals/TOKENS.md and
 // evals/tokens/results.json.
 //   node scripts/eval-tokens.mjs [--check]     (--check re-runs and fails if the committed results differ: determinism)
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";

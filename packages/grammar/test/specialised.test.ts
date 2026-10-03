@@ -1,8 +1,8 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { loadCatalog } from "@mdui/catalog";
-import { parse } from "@mdui/core";
-import { lint } from "@mdui/lint";
+import { loadCatalog } from "@vrillabs/mdui-catalog";
+import { parse } from "@vrillabs/mdui-core";
+import { lint } from "@vrillabs/mdui-lint";
 import { buildGrammar, generator, recognizer, toJsonSchema } from "../src/index.js";
 
 const shop = loadCatalog(

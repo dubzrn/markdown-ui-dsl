@@ -6,7 +6,7 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 import { describe, expect, it } from "vitest";
-import { parse } from "@mdui/core";
+import { parse } from "@vrillabs/mdui-core";
 import {
   embedMarkdown,
   markdownItMdui,

@@ -1,4 +1,4 @@
-import { ALLOWED_URL_SCHEMES, schemeOf } from "@mdui/core";
+import { ALLOWED_URL_SCHEMES, schemeOf } from "@vrillabs/mdui-core";
 
 const MAP: Record<string, string> = {
   "&": "&amp;",

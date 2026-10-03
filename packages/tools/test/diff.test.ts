@@ -1,4 +1,4 @@
-import { parse } from "@mdui/core";
+import { parse } from "@vrillabs/mdui-core";
 import { describe, expect, it } from "vitest";
 import { diffDocuments, formatDiff } from "../src/index.js";
 

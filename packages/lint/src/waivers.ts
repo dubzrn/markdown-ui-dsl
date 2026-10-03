@@ -1,5 +1,5 @@
 /** Waivers (NOV-04, T-082): `> waive: <constraint> reason="…"` suppresses that constraint in the enclosing region, on the record. */
-import { walkBlocks, type Diagnostic, type Document, type Span } from "@mdui/core";
+import { walkBlocks, type Diagnostic, type Document, type Span } from "@vrillabs/mdui-core";
 import { CONSTRAINT_NAMES } from "./rules/constraints.js";
 import { lastLine } from "./util.js";
 

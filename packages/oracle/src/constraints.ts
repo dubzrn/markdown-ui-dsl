@@ -2,7 +2,7 @@
  * Post-code constraint verification (T-080): the measurable subset of the UX constraints, checked against the live page.
  * Violations point at the spec line of the node they concern.
  */
-import { parse, type Document } from "@mdui/core";
+import { parse, type Document } from "@vrillabs/mdui-core";
 import { expectedTree, type Expected } from "./expected.js";
 import type { Actual } from "./snapshot.js";
 

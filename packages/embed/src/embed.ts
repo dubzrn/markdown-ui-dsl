@@ -1,6 +1,6 @@
 import { altOf, parseFenceInfo, type RenderFenceOptions } from "./fence.js";
 import { renderSvg } from "./svg.js";
-import { parse } from "@mdui/core";
+import { parse } from "@vrillabs/mdui-core";
 
 export interface EmbedOptions extends RenderFenceOptions {
   /** Directory (relative to the Markdown file) the SVGs are written to and linked from. Default `mdui`. */

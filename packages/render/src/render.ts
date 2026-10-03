@@ -5,8 +5,8 @@ import type {
   Document,
   InlineNode,
   ListItemNode,
-} from "@mdui/core";
-import { splitMenu } from "@mdui/core";
+} from "@vrillabs/mdui-core";
+import { splitMenu } from "@vrillabs/mdui-core";
 import { esc, safeUrl } from "./escape.js";
 import { stylesheet, type StyleName } from "./styles.js";
 

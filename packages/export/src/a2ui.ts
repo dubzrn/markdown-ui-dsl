@@ -4,7 +4,7 @@
  * document binds data. Constructs the basic catalog cannot express are degraded to the nearest component and reported
  * as warnings (docs/EXPORT.md lists each one); comments and hints are author notes, not UI, and are not exported.
  */
-import type { BlockNode, Document, InlineNode } from "@mdui/core";
+import type { BlockNode, Document, InlineNode } from "@vrillabs/mdui-core";
 import { classifyTarget } from "./targets.js";
 import type { ExportWarning, WarningKind } from "./warnings.js";
 

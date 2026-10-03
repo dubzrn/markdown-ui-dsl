@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { loadCatalog } from "@mdui/catalog";
+import { loadCatalog } from "@vrillabs/mdui-catalog";
 import {
   ALL_TASKS,
   GENERATION,
@@ -23,6 +23,28 @@ import {
 import { REFERENCE } from "./reference.js";
 
 const task = (id: string) => ALL_TASKS.find((t) => t.id === id) as (typeof ALL_TASKS)[number];
+
+describe("extractDsl with reasoning models", () => {
+  const draft = "```markdown\n::: CARD :::\n# Draft\n```";
+  const final = "```markdown\n::: CARD :::\n# Final\n--- END ---\n```";
+  it("drops everything before the last </think> and takes the last DSL block", () => {
+    const answer = `thinking... ${draft}\n</think>\n${draft}\nWait, fixing it.\n${final}`;
+    expect(extractDsl(answer)).toContain("# Final");
+    expect(extractDsl(answer)).not.toContain("# Draft");
+  });
+  it("pick: first reproduces the baseline scorer", () => {
+    expect(extractDsl(`${draft}\n${final}`, { pick: "first" })).toContain("# Draft");
+    expect(extractDsl(`${draft}\n${final}`)).toContain("# Final");
+  });
+  it("prefers an unfinished final fence over a completed draft", () => {
+    const open = "```markdown\n::: CARD :::\n# Final";
+    expect(extractDsl(`${draft}\n${open}`)).toContain("# Final");
+    expect(extractDsl(`${draft}\n${open}`, { pick: "first" })).toContain("# Draft");
+  });
+  it("answers without fences or reasoning are returned whole", () => {
+    expect(extractDsl("::: CARD :::\n--- END ---")).toBe("::: CARD :::\n--- END ---");
+  });
+});
 
 describe("task set (T-063)", () => {
   it("has at least 30 generation prompts, sync scenarios and injection prompts, with unique ids", () => {
@@ -223,6 +245,13 @@ describe("provider adapters (no network: injected fetch)", () => {
       /cannot enforce a GBNF/,
     );
     expect(p.supportsGrammar).toBe(false);
+  });
+  it("ollama: sends num_ctx only when asked (the default window can cut a long system prompt)", async () => {
+    const seen: { url?: string; body?: Record<string, unknown> } = {};
+    await ollama("m", { fetch: fake({ response: "x" }, seen), numCtx: 8192 }).generate(req);
+    expect(seen.body?.["options"]).toMatchObject({ num_ctx: 8192 });
+    await ollama("m", { fetch: fake({ response: "x" }, seen) }).generate(req);
+    expect(seen.body?.["options"]).not.toHaveProperty("num_ctx");
   });
   it("llama.cpp: /completion with the grammar", async () => {
     const seen: { url?: string; body?: Record<string, unknown> } = {};

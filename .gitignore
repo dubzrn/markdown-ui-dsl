@@ -430,3 +430,9 @@ dist/
 *.whl
 evals/results/
 site-dist/
+packages/*/LICENSE
+packages/*/NOTICE
+
+# local eval runner scripts — these hold provider API keys, never commit them
+walk.ps1
+walk.sh

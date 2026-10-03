@@ -20,7 +20,7 @@ export type Severity = "error" | "warn" | "info";
 
 export interface Diagnostic {
   code: string;
-  /** Lint rule that produced this finding (set by @mdui/lint). */
+  /** Lint rule that produced this finding (set by @vrillabs/mdui-lint). */
   rule?: string;
   severity: Severity;
   message: string;

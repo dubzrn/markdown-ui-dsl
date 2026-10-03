@@ -1,8 +1,8 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { loadCatalog, loadMap } from "@mdui/catalog";
-import { lint } from "@mdui/lint";
-import { loadDesignSystem } from "@mdui/tokens";
+import { loadCatalog, loadMap } from "@vrillabs/mdui-catalog";
+import { lint } from "@vrillabs/mdui-lint";
+import { loadDesignSystem } from "@vrillabs/mdui-tokens";
 import { AGENTS, composePrompt } from "../src/index.js";
 
 const ex = (f: string) => readFileSync(new URL(`../../../examples/${f}`, import.meta.url), "utf8");

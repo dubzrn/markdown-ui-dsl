@@ -1,8 +1,8 @@
 {
-  "name": "@mdui/grammar",
-  "version": "0.0.0",
+  "name": "@vrillabs/mdui-grammar",
+  "version": "0.1.0",
   "description": "Generation grammars (Lark, GBNF, JSON Schema) for Markdown UI DSL, specialised by catalog, tokens and data model.",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "type": "module",
   "sideEffects": false,
   "exports": {
@@ -12,15 +12,34 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "dependencies": {
-    "@mdui/catalog": "workspace:*",
-    "@mdui/core": "workspace:*",
-    "@mdui/lint": "workspace:*"
+    "@vrillabs/mdui-catalog": "workspace:*",
+    "@vrillabs/mdui-core": "workspace:*",
+    "@vrillabs/mdui-lint": "workspace:*"
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean",
-    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json"
+    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json",
+    "prepack": "node ../../scripts/copy-license.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dubzrn/markdown-ui-dsl.git",
+    "directory": "packages/grammar"
+  },
+  "homepage": "https://github.com/dubzrn/markdown-ui-dsl#readme",
+  "bugs": {
+    "url": "https://github.com/dubzrn/markdown-ui-dsl/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=20.19"
   }
 }

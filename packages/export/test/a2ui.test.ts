@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { Ajv2020 } from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 import { describe, expect, it } from "vitest";
-import { parse } from "@mdui/core";
+import { parse } from "@vrillabs/mdui-core";
 import { exportA2ui, exportJsonRender, toPointer } from "../src/index.js";
 
 const schemas = new URL("../schemas/a2ui-1.0/", import.meta.url);

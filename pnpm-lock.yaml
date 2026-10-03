@@ -59,7 +59,7 @@ importers:
 
   packages/catalog:
     dependencies:
-      '@mdui/core':
+      '@vrillabs/mdui-core':
         specifier: workspace:*
         version: link:../core
       yaml:
@@ -68,40 +68,40 @@ importers:
 
   packages/cli:
     dependencies:
-      '@mdui/catalog':
+      '@vrillabs/mdui-catalog':
         specifier: workspace:*
         version: link:../catalog
-      '@mdui/core':
+      '@vrillabs/mdui-core':
         specifier: workspace:*
         version: link:../core
-      '@mdui/embed':
+      '@vrillabs/mdui-embed':
         specifier: workspace:*
         version: link:../embed
-      '@mdui/export':
+      '@vrillabs/mdui-export':
         specifier: workspace:*
         version: link:../export
-      '@mdui/grammar':
+      '@vrillabs/mdui-grammar':
         specifier: workspace:*
         version: link:../grammar
-      '@mdui/lint':
+      '@vrillabs/mdui-lint':
         specifier: workspace:*
         version: link:../lint
-      '@mdui/oracle':
+      '@vrillabs/mdui-oracle':
         specifier: workspace:*
         version: link:../oracle
-      '@mdui/render':
+      '@vrillabs/mdui-render':
         specifier: workspace:*
         version: link:../render
-      '@mdui/spec':
+      '@vrillabs/mdui-spec':
         specifier: workspace:*
         version: link:../spec
-      '@mdui/sync':
+      '@vrillabs/mdui-sync':
         specifier: workspace:*
         version: link:../sync
-      '@mdui/tokens':
+      '@vrillabs/mdui-tokens':
         specifier: workspace:*
         version: link:../tokens
-      '@mdui/tools':
+      '@vrillabs/mdui-tools':
         specifier: workspace:*
         version: link:../tools
       playwright-core:
@@ -110,16 +110,16 @@ importers:
 
   packages/core:
     dependencies:
-      '@mdui/spec':
+      '@vrillabs/mdui-spec':
         specifier: workspace:*
         version: link:../spec
 
   packages/embed:
     dependencies:
-      '@mdui/core':
+      '@vrillabs/mdui-core':
         specifier: workspace:*
         version: link:../core
-      '@mdui/render':
+      '@vrillabs/mdui-render':
         specifier: workspace:*
         version: link:../render
     devDependencies:
@@ -147,25 +147,25 @@ importers:
 
   packages/evals:
     dependencies:
-      '@mdui/catalog':
+      '@vrillabs/mdui-catalog':
         specifier: workspace:*
         version: link:../catalog
-      '@mdui/core':
+      '@vrillabs/mdui-core':
         specifier: workspace:*
         version: link:../core
-      '@mdui/grammar':
+      '@vrillabs/mdui-grammar':
         specifier: workspace:*
         version: link:../grammar
-      '@mdui/lint':
+      '@vrillabs/mdui-lint':
         specifier: workspace:*
         version: link:../lint
-      '@mdui/tools':
+      '@vrillabs/mdui-tools':
         specifier: workspace:*
         version: link:../tools
 
   packages/export:
     dependencies:
-      '@mdui/core':
+      '@vrillabs/mdui-core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -184,61 +184,61 @@ importers:
 
   packages/grammar:
     dependencies:
-      '@mdui/catalog':
+      '@vrillabs/mdui-catalog':
         specifier: workspace:*
         version: link:../catalog
-      '@mdui/core':
+      '@vrillabs/mdui-core':
         specifier: workspace:*
         version: link:../core
-      '@mdui/lint':
+      '@vrillabs/mdui-lint':
         specifier: workspace:*
         version: link:../lint
 
   packages/lint:
     dependencies:
-      '@mdui/catalog':
+      '@vrillabs/mdui-catalog':
         specifier: workspace:*
         version: link:../catalog
-      '@mdui/core':
+      '@vrillabs/mdui-core':
         specifier: workspace:*
         version: link:../core
-      '@mdui/tokens':
+      '@vrillabs/mdui-tokens':
         specifier: workspace:*
         version: link:../tokens
 
   packages/mcp:
     dependencies:
-      '@mdui/catalog':
+      '@vrillabs/mdui-catalog':
         specifier: workspace:*
         version: link:../catalog
-      '@mdui/core':
+      '@vrillabs/mdui-core':
         specifier: workspace:*
         version: link:../core
-      '@mdui/grammar':
+      '@vrillabs/mdui-grammar':
         specifier: workspace:*
         version: link:../grammar
-      '@mdui/lint':
+      '@vrillabs/mdui-lint':
         specifier: workspace:*
         version: link:../lint
-      '@mdui/render':
+      '@vrillabs/mdui-render':
         specifier: workspace:*
         version: link:../render
-      '@mdui/spec':
+      '@vrillabs/mdui-spec':
         specifier: workspace:*
         version: link:../spec
-      '@mdui/sync':
+      '@vrillabs/mdui-sync':
         specifier: workspace:*
         version: link:../sync
-      '@mdui/tokens':
+      '@vrillabs/mdui-tokens':
         specifier: workspace:*
         version: link:../tokens
-      '@mdui/tools':
+      '@vrillabs/mdui-tools':
         specifier: workspace:*
         version: link:../tools
 
   packages/oracle:
     dependencies:
-      '@mdui/core':
+      '@vrillabs/mdui-core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -248,7 +248,7 @@ importers:
 
   packages/render:
     dependencies:
-      '@mdui/core':
+      '@vrillabs/mdui-core':
         specifier: workspace:*
         version: link:../core
 
@@ -256,7 +256,7 @@ importers:
 
   packages/sync:
     dependencies:
-      '@mdui/core':
+      '@vrillabs/mdui-core':
         specifier: workspace:*
         version: link:../core
 
@@ -268,16 +268,16 @@ importers:
 
   packages/tools:
     dependencies:
-      '@mdui/catalog':
+      '@vrillabs/mdui-catalog':
         specifier: workspace:*
         version: link:../catalog
-      '@mdui/core':
+      '@vrillabs/mdui-core':
         specifier: workspace:*
         version: link:../core
-      '@mdui/lint':
+      '@vrillabs/mdui-lint':
         specifier: workspace:*
         version: link:../lint
-      '@mdui/tokens':
+      '@vrillabs/mdui-tokens':
         specifier: workspace:*
         version: link:../tokens
 

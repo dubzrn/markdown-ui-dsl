@@ -1,4 +1,4 @@
-import { SUPPORTED_DSL_VERSIONS } from "@mdui/spec";
+import { SUPPORTED_DSL_VERSIONS } from "@vrillabs/mdui-spec";
 
 export { parse, BLOCK_KINDS } from "./parse.js";
 export { parseInline, printInline, unescape, ESCAPABLE } from "./inline.js";

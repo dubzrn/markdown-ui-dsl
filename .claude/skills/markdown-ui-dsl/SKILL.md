@@ -1,7 +1,7 @@
 ---
 name: markdown-ui-dsl
 description: Create and read low-fidelity, text-based UI wireframes in the Markdown-UI DSL (.ui.md) - layouts, components, tabs, forms, tables - and translate them to framework code. Use when asked for a wireframe or UI layout spec, or when given a .ui.md file.
-license: MIT
+license: VRIL LABS Open Source License v1.0 (see LICENSE)
 compatibility: Works with no tooling. Optional - the mdui CLI (validate, lint, fmt, render) when installed.
 metadata:
   author: MegaByteMark

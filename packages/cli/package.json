@@ -1,8 +1,8 @@
 {
-  "name": "@mdui/cli",
-  "version": "0.0.0",
+  "name": "@vrillabs/mdui-cli",
+  "version": "0.1.0",
   "description": "mdui command line: validate, lint, ast (and more) for Markdown UI DSL files.",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "type": "module",
   "bin": {
     "mdui": "./dist/bin.js"
@@ -14,25 +14,28 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "dependencies": {
-    "@mdui/catalog": "workspace:*",
-    "@mdui/core": "workspace:*",
-    "@mdui/grammar": "workspace:*",
-    "@mdui/lint": "workspace:*",
-    "@mdui/oracle": "workspace:*",
-    "@mdui/render": "workspace:*",
-    "@mdui/spec": "workspace:*",
-    "@mdui/sync": "workspace:*",
-    "@mdui/tokens": "workspace:*",
-    "@mdui/tools": "workspace:*",
-    "@mdui/export": "workspace:*",
-    "@mdui/embed": "workspace:*"
+    "@vrillabs/mdui-catalog": "workspace:*",
+    "@vrillabs/mdui-core": "workspace:*",
+    "@vrillabs/mdui-grammar": "workspace:*",
+    "@vrillabs/mdui-lint": "workspace:*",
+    "@vrillabs/mdui-oracle": "workspace:*",
+    "@vrillabs/mdui-render": "workspace:*",
+    "@vrillabs/mdui-spec": "workspace:*",
+    "@vrillabs/mdui-sync": "workspace:*",
+    "@vrillabs/mdui-tokens": "workspace:*",
+    "@vrillabs/mdui-tools": "workspace:*",
+    "@vrillabs/mdui-export": "workspace:*",
+    "@vrillabs/mdui-embed": "workspace:*"
   },
   "scripts": {
     "build": "tsup src/index.ts src/bin.ts --format esm --dts --clean",
-    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json"
+    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json",
+    "prepack": "node ../../scripts/copy-license.mjs"
   },
   "peerDependencies": {
     "playwright-core": ">=1.49"
@@ -41,5 +44,21 @@
     "playwright-core": {
       "optional": true
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dubzrn/markdown-ui-dsl.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/dubzrn/markdown-ui-dsl#readme",
+  "bugs": {
+    "url": "https://github.com/dubzrn/markdown-ui-dsl/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=20.19"
   }
 }

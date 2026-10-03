@@ -17,7 +17,7 @@
 | # | Assumption | If wrong |
 |---|---|---|
 | A1 | This repository may gain TypeScript packages under `packages/` while `skills/` and `examples/` stay where they are and remain usable **without** any tooling. | Move packages to a sibling repo; keep `skills/` + `examples/` here. PLAN unaffected beyond T-002. |
-| A2 | CLI binary `mdui`, npm scope `@mdui/*`. **Availability not verified.** | Rename in T-002; no design impact. |
+| A2 | CLI binary `mdui`, npm scope `@vrillabs/mdui-*`. **Availability not verified.** | Rename in T-002; no design impact. |
 | A3 | License stays MIT; contributions under the same. | Decide before first publish (T-098). |
 | A4 | Capacity: one primary maintainer working with coding agents. PLAN §9 sizes the work in uncalibrated relative units (≈ 214 dev-days to GA, ≈ 43 solo weeks); it is an estimate, not a commitment, and is re-baselined after Phase 1 velocity is measured. | Re-baseline phases; scope is locked, so the *schedule* flexes, not the register. |
 | A5 | Google `DESIGN.md` is `alpha` [S54][S143]. A2UI's protocol document declares **v1.0 (released 2026-06-08)** while its spec README still calls v1.0 "a candidate for becoming stable" [S112][S113]. Both are **pinned to a commit** and tracked; interop code is isolated behind adapters with contract tests. | Adapter shims absorb changes. |
@@ -168,7 +168,7 @@ Transition grammar: `- <screen-id> #<action> -> <screen-id> [when: <text>]?` (on
 
 **Escaping (LNG-09).** `` \[ \] \( \) \{ \} \| \> \# \` `` escape the next character; fenced code and inline code are literal. Precedence for ambiguous brackets: (1) `[ ](…)` link/button, (2) `[ KIND: …]` widget, (3) `[ ]`/`[x]` checkbox at line start, (4) text.
 
-**Embedding (TLS-13).** A fenced block with info-string `mdui` embeds a spec in any Markdown file: ```` ```mdui style=sketch state=loading ```` … ```` ``` ````. Fence options: `style`, `state`, `viewport`, `theme`, `scale`. The same text is valid as a standalone `.ui.md` (frontmatter optional inside a fence). Rendering is provided by `@mdui/embed` adapters (remark, markdown-it, rehype, Obsidian) and by generated SVG artefacts; native rendering by GitHub is **not assumed** (Mermaid is rendered natively [S140]; a custom fence is not) and is verified at T-094.
+**Embedding (TLS-13).** A fenced block with info-string `mdui` embeds a spec in any Markdown file: ```` ```mdui style=sketch state=loading ```` … ```` ``` ````. Fence options: `style`, `state`, `viewport`, `theme`, `scale`. The same text is valid as a standalone `.ui.md` (frontmatter optional inside a fence). Rendering is provided by `@vrillabs/mdui-embed` adapters (remark, markdown-it, rehype, Obsidian) and by generated SVG artefacts; native rendering by GitHub is **not assumed** (Mermaid is rendered natively [S140]; a custom fence is not) and is verified at T-094.
 
 **Accessibility attributes (QLT-03).** `label`, `alt`, `role`, `live` (`polite|assertive`), heading levels from Markdown `#`; `HEADER`→`banner`, `FOOTER`→`contentinfo`, `MODAL`→`dialog` landmarks implied.
 
@@ -182,7 +182,7 @@ interface Node { kind: NodeKind; id?: string; anchor?: string; attrs: Record<str
                  span: { start: Pos; end: Pos }; children?: Node[]; /* kind-specific fields */ }
 interface Diagnostic { code: `MDUI${number}`; severity: "error"|"warn"|"info"; message: string; span: Span; fix?: TextEdit[]; rule?: string; }
 ```
-`NodeKind` includes every container, widget, text, list, table, directive, include, state, region, each, if. The JSON Schema is generated from these types, versioned (`$id` with `dsl` version), and shipped in `@mdui/spec`. **Invariant:** `parse(format(x))` has an AST equal to `parse(x)` modulo spans.
+`NodeKind` includes every container, widget, text, list, table, directive, include, state, region, each, if. The JSON Schema is generated from these types, versioned (`$id` with `dsl` version), and shipped in `@vrillabs/mdui-spec`. **Invariant:** `parse(format(x))` has an AST equal to `parse(x)` modulo spans.
 
 ### 2.4 Diagnostics
 Code ranges: `1xxx` syntax · `2xxx` semantic/resolution · `3xxx` accessibility · `4xxx` tokens/design system · `5xxx` constraints/flows · `6xxx` catalog/component-map · `7xxx` safety. Every diagnostic has a stable code, a one-line message, a span, and (where mechanical) a fix.
@@ -222,19 +222,19 @@ markdown-ui-dsl/
 ├── examples/                      # existing 7 + new; every file must pass `mdui lint` in CI (QLT-04)
 │   └── design-systems/            # + react-shadcn (DESIGN.md), swiftui, compose, vue, angular-material, lit (DSY-05)
 ├── packages/
-│   ├── spec/        @mdui/spec    # EBNF/PEG grammar, JSON Schemas, conformance fixtures (QLT-01)
-│   ├── core/        @mdui/core    # parser, AST, diagnostics, resolvers (include/data), streaming (TLS-01/07, LNG-*)
-│   ├── lint/        @mdui/lint    # rule engine + rules + constraints evaluator (TLS-03, QLT-03, NOV-04)
-│   ├── tools/       @mdui/tools   # fmt, diff, migrate, stats (TLS-04/05/12, LNG-10)
-│   ├── tokens/      @mdui/tokens  # DESIGN.md/DTCG loaders, catalog, component map, exporters (DSY-*)
-│   ├── render/      @mdui/render  # HTML renderer + dev server (TLS-06)
-│   ├── export/      @mdui/export  # A2UI, json-render, (2.1) Adaptive Cards/Block Kit/Open-JSON-UI (AGT-05)
-│   ├── grammar/     @mdui/grammar # Lark/GBNF/JSON-schema emitters (NOV-03)
-│   ├── sync/        @mdui/sync    # anchors, .ui.lock, 3-way classifier, code adapters (NOV-01)
-│   ├── oracle/      @mdui/oracle  # AST→ARIA compiler, own matcher + Playwright runner, fidelity (NOV-02)
-│   ├── embed/       @mdui/embed   # ```mdui fence, remark/markdown-it/rehype/Obsidian adapters, SVG (TLS-13)
-│   ├── mcp/         @mdui/mcp     # MCP server (TLS-08)
-│   ├── cli/         @mdui/cli     # `mdui` binary
+│   ├── spec/        @vrillabs/mdui-spec    # EBNF/PEG grammar, JSON Schemas, conformance fixtures (QLT-01)
+│   ├── core/        @vrillabs/mdui-core    # parser, AST, diagnostics, resolvers (include/data), streaming (TLS-01/07, LNG-*)
+│   ├── lint/        @vrillabs/mdui-lint    # rule engine + rules + constraints evaluator (TLS-03, QLT-03, NOV-04)
+│   ├── tools/       @vrillabs/mdui-tools   # fmt, diff, migrate, stats (TLS-04/05/12, LNG-10)
+│   ├── tokens/      @vrillabs/mdui-tokens  # DESIGN.md/DTCG loaders, catalog, component map, exporters (DSY-*)
+│   ├── render/      @vrillabs/mdui-render  # HTML renderer + dev server (TLS-06)
+│   ├── export/      @vrillabs/mdui-export  # A2UI, json-render, (2.1) Adaptive Cards/Block Kit/Open-JSON-UI (AGT-05)
+│   ├── grammar/     @vrillabs/mdui-grammar # Lark/GBNF/JSON-schema emitters (NOV-03)
+│   ├── sync/        @vrillabs/mdui-sync    # anchors, .ui.lock, 3-way classifier, code adapters (NOV-01)
+│   ├── oracle/      @vrillabs/mdui-oracle  # AST→ARIA compiler, own matcher + Playwright runner, fidelity (NOV-02)
+│   ├── embed/       @vrillabs/mdui-embed   # ```mdui fence, remark/markdown-it/rehype/Obsidian adapters, SVG (TLS-13)
+│   ├── mcp/         @vrillabs/mdui-mcp     # MCP server (TLS-08)
+│   ├── cli/         @vrillabs/mdui-cli     # `mdui` binary
 │   └── vscode/                    # extension + LSP (TLS-09, 2.1)
 ├── evals/                         # promptfoo configs, datasets, rubrics (QLT-02, T-061, T-063)
 ├── docs/                          # this program's docs, rfcs/, site/ (QLT-05)
@@ -252,7 +252,7 @@ markdown-ui-dsl/
 
 **Dependency rule (enforced by lint):** `core` has **zero runtime dependencies** and no Node-only APIs (must run in a browser for the docs playground). `spec` has none. `oracle`, `render` (dev server) and `cli` may use Node/Playwright. No package imports `cli`.
 
-**Stack decisions** (ADRs written in T-002): TypeScript (strict), Node ≥ 20 LTS, pnpm workspaces, Vitest, fast-check (properties), ESLint + Prettier, Changesets, Zod → JSON Schema (matches ecosystem practice [S06][S38]), Playwright as an optional peer dependency of `@mdui/oracle`. Versions are pinned at T-002 after checking current releases. **Eval harness is tool-agnostic** (promptfoo is one runner; it is now OpenAI-owned per its repo [S136]); no dependency on archived packages (Storybook MCP moved [S130]; AI SDK RSC paused [S50]).
+**Stack decisions** (ADRs written in T-002): TypeScript (strict), Node ≥ 20 LTS, pnpm workspaces, Vitest, fast-check (properties), ESLint + Prettier, Changesets, Zod → JSON Schema (matches ecosystem practice [S06][S38]), Playwright as an optional peer dependency of `@vrillabs/mdui-oracle`. Versions are pinned at T-002 after checking current releases. **Eval harness is tool-agnostic** (promptfoo is one runner; it is now OpenAI-owned per its repo [S136]); no dependency on archived packages (Storybook MCP moved [S130]; AI SDK RSC paused [S50]).
 
 **Parser strategy (ADR-001).** Hand-written, line-oriented block parser with an explicit block stack plus an inline tokenizer, **not** a parser-generator output. Reasons: error recovery with precise spans, natural fit for streaming (TLS-07), and ability to keep going after a bad line. The **EBNF grammar is normative**; a Lark grammar is generated from it and **parity-tested** against the hand parser (NOV-03) so the two cannot drift.
 
@@ -289,7 +289,7 @@ export const balancedBlocks: Rule = {
 | Layer | Tooling | What it proves | Gate |
 |---|---|---|---|
 | **Unit** | Vitest | Each parser/lint/tool function | every PR; core+lint+tools ≥ 90% line coverage (project target) |
-| **Conformance** | JSON fixtures in `@mdui/spec` | Language semantics independent of implementation: `{input, expect: {ast?, diagnostics}}`; ≥ 60 valid + ≥ 60 invalid at α, ≥ 250 at GA | every PR; **release-blocking** |
+| **Conformance** | JSON fixtures in `@vrillabs/mdui-spec` | Language semantics independent of implementation: `{input, expect: {ast?, diagnostics}}`; ≥ 60 valid + ≥ 60 invalid at α, ≥ 250 at GA | every PR; **release-blocking** |
 | **Property-based** | fast-check | `fmt` idempotent · `parse∘fmt≡parse` · **streaming ≡ batch** under random chunking (≥ 10k cases) · include cycle safety · grammar↔parser parity (≥ 100k strings) | every PR (reduced runs), nightly (full) |
 | **Snapshot / golden** | Vitest snapshots | CLI JSON output, HTML render, exporters (A2UI, json-render, DTCG, Tailwind) | every PR |
 | **Example gate** | CI job | All `examples/**/*.ui.md` pass `validate`+`lint`; README snippets extracted and linted | every PR |
@@ -314,7 +314,7 @@ export const balancedBlocks: Rule = {
 - **Search `reference/` before writing any non-trivial module** (`scripts/reference.sh find`), lift through `scripts/reference.sh lift` (logs provenance, checks licence), and state in the PR **what was improved over upstream** (tests, types, safety, a11y, performance, determinism).
 
 ### ⚠️ Ask first
-- Adding any runtime dependency to `@mdui/core` or `@mdui/spec` (target: zero).
+- Adding any runtime dependency to `@vrillabs/mdui-core` or `@vrillabs/mdui-spec` (target: zero).
 - Changing the AST schema, diagnostic codes, exit codes, or `.ui.lock` format (versioned breaking changes).
 - Adding DSL syntax (requires an RFC), or touching the locked feature register.
 - Publishing to npm / agent registries (OpenClaw, Agent Skills hubs); changing license.
@@ -327,7 +327,7 @@ export const balancedBlocks: Rule = {
 - Break v1 compatibility silently, or weaken a conformance fixture to make a test pass.
 - Skip, disable or quarantine a failing test to get green.
 - Commit secrets or API keys (evals read keys from the environment).
-- Fetch from the network inside `@mdui/core`.
+- Fetch from the network inside `@vrillabs/mdui-core`.
 - **Edit anything under `reference/`**, import from it in `packages/**`, or copy code out of it without `reference.sh lift` provenance.
 
 ---
@@ -389,7 +389,7 @@ IDs are `REQ-<feature>`; each is verified by the tasks named in `TASKS.md`.
 - **REQ-QLT-03** WHEN an input lacks an accessible name or an image lacks `alt`, THE linter SHALL emit the corresponding `3xxx` diagnostic.
 - **REQ-QLT-04** THE example gate SHALL fail if any example has unbalanced blocks.
 - **REQ-QLT-06** WHEN code is lifted from `reference/`, THE `reference.sh lift` tool SHALL record provenance (date, destination, upstream repo, source path, pinned commit, licence) in `THIRD_PARTY_NOTICES.md` and SHALL refuse unknown or copyleft licences without an explicit flag; THE CI SHALL fail when `packages/**` imports from `reference/**`, when a notices entry's destination no longer exists, or when a path cited in `reference/manifest.json` is missing.
-- **REQ-QLT-05** THE docs site SHALL include an in-browser playground using `@mdui/core` without a server.
+- **REQ-QLT-05** THE docs site SHALL include an in-browser playground using `@vrillabs/mdui-core` without a server.
 
 ### Novel
 - **REQ-NOV-01a** WHEN `sync plan` runs, THE system SHALL classify every anchor into exactly one class of the three-way table (`FEATURE_ADDITIONS` §5) and SHALL not modify any file.

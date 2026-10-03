@@ -60,7 +60,14 @@ const defaultFetch: Fetch = (url, init) =>
   fetch(url, init as RequestInit) as unknown as ReturnType<Fetch>;
 
 /** Ollama `/api/generate`. Ollama's API takes a JSON-schema `format` but no GBNF, so this provider cannot enforce a grammar. */
-export function ollama(model: string, opts: { baseUrl?: string; fetch?: Fetch } = {}): Provider {
+export function ollama(
+  model: string,
+  opts: {
+    baseUrl?: string;
+    fetch?: Fetch;
+    /** Context window; Ollama's default is small enough to cut the skill arm's prompt silently. */ numCtx?: number;
+  } = {},
+): Provider {
   const base = (opts.baseUrl ?? "http://localhost:11434").replace(/\/$/, "");
   const f = opts.fetch ?? defaultFetch;
   return {
@@ -77,7 +84,12 @@ export function ollama(model: string, opts: { baseUrl?: string; fetch?: Fetch } 
         prompt: req.prompt,
         ...(req.system !== undefined ? { system: req.system } : {}),
         stream: false,
-        options: { temperature: req.temperature, seed: req.seed, num_predict: req.maxTokens },
+        options: {
+          temperature: req.temperature,
+          seed: req.seed,
+          num_predict: req.maxTokens,
+          ...(opts.numCtx !== undefined ? { num_ctx: opts.numCtx } : {}),
+        },
       })) as Record<string, unknown>;
       return {
         text: str(r["response"]),

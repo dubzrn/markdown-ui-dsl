@@ -1,9 +1,9 @@
-import { analyze, format, parse, type Diagnostic } from "@mdui/core";
-import { defaultCatalog, loadCatalog, loadMap, type Catalog } from "@mdui/catalog";
-import { buildGrammar, toGbnf, toJsonSchema, toLark } from "@mdui/grammar";
-import { ALL_RULES, fixSource, lint } from "@mdui/lint";
-import { render } from "@mdui/render";
-import { AST_SCHEMA } from "@mdui/spec";
+import { analyze, format, parse, type Diagnostic } from "@vrillabs/mdui-core";
+import { defaultCatalog, loadCatalog, loadMap, type Catalog } from "@vrillabs/mdui-catalog";
+import { buildGrammar, toGbnf, toJsonSchema, toLark } from "@vrillabs/mdui-grammar";
+import { ALL_RULES, fixSource, lint } from "@vrillabs/mdui-lint";
+import { render } from "@vrillabs/mdui-render";
+import { AST_SCHEMA } from "@vrillabs/mdui-spec";
 import {
   AGENTS,
   composePrompt,
@@ -11,9 +11,9 @@ import {
   diffDocuments,
   extractRequirements,
   type Agent,
-} from "@mdui/tools";
-import { loadDesignSystem } from "@mdui/tokens";
-import { analyse, computeApply, type Resolution } from "@mdui/sync";
+} from "@vrillabs/mdui-tools";
+import { loadDesignSystem } from "@vrillabs/mdui-tokens";
+import { analyse, computeApply, type Resolution } from "@vrillabs/mdui-sync";
 import type { Schema } from "./schema.js";
 
 /** Largest text accepted in any one argument. Specs are small; this bounds work per call. */

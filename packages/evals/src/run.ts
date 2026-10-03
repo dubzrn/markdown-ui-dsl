@@ -1,6 +1,6 @@
-import { buildGrammar, toGbnf } from "@mdui/grammar";
-import type { Catalog } from "@mdui/catalog";
-import { composePrompt } from "@mdui/tools";
+import { buildGrammar, toGbnf } from "@vrillabs/mdui-grammar";
+import type { Catalog } from "@vrillabs/mdui-catalog";
+import { composePrompt } from "@vrillabs/mdui-tools";
 import type { Provider } from "./provider.js";
 import { scoreAnswer, wilson, type Score } from "./score.js";
 import type { Task } from "./tasks.js";

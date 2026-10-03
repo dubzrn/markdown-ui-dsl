@@ -1,4 +1,4 @@
-import { walkBlocks, type InlineNode } from "@mdui/core";
+import { walkBlocks, type InlineNode } from "@vrillabs/mdui-core";
 import type { Rule } from "../rule.js";
 import { eachInline, textOf } from "../util.js";
 

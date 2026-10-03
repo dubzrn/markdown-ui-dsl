@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/dubzrn/markdown-ui-dsl/schema/ast-2.0.schema.json",
   "title": "Markdown UI DSL document AST (DSL 2.0)",
-  "description": "JSON form of @mdui/core's Document. The $id encodes the DSL version; breaking changes bump it (see packages/spec/schema/README.md).",
+  "description": "JSON form of @vrillabs/mdui-core's Document. The $id encodes the DSL version; breaking changes bump it (see packages/spec/schema/README.md).",
   "type": "object",
   "required": [
     "meta",

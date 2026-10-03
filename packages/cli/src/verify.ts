@@ -1,5 +1,5 @@
 import { posix } from "node:path";
-import { parse } from "@mdui/core";
+import { parse } from "@vrillabs/mdui-core";
 import {
   expectedTree,
   formatReport,
@@ -12,7 +12,7 @@ import {
   readBoxes,
   type Actual,
   type Box,
-} from "@mdui/oracle";
+} from "@vrillabs/mdui-oracle";
 import { UsageError, type Args } from "./args.js";
 import type { Io } from "./io.js";
 

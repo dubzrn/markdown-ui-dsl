@@ -1,5 +1,5 @@
 /** Using a component: is it in the catalog, are its props valid, is it trusted? (T-051 consumes this.) */
-import { parseArgs, type Attrs, type WidgetArgs } from "@mdui/core";
+import { parseArgs, type Attrs, type WidgetArgs } from "@vrillabs/mdui-core";
 import type { Catalog, ComponentSpec, PropSpec } from "./model.js";
 
 export interface UseIssue {

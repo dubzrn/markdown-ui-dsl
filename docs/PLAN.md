@@ -29,23 +29,23 @@
                          │                                                         │
                          ▼                                                         ▼
    ┌─────────────────────────────────────────────────────────────────────────────────────┐
-   │ @mdui/core  (zero deps, no Node APIs, browser-safe)                                  │
+   │ @vrillabs/mdui-core  (zero deps, no Node APIs, browser-safe)                                  │
    │  line classifier → block parser → inline parser → frontmatter → directives           │
    │  → include/data resolvers (injected FS) → typed AST + diagnostics  ⇄ streaming parser │
    └───────────────┬─────────────────────────────────────────────────────────────────────┘
-                   │ AST (JSON Schema in @mdui/spec; conformance fixtures)
+                   │ AST (JSON Schema in @vrillabs/mdui-spec; conformance fixtures)
    ┌───────────────┼──────────────┬──────────────┬───────────────┬───────────────┬─────────────┐
    ▼               ▼              ▼              ▼               ▼               ▼             ▼
- @mdui/lint     @mdui/tools   @mdui/tokens   @mdui/render    @mdui/export   @mdui/grammar  @mdui/sync
+ @vrillabs/mdui-lint     @vrillabs/mdui-tools   @vrillabs/mdui-tokens   @vrillabs/mdui-render    @vrillabs/mdui-export   @vrillabs/mdui-grammar  @vrillabs/mdui-sync
  rules+         fmt/diff/     DESIGN.md/     HTML preview    A2UI,          Lark/GBNF/     anchors, .ui.lock,
  constraints    migrate/stats DTCG/catalog/  + dev server    json-render,   JSON-schema    3-way classifier,
  (NOV-04)                     component map                  (2.1: others)  (NOV-03)       code adapters (NOV-01)
                                                                                                 │
-                                                                                          @mdui/oracle
+                                                                                          @vrillabs/mdui-oracle
                                                                                   AST→ARIA, Playwright, Fidelity (NOV-02)
    └───────────────┴──────────────┴──────────────┴───────────────┴───────────────┴─────────────┘
                                          ▼
-                          @mdui/cli (`mdui`)   @mdui/mcp (`mdui-mcp`)   skills/ (Agent Skill)   vscode/ (2.1)
+                          @vrillabs/mdui-cli (`mdui`)   @vrillabs/mdui-mcp (`mdui-mcp`)   skills/ (Agent Skill)   vscode/ (2.1)
 ```
 
 Parser strategy (ADR-001): hand-written line-oriented parser for recovery/streaming; **normative EBNF**; generated Lark grammar parity-tested against it.
@@ -274,7 +274,7 @@ Efficiency factors are assumptions, not measurements; the credible number comes 
 |---|---|---|---|
 | Existing users (v1.0.3) | "Nothing breaks. v2 is additive. Run `mdui migrate` if you want the new features." | α | README banner + migration guide |
 | Agent-marketplace users (OpenClaw, Agent Skills hubs) | New skill layout; safety model; how to use with and without the CLI | β | Skill release notes |
-| Tool builders | Conformance bundle, JSON Schema, normative grammar | β/GA | `@mdui/spec` docs |
+| Tool builders | Conformance bundle, JSON Schema, normative grammar | β/GA | `@vrillabs/mdui-spec` docs |
 | Competitors' communities (A2UI, DESIGN.md, json-render) | Interop story: mdui compiles *to* and consumes *from* them | GA | Exporter docs, comparison page (from COMPETITIVE_RESEARCH, re-verified) |
 | Contributors | RFC process, task board, `AGENTS.md` | Phase 0 | CONTRIBUTING |
 

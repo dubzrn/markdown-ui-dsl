@@ -1,7 +1,7 @@
 // Dogfooding (T-040): the rendered output itself must pass axe-core. Run with `pnpm test:e2e` (needs Chromium).
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { createRequire } from "node:module";
-import { parse } from "@mdui/core";
+import { parse } from "@vrillabs/mdui-core";
 import { chromium, type Browser } from "playwright-core";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { render, type StyleName } from "../src/index.js";

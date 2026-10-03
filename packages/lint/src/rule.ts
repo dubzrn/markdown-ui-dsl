@@ -1,6 +1,13 @@
-import type { AnalyzeResult, Diagnostic, Document, Severity, Span, TextEdit } from "@mdui/core";
-import type { Catalog } from "@mdui/catalog";
-import type { DesignSystem } from "@mdui/tokens";
+import type {
+  AnalyzeResult,
+  Diagnostic,
+  Document,
+  Severity,
+  Span,
+  TextEdit,
+} from "@vrillabs/mdui-core";
+import type { Catalog } from "@vrillabs/mdui-catalog";
+import type { DesignSystem } from "@vrillabs/mdui-tokens";
 
 export interface RuleContext {
   /** The source text that was linted (LF-normalised offsets match `doc` spans). */

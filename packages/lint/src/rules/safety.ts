@@ -1,4 +1,4 @@
-import { ALLOWED_URL_SCHEMES, schemeOf, walkBlocks, type BlockNode } from "@mdui/core";
+import { ALLOWED_URL_SCHEMES, schemeOf, walkBlocks, type BlockNode } from "@vrillabs/mdui-core";
 import type { Rule } from "../rule.js";
 import { eachInline } from "../util.js";
 

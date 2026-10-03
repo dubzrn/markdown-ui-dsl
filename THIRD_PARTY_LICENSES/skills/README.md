@@ -11,4 +11,4 @@ Skills copied into `.agents/skills/` and `.claude/skills/` keep their upstream l
 | webapp-testing | https://github.com/anthropics/skills | Apache-2.0 | `LICENSE.txt` inside the skill |
 | skill-creator, mcp-builder, frontend-design | Anthropic example/public skills (installed in the authoring environment) | Apache-2.0 | `LICENSE.txt` inside each skill |
 | accessibility, web-quality-audit, best-practices | "web-quality-skills" (installed in the authoring environment) | MIT **declared in SKILL.md frontmatter**; no copyright line or licence file shipped locally | — **verify upstream and add the notice before any public release** |
-| markdown-ui-dsl | this repository (`skills/markdown-ui-dsl`) | MIT | `LICENSE` |
+| markdown-ui-dsl | this repository (`skills/markdown-ui-dsl`) | VRIL LABS Open Source License v1.0 (upstream portions: MIT, see `NOTICE`) | `LICENSE`, `NOTICE` |

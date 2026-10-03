@@ -1,5 +1,5 @@
 /** v1 → 2.0 migration (T-036): bump `dsl:`, convert unambiguous idioms, list everything that would change meaning. */
-import { parse, walkBlocks, type Document } from "@mdui/core";
+import { parse, walkBlocks, type Document } from "@vrillabs/mdui-core";
 
 export interface MigrateChange {
   line: number;

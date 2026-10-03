@@ -1,5 +1,5 @@
 /** SDD interoperability (T-056): which requirements do the `.ui.md` specs cover (`requirements:` frontmatter)? */
-import { parse, type YamlValue } from "@mdui/core";
+import { parse, type YamlValue } from "@vrillabs/mdui-core";
 
 /** Spec Kit style identifiers: FR-001, REQ-QLT-04, NFR-2. */
 const ID_RE = /\b[A-Z][A-Z0-9]*(?:-[A-Z][A-Z0-9]*)*-\d+\b/g;

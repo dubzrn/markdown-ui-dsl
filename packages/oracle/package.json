@@ -1,8 +1,8 @@
 {
-  "name": "@mdui/oracle",
-  "version": "0.0.0",
+  "name": "@vrillabs/mdui-oracle",
+  "version": "0.1.0",
   "description": "Spec Oracle: compile a .ui.md to its expected accessibility tree and score a live page against it (Fidelity Score).",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "type": "module",
   "sideEffects": false,
   "exports": {
@@ -12,10 +12,12 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "NOTICE"
   ],
   "dependencies": {
-    "@mdui/core": "workspace:*"
+    "@vrillabs/mdui-core": "workspace:*"
   },
   "peerDependencies": {
     "playwright-core": ">=1.49"
@@ -27,9 +29,26 @@
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean",
-    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json"
+    "typecheck": "tsc -p tsconfig.json && tsc -p test/tsconfig.json",
+    "prepack": "node ../../scripts/copy-license.mjs"
   },
   "devDependencies": {
     "playwright-core": "^1.63.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dubzrn/markdown-ui-dsl.git",
+    "directory": "packages/oracle"
+  },
+  "homepage": "https://github.com/dubzrn/markdown-ui-dsl#readme",
+  "bugs": {
+    "url": "https://github.com/dubzrn/markdown-ui-dsl/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=20.19"
   }
 }

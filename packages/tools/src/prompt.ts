@@ -1,7 +1,19 @@
 /** Prompt generator (T-054): compose the context an agent needs to write and read this project's specs. Deterministic. */
-import { BLOCK_KINDS, WIDGET_KINDS, inlinesOf, parse, walkBlocks, walkInline } from "@mdui/core";
-import { defaultCatalog, type Catalog, type ComponentSpec, type ComponentMap } from "@mdui/catalog";
-import type { DesignSystem } from "@mdui/tokens";
+import {
+  BLOCK_KINDS,
+  WIDGET_KINDS,
+  inlinesOf,
+  parse,
+  walkBlocks,
+  walkInline,
+} from "@vrillabs/mdui-core";
+import {
+  defaultCatalog,
+  type Catalog,
+  type ComponentSpec,
+  type ComponentMap,
+} from "@vrillabs/mdui-catalog";
+import type { DesignSystem } from "@vrillabs/mdui-tokens";
 
 export const AGENTS = ["generic", "claude", "cursor", "copilot", "codex", "gemini"] as const;
 export type Agent = (typeof AGENTS)[number];

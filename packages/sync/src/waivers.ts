@@ -1,5 +1,5 @@
 /** Waivers recorded in `.ui.lock` (T-072/T-082): `> waive: rule reason="…"` with its location and the anchor it sits in. */
-import { walkBlocks } from "@mdui/core";
+import { walkBlocks } from "@vrillabs/mdui-core";
 import { assignAnchors } from "./anchors.js";
 import type { Lock, LockWaiver } from "./lock.js";
 import { specUnits } from "./spec.js";
