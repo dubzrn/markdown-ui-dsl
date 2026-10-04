@@ -7,6 +7,7 @@ The wiki is **generated** from this repository; edit `docs/` (or `examples/`), n
 | Builder | `scripts/build-wiki.mjs` (`pnpm wiki:check` verifies links, anchors and image formats; `pnpm wiki:build` writes `wiki-out/`) |
 | Deploy | `.github/workflows/wiki.yml`: on push to `main` (docs/examples changes) or by hand; **Dry run** builds and checks only |
 | Pages | the table at the top of the script (`PAGES`) maps each doc to a wiki page and a sidebar section |
+| Banner | `docs/img/wiki-banner.png` (converted from the supplied WebP; wikis do not display WebP) is copied to `images/banner.png` and shown at the top of Home |
 | Images | every `mdui` fence and `docs/img/*.svg` becomes a PNG in `images/`, plus `Gallery` (all examples × 3 styles) and `Architecture` |
 
 Rules from GitHub's wiki documentation that the builder follows: a wiki is its own Git repository (`<repo>.wiki.git`) and only its default branch is live; the file name is the page title and `.md` selects the Markdown renderer; `_Sidebar.md` and `_Footer.md` fill the sidebar and footer; **only PNG, JPEG and GIF images are displayed** (hence the rasterising); page names avoid `\ / : * ? " < > |`; the soft limit is 5,000 files.
