@@ -305,8 +305,6 @@ function home() {
     "",
     "A human-first Markdown wireframe language for AI coding agents, plus the toolkit around it: parser, linter, HTML and SVG renderers, A2UI / json-render exporters, an MCP server and a CLI.",
     "",
-    "![A login screen drawn from a .ui.md file](images/login-form-sketch.png)",
-    "",
     `Repository: https://github.com/${REPO} · Packages: [@vrillabs on npm](https://www.npmjs.com/~vrillabs)`,
     "",
     ...[...sections.entries()].flatMap(([sec, items]) => [`## ${sec}`, "", ...items, ""]),
@@ -344,10 +342,6 @@ for (const [src, name] of PAGES) files.set(`${name}.md`, convert(src));
 files.set("Gallery.md", gallery());
 files.set("Architecture.md", architecture());
 binary.set("images/banner.png", "docs/img/wiki-banner.png");
-png.set(
-  "images/login-form-sketch.png",
-  readFileSync(join(root, "docs/img/login-form-sketch.svg"), "utf8"),
-);
 
 // ---- checks ----
 for (const f of files.keys())
