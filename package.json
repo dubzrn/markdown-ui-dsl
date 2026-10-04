@@ -23,7 +23,9 @@
     "lint:docs:check": "node scripts/gen-lint-docs.mjs --check",
     "check": "pnpm schema:check && pnpm build && pnpm lint:docs:check && pnpm typecheck && pnpm lint && pnpm format:check && pnpm test",
     "parity": "node scripts/grammar-parity.mjs",
-    "conformance": "node scripts/gen-conformance-manifest.mjs --check && python3 packages/spec/conformance/runners/run.py -- node scripts/conformance-harness.mjs"
+    "conformance": "node scripts/gen-conformance-manifest.mjs --check && python3 packages/spec/conformance/runners/run.py -- node scripts/conformance-harness.mjs",
+    "wiki:check": "node scripts/build-wiki.mjs --check",
+    "wiki:build": "node scripts/build-wiki.mjs"
   },
   "devDependencies": {
     "@anthropic-ai/tokenizer": "^0.0.4",

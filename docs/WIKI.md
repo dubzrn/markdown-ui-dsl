@@ -1,0 +1,20 @@
+# The GitHub Wiki
+
+The wiki is **generated** from this repository; edit `docs/` (or `examples/`), never the wiki itself.
+
+| Piece | Where |
+|---|---|
+| Builder | `scripts/build-wiki.mjs` (`pnpm wiki:check` verifies links, anchors and image formats; `pnpm wiki:build` writes `wiki-out/`) |
+| Deploy | `.github/workflows/wiki.yml`: on push to `main` (docs/examples changes) or by hand; **Dry run** builds and checks only |
+| Pages | the table at the top of the script (`PAGES`) maps each doc to a wiki page and a sidebar section |
+| Images | every `mdui` fence and `docs/img/*.svg` becomes a PNG in `images/`, plus `Gallery` (all examples × 3 styles) and `Architecture` |
+
+Rules from GitHub's wiki documentation that the builder follows: a wiki is its own Git repository (`<repo>.wiki.git`) and only its default branch is live; the file name is the page title and `.md` selects the Markdown renderer; `_Sidebar.md` and `_Footer.md` fill the sidebar and footer; **only PNG, JPEG and GIF images are displayed** (hence the rasterising); page names avoid `\ / : * ? " < > |`; the soft limit is 5,000 files.
+
+## One-time setup (needs a person)
+
+1. Settings → Features → tick **Wikis**. Optionally tick *Restrict editing to collaborators only*, since the deploy overwrites manual edits anyway.
+2. Open the **Wiki** tab and click **Create the first page** (save anything). GitHub creates `<repo>.wiki.git` only then; the workflow cannot do it.
+3. Actions → **Wiki** → *Run workflow* (leave *dry run* off). Later pushes to `main` deploy automatically.
+
+The footer carries the VRIL LABS attribution required by `LICENSE` §4(a).
