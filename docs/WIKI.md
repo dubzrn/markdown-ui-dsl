@@ -5,7 +5,7 @@ The wiki is **generated** from this repository; edit `docs/` (or `examples/`), n
 | Piece | Where |
 |---|---|
 | Builder | `scripts/build-wiki.mjs` (`pnpm wiki:check` verifies links, anchors and image formats; `pnpm wiki:build` writes `wiki-out/`) |
-| Deploy | `.github/workflows/wiki.yml`: on push to `main` (docs/examples changes) or by hand; **Dry run** builds and checks only |
+| Deploy | `.github/workflows/wiki.yml`: deploys only from `main` (push touching docs, examples, the banner or the builder, or a manual run). Pull requests and manual runs from other branches build and check only, so a feature branch can never overwrite the published wiki |
 | Pages | the table at the top of the script (`PAGES`) maps each doc to a wiki page and a sidebar section |
 | Banner | `docs/img/wiki-banner.png` (converted from the supplied WebP; wikis do not display WebP) is copied to `images/banner.png` and shown at the top of Home |
 | Images | every `mdui` fence and `docs/img/*.svg` becomes a PNG in `images/`, plus `Gallery` (all examples × 3 styles) and `Architecture` |

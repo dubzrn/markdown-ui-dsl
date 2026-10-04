@@ -2,13 +2,24 @@
 # Per GitHub's wiki docs: the wiki is a separate Git repository, only its default branch is live, and it does not exist until
 # a first page has been created once (Wiki tab → "Create the first page"). Until then the deploy step stops with instructions.
 # Pushing with GITHUB_TOKEN needs `contents: write`. Direct edits on the wiki are overwritten by the next deploy.
+# Only `main` ever deploys: pull requests build and check (so a broken page or image is caught before merge), and a manual
+# run from any other branch is a dry run, so a feature branch can never overwrite the published wiki.
 name: Wiki
 
 on:
   push:
     branches: [main]
     paths:
-      - "docs/**"
+      - "docs/**" # includes docs/img/wiki-banner.png
+      - "examples/**"
+      - "CONTRIBUTING.md"
+      - "scripts/build-wiki.mjs"
+      - "packages/embed/**"
+      - "packages/core/**"
+      - ".github/workflows/wiki.yml"
+  pull_request:
+    paths:
+      - "docs/**" # includes docs/img/wiki-banner.png
       - "examples/**"
       - "CONTRIBUTING.md"
       - "scripts/build-wiki.mjs"
@@ -26,7 +37,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: wiki
+  group: ${{ github.event_name == 'pull_request' && format('wiki-pr-{0}', github.ref) || 'wiki-deploy' }}
   cancel-in-progress: false
 
 jobs:
@@ -56,7 +67,7 @@ jobs:
 
       - name: Clone the wiki repository
         id: clone
-        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
+        if: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && !inputs.dry_run)) }}
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
