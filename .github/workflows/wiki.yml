@@ -37,9 +37,9 @@ jobs:
     permissions:
       contents: write # push to the .wiki.git repository
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: pnpm
@@ -61,17 +61,39 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           SERVER: ${{ github.server_url }}
+          MANUAL: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
-          set -e
           host="${SERVER#https://}"
-          if ! git clone "https://x-access-token:${GH_TOKEN}@${host}/${REPO}.wiki.git" wiki-repo 2>clone.err; then
-            cat clone.err | sed "s/${GH_TOKEN}/***/g" >&2
-            echo "::error title=Wiki repository not found::Enable Wikis (Settings → Features) and create the first page once in the Wiki tab; GitHub only creates ${REPO}.wiki.git then. Re-run this workflow afterwards."
+          if git clone "https://x-access-token:${GH_TOKEN}@${host}/${REPO}.wiki.git" wiki-repo 2>clone.err; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          sed "s/${GH_TOKEN}/***/g" clone.err >&2
+          has_wiki="$(gh api "repos/${REPO}" --jq .has_wiki 2>/dev/null || echo unknown)"
+          if [ "$has_wiki" = "false" ]; then
+            step="Wikis is switched off: Settings → Features → tick Wikis, then create the first page."
+          else
+            step="Open the Wiki tab and click 'Create the first page' (save anything). GitHub creates ${REPO}.wiki.git only then."
+          fi
+          {
+            echo "### Wiki not deployed yet"
+            echo
+            echo "${REPO}.wiki.git does not exist, and a workflow cannot create it."
+            echo
+            echo "1. ${step}"
+            echo "2. Re-run this workflow (Actions → Wiki → Run workflow)."
+            echo
+            echo "The build and link checks above passed, so the pages are ready to push."
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "ready=false" >> "$GITHUB_OUTPUT"
+          if [ "$MANUAL" = "true" ]; then
+            echo "::error title=Wiki repository not found::${step} Then re-run this workflow."
             exit 1
           fi
+          echo "::warning title=Wiki not deployed::${step} The next run deploys it."
 
       - name: Sync and push
-        if: steps.clone.outcome == 'success'
+        if: steps.clone.outputs.ready == 'true'
         env:
           ACTOR: ${{ github.actor }}
           SHA: ${{ github.sha }}
@@ -80,6 +102,7 @@ jobs:
           cd wiki-repo
           git ls-files -z | xargs -0 -r git rm -q --
           cp -R ../wiki-out/. .
+          rm -f .mdui-wiki-out # build marker, not wiki content
           git add -A
           if git diff --cached --quiet; then
             echo "Wiki is already up to date."

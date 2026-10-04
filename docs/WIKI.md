@@ -17,4 +17,6 @@ Rules from GitHub's wiki documentation that the builder follows: a wiki is its o
 2. Open the **Wiki** tab and click **Create the first page** (save anything). GitHub creates `<repo>.wiki.git` only then; the workflow cannot do it.
 3. Actions → **Wiki** → *Run workflow* (leave *dry run* off). Later pushes to `main` deploy automatically.
 
+Until step 2 is done, a push to `main` still builds and checks everything, then ends **green with a warning** and a checklist in the run summary; a manual run fails so you know nothing was deployed.
+
 The footer carries the VRIL LABS attribution required by `LICENSE` §4(a).
